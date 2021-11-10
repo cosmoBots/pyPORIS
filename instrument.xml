@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sub-systems-v4>
+	<value-double-range>
+		<id type="integer">319</id>
+		<ident>DAS-0302</ident>
+		<name>vRange</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>ValueDoubleRange</type>
+		<value-formatter-id type="integer">5</value-formatter-id>
+		<default-float type="float">0.010</default-float>
+		<rangemax type="float">1000.0</rangemax>
+		<rangemin type="float">0.0</rangemin>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value-double-range>
+	<value-double-range>
+		<id type="integer">323</id>
+		<ident>DAS-0306</ident>
+		<name>vRange</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>ValueDoubleRange</type>
+		<value-formatter-id type="integer">5</value-formatter-id>
+		<default-float type="float">0.010</default-float>
+		<rangemax type="float">1.0</rangemax>
+		<rangemin type="float">0.0</rangemin>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value-double-range>
+	<value>
+		<id type="integer">330</id>
+		<ident>DAS-0313</ident>
+		<name>1x1</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">331</id>
+		<ident>DAS-0314</ident>
+		<name>1x2</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">332</id>
+		<ident>DAS-0315</ident>
+		<name>2x1</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">333</id>
+		<ident>DAS-0316</ident>
+		<name>2x2</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">338</id>
+		<ident>DAS-0321</ident>
+		<name>SLOW</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">339</id>
+		<ident>DAS-0322</ident>
+		<name>NORMAL</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">340</id>
+		<ident>DAS-0323</ident>
+		<name>FAST</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">343</id>
+		<ident>DAS-0326</ident>
+		<name>CCD1+2/A</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">344</id>
+		<ident>DAS-0327</ident>
+		<name>CCD1+2/A+B</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">345</id>
+		<ident>DAS-0328</ident>
+		<name>CCD1/A</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">346</id>
+		<ident>DAS-0329</ident>
+		<name>CCD1/A+B</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">347</id>
+		<ident>DAS-0330</ident>
+		<name>CCD1/B</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">348</id>
+		<ident>DAS-0331</ident>
+		<name>CCD2/A+B</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">349</id>
+		<ident>DAS-0332</ident>
+		<name>CCD2/A</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<value>
+		<id type="integer">350</id>
+		<ident>DAS-0333</ident>
+		<name>CCD2/B</name>
+		<node-type-id type="integer">5</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Value</type>
+		<value-formatter-id type="integer" nil="true"/>
+		<destinations type="array"/>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</value>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">327</id>
+		<ident>DAS-0310</ident>
+		<name>exNormal</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">319</id>
+				<ident>DAS-0302</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">328</id>
+		<ident>DAS-0311</ident>
+		<name>mReduced</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">323</id>
+				<ident>DAS-0306</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">334</id>
+		<ident>DAS-0317</ident>
+		<name>bnNormal</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">330</id>
+				<ident>DAS-0313</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">331</id>
+				<ident>DAS-0314</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">332</id>
+				<ident>DAS-0315</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">333</id>
+				<ident>DAS-0316</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">335</id>
+		<ident>DAS-0318</ident>
+		<name>mDisabled</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">330</id>
+				<ident>DAS-0313</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">336</id>
+		<ident>DAS-0319</ident>
+		<name>mRectangular</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">330</id>
+				<ident>DAS-0313</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">333</id>
+				<ident>DAS-0316</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">341</id>
+		<ident>DAS-0324</ident>
+		<name>roNormal</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">338</id>
+				<ident>DAS-0321</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">339</id>
+				<ident>DAS-0322</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">340</id>
+				<ident>DAS-0323</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">351</id>
+		<ident>DAS-0334</ident>
+		<name>rmNormal</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">343</id>
+				<ident>DAS-0326</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">344</id>
+				<ident>DAS-0327</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">345</id>
+				<ident>DAS-0328</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">346</id>
+				<ident>DAS-0329</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">347</id>
+				<ident>DAS-0330</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">348</id>
+				<ident>DAS-0331</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">349</id>
+				<ident>DAS-0332</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">350</id>
+				<ident>DAS-0333</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">353</id>
+		<ident>DAS-0336</ident>
+		<name>mTF</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Mode">
+				<id type="integer">327</id>
+				<ident>DAS-0310</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">334</id>
+				<ident>DAS-0317</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">341</id>
+				<ident>DAS-0324</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">351</id>
+				<ident>DAS-0334</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">354</id>
+		<ident>DAS-0337</ident>
+		<name>mSpectr</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Mode">
+				<id type="integer">327</id>
+				<ident>DAS-0310</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">334</id>
+				<ident>DAS-0317</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">341</id>
+				<ident>DAS-0324</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">351</id>
+				<ident>DAS-0334</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">352</id>
+		<ident>DAS-0335</ident>
+		<name>dsNormal</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Mode">
+				<id type="integer">327</id>
+				<ident>DAS-0310</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">334</id>
+				<ident>DAS-0317</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">341</id>
+				<ident>DAS-0324</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">351</id>
+				<ident>DAS-0334</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<sub-system>
+		<default-mode-id type="integer" nil="true"/>
+		<id type="integer">318</id>
+		<ident>DAS-0301</ident>
+		<name>ExpTime</name>
+		<node-type-id type="integer">4</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>SubSystem</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">319</id>
+				<ident>DAS-0302</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">323</id>
+				<ident>DAS-0306</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">327</id>
+				<ident>DAS-0310</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">328</id>
+				<ident>DAS-0311</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</sub-system>
+	<sub-system>
+		<default-mode-id type="integer" nil="true"/>
+		<id type="integer">329</id>
+		<ident>DAS-0312</ident>
+		<name>Binning</name>
+		<node-type-id type="integer">4</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>SubSystem</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">330</id>
+				<ident>DAS-0313</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">331</id>
+				<ident>DAS-0314</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">332</id>
+				<ident>DAS-0315</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">333</id>
+				<ident>DAS-0316</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">334</id>
+				<ident>DAS-0317</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">335</id>
+				<ident>DAS-0318</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">336</id>
+				<ident>DAS-0319</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</sub-system>
+	<sub-system>
+		<default-mode-id type="integer" nil="true"/>
+		<id type="integer">337</id>
+		<ident>DAS-0320</ident>
+		<name>ReadOut</name>
+		<node-type-id type="integer">4</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>SubSystem</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">338</id>
+				<ident>DAS-0321</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">339</id>
+				<ident>DAS-0322</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">340</id>
+				<ident>DAS-0323</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">341</id>
+				<ident>DAS-0324</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</sub-system>
+	<sub-system>
+		<default-mode-id type="integer" nil="true"/>
+		<id type="integer">342</id>
+		<ident>DAS-0325</ident>
+		<name>ReadMode</name>
+		<node-type-id type="integer">4</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>SubSystem</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">343</id>
+				<ident>DAS-0326</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">344</id>
+				<ident>DAS-0327</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">345</id>
+				<ident>DAS-0328</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">346</id>
+				<ident>DAS-0329</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">347</id>
+				<ident>DAS-0330</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">348</id>
+				<ident>DAS-0331</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">349</id>
+				<ident>DAS-0332</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">350</id>
+				<ident>DAS-0333</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">351</id>
+				<ident>DAS-0334</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</sub-system>
+	<sub-system>
+		<default-mode-id type="integer" nil="true"/>
+		<id type="integer">317</id>
+		<ident>DAS-0300</ident>
+		<name>DAS1</name>
+		<node-type-id type="integer">4</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>SubSystem</type>
+		<destinations type="array">
+			<destination type="SubSystem">
+				<id type="integer">318</id>
+				<ident>DAS-0301</ident>
+			</destination>
+			<destination type="SubSystem">
+				<id type="integer">329</id>
+				<ident>DAS-0312</ident>
+			</destination>
+			<destination type="SubSystem">
+				<id type="integer">337</id>
+				<ident>DAS-0320</ident>
+			</destination>
+			<destination type="SubSystem">
+				<id type="integer">342</id>
+				<ident>DAS-0325</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">352</id>
+				<ident>DAS-0335</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">353</id>
+				<ident>DAS-0336</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">354</id>
+				<ident>DAS-0337</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</sub-system>
+</sub-systems-v4>
