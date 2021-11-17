@@ -51,8 +51,11 @@ for row in nodesdata:
                 thisnode['blocking'] = []
 
             # print("Parsed:",thisnode['blocking'])
-            thisnode['level'] = row[config.desc_level_column]
-            thisnode['type'] = row[config.desc_type_column]
+            thisnode['tracker'] = row[config.desc_tracker_column]
+            thisnode['min'] = row[config.desc_min_column]
+            thisnode['def'] = row[config.desc_def_column]
+            thisnode['max'] = row[config.desc_max_column]
+            thisnode['deftext'] = row[config.desc_deftext_column]
             precedentstr = row[config.desc_precedents_column]
             thisnode['precedents'] = []
             if precedentstr is not None:
@@ -115,12 +118,12 @@ for thiskey in nodes_dict.keys():
         <labels type="array"/>
     </value-double-range>
     '''
-    if thisnode['level'] == "Value":
+    if thisnode['tracker'] == "prValue" or thisnode['tracker'] == "prValFloat" or thisnode['tracker'] == "prValText":
 
-        if thisnode['type'] == "Label":
+        if thisnode['tracker'] == "prValue":
             valueNode = root.createElement('value')
         else:
-            if thisnode['type'] == "Range":
+            if thisnode['tracker'] == "prValFloat":
                 valueNode = root.createElement('value-double-range')
 
             else:
@@ -159,7 +162,7 @@ for thiskey in nodes_dict.keys():
         projectIdChild.appendChild(valueText)
         valueNode.appendChild(projectIdChild)
 
-        if thisnode['type'] == "Label":
+        if thisnode['tracker'] == "prValue":
             # <type>Value</type>
             typeChild = root.createElement('type')
             valueText = root.createTextNode("Value")
@@ -173,7 +176,7 @@ for thiskey in nodes_dict.keys():
             valueNode.appendChild(child)
 
         else:
-            if thisnode['type'] == "Range":
+            if thisnode['tracker'] == "prValFloat":
                 # <type>ValueDoubleRange</type>
                 typeChild = root.createElement('type')
                 valueText = root.createTextNode("ValueDoubleRange")
@@ -187,10 +190,9 @@ for thiskey in nodes_dict.keys():
                 child.appendChild(valueText)
                 valueNode.appendChild(child)
 
-                # print(thiskey,thisnode['children'])
-                min_value = nodes_dict[thisnode['children'][0]]['subject']
-                default_value = nodes_dict[thisnode['children'][1]]['subject']
-                max_value = nodes_dict[thisnode['children'][2]]['subject']
+                min_value = str(thisnode['min'])
+                default_value = str(thisnode['def'])
+                max_value = str(thisnode['max'])
 
                 # <default-float type="float">0.01</default-float>
                 child = root.createElement('default-float')
@@ -239,24 +241,24 @@ while len(sorted_nodes_dict) < len(nodes_dict):
         if nodekey not in sorted_nodes_dict:
             thisnode = nodes_dict[nodekey]
             includenode = True
-            if thisnode['level'] == "Parameter" or thisnode['level'] == "System":
-                #print("trying to include:",nodekey,thisnode['subject'],thisnode['level'])
+            if thisnode['tracker'] == "prParam" or thisnode['tracker'] == "prSys":
+                #print("trying to include:",nodekey,thisnode['subject'],thisnode['tracker'])
                 for childkey in thisnode['children']:
                     if len(childkey)>0:
-                        childlevel = nodes_dict[childkey]['level']
+                        childlevel = nodes_dict[childkey]['tracker']
                         print("child:",childkey,nodes_dict[childkey]['subject'],childlevel)
-                        if childlevel == "Parameter" or childlevel == "System":
+                        if childlevel == "prParam" or childlevel == "prSys":
                             if childkey not in sorted_nodes_dict:
                                 includenode = False
                                 print("oops!")
             else:
-                if thisnode['level'] == "Mode":
-                    print("trying to include:",nodekey,thisnode['subject'],thisnode['level'])
+                if thisnode['tracker'] == "prMode":
+                    print("trying to include:",nodekey,thisnode['subject'],thisnode['tracker'])
                     print(thisnode['blocking'])
                     for childkey in thisnode['blocking']:
                         if len(childkey)>0:
                             print("childkey:",childkey)
-                            childlevel = nodes_dict[childkey]['level']
+                            childlevel = nodes_dict[childkey]['tracker']
                             print("child:",childkey,nodes_dict[childkey]['subject'],childlevel)
                             if childkey not in sorted_nodes_dict:
                                 includenode = False
@@ -264,7 +266,7 @@ while len(sorted_nodes_dict) < len(nodes_dict):
                 
 
             if includenode:
-                print("---> Including:",nodekey,nodes_dict[nodekey]['subject'],nodes_dict[nodekey]['level'])
+                print("---> Including:",nodekey,nodes_dict[nodekey]['subject'],nodes_dict[nodekey]['tracker'])
                 sorted_nodes_dict.append(nodekey)
             else:
                 print("---> NOT INCLUDED",nodekey)
@@ -306,7 +308,7 @@ for thiskey in sorted_nodes_dict:
         </labels>
     </mode>
     '''
-    if thisnode['level'] == "Mode":
+    if thisnode['tracker'] == "prMode":
         modeNode = root.createElement('mode')
 
         # <default-mode-id type="integer" nil="true"></default-mode-id>
@@ -379,10 +381,10 @@ for thiskey in sorted_nodes_dict:
                 # print(destid)
                 thisdest = nodes_dict[destid]
                 dest = root.createElement('destination')
-                if thisdest['level'] == "Value":
+                if thisdest['tracker'] == "prValue" or thisdest['tracker'] == "prValFloat" or thisdest['tracker'] == "prValText":
                     dest.setAttribute("type", "Value")
                 else:
-                    if thisdest['level'] == "Mode":
+                    if thisdest['tracker'] == "prMode":
                         dest.setAttribute("type", "Mode")
                     
                     else:
@@ -452,7 +454,7 @@ for thiskey in sorted_nodes_dict:
         </label>
         </labels>
     </sub-system>'''
-    if thisnode['level'] == "System" or thisnode['level'] == "Parameter":
+    if thisnode['tracker'] == "prSys" or thisnode['tracker'] == "prParam":
         sysNode = root.createElement('sub-system')
 
         # <default-mode-id type="integer" nil="true"></default-mode-id>
@@ -523,14 +525,14 @@ for thiskey in sorted_nodes_dict:
                 # print(destid)
                 thisdest = nodes_dict[destid]
                 dest = root.createElement('destination')
-                if thisdest['level'] == "Value":
+                if thisdest['tracker'] == "prValue" or thisdest['tracker'] == "prValFloat" or thisdest['tracker'] == "prValText":
                     dest.setAttribute("type", "Value")
                 else:
-                    if thisdest['level'] == "Mode":
+                    if thisdest['tracker'] == "prMode":
                         dest.setAttribute("type", "Mode")
                     
                     else:
-                        if thisdest['level'] == "System" or thisdest['level'] == 'Parameter':
+                        if thisdest['tracker'] == "prSys" or thisdest['tracker'] == 'prParam':
                             dest.setAttribute("type", "SubSystem")
                         
                         else:
