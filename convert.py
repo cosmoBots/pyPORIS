@@ -127,7 +127,11 @@ for thiskey in nodes_dict.keys():
                 valueNode = root.createElement('value-double-range')
 
             else:
-                valueNode = root.createElement('Error!!!')
+                if thisnode['tracker'] == "prValText":
+                    valueNode = root.createElement('value-text')
+                else:
+                    valueNode = root.createElement('Error!!!3')
+                    print("Error3!")
 
         # common part
         # <id type="integer">503</id>
@@ -258,11 +262,16 @@ while len(sorted_nodes_dict) < len(nodes_dict):
                     for childkey in thisnode['blocking']:
                         if len(childkey)>0:
                             print("childkey:",childkey)
-                            childlevel = nodes_dict[childkey]['tracker']
-                            print("child:",childkey,nodes_dict[childkey]['subject'],childlevel)
-                            if childkey not in sorted_nodes_dict:
-                                includenode = False
-                                print("oops!")
+                            # If exporting partial projects, the key should fail
+                            if childkey in nodes_dict.keys():
+                                childlevel = nodes_dict[childkey]['tracker']
+                                print("child:",childkey,nodes_dict[childkey]['subject'],childlevel)
+                                if childkey not in sorted_nodes_dict:
+                                    includenode = False
+                                    print("oops!")
+                                
+                            else:
+                                print("The key",childkey,"is not found, maybe you are exporting a partial project?")
                 
 
             if includenode:
@@ -379,27 +388,33 @@ for thiskey in sorted_nodes_dict:
         for destid in thisnode['blocking']:
             if (len(destid)>0):
                 # print(destid)
-                thisdest = nodes_dict[destid]
-                dest = root.createElement('destination')
-                if thisdest['tracker'] == "prValue" or thisdest['tracker'] == "prValFloat" or thisdest['tracker'] == "prValText":
-                    dest.setAttribute("type", "Value")
-                else:
-                    if thisdest['tracker'] == "prMode":
-                        dest.setAttribute("type", "Mode")
-                    
+                # If exporting partial projects, the key should fail
+                if destid in nodes_dict.keys():
+                    thisdest = nodes_dict[destid]
+                    dest = root.createElement('destination')
+                    if thisdest['tracker'] == "prValue" or thisdest['tracker'] == "prValFloat" or thisdest['tracker'] == "prValText":
+                        dest.setAttribute("type", "Value")
                     else:
-                        dest.setAttribute("type", "Error!!!")
-                
-                destidnode = root.createElement('id')
-                destidnode.setAttribute("type","integer")
-                valueText = root.createTextNode(str(thisdest['id']))
-                destidnode.appendChild(valueText)
-                dest.appendChild(destidnode)
-                destidnode = root.createElement('ident')
-                valueText = root.createTextNode(destid)
-                destidnode.appendChild(valueText)
-                dest.appendChild(destidnode)
-                child.appendChild(dest)
+                        if thisdest['tracker'] == "prMode":
+                            dest.setAttribute("type", "Mode")
+                        
+                        else:
+                            dest.setAttribute("type", "Error1!!!")
+                            print("ERROR1!!")
+                    
+                    destidnode = root.createElement('id')
+                    destidnode.setAttribute("type","integer")
+                    valueText = root.createTextNode(str(thisdest['id']))
+                    destidnode.appendChild(valueText)
+                    dest.appendChild(destidnode)
+                    destidnode = root.createElement('ident')
+                    valueText = root.createTextNode(destid)
+                    destidnode.appendChild(valueText)
+                    dest.appendChild(destidnode)
+                    child.appendChild(dest)
+
+                else:
+                    print("The key",destid,"is not found, maybe you are exporting a partial project?")
 
         modeNode.appendChild(child)
         
@@ -536,7 +551,8 @@ for thiskey in sorted_nodes_dict:
                             dest.setAttribute("type", "SubSystem")
                         
                         else:
-                            dest.setAttribute("type", "Error!!!")
+                            dest.setAttribute("type", "Error2!!!")
+                            print("Error2!!")
 
                 destidnode = root.createElement('id')
                 destidnode.setAttribute("type","integer")
