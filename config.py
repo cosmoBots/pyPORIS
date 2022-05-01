@@ -1,4 +1,4 @@
-welcome_message = "HELLO!!!!.  We are about to wrap your API as you described in the Input ODS file.\n You owe a beer to cosmobots.eu"
+welcome_message = "/* HELLO!!!!.  We are about to generate your *.xml file as you described in the Input ODS file.\n You owe a beer to cosmobots.eu */\n\n\n"
 
 desc_file_start_row = 1
 desc_file_row_limit= 151
@@ -21,3 +21,13 @@ desc_deftext_column = 16
 desc_version_column = 17
 desc_priority_column = 18
 
+methods_file_start_row = 1
+methods_file_row_limit= 51
+methods_file_start_column = 0
+methods_file_column_limit = 4
+
+methods_file_sheet = "Methods"
+methods_function_column = 0
+methods_node_column = 1
+methods_call_column = 2
+methods_device_column = 3
