@@ -10,10 +10,11 @@ file_data = ['','']
 def convert_list_to_string(list, delimiter):
   list_string = ''
 
-  for item in list[:-1]:
-    list_string = list_string + item + delimiter
+  if len(list)>0:
+    for item in list[:-1]:
+      list_string = list_string + item + delimiter
 
-  list_string = list_string + list[-1]
+    list_string = list_string + list[-1]
 
   return list_string
 
@@ -30,7 +31,7 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
   data_file_full_path = source_directory + filename + '.graphml'
 
   with open(data_file_full_path) as file:
-    soup = BeautifulSoup(file, 'lxml')
+    soup = BeautifulSoup(file, 'lxml-xml')
     nodes = soup.findAll("node", {"yfiles.foldertype":""})
     groups = soup.find_all("node", {"yfiles.foldertype":"group"})
     edges = soup.findAll("edge")
@@ -47,10 +48,15 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
     group_dict['default'] = None
     group_dict['max'] = None        
     group_dict['group_id'] = group['id']
-    group_name = group.find('y:nodelabel').text.strip()
+    group_name = group.find('y:NodeLabel').text.strip()
+    group_data = group.find_all('data')
+    print("+++",group_name)
+    for n in group_data:
+      if n['key']!='d6':
+        print("***",group_name,n.contents)
     group_dict['group_name'] = group_name
     # The group can be a prSys, or a prParam, or a prValueFloat
-    group_shape = group.find('y:shape')['type'].strip()
+    group_shape = group.find('y:Shape')['type'].strip()
     group_dict['shape'] = group_shape
     if group_shape == "parallelogram":
       group_dict['node_type'] = "prValFloat"
@@ -59,7 +65,7 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
       if group_shape == "roundrectangle":
         # We must know if it is a prSys or a prParam
         # prParam: <y:Fill color="#CAECFF84" transparent="false"/>
-        group_color_attribute = group.find('y:fill')
+        group_color_attribute = group.find('y:Fill')
         if group_color_attribute is not None:
           if group_color_attribute.get('color') is not None:
             group_color = group_color_attribute['color'].strip()
@@ -88,9 +94,9 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
   nodes_dict = {}
 
   for node in nodes:
-    notenode = node.find('y:umlnotenode')
+    notenode = node.find('y:UMLNoteNode')
     if notenode is not None:
-      file_data_str = node.find('y:nodelabel').text.strip()
+      file_data_str = node.find('y:NodeLabel').text.strip()
       file_data = file_data_str.split()
     
     else:    
@@ -103,15 +109,28 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
       node_dict['node_id'] = node['id']
       node_id_parts = re.findall(r'n\d{1,}', node_dict['node_id'])
       node_dict['node_group_id'] = convert_list_to_string(node_id_parts[:-1], '::')
-      node_dict['node_name'] = node.find('y:nodelabel').text.strip()
+      node_dict['node_name'] = node.find('y:NodeLabel').text.strip()
+      node_data = node.find_all('data')
       node_dict['min'] = None
       node_dict['default'] = None
       node_dict['max'] = None
       node_dict['relations'] = []
       node_dict['next'] = []
-      node_shape = node.find('y:shape')['type'].strip()
+      node_shape = node.find('y:Shape')['type'].strip()
       print(node_dict['node_name'],node_shape)
-      color_attribute = node.find('y:fill')
+      for n in node_data:
+        if n['key']!='d6':
+          print("***",node_dict['node_name'],n.contents)
+          for c in n.contents:
+            cs = c.split('\n')
+            print("->",cs)
+            for d in cs:
+              e = d.split(':')
+              print("!",e)
+              if e[0] == 'csID':
+                node_dict['csID'] = e[1]
+
+      color_attribute = node.find('y:Fill')
       node_color = None
       if color_attribute is not None:
         if color_attribute.get('color') is not None:
@@ -190,10 +209,10 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
   for e in edges:
     for d in e.find_all('data'):
       #print("-->",d)
-      polyline = d.find('y:polylineedge')
+      polyline = d.find('y:PolyLineEdge')
       #print("polyline",polyline)
       if polyline is not None:
-        linestile = polyline.find('y:linestyle')#['type']
+        linestile = polyline.find('y:LineStyle')#['type']
         if linestile is not None:
           if linestile['color'] == "#FF9900":
             nodes_dict[e['source']]['relations'] += [e['target']]
