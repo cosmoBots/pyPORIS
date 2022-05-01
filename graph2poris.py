@@ -222,6 +222,7 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
   
   data = OrderedDict() # from collections import OrderedDict
   
+  rowcount = 1
   rows = [['RM#','link','RMID','ID','row#','subject','description','tracker','Rlv?','status','parent',
   'blocking_items','precedent_items','prMin','prDefault','prMax','prDefaultText','version','priority']]
   for n in csv_dict_data:
@@ -284,9 +285,9 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
       strdefaulttext = n['defaulttext']
     '''
 
-    row += [['','','',n['node_id'],'',n['node_name'],'',n['node_type'],'','',
-    strparent,strrel,strnext,strmin,strdefault,strmax]]
-
+    row += [[rowcount,'','',n['node_id'],'',n['node_name'],'',n['node_type'],'','',
+      strparent,strrel,strnext,strmin,strdefault,strmax,'','','Normal']]
+    rowcount += 1
 
     '''
     row += [[n['relations'],n['next'],n['default'],n['max']]]
@@ -298,7 +299,7 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
   data.update({"Items": rows})
   data.update({"ExtraFields":[[]]})
   save_data(target_directory+filename+".ods", data)
-
+  '''
 
   csv_columns = [
     'node_id',
@@ -315,6 +316,7 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
   ]
 
   dict_data = csv_dict_data
+
   csv_filename = filename + '.csv'
   csv_file = target_directory + csv_filename
 
@@ -326,7 +328,7 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
         writer.writerow(data)
   except IOError:
     print('I/O error')
-
+  '''
 
 def get_filenames_in_directory(directory):
   filenames = []
