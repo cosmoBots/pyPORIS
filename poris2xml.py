@@ -125,16 +125,23 @@ def loadODS():
 
     nodes_dict = {}
     virtual_nodes = {}
+    rowcount = 0
 
     for row in nodesdata:
         if (len(row)>1):
+            rowcount += 1
             thiskey = row[config.desc_ident_column]
             if (len(thiskey)>0):
                 # print(thiskey)
 
                 thisnode = {}
                 thisnode['ident'] = thiskey
-                thisnode['id'] = row[config.desc_id_column]
+                # In case we came from graphml, this column could be empty
+                thisid = row[config.desc_id_column]
+                if len(thisid) <= 0:
+                    thisid = rowcount
+
+                thisnode['id'] = thisid
                 thisnode['subject'] = row[config.desc_subject_column]
                 thisnode['description'] = row[config.desc_description_column]
                 thisnode['parent'] = row[config.desc_parent_column]

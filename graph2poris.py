@@ -1,9 +1,15 @@
 # Note, thanks to https://github.com/viperior/graphml-interpreter
+import argparse                     # This library allows us to easily parse the command line arguments
 
 import csv, os, re
 from bs4 import BeautifulSoup
 from pyexcel_ods import save_data
 from collections import OrderedDict
+from pathlib import Path
+
+# Importing test configuration file
+import config
+
 
 file_data = ['','']
 
@@ -26,11 +32,10 @@ def convert_sorted_list_to_dictionary_with_sequence_index(list):
 
   return dictionary_with_sequence_index
 
-def create_csv_file_from_graphml_file(filename, source_directory, target_directory):
+def create_ods_file_from_graphml_file(filename, deviceName):
   global file_data
-  data_file_full_path = source_directory + filename + '.graphml'
 
-  with open(data_file_full_path) as file:
+  with open(filename) as file:
     soup = BeautifulSoup(file, 'lxml-xml')
     nodes = soup.findAll("node", {"yfiles.foldertype":""})
     groups = soup.find_all("node", {"yfiles.foldertype":"group"})
@@ -97,7 +102,8 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
     notenode = node.find('y:UMLNoteNode')
     if notenode is not None:
       file_data_str = node.find('y:NodeLabel').text.strip()
-      file_data = file_data_str.split()
+      file_data = file_data_str.split(',')
+      print(file_data)
     
     else:    
       ischild = False
@@ -222,8 +228,6 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
   
   data = OrderedDict() # from collections import OrderedDict
   
-  # Txinto arregla esto, no puedes meter el RM# aquí, has de hacerlo en el poris2xml.py
-  rowco unt = 1
   rows = [['RM#','link','RMID','ID','row#','subject','description','tracker','Rlv?','status','parent',
   'blocking_items','precedent_items','prMin','prDefault','prMax','prDefaultText','version','priority']]
   for n in csv_dict_data:
@@ -286,9 +290,8 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
       strdefaulttext = n['defaulttext']
     '''
 
-    row += [[rowcount,'','',n['node_id'],'',n['node_name'],'',n['node_type'],'','',
+    row += [['','','',n['node_id'],'',n['node_name'],'',n['node_type'],'','',
       strparent,strrel,strnext,strmin,strdefault,strmax,'','','Normal']]
-    rowcount += 1
 
     '''
     row += [[n['relations'],n['next'],n['default'],n['max']]]
@@ -299,37 +302,7 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
   , ['',''], ['',''], ['',file_data[0]], ['',file_data[1]]]})
   data.update({"Items": rows})
   data.update({"ExtraFields":[[]]})
-  save_data(target_directory+filename+".ods", data)
-  '''
-
-  csv_columns = [
-    'node_id',
-    'node_name',
-    'node_group_id',
-    'node_group_name',
-    'node_type',
-    'min',
-    'default',
-    'max',
-    'relations',
-    'next'
-    #'node_group_sort_order'
-  ]
-
-  dict_data = csv_dict_data
-
-  csv_filename = filename + '.csv'
-  csv_file = target_directory + csv_filename
-
-  try:
-    with open(csv_file, 'w', newline='') as csvfile:
-      writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
-      writer.writeheader()
-      for data in dict_data:
-        writer.writerow(data)
-  except IOError:
-    print('I/O error')
-  '''
+  save_data("./"+deviceName+".ods", data)
 
 def get_filenames_in_directory(directory):
   filenames = []
@@ -339,13 +312,22 @@ def get_filenames_in_directory(directory):
 
   return filenames
 
-def graphml_interpreter():
-  source_directory = './graphml/'
-  target_directory = './'
-  filenames = get_filenames_in_directory(source_directory)
 
-  for file in filenames:
-    filename = file.replace('.graphml', '')
-    create_csv_file_from_graphml_file(filename, source_directory, target_directory)
+######### WE WILL PARSE THE COMMAND LINE ARGUMENTS FOR THE WRAPPER GEN #############
+parser = argparse.ArgumentParser(description='Launches a PORIS device generation ODS from an GraphML diagram describing the PORIS instrument')
 
-graphml_interpreter()
+## The second argument is the api ODS file
+parser.add_argument('sys_file',type=argparse.FileType('r'), help="the path of a file containing the PORIS instrument diagram")
+
+# Obtaining the arguments from the command line
+args=parser.parse_args()
+
+# Printing the obtained arguments:
+print("/* The PORIS instrument diagram filename is:",args.sys_file.name+" */")
+deviceName = Path(args.sys_file.name).stem
+print("Device name:",deviceName)
+
+# As an example of a constant defined in the configuration file, we'll print the welcome message
+print(config.welcome_message)
+
+create_ods_file_from_graphml_file(args.sys_file.name,deviceName)
