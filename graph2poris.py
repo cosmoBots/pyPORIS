@@ -222,7 +222,8 @@ def create_csv_file_from_graphml_file(filename, source_directory, target_directo
   
   data = OrderedDict() # from collections import OrderedDict
   
-  rowcount = 1
+  # Txinto arregla esto, no puedes meter el RM# aquí, has de hacerlo en el poris2xml.py
+  rowco unt = 1
   rows = [['RM#','link','RMID','ID','row#','subject','description','tracker','Rlv?','status','parent',
   'blocking_items','precedent_items','prMin','prDefault','prMax','prDefaultText','version','priority']]
   for n in csv_dict_data:
