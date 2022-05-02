@@ -133,5 +133,8 @@ dmypy.json
 *.xml
 *.graphml
 !*_palette.graphml
+!example.graphml
+!example.ods
+!example.xml
 *.csv
 AstroPorisPlayer

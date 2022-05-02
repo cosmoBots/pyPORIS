@@ -37,12 +37,27 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
   with open(filename) as file:
     soup = BeautifulSoup(file, 'lxml-xml')
+    graph = soup.find("graph",{"id":"G"})
     nodes = soup.findAll("node", {"yfiles.foldertype":""})
     groups = soup.find_all("node", {"yfiles.foldertype":"group"})
     edges = soup.findAll("edge")
 
+  # Retrieving file_data
+  file_data = graph.find_all('data')
+  file_cscode = ""
+  file_identifier = ""
+  for n in file_data:
+    if n['key'] == "d1":
+      file_cscode = n.contents[0]
+    
+    if n['key'] == "d2":
+      file_identifier = n.contents[0]
+
+  print("csCode:",file_cscode)
+  print("identifier:",file_identifier)
 
   # First we must find the roots
+
   roots = []
   groups_dict = {}
   csv_dict_data = []
@@ -99,99 +114,83 @@ def create_ods_file_from_graphml_file(filename, deviceName):
   nodes_dict = {}
 
   for node in nodes:
-    notenode = node.find('y:UMLNoteNode')
-    if notenode is not None:
-      file_data_str = node.find('y:NodeLabel').text.strip()
-      file_data = file_data_str.split(',')
-      print(file_data)
-    
-    else:    
-      ischild = False
-      isMax = False
-      isMin = False
-      isDefault = False
-      node_dict = {}
-      node_dict['node_type'] = "unknown"
-      node_dict['node_id'] = node['id']
-      node_id_parts = re.findall(r'n\d{1,}', node_dict['node_id'])
-      node_dict['node_group_id'] = convert_list_to_string(node_id_parts[:-1], '::')
-      node_dict['node_name'] = node.find('y:NodeLabel').text.strip()
-      node_data = node.find_all('data')
-      node_dict['min'] = None
-      node_dict['default'] = None
-      node_dict['max'] = None
-      node_dict['relations'] = []
-      node_dict['next'] = []
-      node_shape = node.find('y:Shape')['type'].strip()
-      print(node_dict['node_name'],node_shape)
-      for n in node_data:
-        if n['key']!='d6':
-          print("***",node_dict['node_name'],n.contents)
-          for c in n.contents:
-            cs = c.split('\n')
-            print("->",cs)
-            for d in cs:
-              e = d.split(':')
-              print("!",e)
-              if e[0] == 'csID':
-                node_dict['csID'] = e[1]
+    ischild = False
+    isMax = False
+    isMin = False
+    isDefault = False
+    node_dict = {}
+    node_dict['node_type'] = "unknown"
+    node_dict['node_id'] = node['id']
+    node_id_parts = re.findall(r'n\d{1,}', node_dict['node_id'])
+    node_dict['node_group_id'] = convert_list_to_string(node_id_parts[:-1], '::')
+    node_dict['node_name'] = node.find('y:NodeLabel').text.strip()
+    node_data = node.find_all('data')
+    node_dict['min'] = None
+    node_dict['default'] = None
+    node_dict['max'] = None
+    node_dict['defaulttext'] = None
+    node_dict['relations'] = []
+    node_dict['next'] = []
+    node_shape = node.find('y:Shape')['type'].strip()
+    print(node_dict['node_name'],node_shape)
+    for n in node_data:
+      if n['key']=='d6':
+        node_dict['csID'] = n.contents[0]
 
-      color_attribute = node.find('y:Fill')
-      node_color = None
-      if color_attribute is not None:
-        if color_attribute.get('color') is not None:
-          node_color = color_attribute['color'].strip()
+    color_attribute = node.find('y:Fill')
+    node_color = None
+    if color_attribute is not None:
+      if color_attribute.get('color') is not None:
+        node_color = color_attribute['color'].strip()
 
-      if node_shape == "parallelogram":
-        if node_color is not None and node_color == "#99CCFF":
+    if node_shape == "parallelogram":
+      if node_color is not None:
+        if node_color == "#99CCFF":
           node_dict['node_type'] = "prValue"
+
+        else:
+          if node_color == "#CCCCFF":
+            node_dict['node_type'] = "prValFloat"
+            second_label = node.find('y:NodeLabel',{"textColor":"#0000FF"}).text.strip()
+            valueslist = second_label.split('<')
+            print(">>>>>>",valueslist)
+            node_dict['min'] = float(valueslist[0].strip())
+            node_dict['default'] = float(valueslist[1].strip())
+            node_dict['max'] = float(valueslist[2].strip())
+
+          else:
+            if node_color == "#CCFFCC":
+              # This is prValueText
+              node_dict['node_type'] = "prValText"
+              second_label = node.find('y:NodeLabel',{"textColor":"#FF0000"}).text.strip()
+              node_dict['defaulttext'] = second_label
+
+      else:
+        print("Not recognized, TODO.")
         
-        else:
-          node_dict['node_type'] = "prValueText"
 
-      else:
-        if node_shape == "roundrectangle":
-          node_dict['node_type'] = "prMode"
+    else:
+      if node_shape == "roundrectangle":
+        node_dict['node_type'] = "prMode"
 
-        else:
-          if node_color is not None:
-            ischild = True
-            node_dict['node_type'] = "prDataDouble"
-            if node_color == "#FFFF00":
-              node_dict['min'] = node_dict['node_name']
-              print("min",node_dict['node_name'])
-              groups_dict[node_dict['node_group_id']]['min'] = node_dict['node_name']
+    node_tree = []
 
-            else:
-              if node_color == "#CC99FF":
-                node_dict['default'] = node_dict['node_name']
-                print("default",node_dict['default'])
-                groups_dict[node_dict['node_group_id']]['default'] = node_dict['node_name']
+    if('parent_group_name' in groups_dict[node_dict['node_group_id']]):
+      node_tree.append(groups_dict[node_dict['node_group_id']]['parent_group_name'])
+      node_dict['node_group_name'] = groups_dict[node_dict['node_group_id']]['parent_group_name']
+      #node_dict['node_type'] = groups_dict[node_dict['node_group_id']]['node_type']
+      #node_dict['node_group_sort_order'] = groups_dict[node_dict['node_group_id']]['parent_group_sort_order']
+    else:
+      node_dict['node_group_name'] = groups_dict[node_dict['node_group_id']]['group_name']
+      #node_dict['node_group_sort_order'] = groups_dict[node_dict['node_group_id']]['group_sort_order']
 
-              else:
-                node_dict['max'] = node_dict['node_name']
-                print("max",node_dict['max'])
-                groups_dict[node_dict['node_group_id']]['max'] = node_dict['node_name']
+    node_tree.append(groups_dict[node_dict['node_group_id']]['group_name'])
+    node_tree.append(node_dict['node_name'])
+    node_tree_text = convert_list_to_string(node_tree, ' > ')
+    #node_tree_text = node_tree_text + ' (' + str(groups_dict[node_dict['node_group_id']]['group_sort_order']) + ')'
 
-      node_tree = []
-
-      if('parent_group_name' in groups_dict[node_dict['node_group_id']]):
-        node_tree.append(groups_dict[node_dict['node_group_id']]['parent_group_name'])
-        node_dict['node_group_name'] = groups_dict[node_dict['node_group_id']]['parent_group_name']
-        #node_dict['node_type'] = groups_dict[node_dict['node_group_id']]['node_type']
-        #node_dict['node_group_sort_order'] = groups_dict[node_dict['node_group_id']]['parent_group_sort_order']
-      else:
-        node_dict['node_group_name'] = groups_dict[node_dict['node_group_id']]['group_name']
-        #node_dict['node_group_sort_order'] = groups_dict[node_dict['node_group_id']]['group_sort_order']
-
-      node_tree.append(groups_dict[node_dict['node_group_id']]['group_name'])
-      node_tree.append(node_dict['node_name'])
-      node_tree_text = convert_list_to_string(node_tree, ' > ')
-      #node_tree_text = node_tree_text + ' (' + str(groups_dict[node_dict['node_group_id']]['group_sort_order']) + ')'
-
-      nodes_dict[node_dict['node_id']] = node_dict
-      if not(ischild):
-        csv_dict_data.append(node_dict)
+    nodes_dict[node_dict['node_id']] = node_dict
+    csv_dict_data.append(node_dict)
 
 
   for key in groups_dict:
@@ -205,6 +204,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     node_dict['min'] = group_dict['min']
     node_dict['default'] = group_dict['default']
     node_dict['max'] = group_dict['max']
+    node_dict['defaulttext'] = group_dict['default']
     node_dict['relations'] = []
     node_dict['next'] = []
     nodes_dict[node_dict['node_id']] = node_dict
@@ -284,14 +284,12 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     if n['max'] is not None:
       strmax = n['max']
 
-    '''
     strdefaulttext = ''
     if n['defaulttext'] is not None:
       strdefaulttext = n['defaulttext']
-    '''
 
     row += [['','','',n['node_id'],'',n['node_name'],'',n['node_type'],'','',
-      strparent,strrel,strnext,strmin,strdefault,strmax,'','','Normal']]
+      strparent,strrel,strnext,strmin,strdefault,strmax,strdefaulttext,'','Normal']]
 
     '''
     row += [[n['relations'],n['next'],n['default'],n['max']]]
@@ -299,7 +297,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     rows += row
 
   data.update({"Dict": [['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',5,'',len(csv_dict_data)+1]
-  , ['',''], ['',''], ['',file_data[0]], ['',file_data[1]]]})
+  , ['',''], ['',''], ['',file_identifier], ['',file_cscode]]})
   data.update({"Items": rows})
   data.update({"ExtraFields":[[]]})
   save_data("./"+deviceName+".ods", data)
