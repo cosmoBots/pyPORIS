@@ -386,6 +386,28 @@
 	<mode>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
+		<id type="integer">32</id>
+		<ident>n0n6n3n2</ident>
+		<name>Standard</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">30</id>
+				<ident>n0n6n3n0</ident>
+			</destination>
+			<destination type="Value">
+				<id type="integer">31</id>
+				<ident>n0n6n3n1</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
 		<id type="integer">33</id>
 		<ident>n0n6n3n3</ident>
 		<name>Blue</name>
@@ -414,6 +436,54 @@
 			<destination type="Value">
 				<id type="integer">30</id>
 				<ident>n0n6n3n0</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">36</id>
+		<ident>n0n6n3n6</ident>
+		<name>User</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Value">
+				<id type="integer">35</id>
+				<ident>n0n6n3n5</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">-3</id>
+		<ident>ENG-3</ident>
+		<name>Engineering</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Mode">
+				<id type="integer">32</id>
+				<ident>n0n6n3n2</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">33</id>
+				<ident>n0n6n3n3</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">34</id>
+				<ident>n0n6n3n4</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">36</id>
+				<ident>n0n6n3n6</ident>
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
@@ -462,6 +532,28 @@
 	<mode>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
+		<id type="integer">27</id>
+		<ident>n0n6n0</ident>
+		<name>Classic</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Mode">
+				<id type="integer">32</id>
+				<ident>n0n6n3n2</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">36</id>
+				<ident>n0n6n3n6</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
 		<id type="integer">28</id>
 		<ident>n0n6n1</ident>
 		<name>TFBlue</name>
@@ -490,32 +582,6 @@
 			<destination type="Mode">
 				<id type="integer">34</id>
 				<ident>n0n6n3n4</ident>
-			</destination>
-		</destinations>
-		<node-attributes type="array"/>
-		<labels type="array"/>
-	</mode>
-	<mode>
-		<default-mode-id type="integer" nil="true"/>
-		<default-value-id type="integer" nil="true"/>
-		<id type="integer">32</id>
-		<ident>n0n6n3n2</ident>
-		<name>Normal</name>
-		<node-type-id type="integer">6</node-type-id>
-		<project-id type="integer">13</project-id>
-		<type>Mode</type>
-		<destinations type="array">
-			<destination type="Value">
-				<id type="integer">30</id>
-				<ident>n0n6n3n0</ident>
-			</destination>
-			<destination type="Value">
-				<id type="integer">31</id>
-				<ident>n0n6n3n1</ident>
-			</destination>
-			<destination type="Value">
-				<id type="integer">35</id>
-				<ident>n0n6n3n5</ident>
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
@@ -554,24 +620,28 @@
 	<mode>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-		<id type="integer">-3</id>
-		<ident>ENG-3</ident>
-		<name>Engineering</name>
+		<id type="integer">24</id>
+		<ident>n0n3</ident>
+		<name>Photometry</name>
 		<node-type-id type="integer">6</node-type-id>
 		<project-id type="integer">13</project-id>
 		<type>Mode</type>
 		<destinations type="array">
 			<destination type="Mode">
-				<id type="integer">32</id>
-				<ident>n0n6n3n2</ident>
+				<id type="integer">22</id>
+				<ident>n0n2n3</ident>
 			</destination>
 			<destination type="Mode">
-				<id type="integer">33</id>
-				<ident>n0n6n3n3</ident>
+				<id type="integer">29</id>
+				<ident>n0n6n2</ident>
 			</destination>
 			<destination type="Mode">
-				<id type="integer">34</id>
-				<ident>n0n6n3n4</ident>
+				<id type="integer">28</id>
+				<ident>n0n6n1</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">27</id>
+				<ident>n0n6n0</ident>
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
@@ -580,16 +650,62 @@
 	<mode>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-		<id type="integer">27</id>
-		<ident>n0n6n0</ident>
-		<name>Classic</name>
+		<id type="integer">25</id>
+		<ident>n0n4</ident>
+		<name>Spectroscopy</name>
 		<node-type-id type="integer">6</node-type-id>
 		<project-id type="integer">13</project-id>
 		<type>Mode</type>
 		<destinations type="array">
 			<destination type="Mode">
-				<id type="integer">32</id>
-				<ident>n0n6n3n2</ident>
+				<id type="integer">21</id>
+				<ident>n0n2n2</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">27</id>
+				<ident>n0n6n0</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">29</id>
+				<ident>n0n6n2</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">28</id>
+				<ident>n0n6n1</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">4</id>
+				<ident>n0n0n3</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">10</id>
+				<ident>n0n1n3</ident>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<labels type="array"/>
+	</mode>
+	<mode>
+		<default-mode-id type="integer" nil="true"/>
+		<default-value-id type="integer" nil="true"/>
+		<id type="integer">26</id>
+		<ident>n0n5</ident>
+		<name>FastPhotometry</name>
+		<node-type-id type="integer">6</node-type-id>
+		<project-id type="integer">13</project-id>
+		<type>Mode</type>
+		<destinations type="array">
+			<destination type="Mode">
+				<id type="integer">23</id>
+				<ident>n0n2n4</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">6</id>
+				<ident>n0n0n5</ident>
+			</destination>
+			<destination type="Mode">
+				<id type="integer">27</id>
+				<ident>n0n6n0</ident>
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
@@ -653,103 +769,9 @@
 		<node-attributes type="array"/>
 		<labels type="array"/>
 	</mode>
-	<mode>
-		<default-mode-id type="integer" nil="true"/>
-		<default-value-id type="integer" nil="true"/>
-		<id type="integer">24</id>
-		<ident>n0n3</ident>
-		<name>Photometry</name>
-		<node-type-id type="integer">6</node-type-id>
-		<project-id type="integer">13</project-id>
-		<type>Mode</type>
-		<destinations type="array">
-			<destination type="Mode">
-				<id type="integer">22</id>
-				<ident>n0n2n3</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">29</id>
-				<ident>n0n6n2</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">28</id>
-				<ident>n0n6n1</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">27</id>
-				<ident>n0n6n0</ident>
-			</destination>
-		</destinations>
-		<node-attributes type="array"/>
-		<labels type="array"/>
-	</mode>
-	<mode>
-		<default-mode-id type="integer" nil="true"/>
-		<default-value-id type="integer" nil="true"/>
-		<id type="integer">25</id>
-		<ident>n0n4</ident>
-		<name>Spectroscopy</name>
-		<node-type-id type="integer">6</node-type-id>
-		<project-id type="integer">13</project-id>
-		<type>Mode</type>
-		<destinations type="array">
-			<destination type="Mode">
-				<id type="integer">21</id>
-				<ident>n0n2n2</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">10</id>
-				<ident>n0n1n3</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">27</id>
-				<ident>n0n6n0</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">29</id>
-				<ident>n0n6n2</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">28</id>
-				<ident>n0n6n1</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">4</id>
-				<ident>n0n0n3</ident>
-			</destination>
-		</destinations>
-		<node-attributes type="array"/>
-		<labels type="array"/>
-	</mode>
-	<mode>
-		<default-mode-id type="integer" nil="true"/>
-		<default-value-id type="integer" nil="true"/>
-		<id type="integer">26</id>
-		<ident>n0n5</ident>
-		<name>FastPhotometry</name>
-		<node-type-id type="integer">6</node-type-id>
-		<project-id type="integer">13</project-id>
-		<type>Mode</type>
-		<destinations type="array">
-			<destination type="Mode">
-				<id type="integer">23</id>
-				<ident>n0n2n4</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">6</id>
-				<ident>n0n0n5</ident>
-			</destination>
-			<destination type="Mode">
-				<id type="integer">27</id>
-				<ident>n0n6n0</ident>
-			</destination>
-		</destinations>
-		<node-attributes type="array"/>
-		<labels type="array"/>
-	</mode>
 	<sub-system>
 		<default-mode-id type="integer" nil="true"/>
-		<id type="integer">37</id>
+		<id type="integer">38</id>
 		<ident>n0n0</ident>
 		<name>Masks</name>
 		<node-type-id type="integer">4</node-type-id>
@@ -786,7 +808,7 @@
 	</sub-system>
 	<sub-system>
 		<default-mode-id type="integer" nil="true"/>
-		<id type="integer">38</id>
+		<id type="integer">39</id>
 		<ident>n0n1</ident>
 		<name>Dispersion</name>
 		<node-type-id type="integer">4</node-type-id>
@@ -815,7 +837,7 @@
 	</sub-system>
 	<sub-system>
 		<default-mode-id type="integer" nil="true"/>
-		<id type="integer">40</id>
+		<id type="integer">41</id>
 		<ident>n0n2n0</ident>
 		<name>expTime</name>
 		<node-type-id type="integer">4</node-type-id>
@@ -844,7 +866,7 @@
 	</sub-system>
 	<sub-system>
 		<default-mode-id type="integer" nil="true"/>
-		<id type="integer">41</id>
+		<id type="integer">42</id>
 		<ident>n0n2n1</ident>
 		<name>Binning</name>
 		<node-type-id type="integer">4</node-type-id>
@@ -881,7 +903,7 @@
 	</sub-system>
 	<sub-system>
 		<default-mode-id type="integer" nil="true"/>
-		<id type="integer">43</id>
+		<id type="integer">44</id>
 		<ident>n0n6n3</ident>
 		<name>ClassicFilters</name>
 		<node-type-id type="integer">4</node-type-id>
@@ -912,13 +934,17 @@
 				<id type="integer">35</id>
 				<ident>n0n6n3n5</ident>
 			</destination>
+			<destination type="Mode">
+				<id type="integer">36</id>
+				<ident>n0n6n3n6</ident>
+			</destination>
 		</destinations>
 		<node-attributes type="array"/>
 		<labels type="array"/>
 	</sub-system>
 	<sub-system>
 		<default-mode-id type="integer" nil="true"/>
-		<id type="integer">39</id>
+		<id type="integer">40</id>
 		<ident>n0n2</ident>
 		<name>Detector</name>
 		<node-type-id type="integer">4</node-type-id>
@@ -938,11 +964,11 @@
 				<ident>n0n2n4</ident>
 			</destination>
 			<destination type="SubSystem">
-				<id type="integer">40</id>
+				<id type="integer">41</id>
 				<ident>n0n2n0</ident>
 			</destination>
 			<destination type="SubSystem">
-				<id type="integer">41</id>
+				<id type="integer">42</id>
 				<ident>n0n2n1</ident>
 			</destination>
 			<destination type="Mode">
@@ -955,7 +981,7 @@
 	</sub-system>
 	<sub-system>
 		<default-mode-id type="integer" nil="true"/>
-		<id type="integer">42</id>
+		<id type="integer">43</id>
 		<ident>n0n6</ident>
 		<name>Filter</name>
 		<node-type-id type="integer">4</node-type-id>
@@ -975,7 +1001,7 @@
 				<ident>n0n6n2</ident>
 			</destination>
 			<destination type="SubSystem">
-				<id type="integer">43</id>
+				<id type="integer">44</id>
 				<ident>n0n6n3</ident>
 			</destination>
 			<destination type="Mode">
@@ -988,7 +1014,7 @@
 	</sub-system>
 	<sub-system>
 		<default-mode-id type="integer" nil="true"/>
-		<id type="integer">36</id>
+		<id type="integer">37</id>
 		<ident>n0</ident>
 		<name>Instrument</name>
 		<node-type-id type="integer">4</node-type-id>
@@ -1008,19 +1034,19 @@
 				<ident>n0n5</ident>
 			</destination>
 			<destination type="SubSystem">
-				<id type="integer">37</id>
+				<id type="integer">38</id>
 				<ident>n0n0</ident>
 			</destination>
 			<destination type="SubSystem">
-				<id type="integer">38</id>
+				<id type="integer">39</id>
 				<ident>n0n1</ident>
 			</destination>
 			<destination type="SubSystem">
-				<id type="integer">39</id>
+				<id type="integer">40</id>
 				<ident>n0n2</ident>
 			</destination>
 			<destination type="SubSystem">
-				<id type="integer">42</id>
+				<id type="integer">43</id>
 				<ident>n0n6</ident>
 			</destination>
 			<destination type="Mode">

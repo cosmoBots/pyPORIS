@@ -12,6 +12,7 @@ import config
 
 
 file_data = ['','']
+translator = {}
 
 def convert_list_to_string(list, delimiter):
   list_string = ''
@@ -34,6 +35,7 @@ def convert_sorted_list_to_dictionary_with_sequence_index(list):
 
 def create_ods_file_from_graphml_file(filename, deviceName):
   global file_data
+  global translator
 
   with open(filename) as file:
     soup = BeautifulSoup(file, 'lxml-xml')
@@ -48,10 +50,18 @@ def create_ods_file_from_graphml_file(filename, deviceName):
   file_identifier = ""
   for n in file_data:
     if n['key'] == "d1":
-      file_cscode = n.contents[0]
+      if len(n.contents) >= 1:
+        file_cscode = n.contents[0]
+      
+      else:
+        file_cscode = 'INS'
     
     if n['key'] == "d2":
-      file_identifier = n.contents[0]
+      if len(n.contents) >= 1:
+        file_identifier = n.contents[0]
+
+      else:
+        file_cscode = 'instrument'
 
   print("csCode:",file_cscode)
   print("identifier:",file_identifier)
@@ -66,14 +76,32 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     group_dict = {}
     group_dict['min'] = None
     group_dict['default'] = None
-    group_dict['max'] = None        
+    group_dict['max'] = None
+    group_dict['link'] = None
+    group_dict['rmid'] = None
     group_dict['group_id'] = group['id']
+    group_dict['csID'] = ""
     group_name = group.find('y:NodeLabel').text.strip()
-    group_data = group.find_all('data')
-    print("+++",group_name)
+    group_dict['link'] = ""
+    group_dict['rmid'] = ""
+
+    group_data = group.findChildren('data',recursive=False)
+    #print("+++",group_name)
     for n in group_data:
-      if n['key']!='d6':
-        print("***",group_name,n.contents)
+      if n['key']=='d6':
+        if len(n.contents) >= 1:
+          group_dict['csID'] = n.contents[0]
+          print("***",group_name,n.contents,group_dict['csID'])
+          translator[group_dict['group_id']] = group_dict['csID']
+
+      if n['key']=='d7':
+        #print("***",group_name,n.contents)
+        if len(n.contents) >= 1:
+          group_dict['link'] = n.contents[0]
+          group_dict['rmid'] = n.contents[0].split('/')[-1]
+
+
+
     group_dict['group_name'] = group_name
     # The group can be a prSys, or a prParam, or a prValueFloat
     group_shape = group.find('y:Shape')['type'].strip()
@@ -124,18 +152,28 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     node_id_parts = re.findall(r'n\d{1,}', node_dict['node_id'])
     node_dict['node_group_id'] = convert_list_to_string(node_id_parts[:-1], '::')
     node_dict['node_name'] = node.find('y:NodeLabel').text.strip()
-    node_data = node.find_all('data')
+    node_data = node.findChildren('data',recursive=False)
     node_dict['min'] = None
     node_dict['default'] = None
     node_dict['max'] = None
     node_dict['defaulttext'] = None
+    node_dict['rmid'] = ""
+    node_dict['link'] = ""
     node_dict['relations'] = []
     node_dict['next'] = []
+    node_dict['csID'] = ""
     node_shape = node.find('y:Shape')['type'].strip()
-    print(node_dict['node_name'],node_shape)
+    #print(node_dict['node_name'],node_shape)
     for n in node_data:
       if n['key']=='d6':
-        node_dict['csID'] = n.contents[0]
+        if len(n.contents) >= 1:
+          node_dict['csID'] = n.contents[0]
+          translator[node_dict['node_id'] ] = node_dict['csID']
+
+      if n['key']=='d7':
+        if len(n.contents) >= 1:
+          node_dict['link'] = n.contents[0]
+          node_dict['rmid'] = n.contents[0].split('/')[-1]
 
     color_attribute = node.find('y:Fill')
     node_color = None
@@ -153,7 +191,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
             node_dict['node_type'] = "prValFloat"
             second_label = node.find('y:NodeLabel',{"textColor":"#0000FF"}).text.strip()
             valueslist = second_label.split('<')
-            print(">>>>>>",valueslist)
+            #print(">>>>>>",valueslist)
             node_dict['min'] = float(valueslist[0].strip())
             node_dict['default'] = float(valueslist[1].strip())
             node_dict['max'] = float(valueslist[2].strip())
@@ -205,8 +243,11 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     node_dict['default'] = group_dict['default']
     node_dict['max'] = group_dict['max']
     node_dict['defaulttext'] = group_dict['default']
+    node_dict['link'] = group_dict['link']
+    node_dict['rmid'] = group_dict['rmid']
     node_dict['relations'] = []
     node_dict['next'] = []
+    node_dict['csID'] = group_dict['csID']
     nodes_dict[node_dict['node_id']] = node_dict
 
     csv_dict_data.append(node_dict) 
@@ -228,13 +269,24 @@ def create_ods_file_from_graphml_file(filename, deviceName):
   
   data = OrderedDict() # from collections import OrderedDict
   
+  print(translator)
+
   rows = [['RM#','link','RMID','ID','row#','subject','description','tracker','Rlv?','status','parent',
   'blocking_items','precedent_items','prMin','prDefault','prMax','prDefaultText','version','priority']]
   for n in csv_dict_data:
     row = []
-    n['node_id'] = n['node_id'].replace(':','')
+    if n['node_id'] in translator.keys():
+      n['node_id'] = translator[n['node_id']]
+    else:
+      n['node_id'] = n['node_id'].replace(':','')
+    
     if n['node_group_id'] is not None:
-      n['node_group_id'] = n['node_group_id'].replace(':','')
+      print("orig",n['node_group_id'])
+      if n['node_group_id'] in translator.keys():
+        n['node_group_id'] = translator[n['node_group_id']]
+
+      else:  
+        n['node_group_id'] = n['node_group_id'].replace(':','')
 
     relstr = ""
     first = True
@@ -244,7 +296,10 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       else:
         first = False
       
-      relstr += c.replace(':','')
+      if c in translator.keys():
+        relstr += translator[c]
+      else:
+        relstr += c.replace(':','')
 
     n['relations'] = relstr
 
@@ -256,7 +311,11 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       else:
         first = False
       
-      relstr += c.replace(':','')
+      if c in translator.keys():
+        relstr += translator[c]
+      else:
+        relstr += c.replace(':','')
+
     
     n['next'] = relstr
 
@@ -288,13 +347,25 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     if n['defaulttext'] is not None:
       strdefaulttext = n['defaulttext']
 
-    row += [['','','',n['node_id'],'',n['node_name'],'',n['node_type'],'','',
+    row += [['',n['link'],n['rmid'],n['node_id'],'',n['node_name'],'',n['node_type'],'','',
       strparent,strrel,strnext,strmin,strdefault,strmax,strdefaulttext,'','Normal']]
 
     '''
     row += [[n['relations'],n['next'],n['default'],n['max']]]
     '''
     rows += row
+
+  # Re-decode everything with final values
+  '''
+  for k in translator.keys():
+    print("Translating",k,translator[k])
+    for r in rows:
+      print(len(r))
+      r[config.desc_ident_column] = r[config.desc_ident_column].replace(k,translator[k])
+      r[config.desc_parent_column] = r[config.desc_parent_column].replace(k,translator[k])
+      r[config.desc_blocking_column] = r[config.desc_blocking_column].replace(k,translator[k])
+      r[config.desc_precedents_column] = r[config.desc_precedents_column].replace(k,translator[k])
+  '''
 
   data.update({"Dict": [['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',5,'',len(csv_dict_data)+1]
   , ['',''], ['',''], ['',file_identifier], ['',file_cscode]]})
