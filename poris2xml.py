@@ -117,9 +117,14 @@ print(config.welcome_message)
 
 def loadODS():
 
+    dictdata = get_data(args.sys_file.name,start_row=config.dict_max_rows_row, row_limit=config.dict_max_rows_row+1, 
+        start_column=config.dict_max_rows_column,column_limit=config.dict_max_rows_column)[config.dict_file_sheet]
+
+    desc_file_row_limit = dictdata[0][1]
     # Now we read the PORIS instrument description from the file file
-    nodesdata = get_data(args.sys_file.name,start_row=config.desc_file_start_row, row_limit=config.desc_file_row_limit, 
-        start_column=config.desc_file_start_column,column_limit=config.desc_file_column_limit)[config.desc_file_sheet]
+    filedata = get_data(args.sys_file.name,start_row=config.desc_file_start_row, row_limit=desc_file_row_limit, 
+        start_column=config.desc_file_start_column,column_limit=config.desc_file_column_limit)
+    nodesdata = filedata[config.desc_file_sheet]
 
     virtual_nodes_counter = 1
 
@@ -130,6 +135,7 @@ def loadODS():
     for row in nodesdata:
         if (len(row)>1):
             rowcount += 1
+            print("row",row)
             thiskey = row[config.desc_ident_column]
             if (len(thiskey)>0):
                 # print(thiskey)

@@ -1,9 +1,13 @@
 welcome_message = "/* HELLO!!!!.  We are about to generate your *.xml file as you described in the Input ODS file.\n You owe a beer to cosmobots.eu */\n\n\n"
 
+dict_max_rows_column = 27
+dict_max_rows_row = 0
+
 desc_file_start_row = 1
-desc_file_row_limit= 151
 desc_file_start_column = 0
 desc_file_column_limit = 40
+
+dict_file_sheet = "Dict"
 
 desc_file_sheet = "Items"
 desc_id_column = 0
