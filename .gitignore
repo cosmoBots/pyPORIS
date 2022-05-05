@@ -129,12 +129,12 @@ dmypy.json
 .pyre/
 
 *.ods#
-*.ods
-*.xml
-*.graphml
 !*_palette.graphml
-!example.graphml
-!example.ods
-!example.xml
-*.csv
-AstroPorisPlayer
+/models/*
+!/models/example*.graphml
+!/models/porispanel.sh
+!/models/winporispanel.bat
+
+
+
+
