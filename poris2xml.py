@@ -252,7 +252,6 @@ def loadODS():
 
 
     tree_dict = {}
-    print("hola",len(tree_dict),len(nodes_dict))
     while len(tree_dict) < len(nodes_dict):
         for k in nodes_dict.keys():
             if k not in tree_dict.keys():
