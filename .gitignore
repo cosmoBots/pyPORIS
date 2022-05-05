@@ -129,12 +129,7 @@ dmypy.json
 .pyre/
 
 *.ods#
-*.ods
-*.xml
-*.graphml
 !*_palette.graphml
-!example.graphml
-!example.ods
-!example.xml
-!example_evolved.graphml
-*.csv
+/models
+!/models/example*.graphml
+!/example.graphml

@@ -1,5 +1,6 @@
 #!/bin/bash
-
-python3 graph2poris.py ./example.graphml
-python3 poris2xml.py ./example.ods
-java -jar AstroPorisPlayer/bin/AstroPorisPlayer.jar ./example.xml
+cd models
+python3 ../graph2poris.py ./$1.graphml
+python3 ../poris2xml.py ./$1.ods
+java -jar ../AstroPorisPlayer/bin/AstroPorisPlayer.jar ./$1.xml
+cd ..
