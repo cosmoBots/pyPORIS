@@ -249,6 +249,22 @@ def loadODS():
                     nodes_to_add[virtident] = virtnode
                     thisnode['children'].append(virtident)
 
+
+
+    tree_dict = {}
+    print("hola",len(tree_dict),len(nodes_dict))
+    while len(tree_dict) < len(nodes_dict):
+        for k in nodes_dict.keys():
+            if k not in tree_dict.keys():
+                if 'parentnode' not in nodes_dict[k].keys():
+                    tree_dict[k] = nodes_dict[k]
+                    print("Adding ROOT",tree_dict[k]['subject'])
+                
+                else:
+                    if nodes_dict[k]['parent'] in tree_dict.keys():
+                        tree_dict[k] = nodes_dict[k]
+                        print("Adding NODE",tree_dict[k]['parentnode']['subject'],":",tree_dict[k]['subject'])
+
     for n in nodes_to_add.keys():
         # Tengo que añadir el bloqueo de los modos de ingeniería
         # hijos a los modos de ingeniería padres
@@ -256,7 +272,7 @@ def loadODS():
         thisparent = virtnode['parentnode']
         for c in thisparent['children']:
             if c != n and thisparent["tracker"] == "prSys":
-                for c2 in nodes_dict[c]['children']:
+                for c2 in tree_dict[c]['children']:
                     #print(c2,"va a",n,"?")
                     if c2 in nodes_to_add.keys():
                         print(c2,nodes_to_add[c2]['description'],"bloquea a",n,virtnode['description'])
@@ -267,11 +283,14 @@ def loadODS():
     for n in nodes_to_add.keys():
         #print("Añado el nodo ",n)
         #print(nodes_to_add[n])
-        nodes_dict[n] = nodes_to_add[n]
+        tree_dict[n] = nodes_to_add[n]
 
+    for k in tree_dict.keys():
+        n = tree_dict[k]
+        print(k,n['subject'])
 
-    #"hola"+6
-    return nodes_dict
+    return tree_dict
+
 
 # This function will create:
 # - The instrument XML
@@ -918,4 +937,4 @@ def createPorisXML(nodes_dict,deviceName):
 nodes_dict = loadODS()
 
 # Creates the instrument PORIS XML
-createPorisXML(nodes_dict,deviceName)
+#createPorisXML(nodes_dict,deviceName)
