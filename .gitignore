@@ -130,6 +130,11 @@ dmypy.json
 
 *.ods#
 !*_palette.graphml
-/models
+/models/*
 !/models/example*.graphml
-!/example.graphml
+!/models/porispanel.sh
+!/models/winporispanel.bat
+
+
+
+
