@@ -554,7 +554,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
               thisrmid = str(rm_issues_dict[rmtranslator[k]].id)
 
             if k in nodes_graphml_rmid.keys():
-              nodes_graphml_rmid[k].string = thisrmid
+              nodes_graphml_rmid[k].string = str(thisrmid)
             
             else:
               new_tag = soup.new_tag('data',key=csrmid)

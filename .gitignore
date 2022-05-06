@@ -140,3 +140,4 @@ dmypy.json
 
 config_rm.py
 models/example.out.graphml
+models/example.old.graphml
