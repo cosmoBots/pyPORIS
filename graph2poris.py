@@ -50,6 +50,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     csidkey = soup.find("key",{"attr.name":"csID"})['id']
     cscodekey = soup.find("key",{"attr.name":"csCode"})['id']
     csprjident = soup.find("key",{"attr.name":"identifier"})['id']
+    csrmid = soup.find("key",{"attr.name":"rmID"})['id']
 
   print("url key",urlkey)
   print("csid key",csidkey)
@@ -140,6 +141,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     error_list = []
     nodes_graphml_d6 = {}
     nodes_graphml_url = {}
+    nodes_graphml_rmid = {}
     nodes_graphml = {}
     rm_issues_created = []
 
@@ -148,7 +150,6 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       group_dict['min'] = None
       group_dict['default'] = None
       group_dict['max'] = None
-      group_dict['url'] = None
       group_dict['group_id'] = group['id']
       group_dict['csID'] = group['id']
       group_name = group.find('y:NodeLabel').text.strip()
@@ -160,8 +161,8 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       nodes_graphml[group['id']] = group
       for n in group_data:
         if n['key']==csidkey:
+          nodes_graphml_d6[group['id']] = n
           if len(n.contents) >= 1:
-            nodes_graphml_d6[group['id']] = n
             group_dict['csID'] = n.contents[0]
             localcsids[group_dict['group_id']] = group_dict['csID']
             if group_dict['csID'] not in inverse_localcsids.keys():
@@ -173,10 +174,16 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
         if n['key']==urlkey:
           #print("***",group_name,n.contents)
+          nodes_graphml_url[group['id']] = n
           if len(n.contents) >= 1:
-            nodes_graphml_url[group['id']] = n
             group_dict['url'] = n.contents[0]
             #group_dict['rmid'] = n.contents[0].split('/')[-1]
+
+        if n['key']==csrmid:
+          #print("***",group_name,n.contents)
+          nodes_graphml_rmid[group['id']] = n
+          if len(n.contents) >= 1:
+            group_dict['rmid'] = n.contents[0]
 
       group_dict['group_name'] = group_name
       # The group can be a prSys, or a prParam, or a prValueFloat
@@ -245,8 +252,8 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         nodes_graphml[node['id']] = node
         for n in node_data:
           if n['key']==csidkey:
+            nodes_graphml_d6[node['id']] = n
             if len(n.contents) >= 1:
-              nodes_graphml_d6[node['id']] = n
               node_dict['csID'] = n.contents[0]
               localcsids[node_dict['node_id'] ] = node_dict['csID']
               if node_dict['csID'] not in inverse_localcsids.keys():
@@ -256,10 +263,14 @@ def create_ods_file_from_graphml_file(filename, deviceName):
                 error_list += [node_dict['csID'] +" identifier is not unique, check "+  node_dict['node_name'] + " and " + global_dict[inverse_localcsids[node_dict['csID']]]['node_name']  ]
 
           if n['key']==urlkey:
+            nodes_graphml_url[node['id']] = n
             if len(n.contents) >= 1:
-              nodes_graphml_url[node['id']] = n
               node_dict['url'] = n.contents[0]
-              #node_dict['rmid'] = n.contents[0].split('/')[-1]
+
+          if n['key']==csrmid:
+            nodes_graphml_rmid[node['id']] = n
+            if len(n.contents) >= 1:
+              node_dict['rmid'] = n.contents[0]
 
         color_attribute = node.find('y:Fill')
         node_color = None
@@ -525,20 +536,39 @@ def create_ods_file_from_graphml_file(filename, deviceName):
               new_tag.string = rmtranslator[k]
               nodes_graphml[k].append(new_tag)
 
+        for k in nodes_dict.keys():
+            thisurl = nodes_dict[k]['url']
+            if thisurl=="":
+              thisurl = rm_server_url+'/issues/'+str(rm_issues_dict[rmtranslator[k]].id)
+
             if k in nodes_graphml_url.keys():
-              nodes_graphml_url[k].contents[0].replace_with(nodes_dict[k]['url'])
+              nodes_graphml_url[k].string = thisurl
             
             else:
               new_tag = soup.new_tag('data',key=urlkey)
-              thisurl = nodes_dict[k]['url']
-              if thisurl=="":
-                thisurl = rm_server_url+'/issues/'+str(rm_issues_dict[rmtranslator[k]].id)
+              new_tag.string = thisurl
+              nodes_graphml[k].append(new_tag)
 
-              new_tag.string = nodes_dict[k]['url']
+            thisrmid = nodes_dict[k]['rmid']
+            if thisrmid=="":
+              thisrmid = str(rm_issues_dict[rmtranslator[k]].id)
+
+            if k in nodes_graphml_rmid.keys():
+              nodes_graphml_rmid[k].string = thisrmid
+            
+            else:
+              new_tag = soup.new_tag('data',key=csrmid)
+              new_tag.string = str(thisrmid)
               nodes_graphml[k].append(new_tag)
 
 
-        with open(filename+".out", "w", encoding='utf-8') as file:
+        dirname = os.path.dirname(filename)
+        basenamelist = os.path.splitext(os.path.basename(filename))
+        onlyname = basenamelist[0]
+        extension = basenamelist[1]
+        print(extension)
+        
+        with open(os.path.join(dirname,onlyname+'.out'+extension), "w", encoding='utf-8') as file:
             file.write(str(soup))
 
 

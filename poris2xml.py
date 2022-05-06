@@ -143,7 +143,7 @@ def loadODS():
                 thisnode = {}
                 thisnode['ident'] = thiskey
                 # In case we came from graphml, this column could be empty
-                thisid = row[config.desc_id_column]
+                thisid = str(row[config.desc_id_column])
                 if len(thisid) <= 0:
                     thisid = rowcount
 
