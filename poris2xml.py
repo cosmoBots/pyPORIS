@@ -936,4 +936,4 @@ def createPorisXML(nodes_dict,deviceName):
 nodes_dict = loadODS()
 
 # Creates the instrument PORIS XML
-#createPorisXML(nodes_dict,deviceName)
+createPorisXML(nodes_dict,deviceName)

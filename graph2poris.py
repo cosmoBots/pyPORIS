@@ -46,20 +46,27 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     nodes = soup.findAll("node", {"yfiles.foldertype":""})
     groups = soup.find_all("node", {"yfiles.foldertype":"group"})
     edges = soup.findAll("edge")
+    urlkey = soup.find("key",{"attr.name":"url"})['id']
+    csidkey = soup.find("key",{"attr.name":"csID"})['id']
+    cscodekey = soup.find("key",{"attr.name":"csCode"})['id']
+    csprjident = soup.find("key",{"attr.name":"identifier"})['id']
+
+  print("url key",urlkey)
+  print("csid key",csidkey)
 
   # Retrieving file_data
   file_data = graph.find_all('data')
   file_cscode = ""
   file_identifier = ""
   for n in file_data:
-    if n['key'] == "d1":
+    if n['key'] == cscodekey:
       if len(n.contents) >= 1:
         file_cscode = n.contents[0]
       
       else:
         file_cscode = 'INS'
     
-    if n['key'] == "d2":
+    if n['key'] == csprjident:
       if len(n.contents) >= 1:
         file_identifier = n.contents[0]
 
@@ -132,6 +139,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     csv_dict_data = []
     error_list = []
     nodes_graphml_d6 = {}
+    nodes_graphml_url = {}
     nodes_graphml = {}
     rm_issues_created = []
 
@@ -140,19 +148,18 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       group_dict['min'] = None
       group_dict['default'] = None
       group_dict['max'] = None
-      group_dict['link'] = None
-      group_dict['rmid'] = None
+      group_dict['url'] = None
       group_dict['group_id'] = group['id']
       group_dict['csID'] = group['id']
       group_name = group.find('y:NodeLabel').text.strip()
-      group_dict['link'] = ""
+      group_dict['url'] = ""
       group_dict['rmid'] = ""
 
       group_data = group.findChildren('data',recursive=False)
       #print("+++",group_name)
       nodes_graphml[group['id']] = group
       for n in group_data:
-        if n['key']=='d6':
+        if n['key']==csidkey:
           if len(n.contents) >= 1:
             nodes_graphml_d6[group['id']] = n
             group_dict['csID'] = n.contents[0]
@@ -164,11 +171,12 @@ def create_ods_file_from_graphml_file(filename, deviceName):
               error_list += [group_dict['csID'] +" identifier is not unique, check "+  group_name + " and " + global_dict[inverse_localcsids[group_dict['csID']]]['group_name']  ]
               print(error_list)
 
-        if n['key']=='d7':
+        if n['key']==urlkey:
           #print("***",group_name,n.contents)
           if len(n.contents) >= 1:
-            group_dict['link'] = n.contents[0]
-            group_dict['rmid'] = n.contents[0].split('/')[-1]
+            nodes_graphml_url[group['id']] = n
+            group_dict['url'] = n.contents[0]
+            #group_dict['rmid'] = n.contents[0].split('/')[-1]
 
       group_dict['group_name'] = group_name
       # The group can be a prSys, or a prParam, or a prValueFloat
@@ -228,7 +236,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         node_dict['max'] = None
         node_dict['defaulttext'] = None
         node_dict['rmid'] = ""
-        node_dict['link'] = ""
+        node_dict['url'] = ""
         node_dict['relations'] = []
         node_dict['next'] = []
         node_dict['csID'] = node['id']
@@ -236,7 +244,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         #print(node_dict['node_name'],node_shape)
         nodes_graphml[node['id']] = node
         for n in node_data:
-          if n['key']=='d6':
+          if n['key']==csidkey:
             if len(n.contents) >= 1:
               nodes_graphml_d6[node['id']] = n
               node_dict['csID'] = n.contents[0]
@@ -247,10 +255,11 @@ def create_ods_file_from_graphml_file(filename, deviceName):
               else:
                 error_list += [node_dict['csID'] +" identifier is not unique, check "+  node_dict['node_name'] + " and " + global_dict[inverse_localcsids[node_dict['csID']]]['node_name']  ]
 
-          if n['key']=='d7':
+          if n['key']==urlkey:
             if len(n.contents) >= 1:
-              node_dict['link'] = n.contents[0]
-              node_dict['rmid'] = n.contents[0].split('/')[-1]
+              nodes_graphml_url[node['id']] = n
+              node_dict['url'] = n.contents[0]
+              #node_dict['rmid'] = n.contents[0].split('/')[-1]
 
         color_attribute = node.find('y:Fill')
         node_color = None
@@ -322,7 +331,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         node_dict['default'] = group_dict['default']
         node_dict['max'] = group_dict['max']
         node_dict['defaulttext'] = group_dict['default']
-        node_dict['link'] = group_dict['link']
+        node_dict['url'] = group_dict['url']
         node_dict['rmid'] = group_dict['rmid']
         node_dict['relations'] = []
         node_dict['next'] = []
@@ -356,7 +365,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         for tr in trackers:
             trackerdict[tr.name] = tr
 
-      rows = [['RM#','link','RMID','ID','row#','subject','description','tracker','Rlv?','status','parent',
+      rows = [['RM#','url','RMID','ID','row#','subject','description','tracker','Rlv?','status','parent',
       'blocking_items','precedent_items','prMin','prDefault','prMax','prDefaultText','version','priority']]
       rmtranslator = {}
 
@@ -383,14 +392,16 @@ def create_ods_file_from_graphml_file(filename, deviceName):
               tracker_id = thistrackerid,
               subject = n['node_name'],
           )
-          url = rm_server_url+'/issues/'+str(thisRmTsk.id)+'?key='+rm_key_txt
-          resp = req.get(url)
+          url = rm_server_url+'/issues/'+str(thisRmTsk.id)
+          urlwithkey= url +'?key='+rm_key_txt
+          resp = req.get(urlwithkey)
           thisRmTsk = redmine.issue.get(thisRmTsk.id)
           thisCsId = thisRmTsk.custom_fields.get(cfdict['csID'].id).value
           rm_issues_dict[thisCsId] = thisRmTsk
           rmtranslator[n['node_id']] = thisCsId
           print("------------------------->",n['node_id'])
           n['rmid'] = thisRmTsk.id
+          n['url'] = url
       
       print("******************************************************************")
       print(rmtranslator)
@@ -485,7 +496,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
           
 
-        row += [['',n['link'],n['rmid'],thisid,'',n['node_name'],'',n['node_type'],'','',
+        row += [[n['rmid'],n['url'],n['rmid'],thisid,'',n['node_name'],'',n['node_type'],'','',
           strparent,strrel,strnext,strmin,strdefault,strmax,strdefaulttext,'','Normal']]
 
         '''
@@ -502,14 +513,30 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       print(">>>>",nodes_graphml_d6)
 
       if rm_use:
+        print("\nItero por las creadas",rm_issues_created)
+        print("\nd6",nodes_graphml_d6.keys())
+        print("\npadres",nodes_graphml.keys())
         for k in rm_issues_created:
             if k in nodes_graphml_d6.keys():
               nodes_graphml_d6[k].contents[0].replace_with(rmtranslator[k])
             
             else:
-              new_tag = soup.new_tag('data',key="d6")
+              new_tag = soup.new_tag('data',key=csidkey)
               new_tag.string = rmtranslator[k]
               nodes_graphml[k].append(new_tag)
+
+            if k in nodes_graphml_url.keys():
+              nodes_graphml_url[k].contents[0].replace_with(nodes_dict[k]['url'])
+            
+            else:
+              new_tag = soup.new_tag('data',key=urlkey)
+              thisurl = nodes_dict[k]['url']
+              if thisurl=="":
+                thisurl = rm_server_url+'/issues/'+str(rm_issues_dict[rmtranslator[k]].id)
+
+              new_tag.string = nodes_dict[k]['url']
+              nodes_graphml[k].append(new_tag)
+
 
         with open(filename+".out", "w", encoding='utf-8') as file:
             file.write(str(soup))
