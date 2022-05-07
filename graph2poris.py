@@ -380,9 +380,6 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       'blocking_items','precedent_items','prMin','prDefault','prMax','prDefaultText','version','priority']]
       rmtranslator = {}
 
-      print(localcsids.keys())
-      print(rm_issues_dict.keys())
-
       for n in csv_dict_data:
         rmissueneeded = False
         if rm_use:
@@ -501,10 +498,10 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         if rm_use:
           if thisid in rmtranslator.keys():
             thisid = rmtranslator[thisid]
-          else:
-            if thisid in localcsids.keys():
-              thisid = localcsids[thisid]            
 
+        else:
+          if thisid in localcsids.keys():
+            thisid = localcsids[thisid]
           
 
         row += [[n['rmid'],n['url'],n['rmid'],thisid,'',n['node_name'],'',n['node_type'],'','',
