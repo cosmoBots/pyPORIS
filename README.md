@@ -20,14 +20,6 @@ Then you will have to configure your secrets to access to that cosmoSys instance
 * python3 graph2poris.py MyDevice.graphml  # A MyDevice.ods file will be created.
 * python3 poris2xml.py MyDevice.ods        # A MyDevice.xml file will be created.
 
-    For windows:
-
-    From .\models execute winporispanel.bat MyDevice
-
-    For dummies:
-
-    be careful on updating the AstroPorisPlayer repo containing the java vm: git submodule update --init --recursive
-
 
 
 
