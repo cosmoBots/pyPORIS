@@ -1,4 +1,4 @@
-rm_use = False
+rm_use = True
 
 if rm_use:
     # This section configures the connection between the Datalogger tools and the Redmine instance which implements the requirements database
