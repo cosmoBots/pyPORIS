@@ -516,7 +516,16 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       , ['',''], ['',''], ['',file_identifier], ['',file_cscode]]})
       data.update({"Items": rows})
       data.update({"ExtraFields":[[]]})
-      save_data("./"+deviceName+".ods", data)
+
+
+      dirname = os.path.dirname(filename)
+      basenamelist = os.path.splitext(os.path.basename(filename))
+      onlyname = basenamelist[0]
+      extension = basenamelist[1]
+      odsextension = ".ods"
+        
+
+      save_data(os.path.join(dirname,onlyname+odsextension), data)
 
       print(">>>>",nodes_graphml_d6)
 
@@ -559,12 +568,6 @@ def create_ods_file_from_graphml_file(filename, deviceName):
               nodes_graphml[k].append(new_tag)
 
 
-        dirname = os.path.dirname(filename)
-        basenamelist = os.path.splitext(os.path.basename(filename))
-        onlyname = basenamelist[0]
-        extension = basenamelist[1]
-        print(extension)
-        
         with open(os.path.join(dirname,onlyname+'.out'+extension), "w", encoding='utf-8') as file:
             file.write(str(soup))
 

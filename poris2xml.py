@@ -927,7 +927,14 @@ def createPorisXML(nodes_dict,deviceName):
 
 
     xml_str = rootInstr.toprettyxml(indent ="\t",encoding="UTF-8") 
-    save_path_file = "./"+deviceName+".xml"
+
+    filename = args.sys_file.name
+    dirname = os.path.dirname(filename)
+    basenamelist = os.path.splitext(os.path.basename(filename))
+    onlyname = basenamelist[0]
+    extension = basenamelist[1]
+    xmlextension = ".xml"
+    save_path_file = os.path.join(dirname,onlyname+xmlextension)
 
     with open(save_path_file, "wb") as f:
         f.write(xml_str) 
