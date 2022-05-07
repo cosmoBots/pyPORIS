@@ -1,3 +1,4 @@
 [submodule "AstroPorisPlayer"]
 	path = AstroPorisPlayer
 	url = https://github.com/cosmoBots/AstroPorisPlayer.git
+	branch = v0.4
