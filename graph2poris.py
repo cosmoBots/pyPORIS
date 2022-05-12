@@ -376,7 +376,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         for tr in trackers:
             trackerdict[tr.name] = tr
 
-      rows = [['RM#','url','RMID','ID','row#','subject','description','tracker','Rlv?','status','parent',
+      rows = [['RM#','url','RMID','ID','row#','subject','','tracker','Rlv?','status','parent',
       'blocking_items','precedent_items','prMin','prDefault','prMax','prDefaultText','version','priority']]
       rmtranslator = {}
 
