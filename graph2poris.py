@@ -62,14 +62,18 @@ def create_ods_file_from_graphml_file(filename, deviceName):
   for n in file_data:
     if n['key'] == cscodekey:
       if len(n.contents) >= 1:
-        file_cscode = n.contents[0]
+        thiscontent = n.contents[0].strip()
+        if len(thiscontent) > 0:                
+          file_cscode = thiscontent
       
       else:
         file_cscode = 'INS'
     
     if n['key'] == csprjident:
       if len(n.contents) >= 1:
-        file_identifier = n.contents[0]
+        thiscontent = n.contents[0].strip()
+        if len(thiscontent) > 0:                
+          file_identifier = thiscontent        
 
       else:
         file_cscode = 'instrument'
@@ -97,7 +101,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
     print("Proyectos:")
     for p in projects:
-        print ("\t",p.identifier," \t| ",p.name)
+        print("\t",p.identifier," \t| ",p.name)
         if p.identifier == file_identifier:
           continueProcess = True
 
@@ -163,27 +167,33 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         if n['key']==csidkey:
           nodes_graphml_d6[group['id']] = n
           if len(n.contents) >= 1:
-            group_dict['csID'] = n.contents[0]
-            localcsids[group_dict['group_id']] = group_dict['csID']
-            if group_dict['csID'] not in inverse_localcsids.keys():
-              inverse_localcsids[group_dict['csID']] = group_dict['group_id']
+            thiscontent = n.contents[0].strip()
+            if len(thiscontent) > 0:
+              group_dict['csID'] = thiscontent
+              localcsids[group_dict['group_id']] = group_dict['csID']
+              if group_dict['csID'] not in inverse_localcsids.keys():
+                inverse_localcsids[group_dict['csID']] = group_dict['group_id']
 
-            else:
-              error_list += [group_dict['csID'] +" identifier is not unique, check "+  group_name + " and " + global_dict[inverse_localcsids[group_dict['csID']]]['group_name']  ]
-              print(error_list)
+              else:
+                error_list += [group_dict['csID'] +" identifier is not unique, check "+  group_name + " and " + global_dict[inverse_localcsids[group_dict['csID']]]['group_name']  ]
+                print(error_list)
 
         if n['key']==urlkey:
           #print("***",group_name,n.contents)
           nodes_graphml_url[group['id']] = n
           if len(n.contents) >= 1:
-            group_dict['url'] = n.contents[0]
-            #group_dict['rmid'] = n.contents[0].split('/')[-1]
+            thiscontent = n.contents[0].strip()
+            if len(thiscontent) > 0:            
+              group_dict['url'] = thiscontent
+              #group_dict['rmid'] = n.contents[0].split('/')[-1]
 
         if n['key']==csrmid:
           #print("***",group_name,n.contents)
           nodes_graphml_rmid[group['id']] = n
           if len(n.contents) >= 1:
-            group_dict['rmid'] = n.contents[0]
+            thiscontent = n.contents[0].strip()
+            if len(thiscontent) > 0:
+              group_dict['rmid'] = thiscontent
 
       group_dict['group_name'] = group_name
       # The group can be a prSys, or a prParam, or a prValueFloat
@@ -254,23 +264,29 @@ def create_ods_file_from_graphml_file(filename, deviceName):
           if n['key']==csidkey:
             nodes_graphml_d6[node['id']] = n
             if len(n.contents) >= 1:
-              node_dict['csID'] = n.contents[0]
-              localcsids[node_dict['node_id'] ] = node_dict['csID']
-              if node_dict['csID'] not in inverse_localcsids.keys():
-                inverse_localcsids[node_dict['csID']] = node_dict['node_id']
+              thiscontent = n.contents[0].strip()
+              if len(thiscontent) > 0:
+                node_dict['csID'] = thiscontent
+                localcsids[node_dict['node_id'] ] = node_dict['csID']
+                if node_dict['csID'] not in inverse_localcsids.keys():
+                  inverse_localcsids[node_dict['csID']] = node_dict['node_id']
 
-              else:
-                error_list += [node_dict['csID'] +" identifier is not unique, check "+  node_dict['node_name'] + " and " + global_dict[inverse_localcsids[node_dict['csID']]]['node_name']  ]
+                else:
+                  error_list += [node_dict['csID'] +" identifier is not unique, check "+  node_dict['node_name'] + " and " + global_dict[inverse_localcsids[node_dict['csID']]]['node_name']  ]
 
           if n['key']==urlkey:
             nodes_graphml_url[node['id']] = n
             if len(n.contents) >= 1:
-              node_dict['url'] = n.contents[0]
+              thiscontent = n.contents[0].strip()
+              if len(thiscontent) > 0:                
+                node_dict['url'] = thiscontent
 
           if n['key']==csrmid:
             nodes_graphml_rmid[node['id']] = n
             if len(n.contents) >= 1:
-              node_dict['rmid'] = n.contents[0]
+              thiscontent = n.contents[0].strip()
+              if len(thiscontent) > 0:                
+                node_dict['rmid'] = thiscontent
 
         color_attribute = node.find('y:Fill')
         node_color = None
