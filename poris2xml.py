@@ -145,7 +145,9 @@ def loadODS():
                 # In case we came from graphml, this column could be empty
                 thisid = str(row[config.desc_id_column])
                 if len(thisid) <= 0:
-                    thisid = rowcount
+                    # TODO: Find a more robust strategy to generate identifiers 
+                    # out of the Redmine space
+                    thisid = 2000000000+rowcount
 
                 thisnode['id'] = thisid
                 thisnode['subject'] = row[config.desc_subject_column]
