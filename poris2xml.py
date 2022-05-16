@@ -37,7 +37,7 @@ def nametoidl(n):
     return ret
 
 def desctomonit(n):
-    return nametoidl(n)
+    return nametoidl(n.split('\n')[0].split('\r')[0])
 
 def replaceStringFile(pattern_file,dest_file,pattern_text, replacement_text):
     # Read in the file
