@@ -163,10 +163,18 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       group_data = group.findChildren('data',recursive=False)
       #print("+++",group_name)
       nodes_graphml[group['id']] = group
+
+      # Prevent having rmide and not having csid (error in removing csID an not removing rmid)
+      thisrmid = None
+      thisrmidcontent = None
+      hascsid = False
+      hasrmid = False
+      
       for n in group_data:
         if n['key']==csidkey:
           nodes_graphml_d6[group['id']] = n
           if len(n.contents) >= 1:
+            hascsid = True
             thiscontent = n.contents[0].strip()
             if len(thiscontent) > 0:
               group_dict['csID'] = thiscontent
@@ -189,11 +197,16 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
         if n['key']==csrmid:
           #print("***",group_name,n.contents)
-          nodes_graphml_rmid[group['id']] = n
           if len(n.contents) >= 1:
             thiscontent = n.contents[0].strip()
             if len(thiscontent) > 0:
-              group_dict['rmid'] = thiscontent
+              thisrmidcontent = thiscontent
+              hasrmid = True
+
+      # Prevent having rmide and not having csid (error in removing csID an not removing rmid)
+      if hascsid and hasrmid:
+        nodes_graphml_rmid[group['id']] = thisrmid
+        group_dict['rmid'] = thisrmidcontent
 
       group_dict['group_name'] = group_name
       # The group can be a prSys, or a prParam, or a prValueFloat
@@ -236,6 +249,13 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
       nodes_dict = {}
 
+
+    # Prevent having rmide and not having csid (error in removing csID an not removing rmid)
+    thisrmid = None
+    thisrmidcontent = None
+    hascsid = False
+    hasrmid = False
+      
     for node in nodes:
         ischild = False
         isMax = False
@@ -282,11 +302,17 @@ def create_ods_file_from_graphml_file(filename, deviceName):
                 node_dict['url'] = thiscontent
 
           if n['key']==csrmid:
-            nodes_graphml_rmid[node['id']] = n
+            #print("***",group_name,n.contents)
             if len(n.contents) >= 1:
               thiscontent = n.contents[0].strip()
-              if len(thiscontent) > 0:                
-                node_dict['rmid'] = thiscontent
+              if len(thiscontent) > 0:
+                thisrmidcontent = thiscontent
+                hasrmid = True
+
+        # Prevent having rmide and not having csid (error in removing csID an not removing rmid)
+        if hascsid and hasrmid:
+          nodes_graphml_rmid[node['id']] = thisrmid
+          node_dict['rmid'] = thisrmidcontent
 
         color_attribute = node.find('y:Fill')
         node_color = None
