@@ -1,7 +1,7 @@
 #!/bin/bash
 rm models/$1.ods
 rm models/$1.xml
-cp config_rm_enabled.py config_rm.py
+cp config_rm_enabled.py config_rm.py || { echo "config_rm_enabled.py missing"; exit 1; } 
 python3 graph2poris.py models/$1.graphml || { echo "graph2poris could not be processed"; exit 1; }
 timestamp=$(date +%s)
 cp models/$1.graphml models/$1.$timestamp.backup
