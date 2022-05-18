@@ -198,6 +198,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         if n['key']==csrmid:
           #print("***",group_name,n.contents)
           if len(n.contents) >= 1:
+            thisrmid = n
             thiscontent = n.contents[0].strip()
             if len(thiscontent) > 0:
               thisrmidcontent = thiscontent
@@ -303,6 +304,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
           if n['key']==csrmid:
             #print("***",group_name,n.contents)
+            thisrmid = n
             if len(n.contents) >= 1:
               thiscontent = n.contents[0].strip()
               if len(thiscontent) > 0:
