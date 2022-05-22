@@ -34,11 +34,14 @@ class PORISValueFloat : public PORISValue {
     double min;
     double max;
     double default_data;    
-    double setData(double value);
+    double setData(double floatdata);
 };
 
 class PORISValueText : public PORISValue {
     public:
+    string data;
+    string default_data;
+    double setData(string strdata);
 };
 
 class PORISMode : public PORIS {
@@ -63,7 +66,6 @@ class PORISNode : public PORIS {
     PORISMode *setMode(PORISMode *m);
     uint8_t getEligibleMode(uint8_t idx);
     uint8_t setMode(uint8_t idx);
-    PORISNode getSubNodeFromName(string name);
 };
 
 class PORISParam : public PORISNode {
@@ -71,14 +73,10 @@ class PORISParam : public PORISNode {
     std::list<PORISValue *> values;
     PORISValue *selectedValue = NULL;
 
-    void init(void);
-
-    PORISMode *setEligibleMode(void);    
+    PORISMode* setMode(PORISMode *m);
     PORISValue *setEligibleValue(void);
-    PORISMode *setMode(PORISMode *m);
     PORISValue *getEligibleValue(PORISValue *v);
     PORISValue *setValue(PORISValue *v);
-    uint8_t setMode(uint8_t idx);    
     uint8_t getEligibleValue(uint8_t idx);
     uint8_t setValue(uint8_t idx);
 };
@@ -88,10 +86,7 @@ class PORISSys : public PORISNode {
     std::list<PORISParam *> params;
     std::list<PORISSys *> subsystems;
 
-    void init(void);
-    PORISMode *setEligibleMode(void);    
-    PORISMode *setMode(PORISMode *m);
-    uint8_t setMode(uint8_t idx);
+    PORISMode* setMode(PORISMode *m);
     PORISSys *getSubSystemFromName(string name);
     PORISParam *getSubParamFromName(string name);
     PORISSys *getDescendantFromName(string name);

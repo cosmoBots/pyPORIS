@@ -14,10 +14,7 @@ using namespace std;
 
 /////////////  Initialization routines ////////////////
 
-void PORISParam::init(void){
-    setMode(modes.front());
-};
-void PORISSys::init(void){
+void PORISNode::init(void){
     cout << "Init de " << this->name << ", número de modos: " << modes.size() << endl;
     PORISMode *firstMode = modes.front();
     cout << "Init " << this->name << ": " << firstMode->name << endl;
@@ -133,10 +130,8 @@ uint8_t PORISNode::getEligibleMode(uint8_t idx){
     }
 };
 
-/////////////  PORISSys routines ////////////////
-
-PORISMode *PORISSys::setEligibleMode(void){
-    cout << "Entro en PORISSys setEligibleMode " << this->name << endl;
+PORISMode *PORISNode::setEligibleMode(void){
+    cout << "Entro en PORISNode setEligibleMode " << this->name << endl;
     if (selectedMode == NULL){
         this->init();
     }
@@ -145,6 +140,22 @@ PORISMode *PORISSys::setEligibleMode(void){
     PORISMode *ret = setMode(selectedMode);
     return ret;
 };
+
+uint8_t PORISNode::setMode(uint8_t idx){
+    uint8_t ret = 0;
+    auto l_front = modes.begin();
+    advance(l_front, idx);
+    PORISMode *result = setMode(*l_front);
+    if (result == NULL){
+        ret = 0;
+    } else {
+        ret = result->idx;
+    }
+    cout << "Acaba la operación setMode con resultado " << (int)ret << endl;      
+    return ret;
+}
+
+/////////////  PORISSys routines ////////////////
 
 PORISMode* PORISSys::setMode(PORISMode *m){
     cout << "Entro en Sys setMode de " << this->name;
@@ -165,15 +176,12 @@ PORISMode* PORISSys::setMode(PORISMode *m){
         }
         selectedMode = ret;
         list<PORISParam *> :: iterator itparam;
-        bool found = false;
-        for (itparam = params.begin();
-                !found && itparam != params.end();++itparam){
+        for (itparam = params.begin(); itparam != params.end();++itparam){
             //cout << "Voy a iterar el param " << (*itparam)->name << endl;
             (*itparam)->setEligibleMode();
         }
         list<PORISSys *> :: iterator itsys;
-        for (itsys = subsystems.begin();
-                !found && itsys != subsystems.end();++itsys){
+        for (itsys = subsystems.begin(); itsys != subsystems.end();++itsys){
             (*itsys)->setEligibleMode();
             //cout << "Voy a iterar el sistema " << (*itsys)->name << endl;
         }                
@@ -184,32 +192,7 @@ PORISMode* PORISSys::setMode(PORISMode *m){
     return ret;
 }
 
-uint8_t PORISSys::setMode(uint8_t idx){
-    uint8_t ret = 0;
-    auto l_front = modes.begin();
-    advance(l_front, idx);
-    PORISMode *result = setMode(*l_front);
-    if (result == NULL){
-        ret = 0;
-    } else {
-        ret = result->idx;
-    }
-    cout << "Acaba la operación setMode con resultado " << (int)ret << endl;      
-    return ret;
-}
-
 /////////////  PORISParam routines ////////////////
-
-PORISMode *PORISParam::setEligibleMode(void){
-    cout << "Entro en PORISParam setEligibleMode " << this->name;
-    if (selectedMode == NULL){
-        cout << ", selectedMode es NULO";
-        init();
-    }
-    cout << ", selectedMode es ahora " << selectedMode->name << endl;
-    
-    return setMode(selectedMode);
-};
 
 PORISValue *PORISParam::getEligibleValue(PORISValue *v){
     if (v == NULL){
@@ -283,23 +266,11 @@ PORISMode* PORISParam::setMode(PORISMode *m){
     return ret;
 };
 
-uint8_t PORISParam::setMode(uint8_t idx){
-    auto l_front = modes.begin();
-    advance(l_front, idx);
-    PORISMode *result = setMode(*l_front);
-   
-    if (result == NULL){
-        return 0;
-    } else {
-        return result->idx;
-    }
-};
-
-double PORISValueFloat::setData(double value){
-    cout << "Applying " << value << " name: " << name << " min: " << min << " max: " << max << endl;
-    if (value >= min){
-        if (value <= max){
-            data = value;
+double PORISValueFloat::setData(double floatdata){
+    cout << "Applying " << floatdata << " name: " << name << " min: " << min << " max: " << max << endl;
+    if (floatdata >= min){
+        if (floatdata <= max){
+            data = floatdata;
         }
     }
     
