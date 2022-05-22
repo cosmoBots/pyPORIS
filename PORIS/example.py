@@ -127,12 +127,8 @@ mdClassicFiltersUnknown.values[vlClassicFiltersUnknown.name] = vlClassicFiltersU
 prClassicFilters = PORISParam("ClassicFilters")
 prClassicFilters.id = currentid
 currentid += 1
-prClassicFilters.values[vlClassicFiltersUnknown.name] = vlClassicFiltersUnknown
-prClassicFilters.selectedValue = vlClassicFiltersUnknown
-vlClassicFiltersUnknown.parent = prClassicFilters
-prClassicFilters.modes[mdClassicFiltersUnknown.name] = mdClassicFiltersUnknown
-prClassicFilters.selectedMode = mdClassicFiltersUnknown
-mdClassicFiltersUnknown.parent = prClassicFilters
+prClassicFilters.addValue(vlClassicFiltersUnknown)
+prClassicFilters.addMode(mdClassicFiltersUnknown)
 
 vlBinningUnknown = PORISValue("Binning_Unknown")
 vlBinningUnknown.id = currentid
@@ -144,12 +140,8 @@ mdBinningUnknown.values[vlBinningUnknown.name] = vlBinningUnknown
 prBinning = PORISParam("Binning")
 prBinning.id = currentid
 currentid += 1
-prBinning.values[vlBinningUnknown.name] = vlBinningUnknown
-prBinning.selectedValue = vlBinningUnknown
-vlBinningUnknown.parent = prBinning
-prBinning.modes[mdBinningUnknown.name] = mdBinningUnknown
-prBinning.selectedMode = mdBinningUnknown
-mdBinningUnknown.parent = prBinning
+prBinning.addValue(vlBinningUnknown)
+prBinning.addMode(mdBinningUnknown)
 
 vlExpTimeUnknown = PORISValue("ExpTime_Unknown")
 vlExpTimeUnknown.id = currentid
@@ -161,12 +153,9 @@ mdExpTimeUnknown.values[vlExpTimeUnknown.name] = vlExpTimeUnknown
 prExpTime = PORISParam("ExpTime")
 prExpTime.id = currentid
 currentid += 1
-prExpTime.values[vlExpTimeUnknown.name] = vlExpTimeUnknown
-prExpTime.selectedValue = vlExpTimeUnknown
-vlExpTimeUnknown.parent = prExpTime
-prExpTime.modes[mdExpTimeUnknown.name] = mdExpTimeUnknown
-prExpTime.selectedMode = mdExpTimeUnknown
-mdExpTimeUnknown.parent = prExpTime
+prExpTime.addValue(vlExpTimeUnknown)
+prExpTime.addMode(mdExpTimeUnknown)
+
 
 # First level
 
@@ -180,12 +169,8 @@ mdDispersionUnknown.values[vlDispersionUnknown.name] = vlDispersionUnknown
 prDispersion = PORISParam("Dispersion")
 prDispersion.id = currentid
 currentid += 1
-prDispersion.values[vlDispersionUnknown.name] = vlDispersionUnknown
-prDispersion.selectedValue = vlDispersionUnknown
-vlDispersionUnknown.parent = prDispersion
-prDispersion.modes[mdDispersionUnknown.name] = mdDispersionUnknown
-prDispersion.selectedMode = mdDispersionUnknown
-mdDispersionUnknown.parent = prDispersion
+prDispersion.addValue(vlDispersionUnknown)
+prDispersion.addMode(mdDispersionUnknown)
 
 vlMasksUnknown = PORISValue("Masks_Unknown")
 vlMasksUnknown.id = currentid
@@ -197,12 +182,9 @@ mdMasksUnknown.values[vlMasksUnknown.name] = vlMasksUnknown
 prMasks = PORISParam("Masks")
 prMasks.id = currentid
 currentid += 1
-prMasks.values[vlMasksUnknown.name] = vlMasksUnknown
-prMasks.selectedValue = vlMasksUnknown
-vlMasksUnknown.parent = prMasks
-prMasks.modes[mdMasksUnknown.name] = mdMasksUnknown
-prMasks.selectedMode = mdMasksUnknown
-mdMasksUnknown.parent = prMasks
+prMasks.addValue(vlMasksUnknown)
+prMasks.addMode(mdMasksUnknown)
+
 
 mdFilterUnknown = PORISMode("Filter_Unknown")
 mdFilterUnknown.id = currentid
@@ -210,9 +192,7 @@ currentid += 1
 sysFilter = PORISSys("Filter")
 sysFilter.id = currentid
 currentid += 1
-sysFilter.modes[mdFilterUnknown.name] = mdFilterUnknown
-sysFilter.selectedMode = mdFilterUnknown
-mdFilterUnknown.parent = sysFilter
+sysFilter.addMode(mdFilterUnknown)
 
 mdDetectorUnknown = PORISMode("Detector_Unknown")
 mdDetectorUnknown.id = currentid
@@ -220,9 +200,7 @@ currentid += 1
 sysDetector = PORISSys("Detector")
 sysDetector.id = currentid
 currentid += 1
-sysDetector.modes[mdDetectorUnknown.name] = mdDetectorUnknown
-sysDetector.selectedMode = mdDetectorUnknown
-mdDetectorUnknown.parent = sysDetector
+sysDetector.addMode(mdDetectorUnknown)
 
 # Root level
 mdInstrumentUnknown = PORISMode("Instrument_Unknown")
@@ -231,168 +209,132 @@ currentid += 1
 sysInstrument = PORISSys("Instrument")
 sysInstrument.id = currentid
 currentid += 1
-sysInstrument.modes[mdInstrumentUnknown.name] = mdInstrumentUnknown
-sysInstrument.selectedMode = mdInstrumentUnknown
-mdInstrumentUnknown.parent = sysInstrument
+sysInstrument.addMode(mdInstrumentUnknown)
 
 # Param values
-vlClassicFiltersRed.parent = prClassicFilters
-vlClassicFiltersBlue.parent = prClassicFilters
-vlClassicFiltersuserFilter.parent = prClassicFilters
-vlDispersionR500.parent = prDispersion
-vlDispersionR1000.parent = prDispersion
-vlDispersionR2000.parent = prDispersion
-vlBinning1x1.parent = prBinning
-vlBinning1x2.parent = prBinning
-vlBinning2x1.parent = prBinning
-vlBinning2x2.parent = prBinning
-vlExpTimeNormalRange.parent = prExpTime
-vlExpTimeFastRange.parent = prExpTime
-vlMasks0_6.parent = prMasks
-vlMasks1_0.parent = prMasks
-vlMasks2_0.parent = prMasks
-vlMasksHalf_field.parent = prMasks
-
-prClassicFilters.values[vlClassicFiltersRed.name] = vlClassicFiltersRed
-prClassicFilters.values[vlClassicFiltersBlue.name] = vlClassicFiltersBlue
-prClassicFilters.values[vlClassicFiltersuserFilter.name] = vlClassicFiltersuserFilter
-prDispersion.values[vlDispersionR500.name] = vlDispersionR500
-prDispersion.values[vlDispersionR1000.name] = vlDispersionR1000
-prDispersion.values[vlDispersionR2000.name] = vlDispersionR2000
-prBinning.values[vlBinning1x1.name] = vlBinning1x1
-prBinning.values[vlBinning1x2.name] = vlBinning1x2
-prBinning.values[vlBinning2x1.name] = vlBinning2x1
-prBinning.values[vlBinning2x2.name] = vlBinning2x2
-prExpTime.values[vlExpTimeNormalRange.name] = vlExpTimeNormalRange
-prExpTime.values[vlExpTimeFastRange.name] = vlExpTimeFastRange
-prMasks.values[vlMasks0_6.name] = vlMasks0_6
-prMasks.values[vlMasks1_0.name] = vlMasks1_0
-prMasks.values[vlMasks2_0.name] = vlMasks2_0
-prMasks.values[vlMasksHalf_field.name] = vlMasksHalf_field
+prClassicFilters.addValue(vlClassicFiltersRed)
+prClassicFilters.addValue(vlClassicFiltersBlue)
+prClassicFilters.addValue(vlClassicFiltersuserFilter)
+prDispersion.addValue(vlDispersionR500)
+prDispersion.addValue(vlDispersionR1000)
+prDispersion.addValue(vlDispersionR2000)
+prBinning.addValue(vlBinning1x1)
+prBinning.addValue(vlBinning1x2)
+prBinning.addValue(vlBinning2x1)
+prBinning.addValue(vlBinning2x2)
+prExpTime.addValue(vlExpTimeNormalRange)
+prExpTime.addValue(vlExpTimeFastRange)
+prMasks.addValue(vlMasks0_6)
+prMasks.addValue(vlMasks1_0)
+prMasks.addValue(vlMasks2_0)
+prMasks.addValue(vlMasksHalf_field)
 
 # Param modes
-prClassicFilters.modes[mdClassicFiltersRed.name] = mdClassicFiltersRed
-mdClassicFiltersRed.parent = prClassicFilters
-prClassicFilters.modes[mdClassicFiltersBlue.name] = mdClassicFiltersBlue
-mdClassicFiltersBlue.parent = prClassicFilters
-prClassicFilters.modes[mdClassicFiltersStandard.name] = mdClassicFiltersStandard
-mdClassicFiltersStandard.parent = prClassicFilters
-prClassicFilters.modes[mdClassicFiltersUser.name] = mdClassicFiltersUser
-mdClassicFiltersUser.parent = prClassicFilters
+prClassicFilters.addMode(mdClassicFiltersRed)
+prClassicFilters.addMode(mdClassicFiltersBlue)
+prClassicFilters.addMode(mdClassicFiltersStandard)
+prClassicFilters.addMode(mdClassicFiltersUser)
 
-prDispersion.modes[mdDispersionNormal.name] = mdDispersionNormal
-mdDispersionNormal.parent = prDispersion
-prBinning.modes[mdBinningNormal.name] = mdBinningNormal
-mdBinningNormal.parent = prBinning
-prBinning.modes[mdBinningSquare.name] = mdBinningSquare
-mdBinningSquare.parent = prBinning
-prExpTime.modes[mdExpTimeNormal.name] = mdExpTimeNormal
-mdExpTimeNormal.parent = prExpTime
-prExpTime.modes[mdExpTimeFast.name] = mdExpTimeFast
-mdExpTimeFast.parent = prExpTime
-prMasks.modes[mdMasksSpectroscopy.name] = mdMasksSpectroscopy
-mdMasksSpectroscopy.parent = prMasks
-prMasks.modes[mdMasksFastImg.name] = mdMasksFastImg
-mdMasksFastImg.parent = prMasks
+prDispersion.addMode(mdDispersionNormal)
+prBinning.addMode(mdBinningNormal)
+prBinning.addMode(mdBinningSquare)
+prExpTime.addMode(mdExpTimeNormal)
+prExpTime.addMode(mdExpTimeFast)
+prMasks.addMode(mdMasksSpectroscopy)
+prMasks.addMode(mdMasksFastImg)
 
 # Sys modes
-sysFilter.modes[mdFilterTFRed.name] = mdFilterTFRed
-mdFilterTFRed.parent = sysFilter
-sysFilter.modes[mdFilterTFBlue.name] = mdFilterTFBlue
-mdFilterTFBlue.parent = sysFilter
-sysFilter.modes[mdFilterClassic.name] = mdFilterClassic
-mdFilterClassic.parent = sysFilter
+sysFilter.addMode(mdFilterTFRed)
+sysFilter.addMode(mdFilterTFBlue)
+sysFilter.addMode(mdFilterClassic)
 
-sysDetector.modes[mdDetectorNormal.name] = mdDetectorNormal
-mdDetectorNormal.parent = sysDetector
-sysDetector.modes[mdDetectorImage.name] = mdDetectorImage
-mdDetectorImage.parent = sysDetector
-sysDetector.modes[mdDetectorFastImage.name] = mdDetectorFastImage
-mdDetectorFastImage.parent = sysDetector
+sysDetector.addMode(mdDetectorNormal)
+sysDetector.addMode(mdDetectorImage)
+sysDetector.addMode(mdDetectorFastImage)
 
-sysInstrument.modes[mdInstrumentPhotometry.name] = mdInstrumentPhotometry
-mdInstrumentPhotometry.parent = sysInstrument
-sysInstrument.modes[mdInstrumentSpectroscopy.name] = mdInstrumentSpectroscopy
-mdInstrumentSpectroscopy.parent = sysInstrument
-sysInstrument.modes[mdInstrumentFastPhotometry.name] = mdInstrumentFastPhotometry
-mdInstrumentFastPhotometry.parent = sysInstrument
+sysInstrument.addMode(mdInstrumentPhotometry)
+sysInstrument.addMode(mdInstrumentSpectroscopy)
+sysInstrument.addMode(mdInstrumentFastPhotometry)
 
 # Architecture
-sysFilter.params[prClassicFilters.name] = prClassicFilters
-prClassicFilters.parent = sysFilter
-sysDetector.params[prBinning.name] = prBinning
-prBinning.parent = sysDetector
-sysDetector.params[prExpTime.name] = prExpTime
-prExpTime.parent = sysDetector
-sysInstrument.params[prDispersion.name] = prDispersion
-prDispersion.parent = sysInstrument
-sysInstrument.params[prMasks.name] = prMasks
-prMasks.parent = sysInstrument
-sysInstrument.subsystems[sysFilter.name] = sysFilter
-sysFilter.parent = sysInstrument
-sysInstrument.subsystems[sysDetector.name] = sysDetector
-sysDetector.parent = sysInstrument
+sysFilter.addParam(prClassicFilters)
+mdFilterUnknown.addSubMode(mdClassicFiltersUnknown)
+sysDetector.addParam(prBinning)
+mdDetectorUnknown.addSubMode(mdBinningUnknown)
+sysDetector.addParam(prExpTime)
+mdDetectorUnknown.addSubMode(mdExpTimeUnknown)
+sysInstrument.addParam(prDispersion)
+mdInstrumentUnknown.addSubMode(mdDispersionUnknown)
+sysInstrument.addParam(prMasks)
+mdInstrumentUnknown.addSubMode(mdMasksUnknown)
+sysInstrument.addParam(sysFilter)
+mdInstrumentUnknown.addSubMode(mdFilterUnknown)
+sysInstrument.addParam(sysDetector)
+mdInstrumentUnknown.addSubMode(mdDetectorUnknown)
 
 # Relationships
-mdClassicFiltersRed.values[vlClassicFiltersRed.name] = vlClassicFiltersRed
-mdClassicFiltersBlue.values[vlClassicFiltersBlue.name] = vlClassicFiltersBlue
-mdClassicFiltersStandard.values[vlClassicFiltersRed.name] = vlClassicFiltersRed
-mdClassicFiltersStandard.values[vlClassicFiltersBlue.name] = vlClassicFiltersBlue
-mdClassicFiltersUser.values[vlClassicFiltersuserFilter.name] = vlClassicFiltersuserFilter
+mdClassicFiltersRed.addValue(vlClassicFiltersRed)
+mdClassicFiltersBlue.addValue(vlClassicFiltersBlue)
+mdClassicFiltersStandard.addValue(vlClassicFiltersRed)
+mdClassicFiltersStandard.addValue(vlClassicFiltersBlue)
+mdClassicFiltersUser.addValue(vlClassicFiltersuserFilter)
 
-mdDispersionNormal.values[vlDispersionR500.name] = vlDispersionR500
-mdDispersionNormal.values[vlDispersionR2000.name] = vlDispersionR2000
-mdDispersionNormal.values[vlDispersionR1000.name] = vlDispersionR1000
+mdDispersionNormal.addValue(vlDispersionR500)
+mdDispersionNormal.addValue(vlDispersionR2000)
+mdDispersionNormal.addValue(vlDispersionR1000)
 
-mdBinningNormal.values[vlBinning1x1.name] = vlBinning1x1
-mdBinningNormal.values[vlBinning1x2.name] = vlBinning1x2
-mdBinningNormal.values[vlBinning2x1.name] = vlBinning2x1
-mdBinningNormal.values[vlBinning2x1.name] = vlBinning2x2
+mdBinningNormal.addValue(vlBinning1x1)
+mdBinningNormal.addValue(vlBinning1x2)
+mdBinningNormal.addValue(vlBinning2x1)
+mdBinningNormal.addValue(vlBinning2x2)
 
-mdBinningSquare.values[vlBinning1x1.name] = vlBinning1x1
-mdBinningSquare.values[vlBinning2x2.name] = vlBinning2x2
+mdBinningSquare.addValue(vlBinning1x1)
+mdBinningSquare.addValue(vlBinning2x2)
 
-mdExpTimeNormal.values[vlExpTimeNormalRange.name] =  vlExpTimeNormalRange
-mdExpTimeFast.values[vlExpTimeFastRange.name] =  vlExpTimeFastRange
+mdExpTimeNormal.addValue(vlExpTimeNormalRange)
+mdExpTimeFast.addValue(vlExpTimeFastRange)
 
-mdMasksSpectroscopy.values[vlMasks0_6.name] = vlMasks0_6
-mdMasksSpectroscopy.values[vlMasks1_0.name] = vlMasks1_0
-mdMasksSpectroscopy.values[vlMasks2_0.name] = vlMasks2_0
+mdMasksSpectroscopy.addValue(vlMasks0_6)
+mdMasksSpectroscopy.addValue(vlMasks1_0)
+mdMasksSpectroscopy.addValue(vlMasks2_0)
 
-mdMasksFastImg.values[vlMasksHalf_field.name] = vlMasksHalf_field
+mdMasksFastImg.addValue(vlMasksHalf_field)
 
-mdFilterTFRed.submodes[mdClassicFiltersRed.name] = mdClassicFiltersRed
-mdFilterTFBlue.submodes[mdClassicFiltersBlue.name] = mdClassicFiltersBlue
-mdFilterClassic.submodes[mdClassicFiltersStandard.name] = mdClassicFiltersStandard
-mdFilterClassic.submodes[mdClassicFiltersUser.name] = mdClassicFiltersUser
 
-mdDetectorNormal.submodes[mdBinningNormal.name] = mdBinningNormal
-mdDetectorNormal.submodes[mdExpTimeNormal.name] = mdExpTimeNormal
-mdDetectorImage.submodes[mdBinningSquare.name] = mdBinningSquare
-mdDetectorImage.submodes[mdExpTimeNormal.name] = mdExpTimeNormal
-mdDetectorFastImage.submodes[mdBinningSquare.name] = mdBinningSquare
-mdDetectorFastImage.submodes[mdExpTimeFast.name] = mdExpTimeFast
+mdFilterTFRed.addSubMode(mdClassicFiltersRed)
+mdFilterTFBlue.addSubMode(mdClassicFiltersBlue)
+mdFilterClassic.addSubMode(mdClassicFiltersStandard)
+mdFilterClassic.addSubMode(mdClassicFiltersUser)
 
-mdInstrumentPhotometry.submodes[mdFilterTFRed.name] = mdFilterTFRed
-mdInstrumentPhotometry.submodes[mdFilterTFBlue.name] = mdFilterTFBlue
-mdInstrumentPhotometry.submodes[mdFilterClassic.name] = mdFilterClassic
-mdInstrumentPhotometry.submodes[mdDetectorImage.name] = mdDetectorImage
+mdDetectorNormal.addSubMode(mdBinningNormal)
+mdDetectorNormal.addSubMode(mdExpTimeNormal)
+mdDetectorImage.addSubMode(mdBinningSquare)
+mdDetectorImage.addSubMode(mdExpTimeNormal)
+mdDetectorFastImage.addSubMode(mdBinningSquare)
+mdDetectorFastImage.addSubMode(mdExpTimeFast)
 
-mdInstrumentSpectroscopy.submodes[mdFilterTFRed.name] = mdFilterTFRed
-mdInstrumentSpectroscopy.submodes[mdFilterTFBlue.name] = mdFilterTFBlue
-mdInstrumentSpectroscopy.submodes[mdFilterClassic.name] = mdFilterClassic
-mdInstrumentSpectroscopy.submodes[mdDetectorNormal.name] = mdDetectorNormal
-mdInstrumentSpectroscopy.submodes[mdMasksSpectroscopy.name] = mdMasksSpectroscopy
-mdInstrumentSpectroscopy.submodes[mdDispersionNormal.name] = mdDispersionNormal
+mdInstrumentPhotometry.addSubMode(mdFilterTFRed)
+mdInstrumentPhotometry.addSubMode(mdFilterTFBlue)
+mdInstrumentPhotometry.addSubMode(mdFilterClassic)
+mdInstrumentPhotometry.addSubMode(mdDetectorImage)
 
-mdInstrumentFastPhotometry.submodes[mdFilterClassic.name] = mdFilterClassic
-mdInstrumentFastPhotometry.submodes[mdDetectorFastImage.name] = mdDetectorFastImage
-mdInstrumentFastPhotometry.submodes[mdMasksFastImg.name] = mdMasksFastImg
+mdInstrumentSpectroscopy.addSubMode(mdFilterTFRed)
+mdInstrumentSpectroscopy.addSubMode(mdFilterTFBlue)
+mdInstrumentSpectroscopy.addSubMode(mdFilterClassic)
+mdInstrumentSpectroscopy.addSubMode(mdDetectorNormal)
+mdInstrumentSpectroscopy.addSubMode(mdMasksSpectroscopy)
+mdInstrumentSpectroscopy.addSubMode(mdDispersionNormal)
+
+mdInstrumentFastPhotometry.addSubMode(mdFilterClassic)
+mdInstrumentFastPhotometry.addSubMode(mdDetectorFastImage)
+mdInstrumentFastPhotometry.addSubMode(mdMasksFastImg)
 
 
 print("\n\n\nSys:",sysInstrument.name)
 print("\nmodes:",sysInstrument.modes)
-print("\nselected:",sysInstrument.selectedMode)
+print("\nselected:",sysInstrument.selectedMode.name)
+print("\n\n\nPhotometry:",mdInstrumentPhotometry.name)
+print("\nsubmodes:",mdInstrumentPhotometry.submodes)
 print("\n\n\nSys:",sysFilter.name)
 print("\nmodes:",sysFilter.modes)
 print("\nselected:",sysFilter.selectedMode.name)

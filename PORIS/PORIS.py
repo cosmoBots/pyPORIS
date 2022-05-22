@@ -124,6 +124,7 @@ class PORISNode(PORIS):
     
     def addMode(self,m):
         self.modes[m.name] = m
+        m.parent = self
         if self.selectedMode == None:
             self.selectedMode = m
 
@@ -198,6 +199,7 @@ class PORISParam(PORISNode):
   
     def addValue(self,v):
         self.values[v.name] = v
+        v.parent = self
         if self.selectedValue == None:
             self.selectedValue = v
 
