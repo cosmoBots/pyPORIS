@@ -315,8 +315,11 @@ def createCxxCode(nodes_dict,deviceName):
             if thisclass == "prParam":
                 # PORISParam prBinning;
                 porishstr += "\t\tpr"+nodename+" = PORISParam(\""+nodename+"\")\n"
+                porishstr += "\t\tself.pr"+nodename+" = pr"+nodename+"\n"
                 porishstr += "\t\tmd"+nodename+"Mode_UNKNOWN = PORISMode(\""+nodename+"Mode_UNKNOWN\")\n"
+                porishstr += "\t\tself.md"+nodename+"Mode_UNKNOWN = md"+nodename+"Mode_UNKNOWN\n"
                 porishstr += "\t\tvl"+nodename+"_UNKNOWN = PORISValue(\""+nodename+"_UNKNOWN\")\n"
+                porishstr += "\t\tself.vl"+nodename+"_UNKNOWN = vl"+nodename+"_UNKNOWN\n"
 
                 methodsstr += "\t// --------- "+thisclass+" "+nodename+" -----------------\n"
                 methodsstr += "\t/* "+nodename+" */\n"

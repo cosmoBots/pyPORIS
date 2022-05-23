@@ -1,3 +1,5 @@
+debug = False
+
 class PORIS:
     myclassname = "PORIS"
     id = None
@@ -21,7 +23,9 @@ class PORISValueFloat(PORISValue):
     default_data = None
 
     def setData(self,floatdata):
-        print("Applying", floatdata, "name:", self.name, "min:", self.min, "max:", self.max)
+        if debug:
+            print("Applying", floatdata, "name:", self.name, "min:", self.min, "max:", self.max)
+
         if floatdata >= self.min:
             if floatdata <= max:
                 self.data = floatdata
@@ -52,13 +56,15 @@ class PORISMode(PORIS):
         self.values[v.name] = v
     
     def getEligibleValue(self,v,current):
-        if (v != None):
-            print("Entro en PORISMode getEligibleValue para el modo", self.name, "con valor propuesto", v.name)
-        else:
-            print("Entro en PORISMode getEligibleValue para el modo", self.name, "con valor propuesto NULO")
+        if debug:
+            if (v != None):
+                print("Entro en PORISMode getEligibleValue para el modo", self.name, "con valor propuesto", v.name)
+            else:
+                print("Entro en PORISMode getEligibleValue para el modo", self.name, "con valor propuesto NULO")
     
+            print(self.values.keys())
+
         ret = None
-        print(self.values.keys())
         if v.name in self.values.keys():
             ret = v
         else:
@@ -71,10 +77,15 @@ class PORISMode(PORIS):
         return ret
     
     def getEligibleSubMode(self,m,current):
-        print("Entro en PORISMode getEligibleSubMode para el modo", self.name, "con m =", m.name)
+        if debug:
+            print("Entro en PORISMode getEligibleSubMode para el modo", self.name, "con m =", m.name)
+
         ret = None
         found = False
-        print(self.submodes.keys())
+
+        if debug:
+            print(self.submodes.keys())
+
         if m.name in self.submodes.keys():
             ret = m
         
@@ -84,10 +95,14 @@ class PORISMode(PORIS):
                 
             else:
                 # If none of two are found, search the first submode with the same parent
-                print("Pruebo aqui",self.submodes.keys())
+                if debug:
+                    print("Pruebo aqui",self.submodes.keys())
+
                 for ks in self.submodes.keys():
                     s = self.submodes[ks]
-                    print(s.name,s.parent.name)
+                    if debug:
+                        print(s.name,s.parent.name)
+
                     if s.parent == m.parent:
                         ret = s
                         break
@@ -129,18 +144,28 @@ class PORISNode(PORIS):
             self.selectedMode = m
 
     def init(self):
-        print("Init de",self.name,", número de modos:" , len(self.modes))
+        if debug:
+            print("Init de",self.name,", número de modos:" , len(self.modes))
+
         firstMode = list(self.modes.keys())[0]
-        print("Init ", self.name + ":",firstMode.name)
+        if debug:
+            print("Init ", self.name + ":",firstMode.name)
+
         self.setMode(firstMode)    
     
     def setEligibleMode(self):
-        print("Entro en PORISNode setEligibleMode", self.name)
+        if debug:
+            print("Entro en PORISNode setEligibleMode", self.name)
+
         if self.selectedMode is None:
-            print("- selectedMode es NULO")
+            if debug:
+                print("- selectedMode es NULO")
+
             self.init()
             
-        print("- selectedMode es ahora", self.selectedMode.name)
+        if debug:
+            print("- selectedMode es ahora", self.selectedMode.name)
+
         # TODO: Check if this setMode is redundant
         return self.setMode(self.selectedMode)
 
@@ -155,26 +180,36 @@ class PORISNode(PORIS):
         else:
             ret = result.idx
         
-        print("Acaba la operación setMode con resultado", ret)
+        if debug:
+            print("Acaba la operación setMode con resultado", ret)
+
         return ret
 
     def getEligibleMode(self,m):
-        print("Entro en PORISNode ",self.name, ".getEligibleMode("+m.name+")")
+        if debug:
+            print("Entro en PORISNode ",self.name, ".getEligibleMode("+m.name+")")
+
         ret = None
         if self.parent is None:
-            print("El padre de", self.name, "es nulo")
+            if debug:
+                print("El padre de", self.name, "es nulo")
+
             ret = m
         
         else:
-            print("Buscamos entre los", len(self.parent.selectedMode.submodes),"submodos de",self.parent.name)
-            print("selectedMode",self.selectedMode.name,m.name)
+            if debug:
+                print("Buscamos entre los", len(self.parent.selectedMode.submodes),"submodos de",self.parent.name)
+                print("selectedMode",self.selectedMode.name,m.name)
+
             ret = self.parent.selectedMode.getEligibleSubMode(m,self.selectedMode)
 
         if ret is None:
-            print("No hubo suerte, el modo a seleccionar es nulo")
+            if debug:
+                print("No hubo suerte, el modo a seleccionar es nulo")
         
         else:
-            print("El modo seleccionado es",ret.name)
+            if debug:
+                print("El modo seleccionado es",ret.name)
         
         return ret
 
@@ -211,15 +246,21 @@ class PORISParam(PORISNode):
             self.selectedValue = v
 
     def setEligibleValue(self):
-        print("Entro en PORISParam setEligibleValue", self.name)
+        if debug:
+            print("Entro en PORISParam setEligibleValue", self.name)
+
         return self.setValue(self.selectedValue)
     
     def setMode(self,m):
-        print("Entro en Param",self.name+".setMode("+ m.name+"\")")
+        if debug:
+            print("Entro en Param",self.name+".setMode("+ m.name+"\")")
+
         ret = self.getEligibleMode(m)
 
-        print("Estoy en",self.name)
-        print(list(self.modes.keys()))
+        if debug:
+            print("Estoy en",self.name)
+            print(list(self.modes.keys()))
+
         if ret is None:
             mk = list(self.modes.keys())[0]
             ret = self.modes[mk]
@@ -238,16 +279,20 @@ class PORISParam(PORISNode):
         return ret        
 
     def getEligibleValue(self,v,current):
-        if v is None:
-            print("Entro en PORISParam getEligibleValue ", self.name, "con valor NULO")
-        else:
-            print("Entro en PORISParam getEligibleValue ", self.name, "con valor", v.name)
+        if debug:
+            if v is None:
+                print("Entro en PORISParam getEligibleValue ", self.name, "con valor NULO")
+            else:
+                print("Entro en PORISParam getEligibleValue ", self.name, "con valor", v.name)
 
-        print("***",self.name,self.selectedMode.name,self.modes)
+            print("***",self.name,self.selectedMode.name,self.modes)
+
         ret = None
         
         if self.selectedMode is None:
-            print("- selectedMode es NULO")
+            if debug:
+                print("- selectedMode es NULO")
+
             self.init()
 
         ret = self.selectedMode.getEligibleValue(v,current)
@@ -255,10 +300,11 @@ class PORISParam(PORISNode):
         return ret
 
     def setValue(self,v):
-        if v is None:
-            print("Entro en PORISParam setValue", self.name, "con valor NULO")
-        else:
-            print("Entro en PORISParam setValue", self.name, "con valor", v.name)
+        if debug:
+            if v is None:
+                print("Entro en PORISParam setValue", self.name, "con valor NULO")
+            else:
+                print("Entro en PORISParam setValue", self.name, "con valor", v.name)
 
         ret = self.getEligibleValue(v,self.selectedValue)
         if ret != self.selectedValue:
@@ -303,20 +349,25 @@ class PORISSys(PORISNode):
         s.parent = self
         
     def setMode(self,m):
-        print("Entro en Sys setMode de", self.name, "con modo", m.name)
+        if debug:
+            print("Entro en Sys setMode de", self.name, "con modo", m.name)
+
         ret = self.getEligibleMode(m)
         if ret is None:
-            print("el nuevo modo es NULO que es diferente del seleccionado")
-            print(" Hemos de poner el modo UNKNOWN, que por defecto es el primero")
+            if debug:
+                print("el nuevo modo es NULO que es diferente del seleccionado")
+                print(" Hemos de poner el modo UNKNOWN, que por defecto es el primero")
+
             mk = list(self.modes.keys())[0]
             ret = self.modes[mk]
 
         if ret != self.selectedMode:
-            print("el nuevo modo es", ret.name)
-            if self.selectedMode is not None:
-                print (" que es diferente de",self.selectedMode.name)
-            else:
-                print(" que es diferente de NULO")
+            if debug:
+                print("el nuevo modo es", ret.name)
+                if self.selectedMode is not None:
+                    print (" que es diferente de",self.selectedMode.name)
+                else:
+                    print(" que es diferente de NULO")
 
             self.selectedMode = ret
             
@@ -329,9 +380,12 @@ class PORISSys(PORISNode):
                 s.setEligibleMode()
    
         else:
-            print("el modo escogido es el mismo", ret.name)
+            if debug:
+                print("el modo escogido es el mismo", ret.name)
 
-        print("Salgo de Sys setMode de", self.name, "con m="+m.name, "y resultado =",ret.name)
+        if debug:
+            print("Salgo de Sys setMode de", self.name, "con m="+m.name, "y resultado =",ret.name)
+
         return ret
 
    
@@ -366,11 +420,15 @@ class PORISSys(PORISNode):
             print("no es un hijo directo")
             print(name,self.name,self.subsystems)
             for sk in self.subsystems.keys():
-                print(sk)
+                if debug:
+                    print(sk)
+
                 s = self.subsystems[sk]
                 ret = s.getDescendantParamFromName(name)
                 if ret is not None:
-                    print("Tenemos",ret)
+                    if debug:
+                        print("Tenemos",ret)
+
                     break
 
         return ret
