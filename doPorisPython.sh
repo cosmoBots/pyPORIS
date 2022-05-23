@@ -17,7 +17,7 @@ fi
 if [ -z ${PORIS_SAFETY_OVERRIDE+x} ]; then 
     echo "PORIS_SAFETY_OVERRIDE is not set, checking repo is clean";
     if [ -z "$(git status --porcelain)" ]; then 
-        echo "Welcome to doPorisDev.sh"
+        echo "Welcome to doPorisPython.sh"
     else 
         # Uncommitted changes
         echo "ERROR: YOUR REPOSITORY IS NOT CLEAN"
@@ -31,7 +31,7 @@ if [ -z ${PORIS_SAFETY_OVERRIDE+x} ]; then
     fi
 else
     echo "PORIS_SAFETY_OVERRIDE is set, skip checking repo is clean";
-    echo "Welcome to doPorisDev.sh"
+    echo "Welcome to doPorisPython.sh"
 fi
 
 ######### SAFETY AREA ############
@@ -66,7 +66,7 @@ DEVBASE_USER_PATH=${DEVBASE_PATH}/${DEVNAME}.user
 
 ########### WELCOME MESSAGE CALCULATION AREA ##############
 
-echo "Welcome to C++ code generator por PORIS models"
+echo "Welcome to Python code generator por PORIS models"
 
 ######### CLEANING AREA ###############
 # We will clean the previous products
