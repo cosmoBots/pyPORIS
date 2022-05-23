@@ -1,5 +1,19 @@
 #!/bin/bash
 
+if [ $# -eq 0 ]
+  then
+    echo "No arguments supplied"
+    exit 1;
+fi
+
+FILE=models/$1.ods
+if test -f "$FILE"; then
+    echo "Input $FILE exists, continuing"
+else
+    echo "Input $FILE does not exist, aborting"
+    exit 1;
+fi
+
 if [ -z ${PORIS_SAFETY_OVERRIDE+x} ]; then 
     echo "PORIS_SAFETY_OVERRIDE is not set, checking repo is clean";
     if [ -z "$(git status --porcelain)" ]; then 
