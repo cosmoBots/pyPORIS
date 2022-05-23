@@ -189,6 +189,13 @@ class PORISNode(PORIS):
         
         return ret
 
+    def getModeFromName(self,name):
+        ret = None
+        if name in self.modes.keys():
+            ret = self.modes[name]
+
+        return ret        
+
 
 class PORISParam(PORISNode):
     selectedValue = None
@@ -222,6 +229,13 @@ class PORISParam(PORISNode):
             self.setValue(self.selectedValue)
 
         return ret
+
+    def getValueFromName(self,name):
+        ret = None
+        if name in self.values.keys():
+            ret = self.values[name]
+
+        return ret        
 
     def getEligibleValue(self,v,current):
         if v is None:
@@ -349,10 +363,14 @@ class PORISSys(PORISNode):
     def getDescendantParamFromName(self,name):
         ret = self.getSubParamFromName(name)
         if ret is None:
+            print("no es un hijo directo")
+            print(name,self.name,self.subsystems)
             for sk in self.subsystems.keys():
+                print(sk)
                 s = self.subsystems[sk]
                 ret = s.getDescendantParamFromName(name)
                 if ret is not None:
+                    print("Tenemos",ret)
                     break
 
         return ret
