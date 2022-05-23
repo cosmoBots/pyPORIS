@@ -41,8 +41,6 @@ fi
 
 # Defining some environmental variables
 # TODO: Convert them to arguments
-# This will force the script to firstly clean every previous product
-# PORIS_CLEAN=0
 DEVBASE_PATH=`pwd`
 
 ########### INTERNAL VARIABLES CALCULATION AREA ##############
@@ -57,8 +55,8 @@ DEVNAME=$1
 # Normally set to PORIS_TOOLS_PYTHON_PATH=${DEVBASE_PYTHON_PATH}/PORIS, but if you
 # change DEVBASE_RELATIVE_PATH you might want to separate the link
 # between the two variables
-PORIS_TOOLS_PATH=${DEVBASE_PATH}/pyPORIS
-PORIS_TOOLS_PYTHON_PATH=${DEVBASE_PATH}/PORIS
+PORIS_TOOLS_PATH=${DEVBASE_PATH}
+PORIS_TOOLS_PYTHON_PATH=${DEVBASE_PATH}
 echo "path"
 echo ${PORIS_TOOLS_PATH}
 echo ${PORIS_TOOLS_PYTHON_PATH}
@@ -71,17 +69,9 @@ DEVBASE_USER_PATH=${DEVBASE_PATH}/${DEVNAME}.user
 echo "Welcome to C++ code generator por PORIS models"
 
 ######### CLEANING AREA ###############
-# We will clean (or not) the products depending on PORIS_CLEAN variable
-if [ -z ${PORIS_CLEAN+x} ]; then 
-    echo "PORIS_CLEAN is not set, keeping already generated files";
-    # We will have to preserve some files depending on PORISDEV_CLEAN variable
-    echo "Preserve some previous files and removing the library directory";
-    cp ${DEVBASE_PATH}/${DEVNAME}/${DEVNAME}PORIS.py .
-    rm -rf ${DEVBASE_PATH}/${DEVNAME}
-else
-    echo "Cleaning previous generated products"
-    rm -rf ${DEVBASE_PATH}/${DEVNAME}
-fi
+# We will clean the previous products
+echo "Cleaning previous generated products"
+rm -rf ${DEVBASE_PATH}/${DEVNAME}
 
 ######### CREATING FOLDERS AREA ###############
 # Let's create the product directories
@@ -104,15 +94,9 @@ fi
 
 ######### PARSING THE MODEL AND GENERATING THE PORIS PRODUCTS ###############
 cd ${DEVBASE_PATH}
-if [ -z ${PORIS_CLEAN+x} ]; then 
-    echo "PORIS_CLEAN is not set, bypassing poris2python.py";
-    # We will have to recover the preserved files depending on PORISDEV_CLEAN variable
-    mv ${DEVNAME}PORIS.py ${DEVBASE_PATH}/${DEVNAME}
-else 
-    echo "Generating the PORIS device products from $1.ods"
-    python3 ${PORIS_TOOLS_PATH}/poris2xml.py models/$1.ods || { echo 'poris2python.py failed' ; exit 1; }
-    echo "path"
-    echo ${PORIS_TOOLS_PYTHON_PATH}
-    python3 ${PORIS_TOOLS_PYTHON_PATH}/poris2python.py models/$1.ods || { echo 'poris2python.py failed' ; exit 1; }
-fi
+echo "Generating the PORIS device products from $1.ods"
+echo ${PORIS_TOOLS_PYTHON_PATH}
+python3 ${PORIS_TOOLS_PYTHON_PATH}/poris2python.py models/$1.ods || { echo 'poris2python.py failed' ; exit 1; }
 
+
+echo "Fin!"

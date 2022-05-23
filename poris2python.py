@@ -19,6 +19,7 @@ def nametoidl(n):
     ret = ret.replace('/','_')
     ret = ret.replace('¿','_')    
     ret = ret.replace('?','_')    
+    ret = ret.replace('-','_')
     ret = ret.replace('á','a')
     ret = ret.replace('é','e')
     ret = ret.replace('í','i')
@@ -279,13 +280,14 @@ def createCxxCode(nodes_dict,deviceName):
     magsstr += "\t//  Device Magnitudes\n"
     magsstr += "\t//----------------------------------------------------------------------\n\n"
 
-    porishstr =  "#ifndef _"+deviceName+"PORIS_H\n"
-    porishstr += "#define _"+deviceName+"PORIS_H\n\n"
-    poriscstr =  "#include \""+deviceName+".h\"\n\n"
+    porishstr =  "from PORIS import *\n\n"
+    porishstr += "class "+deviceName+"PORIS:\n"
+    porishstr += "\tdef __init__(self):\n"
+    porishstr += "\t\tidentcounter = 1\n"
 
-    poriscsyncstr = "bool "+deviceName+"::sync_PORIS_Model(void){\n"
-    poriscinitstr = "PORISSys *"+deviceName+"::PORIS_init(void){\n\tint identcounter = 0;\n\n"
-    poriscinitretstr = ""
+    poriscstr =  ""
+
+    poriscinitstr = ""
     poriscinitrelstr = ""
 
     closefuncstr = "\n\treturn ret;\n}\n\n"
@@ -312,11 +314,9 @@ def createCxxCode(nodes_dict,deviceName):
             '''
             if thisclass == "prParam":
                 # PORISParam prBinning;
-                porishstr += "PORISParam pr"+nodename+";\n"
-                porishstr += "PORISMode pr"+nodename+"Mode_UNKNOWN;\n"
-                porishstr += "PORISValue pr"+nodename+"_UNKNOWN;\n"
-
-                poriscsyncstr += "\t// Param "+nodename+"\n"
+                porishstr += "\t\tpr"+nodename+" = PORISParam(\""+nodename+"\")\n"
+                porishstr += "\t\tmd"+nodename+"Mode_UNKNOWN = PORISMode(\""+nodename+"Mode_UNKNOWN\")\n"
+                porishstr += "\t\tvl"+nodename+"_UNKNOWN = PORISValue(\""+nodename+"_UNKNOWN\")\n"
 
                 methodsstr += "\t// --------- "+thisclass+" "+nodename+" -----------------\n"
                 methodsstr += "\t/* "+nodename+" */\n"
@@ -365,42 +365,31 @@ def createCxxCode(nodes_dict,deviceName):
                 else:
                     counter = 0
 
-                poriscinitstr += "\n\tpr"+nodename+".id = identcounter++;\n"
-                poriscinitstr += "\tpr"+nodename+".idx = "+str(counter)+";\n"
-                poriscinitstr += "\tpr"+nodename+".ident = \""+nodename+"\";\n"
-                poriscinitstr += "\tpr"+nodename+".name = \""+nodename+"\";\n"
-                poriscinitstr += "\tpr"+nodename+".description = \""+desctomonit(thisnode['description'])+"\";\n"
+                poriscinitstr += "\n\t\tpr"+nodename+".id = identcounter\n"
+                poriscinitstr += "\t\tidentcounter += 1\n"
+                poriscinitstr += "\t\tpr"+nodename+".ident = \""+nodename+"\"\n"
+                poriscinitstr += "\t\tpr"+nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                 if parentNode is not None:
-                    poriscinitstr += "\tpr"+nodename+".parent = &pr"+parentNodeName+";\n"
-                    poriscinitstr += "\tpr"+parentNodeName+".params.push_back(&pr"+nodename+");\n" 
-                else:
-                    poriscinitstr += "\tpr"+nodename+".parent = NULL;\n"
+                    poriscinitstr += "\t\tsys"+parentNodeName+".addParam(pr"+nodename+")"
 
-                poriscinitstr += "\n\tpr"+nodename+ "_UNKNOWN.id = identcounter++;\n"
-                poriscinitstr += "\tpr"+nodename+ "_UNKNOWN.idx = "+deviceName+"::"+nodename+ "_UNKNOWN;\n"
-                poriscinitstr += "\tpr"+nodename+ "_UNKNOWN.ident = \""+nodename+ "_UNKNOWN\";\n"
-                poriscinitstr += "\tpr"+nodename+ "_UNKNOWN.name = \""+nodename+ "_UNKNOWN\";\n"
-                poriscinitstr += "\tpr"+nodename+ "_UNKNOWN.description = \"Unknown value for "+nodename+"\";\n"
-                poriscinitstr += "\tpr"+nodename+ "_UNKNOWN.parent = &pr"+nodename+";\n"
-                poriscinitstr += "\tpr"+nodename+".values.push_back(&pr"+nodename+ "_UNKNOWN);\n"
+                poriscinitstr += "\n\t\tvl"+nodename+ "_UNKNOWN.id = identcounter\n"
+                poriscinitstr += "\t\tidentcounter += 1\n"
+                poriscinitstr += "\t\tvl"+nodename+ "_UNKNOWN.ident = \""+nodename+ "_UNKNOWN\"\n"
+                poriscinitstr += "\t\tvl"+nodename+ "_UNKNOWN.description = \"Unknown value for "+nodename+"\"\n"
+                poriscinitstr += "\t\tpr"+nodename+".addValue(vl"+nodename+ "_UNKNOWN)\n"
 
-                poriscinitstr += "\n\tpr"+nodename+ "Mode_UNKNOWN.id = identcounter++;\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.idx = "+deviceName+"::"+nodename+ "Mode_UNKNOWN;\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.ident = \""+nodename+ "Mode_UNKNOWN\";\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.name = \""+nodename+ "Mode_UNKNOWN\";\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.description = \"Unknown mode for "+nodename+"\";\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.parent = &pr"+nodename+";\n"
-                poriscinitstr += "\tpr"+nodename+".modes.push_back(&pr"+nodename+ "Mode_UNKNOWN);\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.values.push_back(&pr"+nodename+ "_UNKNOWN);\n"
-                poriscinitstr += "\tpr"+parentNodeName+ "Mode_UNKNOWN.submodes.push_back(&pr"+nodename+ "Mode_UNKNOWN);\n"
+                poriscinitstr += "\n\t\tmd"+nodename+ "Mode_UNKNOWN.id = identcounter\n"
+                poriscinitstr += "\t\tidentcounter += 1\n"
+                poriscinitstr += "\t\tmd"+nodename+ "Mode_UNKNOWN.ident = \""+nodename+ "Mode_UNKNOWN\"\n"
+                poriscinitstr += "\t\tmd"+nodename+ "Mode_UNKNOWN.description = \"Unknown mode for "+nodename+"\"\n"
+                poriscinitstr += "\t\tpr"+nodename+".addMode(md"+nodename+ "Mode_UNKNOWN)\n"
+                poriscinitstr += "\t\tmd"+nodename+ "Mode_UNKNOWN.addValue(vl"+nodename+ "_UNKNOWN)\n"
+                poriscinitstr += "\t\tmd"+parentNodeName+ "Mode_UNKNOWN.addSubMode(md"+nodename+ "Mode_UNKNOWN)\n"
 
             else:
                 # PORISSys prDetector;
-                porishstr += "PORISSys pr"+nodename+";\n"
-                porishstr += "PORISMode pr"+nodename+"Mode_UNKNOWN;\n"
-
-                poriscsyncstr += "\t// Sys "+nodename+"\n"
-
+                porishstr += "\t\tsys"+nodename+" = PORISSys(\""+nodename+"\")\n"
+                porishstr += "\t\tmd"+nodename+"Mode_UNKNOWN = PORISMode(\""+nodename+"Mode_UNKNOWN\")\n"
                 parentNode = None
                 parentNodeName = ""
                 if 'parentnode' in thisnode.keys():
@@ -414,6 +403,8 @@ def createCxxCode(nodes_dict,deviceName):
                     parentNode['syscounter'] = counter + 1
                 else:
                     counter = 0
+                    porishstr += "\t\tself.root = sys"+nodename+"\n"
+                    
 
                 '''
                 prDetector.id = identcounter++;
@@ -423,25 +414,18 @@ def createCxxCode(nodes_dict,deviceName):
                 prDetector.description = "Detector";
                 prDetector.parent = NULL;
                 '''
-                poriscinitstr += "\n\tpr"+nodename+".id = identcounter++;\n"
-                poriscinitstr += "\tpr"+nodename+".idx = "+str(counter)+";\n"
-                poriscinitstr += "\tpr"+nodename+".ident = \""+nodename+"\";\n"
-                poriscinitstr += "\tpr"+nodename+".name = \""+nodename+"\";\n"
-                poriscinitstr += "\tpr"+nodename+".description = \""+desctomonit(thisnode['description'])+"\";\n"
+                poriscinitstr += "\n\t\tsys"+nodename+".id = identcounter\n"
+                poriscinitstr += "\t\tidentcounter += 1\n"
+                poriscinitstr += "\t\tsys"+nodename+".ident = \""+nodename+"\"\n"
+                poriscinitstr += "\t\tsys"+nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                 if parentNode is not None:
-                    poriscinitstr += "\tpr"+nodename+".parent = &pr"+parentNodeName+";\n"
-                    poriscinitstr += "\tpr"+parentNodeName+".subsystems.push_back(&pr"+nodename+");\n" 
-                else:
-                    poriscinitstr += "\tpr"+nodename+".parent = NULL;\n"
-                    poriscinitretstr = "\n\treturn &pr"+nodename+";\n"                
+                    poriscinitstr += "\t\tsys"+parentNodeName+".addSubsystem(sys"+nodename+");\n" 
 
-                poriscinitstr += "\n\tpr"+nodename+ "Mode_UNKNOWN.id = identcounter++;\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.idx = "+deviceName+"::"+nodename+ "Mode_UNKNOWN;\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.ident = \""+nodename+ "Mode_UNKNOWN\";\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.name = \""+nodename+ "Mode_UNKNOWN\";\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.description = \""+desctomonit(thisnode['description'])+"\";\n"
-                poriscinitstr += "\tpr"+nodename+ "Mode_UNKNOWN.parent = &pr"+nodename+";\n"
-                poriscinitstr += "\tpr"+nodename+".modes.push_back(&pr"+nodename+ "Mode_UNKNOWN);\n"
+                poriscinitstr += "\n\t\tmd"+nodename+ "Mode_UNKNOWN.id = identcounter\n"
+                poriscinitstr += "\t\tidentcounter += 1\n"
+                poriscinitstr += "\t\tmd"+nodename+ "Mode_UNKNOWN.ident = \""+nodename+ "Mode_UNKNOWN\";\n"
+                poriscinitstr += "\t\tmd"+nodename+ "Mode_UNKNOWN.description = \""+desctomonit(thisnode['description'])+"\";\n"
+                poriscinitstr += "\t\tsys"+nodename+".addMode(md"+nodename+ "Mode_UNKNOWN);\n"
 
             methodsstr += "\t/* "+nodename+"Mode */\n"
             methodsstr += "\t"+enummodename+" get_"+nodename+"Mode(void);\n"
@@ -538,8 +522,8 @@ def createCxxCode(nodes_dict,deviceName):
                                         if generate_oldcode:
                                             poriscstrfm1sw2 += "\t\t\t\tcase "+nodename+"Mode_"+kvname+":\n"
                                         
-                                        poriscinitrelstr += "\t// Marcamos "+nodename+"Mode_"+kvname+" como elegible para "+parentnodename+"Mode_"+childname+"\n"
-                                        poriscinitrelstr += "\tpr"+parentnodename+"Mode_"+childname+".submodes.push_back(&pr"+nodename+"Mode_"+kvname+");\n"
+                                        poriscinitrelstr += "\t\t# Marcamos "+nodename+"Mode_"+kvname+" como elegible para "+parentnodename+"Mode_"+childname+"\n"
+                                        poriscinitrelstr += "\t\tmd"+parentnodename+"Mode_"+childname+".addSubMode(md"+nodename+"Mode_"+kvname+")\n"
                                         anyvaluepresentparentinner = True
                                         if not firstfound:
                                             firstfound = True
@@ -604,8 +588,8 @@ def createCxxCode(nodes_dict,deviceName):
                                     poriscstrfp1sw2 += "\t\t\t\tcase "+nodename+"_"+kvname+":\n"
                                 
                                 if kvnode['virtual'] == False:
-                                    poriscinitrelstr += "\t// Marcamos "+nodename+"_"+kvname+" como elegible para "+nodename+"Mode_"+childname+"\n"
-                                    poriscinitrelstr += "\tpr"+nodename+"Mode_"+childname+".values.push_back(&pr"+nodename+"_"+kvname+");\n"
+                                    poriscinitrelstr += "\t\t# Marcamos "+nodename+"_"+kvname+" como elegible para "+nodename+"Mode_"+childname+"\n"
+                                    poriscinitrelstr += "\t\tmd"+nodename+"Mode_"+childname+".addValue(vl"+nodename+"_"+kvname+")\n"
 
                                 anyvaluepresentinner = True
                                 if not firstdone:
@@ -735,7 +719,8 @@ def createCxxCode(nodes_dict,deviceName):
             parentNodeName = nametoidl(parentNode['subject'])
             if thisclass == "prMode":
                 #PORISMode prDetectorMode_Image;
-                porishstr += "PORISMode pr"+parentNodeName+ "Mode_" + nodename+";\n"
+                porishstr += "\t\tmd"+parentNodeName+ "Mode_" + nodename+" = PORISMode(\""+parentNodeName+ "Mode_" + nodename+"\")\n"
+
                 '''
                 prDetectorMode_UNKNOWN.id = identcounter++;
                 prDetectorMode_UNKNOWN.idx = MyDASDevice::DetectorMode_UNKNOWN;
@@ -744,19 +729,20 @@ def createCxxCode(nodes_dict,deviceName):
                 prDetectorMode_UNKNOWN.description = "DetectorMode_UNKNOWN";
                 prDetectorMode_UNKNOWN.parent = &prDetector;
                 '''
-                poriscinitstr += "\n\tpr"+parentNodeName+ "Mode_" + nodename+".id = identcounter++;\n"
-                poriscinitstr += "\tpr"+parentNodeName+ "Mode_" + nodename+".idx = "+deviceName+"::"+parentNodeName+ "Mode_" + nodename+";\n"
-                poriscinitstr += "\tpr"+parentNodeName+ "Mode_" + nodename+".ident = \""+parentNodeName+ "Mode_" + nodename+"\";\n"
-                poriscinitstr += "\tpr"+parentNodeName+ "Mode_" + nodename+".name = \""+parentNodeName+ "Mode_" + nodename+"\";\n"
-                poriscinitstr += "\tpr"+parentNodeName+ "Mode_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\";\n"
-                poriscinitstr += "\tpr"+parentNodeName+ "Mode_" + nodename+".parent = &pr"+parentNodeName+";\n"
-                poriscinitstr += "\tpr"+parentNodeName+".modes.push_back(&pr"+parentNodeName+ "Mode_" + nodename+");\n" 
+                poriscinitstr += "\n\t\tmd"+parentNodeName+ "Mode_" + nodename+".id = identcounter\n"
+                poriscinitstr += "\t\tidentcounter += 1\n"
+                poriscinitstr += "\t\tmd"+parentNodeName+ "Mode_" + nodename+".ident = \""+parentNodeName+ "Mode_" + nodename+"\"\n"
+                poriscinitstr += "\t\tmd"+parentNodeName+ "Mode_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
+                if parentNode['tracker'] == "prParam":
+                    poriscinitstr += "\t\tpr"+parentNodeName+".addMode(md"+parentNodeName+ "Mode_" + nodename+")\n"
+                else:
+                    poriscinitstr += "\t\tsys"+parentNodeName+".addMode(md"+parentNodeName+ "Mode_" + nodename+")\n"
 
             else:
                 if thisclass == "prValue":
                     if thisnode['virtual'] == False:
                         #PORISValue prBinning_1x1;
-                        porishstr += "PORISValue pr"+parentNodeName+ "_" + nodename+";\n"
+                        porishstr += "\t\tvl"+parentNodeName+"_" + nodename+" = PORISValue(\""+parentNodeName+"_" + nodename+"\")\n"
                         '''
                         prBinning_1x1.id = identcounter++;
                         prBinning_1x1.idx = MyDASDevice::Binning_1x1;
@@ -765,18 +751,17 @@ def createCxxCode(nodes_dict,deviceName):
                         prBinning_1x1.description = "Sin binning";
                         prBinning_1x1.parent = &prBinning;
                         '''                
-                        poriscinitstr += "\n\tpr"+parentNodeName+ "_" + nodename+".id = identcounter++;\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".idx = "+deviceName+"::"+parentNodeName+ "_" + nodename+";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".name = \""+parentNodeName+ "_" + nodename+"\";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".parent = &pr"+parentNodeName+";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+".values.push_back(&pr"+parentNodeName+ "_" + nodename+");\n"
+                        poriscinitstr += "\n\t\tvl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
+                        poriscinitstr += "\t\tidentcounter += 1\n"
+                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
+                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
+                        poriscinitstr += "\t\tpr"+parentNodeName+".addValue(vl"+parentNodeName+ "_" + nodename+")\n"
 
                 else:
                     if thisclass == "prValFloat":             
                         #PORISValueFloat prExpTime_Normal;
-                        porishstr += "PORISValueFloat pr"+parentNodeName+ "_" + nodename+";\n"
+                        porishstr += "\t\tvl"+parentNodeName+"_" + nodename+" = PORISValueFloat(\""+parentNodeName+"_" + nodename+"\")\n"
+
                         '''
                         prExpTime_Normal.id = identcounter++;
                         prExpTime_Normal.idx = MyDASDevice::ExpTime_Normal;
@@ -785,20 +770,18 @@ def createCxxCode(nodes_dict,deviceName):
                         prExpTime_Normal.description = "Rango normal de valores para ExpTime";
                         prExpTime_Normal.parent = &prExpTime;                    
                         '''                
-                        poriscinitstr += "\n\tpr"+parentNodeName+ "_" + nodename+".id = identcounter++;\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".idx = "+deviceName+"::"+parentNodeName+ "_" + nodename+";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".name = \""+parentNodeName+ "_" + nodename+"\";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".min = "+str(thisnode['min'])+";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".default_data = "+str(thisnode['default_data'])+";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".max = "+str(thisnode['max'])+";\n"                  
-                        poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".parent = &pr"+parentNodeName+";\n"
-                        poriscinitstr += "\tpr"+parentNodeName+".values.push_back(&pr"+parentNodeName+ "_" + nodename+");\n"
+                        poriscinitstr += "\n\t\tvl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
+                        poriscinitstr += "\t\tidentcounter += 1\n"
+                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\";\n"
+                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\";\n"
+                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".min = "+str(thisnode['min'])+";\n"
+                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".default_data = "+str(thisnode['default_data'])+";\n"
+                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".max = "+str(thisnode['max'])+";\n"                  
+                        poriscinitstr += "\t\tpr"+parentNodeName+".addValue(vl"+parentNodeName+ "_" + nodename+");\n"
 
                     else:
                         if thisclass == "prValText":
-                            porishstr += "PORISValueText pr"+parentNodeName+ "_" + nodename+";\n"
+                            porishstr += "\t\tvl"+parentNodeName+"_" + nodename+" = PORISValueText(\""+parentNodeName+"_" + nodename+"\")\n"
                             '''
                             prShiftList_Normal.id = identcounter++;
                             prShiftList_Normal.idx = MyDASDevice::ShiftList_Normal;
@@ -807,16 +790,15 @@ def createCxxCode(nodes_dict,deviceName):
                             prShiftList_Normal.description = "Lista _separada por comas_ con los desplazamientos";
                             prShiftList_Normal.parent = &prShiftList;
                             '''                
-                            poriscinitstr += "\n\tpr"+parentNodeName+ "_" + nodename+".id = identcounter++;\n"
-                            poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".idx = "+deviceName+"::"+parentNodeName+ "_" + nodename+";\n"
-                            poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\";\n"
-                            poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".name = \""+parentNodeName+ "_" + nodename+"\";\n"
-                            poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\";\n"
-                            poriscinitstr += "\tpr"+parentNodeName+ "_" + nodename+".parent = &pr"+parentNodeName+";\n"
-                            poriscinitstr += "\tpr"+parentNodeName+".values.push_back(&pr"+parentNodeName+ "_" + nodename+");\n"
+                            poriscinitstr += "\n\t\tvl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
+                            poriscinitstr += "\t\tidentcounter += 1\n"
+                            poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\";\n"
+                            poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\";\n"
+                            # TODO: Finish prValText initialization (default data)
+                            poriscinitstr += "\t\tpr"+parentNodeName+".addValue(vl"+parentNodeName+ "_" + nodename+");\n"
 
                         else:
-                            porishstr += "\t//TODO: Other pr"+parentNodeName+ "_" + nodename+"\n"
+                            porishstr += "\t\t//TODO: Other xx"+parentNodeName+ "_" + nodename+"\n"
 
 
     filestr =  "// Created with PORIS @ which is Copyright (c) 2022 cosmoBots.eu\n"
@@ -832,19 +814,10 @@ def createCxxCode(nodes_dict,deviceName):
     with open("./"+deviceName+"/"+deviceName+".h", "w") as text_file:
         text_file.write(filestr)
 
-
-    porishstr += "\nPORISSys *rootsys = NULL;\n\n"
-
-    porishstr += "PORISSys *PORIS_init(void);\n"
-    porishstr += "bool sync_PORIS_Model(void);\n\n"
-    porishstr += "#endif\n"
-
-    poriscinitstr += poriscinitrelstr + "\n" + poriscinitretstr + "}\n\n"
-    poriscsyncstr += "\n\treturn true;\n}\n"
-
+    poriscinitstr += poriscinitrelstr + "\n"
+    
     poriscstr += poriscinitstr 
-    poriscstr += poriscsyncstr
-
+    
     with open("./"+deviceName+"/"+deviceName+"PORIS.py", "w+") as text_file:
         text_file.write(porishstr)
         text_file.write(poriscstr)
