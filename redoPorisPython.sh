@@ -5,4 +5,4 @@
 export PORIS_CLEAN=1
 
 # Execute the doPorisPython.sh
-PORIS/doPorisPython.sh $1 || { echo 'doPorisPython.sh failed' ; exit 1; }
+./doPorisPython.sh $1 || { echo 'doPorisPython.sh failed' ; exit 1; }

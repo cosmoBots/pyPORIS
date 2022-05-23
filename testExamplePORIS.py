@@ -2,7 +2,7 @@
 from examplePORIS import *
 
 model = examplePORIS()
-sysExample = model.root
+sysExample = model.sysInstrument
 
 print("\n\n\nSys:",sysExample.name)
 print("\nmodes:",sysExample.modes)

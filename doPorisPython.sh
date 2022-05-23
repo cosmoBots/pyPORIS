@@ -85,7 +85,7 @@ if [ -d "$DEVBASE_USER_PATH" ]; then
 else
   ###  Control will jump here if $DEVBASE_PYTHON_USER_PATH does NOT exists ###
   echo "${DEVBASE_USER_PATH} not found. Copying template dir."
-  cp -r ${PORIS_TOOLS_PYTHON_PATH}'/$S1.user' ${DEVBASE_USER_PATH}
+  cp -r ${PORIS_TOOLS_PYTHON_PATH}'/PORIS/$S1.user' ${DEVBASE_USER_PATH}
   mv ${DEVBASE_USER_PATH}'/$S1_user.py' ${DEVBASE_USER_PATH}/${DEVNAME}_user.py
   sed -i "s/DEVICENAME/$1/" ${DEVBASE_USER_PATH}/${DEVNAME}_user.py
   sed -i "s/DEVICENAME/$1/" ${DEVBASE_USER_PATH}/${DEVNAME}_user.py

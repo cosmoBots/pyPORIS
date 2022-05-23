@@ -389,7 +389,9 @@ def createCxxCode(nodes_dict,deviceName):
             else:
                 # PORISSys prDetector;
                 porishstr += "\t\tsys"+nodename+" = PORISSys(\""+nodename+"\")\n"
+                porishstr += "\t\tself.sys"+nodename+" = sys"+nodename+"\n"
                 porishstr += "\t\tmd"+nodename+"Mode_UNKNOWN = PORISMode(\""+nodename+"Mode_UNKNOWN\")\n"
+                porishstr += "\t\tself.md"+nodename+"Mode_UNKNOWN = md"+nodename+"Mode_UNKNOWN\n"
                 parentNode = None
                 parentNodeName = ""
                 if 'parentnode' in thisnode.keys():
@@ -720,6 +722,7 @@ def createCxxCode(nodes_dict,deviceName):
             if thisclass == "prMode":
                 #PORISMode prDetectorMode_Image;
                 porishstr += "\t\tmd"+parentNodeName+ "Mode_" + nodename+" = PORISMode(\""+parentNodeName+ "Mode_" + nodename+"\")\n"
+                porishstr += "\t\tself.md"+parentNodeName+ "Mode_" + nodename+" = md"+parentNodeName+ "Mode_" + nodename+"\n"
 
                 '''
                 prDetectorMode_UNKNOWN.id = identcounter++;
@@ -743,6 +746,7 @@ def createCxxCode(nodes_dict,deviceName):
                     if thisnode['virtual'] == False:
                         #PORISValue prBinning_1x1;
                         porishstr += "\t\tvl"+parentNodeName+"_" + nodename+" = PORISValue(\""+parentNodeName+"_" + nodename+"\")\n"
+                        porishstr += "\t\tself.vl"+parentNodeName+"_" + nodename+" = vl"+parentNodeName+"_" + nodename+"\n"
                         '''
                         prBinning_1x1.id = identcounter++;
                         prBinning_1x1.idx = MyDASDevice::Binning_1x1;
@@ -761,6 +765,7 @@ def createCxxCode(nodes_dict,deviceName):
                     if thisclass == "prValFloat":             
                         #PORISValueFloat prExpTime_Normal;
                         porishstr += "\t\tvl"+parentNodeName+"_" + nodename+" = PORISValueFloat(\""+parentNodeName+"_" + nodename+"\")\n"
+                        porishstr += "\t\tself.vl"+parentNodeName+"_" + nodename+" = vl"+parentNodeName+"_" + nodename+"\n"
 
                         '''
                         prExpTime_Normal.id = identcounter++;
@@ -782,6 +787,7 @@ def createCxxCode(nodes_dict,deviceName):
                     else:
                         if thisclass == "prValText":
                             porishstr += "\t\tvl"+parentNodeName+"_" + nodename+" = PORISValueText(\""+parentNodeName+"_" + nodename+"\")\n"
+                            porishstr += "\t\tself.vl"+parentNodeName+"_" + nodename+" = vl"+parentNodeName+"_" + nodename+"\n"
                             '''
                             prShiftList_Normal.id = identcounter++;
                             prShiftList_Normal.idx = MyDASDevice::ShiftList_Normal;
