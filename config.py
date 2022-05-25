@@ -35,3 +35,5 @@ methods_function_column = 0
 methods_node_column = 1
 methods_call_column = 2
 methods_device_column = 3
+
+savemem = True
