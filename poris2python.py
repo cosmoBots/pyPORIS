@@ -284,8 +284,7 @@ def createCxxCode(nodes_dict,deviceName):
     porishstr =  "from PORIS import *\n\n"
     porishstr += "class "+deviceName+"PORIS:\n"
     porishstr += "\tdef __init__(self):\n"
-    if not savemem:
-        porishstr += "\t\tidentcounter = 1\n"
+    porishstr += "\t\tidcounter = 1\n"
 
     poriscstr =  ""
 
@@ -331,7 +330,7 @@ def createCxxCode(nodes_dict,deviceName):
                 methodsstr += "\t"+enumname+" get_"+nodename+"(void)\n"
                 methodsstr += "\t"+enumname+" set_"+nodename+"("+enumname+" value)\n"
                 '''
-                prBinning.id = identcounter++;
+                prBinning.id = idcounter++;
                 prBinning.idx = 1;
                 prBinning.ident = "Binning";
                 prBinning.name = "Binning";
@@ -339,7 +338,7 @@ def createCxxCode(nodes_dict,deviceName):
                 prBinning.parent = &prDetector;
                 prDetector.params.push_back(&prBinning);
 
-                prBinning_UNKNOWN.id = identcounter++;
+                prBinning_UNKNOWN.id = idcounter++;
                 prBinning_UNKNOWN.idx = MyDASDevice::Binning_UNKNOWN;
                 prBinning_UNKNOWN.ident = "Binning_UNKNOWN";
                 prBinning_UNKNOWN.name = "Binning_UNKNOWN";
@@ -347,7 +346,7 @@ def createCxxCode(nodes_dict,deviceName):
                 prBinning_UNKNOWN.parent = &prBinning;
                 prBinning.values.push_back(&prBinning_UNKNOWN);
 
-                prBinningMode_UNKNOWN.id = identcounter++;
+                prBinningMode_UNKNOWN.id = idcounter++;
                 prBinningMode_UNKNOWN.idx = MyDASDevice::BinningMode_UNKNOWN;    
                 prBinningMode_UNKNOWN.ident = "BinningMode_UNKNOWN";
                 prBinningMode_UNKNOWN.name = "BinningMode_UNKNOWN";
@@ -373,9 +372,9 @@ def createCxxCode(nodes_dict,deviceName):
                 else:
                     counter = 0
 
+                poriscinitstr += "\n\t\tself.pr"+nodename+".id = idcounter\n"
+                poriscinitstr += "\t\tidcounter += 1\n"
                 if not savemem:
-                    poriscinitstr += "\n\t\tself.pr"+nodename+".id = identcounter\n"
-                    poriscinitstr += "\t\tidentcounter += 1\n"
                     poriscinitstr += "\t\tself.pr"+nodename+".ident = \""+nodename+"\"\n"
                     poriscinitstr += "\t\tself.pr"+nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                 
@@ -383,16 +382,22 @@ def createCxxCode(nodes_dict,deviceName):
                     poriscinitstr += "\t\tself.sys"+parentNodeName+".addParam(self.pr"+nodename+")\n"
 
                 if not savemem:
-                    poriscinitstr += "\n\t\tself.vl"+nodename+ "_UNKNOWN.id = identcounter\n"
-                    poriscinitstr += "\t\tidentcounter += 1\n"
+                    poriscinitstr += "\n\t\tself.vl"+nodename+ "_UNKNOWN.id = idcounter\n"
+                
+                poriscinitstr += "\t\tidcounter += 1\n"
+                if not savemem:
                     poriscinitstr += "\t\tself.vl"+nodename+ "_UNKNOWN.ident = \""+nodename+ "_UNKNOWN\"\n"
                     poriscinitstr += "\t\tself.vl"+nodename+ "_UNKNOWN.description = \"Unknown value for "+nodename+"\"\n"
                 
                 poriscinitstr += "\t\tself.pr"+nodename+".addValue(self.vl"+nodename+ "_UNKNOWN)\n"
 
                 if not savemem:
-                    poriscinitstr += "\n\t\tself.md"+nodename+ "Mode_UNKNOWN.id = identcounter\n"
-                    poriscinitstr += "\t\tidentcounter += 1\n"
+                    poriscinitstr += "\n\t\tself.md"+nodename+ "Mode_UNKNOWN.id = idcounter\n"
+                else:
+                    poriscinitstr += "\n\t\tself.md"+nodename+ "UNKNOWN.id = idcounter\n"
+
+                poriscinitstr += "\t\tidcounter += 1\n"
+                if not savemem:
                     poriscinitstr += "\t\tself.md"+nodename+ "Mode_UNKNOWN.ident = \""+nodename+ "Mode_UNKNOWN\"\n"
                     poriscinitstr += "\t\tself.md"+nodename+ "Mode_UNKNOWN.description = \"Unknown mode for "+nodename+"\"\n"
                 
@@ -432,16 +437,16 @@ def createCxxCode(nodes_dict,deviceName):
                     
 
                 '''
-                prDetector.id = identcounter++;
+                prDetector.id = idcounter++;
                 prDetector.idx = 0;
                 prDetector.ident = "Detector";
                 prDetector.name = "Detector";
                 prDetector.description = "Detector";
                 prDetector.parent = NULL;
                 '''
+                poriscinitstr += "\n\t\tself.sys"+nodename+".id = idcounter\n"
+                poriscinitstr += "\t\tidcounter += 1\n"
                 if not savemem:
-                    poriscinitstr += "\n\t\tself.sys"+nodename+".id = identcounter\n"
-                    poriscinitstr += "\t\tidentcounter += 1\n"
                     poriscinitstr += "\t\tself.sys"+nodename+".ident = \""+nodename+"\"\n"
                     poriscinitstr += "\t\tself.sys"+nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                 
@@ -449,8 +454,12 @@ def createCxxCode(nodes_dict,deviceName):
                     poriscinitstr += "\t\tself.sys"+parentNodeName+".addSubsystem(self.sys"+nodename+")\n" 
 
                 if not savemem:
-                    poriscinitstr += "\n\t\tself.md"+nodename+ "Mode_UNKNOWN.id = identcounter\n"
-                    poriscinitstr += "\t\tidentcounter += 1\n"
+                    poriscinitstr += "\n\t\tself.md"+nodename+ "Mode_UNKNOWN.id = idcounter\n"
+                else:
+                    poriscinitstr += "\n\t\tself.md"+nodename+ "UNKNOWN.id = idcounter\n"
+
+                poriscinitstr += "\t\tidcounter += 1\n"
+                if not savemem:
                     poriscinitstr += "\t\tself.md"+nodename+ "Mode_UNKNOWN.ident = \""+nodename+ "Mode_UNKNOWN\"\n"
                     poriscinitstr += "\t\tself.md"+nodename+ "Mode_UNKNOWN.description = \""+desctomonit(thisnode['description'])+"\"\n"
                     poriscinitstr += "\t\tself.sys"+nodename+".addMode(self.md"+nodename+ "Mode_UNKNOWN)\n"
@@ -790,7 +799,7 @@ def createCxxCode(nodes_dict,deviceName):
                     porishstr += "\t\tself.md"+parentNodeName + nodename+" = PORISMode(\"" + nodename + "\")\n"
 
                 '''
-                prDetectorMode_UNKNOWN.id = identcounter++;
+                prDetectorMode_UNKNOWN.id = idcounter++;
                 prDetectorMode_UNKNOWN.idx = MyDASDevice::DetectorMode_UNKNOWN;
                 prDetectorMode_UNKNOWN.ident = "DetectorMode_UNKNOWN";
                 prDetectorMode_UNKNOWN.name = "DetectorMode_UNKNOWN";
@@ -798,8 +807,13 @@ def createCxxCode(nodes_dict,deviceName):
                 prDetectorMode_UNKNOWN.parent = &prDetector;
                 '''
                 if not savemem:
-                    poriscinitstr += "\n\t\tself.md"+parentNodeName+ "Mode_" + nodename+".id = identcounter\n"
-                    poriscinitstr += "\t\tidentcounter += 1\n"
+                    poriscinitstr += "\n\t\tself.md"+parentNodeName+ "Mode_" + nodename+".id = idcounter\n"
+
+                else:
+                    poriscinitstr += "\n\t\tself.md" + parentNodeName + nodename+".id = idcounter\n"
+
+                poriscinitstr += "\t\tidcounter += 1\n"
+                if not savemem:
                     poriscinitstr += "\t\tself.md"+parentNodeName+ "Mode_" + nodename+".ident = \""+parentNodeName+ "Mode_" + nodename+"\"\n"
                     poriscinitstr += "\t\tself.md"+parentNodeName+ "Mode_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
 
@@ -827,16 +841,16 @@ def createCxxCode(nodes_dict,deviceName):
                             porishstr += "\t\tself.vl"+parentNodeName+"_" + nodename+" = PORISValue(\"" + nodename+"\")\n"
 
                         '''
-                        prBinning_1x1.id = identcounter++;
+                        prBinning_1x1.id = idcounter++;
                         prBinning_1x1.idx = MyDASDevice::Binning_1x1;
                         prBinning_1x1.ident = "Binning_1x1";
                         prBinning_1x1.name = "Binning_1x1";
                         prBinning_1x1.description = "Sin binning";
                         prBinning_1x1.parent = &prBinning;
                         '''                
+                        poriscinitstr += "\n\t\tself.vl"+parentNodeName+ "_" + nodename+".id = idcounter\n"
+                        poriscinitstr += "\t\tidcounter += 1\n"
                         if not savemem:
-                            poriscinitstr += "\n\t\tself.vl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
-                            poriscinitstr += "\t\tidentcounter += 1\n"
                             poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
                             poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                         
@@ -852,16 +866,16 @@ def createCxxCode(nodes_dict,deviceName):
                             porishstr += "\t\tself.vl"+parentNodeName+"_" + nodename+" = PORISValueFloat(\"" + nodename + "\")\n"
 
                         '''
-                        prExpTime_Normal.id = identcounter++;
+                        prExpTime_Normal.id = idcounter++;
                         prExpTime_Normal.idx = MyDASDevice::ExpTime_Normal;
                         prExpTime_Normal.ident = "ExpTime_Normal";
                         prExpTime_Normal.name = "ExpTime_Normal";
                         prExpTime_Normal.description = "Rango normal de valores para ExpTime";
                         prExpTime_Normal.parent = &prExpTime;                    
                         '''                
+                        poriscinitstr += "\n\t\tself.vl"+parentNodeName+ "_" + nodename+".id = idcounter\n"
+                        poriscinitstr += "\t\tidcounter += 1\n"
                         if not savemem:
-                            poriscinitstr += "\n\t\tself.vl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
-                            poriscinitstr += "\t\tidentcounter += 1\n"
                             poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
                             poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                         
@@ -879,16 +893,16 @@ def createCxxCode(nodes_dict,deviceName):
                                 porishstr += "\t\tself.vl"+parentNodeName+"_" + nodename+" = PORISValueText(\""+nodename+"\")\n"
 
                             '''
-                            prShiftList_Normal.id = identcounter++;
+                            prShiftList_Normal.id = idcounter++;
                             prShiftList_Normal.idx = MyDASDevice::ShiftList_Normal;
                             prShiftList_Normal.ident = "ShiftList_Normal";
                             prShiftList_Normal.name = "ShiftList_Normal";
                             prShiftList_Normal.description = "Lista _separada por comas_ con los desplazamientos";
                             prShiftList_Normal.parent = &prShiftList;
                             '''                
+                            poriscinitstr += "\n\t\tself.vl"+parentNodeName+ "_" + nodename+".id = idcounter\n"
+                            poriscinitstr += "\t\tidcounter += 1\n"
                             if not savemem:
-                                poriscinitstr += "\n\t\tself.vl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
-                                poriscinitstr += "\t\tidentcounter += 1\n"
                                 poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
                                 poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                             

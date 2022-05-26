@@ -50,10 +50,10 @@ class PORISMode(PORIS):
         self.submodes = {}
         
     def addSubMode(self,m):
-        self.submodes[m.name] = m
+        self.submodes[m.id] = m
 
     def addValue(self,v):
-        self.values[v.name] = v
+        self.values[v.id] = v
     
     def getEligibleValue(self,v,current):
         if debug:
@@ -65,10 +65,10 @@ class PORISMode(PORIS):
             print(self.values.keys())
 
         ret = None
-        if v.name in self.values.keys():
+        if v.id in self.values.keys():
             ret = v
         else:
-            if current.name in self.values.keys():
+            if current.id in self.values.keys():
                 ret = current
             else:
                 itk = list(self.values.keys())[0]
@@ -86,11 +86,11 @@ class PORISMode(PORIS):
         if debug:
             print(self.submodes.keys())
 
-        if m.name in self.submodes.keys():
+        if m.id in self.submodes.keys():
             ret = m
         
         else:
-            if current.name in self.submodes.keys():
+            if current.id in self.submodes.keys():
                 ret = current
                 
             else:
@@ -138,7 +138,7 @@ class PORISNode(PORIS):
     
     
     def addMode(self,m):
-        self.modes[m.name] = m
+        self.modes[m.id] = m
         m.parent = self
         if self.selectedMode == None:
             self.selectedMode = m
@@ -224,10 +224,10 @@ class PORISNode(PORIS):
         
         return ret
 
-    def getModeFromName(self,name):
+    def getModeFromId(self,myid):
         ret = None
-        if name in self.modes.keys():
-            ret = self.modes[name]
+        if myid in self.modes.keys():
+            ret = self.modes[myid]
 
         return ret        
 
@@ -240,7 +240,7 @@ class PORISParam(PORISNode):
         self.values = {}
   
     def addValue(self,v):
-        self.values[v.name] = v
+        self.values[v.id] = v
         v.parent = self
         if self.selectedValue == None:
             self.selectedValue = v
@@ -271,10 +271,10 @@ class PORISParam(PORISNode):
 
         return ret
 
-    def getValueFromName(self,name):
+    def getValueFromId(self,myid):
         ret = None
-        if name in self.values.keys():
-            ret = self.values[name]
+        if myid in self.values.keys():
+            ret = self.values[myid]
 
         return ret        
 
@@ -341,11 +341,11 @@ class PORISSys(PORISNode):
         self.subsystems = {}
 
     def addParam(self,p):
-        self.params[p.name] = p
+        self.params[p.id] = p
         p.parent = self
 
     def addSubsystem(self,s):
-        self.subsystems[s.name] = s
+        self.subsystems[s.id] = s
         s.parent = self
         
     def setMode(self,m):
@@ -389,42 +389,42 @@ class PORISSys(PORISNode):
         return ret
 
    
-    def getSubSystemFromName(self,name):
+    def getSubSystemFromId(self,myid):
         ret = None
-        if name in self.subsystems.keys():
-            ret = self.subsystems[name]
+        if myid in self.subsystems.keys():
+            ret = self.subsystems[myid]
 
         return ret
     
-    def getSubParamFromName(self,name):
+    def getSubParamFromId(self,myid):
         ret = None
-        if name in self.params.keys():
-            ret = self.params[name]
+        if myid in self.params.keys():
+            ret = self.params[myid]
 
         return ret
     
-    def getDescendantFromName(self,name):
-        ret = self.getSubSystemFromName(name)
+    def getDescendantFromId(self,myid):
+        ret = self.getSubSystemFromId(myid)
         if ret is None:
             for sk in self.subsystems.keys():
                 s = self.subsystems[sk]
-                ret = s.getDescendantFromName(name)
+                ret = s.getDescendantFromId(myid)
                 if ret is not None:
                     break
 
         return ret
     
-    def getDescendantParamFromName(self,name):
-        ret = self.getSubParamFromName(name)
+    def getDescendantParamFromId(self,myid):
+        ret = self.getSubParamFromName(myid)
         if ret is None:
             print("no es un hijo directo")
-            print(name,self.name,self.subsystems)
+            print(myid,self.myid,self.subsystems)
             for sk in self.subsystems.keys():
                 if debug:
                     print(sk)
 
                 s = self.subsystems[sk]
-                ret = s.getDescendantParamFromName(name)
+                ret = s.getDescendantParamFromName(myid)
                 if ret is not None:
                     if debug:
                         print("Tenemos",ret)
