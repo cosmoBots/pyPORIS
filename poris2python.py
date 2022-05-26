@@ -561,10 +561,10 @@ def createCxxCode(nodes_dict,deviceName):
                                         
                                         if not savemem:
                                             poriscinitrelstr += "\t\t# Marcamos "+nodename+"Mode_"+kvname+" como elegible para "+parentnodename+"Mode_"+childname+"\n"
-                                            poriscinitrelstr += "\t\tmd"+parentnodename+"Mode_"+childname+".addSubMode(self.md"+nodename+"Mode_"+kvname+")\n"
+                                            poriscinitrelstr += "\t\tself.md"+parentnodename+"Mode_"+childname+".addSubMode(self.md"+nodename+"Mode_"+kvname+")\n"
                                         
                                         else:
-                                            poriscinitrelstr += "\t\tmd"+parentnodename+childname+".addSubMode(self.md"+nodename+kvname+")\n"
+                                            poriscinitrelstr += "\t\tself.md"+parentnodename+childname+".addSubMode(self.md"+nodename+kvname+")\n"
 
                                         anyvaluepresentparentinner = True
                                         if not firstfound:
@@ -638,10 +638,10 @@ def createCxxCode(nodes_dict,deviceName):
                                 if kvnode['virtual'] == False:
                                     if not savemem:
                                         poriscinitrelstr += "\t\t# Marcamos "+nodename+"_"+kvname+" como elegible para "+nodename+"Mode_"+childname+"\n"
-                                        poriscinitrelstr += "\t\tmd"+nodename+"Mode_"+childname+".addValue(self.vl"+nodename+"_"+kvname+")\n"
+                                        poriscinitrelstr += "\t\tself.md"+nodename+"Mode_"+childname+".addValue(self.vl"+nodename+"_"+kvname+")\n"
 
                                     else:
-                                        poriscinitrelstr += "\t\tmd"+nodename+childname+".addValue(self.vl"+nodename+"_"+kvname+")\n"
+                                        poriscinitrelstr += "\t\tself.md"+nodename+childname+".addValue(self.vl"+nodename+"_"+kvname+")\n"
 
                                 anyvaluepresentinner = True
                                 if not firstdone:
@@ -798,23 +798,23 @@ def createCxxCode(nodes_dict,deviceName):
                 prDetectorMode_UNKNOWN.parent = &prDetector;
                 '''
                 if not savemem:
-                    poriscinitstr += "\n\t\tmd"+parentNodeName+ "Mode_" + nodename+".id = identcounter\n"
+                    poriscinitstr += "\n\t\tself.md"+parentNodeName+ "Mode_" + nodename+".id = identcounter\n"
                     poriscinitstr += "\t\tidentcounter += 1\n"
-                    poriscinitstr += "\t\tmd"+parentNodeName+ "Mode_" + nodename+".ident = \""+parentNodeName+ "Mode_" + nodename+"\"\n"
-                    poriscinitstr += "\t\tmd"+parentNodeName+ "Mode_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
+                    poriscinitstr += "\t\tself.md"+parentNodeName+ "Mode_" + nodename+".ident = \""+parentNodeName+ "Mode_" + nodename+"\"\n"
+                    poriscinitstr += "\t\tself.md"+parentNodeName+ "Mode_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
 
                 if parentNode['tracker'] == "prParam":
                     if not savemem:
-                        poriscinitstr += "\t\tpr"+parentNodeName+".addMode(self.md"+parentNodeName+ "Mode_" + nodename+")\n"
+                        poriscinitstr += "\t\tself.pr"+parentNodeName+".addMode(self.md"+parentNodeName+ "Mode_" + nodename+")\n"
 
                     else:
-                        poriscinitstr += "\t\tpr"+parentNodeName+".addMode(self.md"+ nodename+")\n"
+                        poriscinitstr += "\t\tself.pr"+parentNodeName+".addMode(self.md"+parentNodeName+ nodename+")\n"
                 else:
                     if not savemem:
-                        poriscinitstr += "\t\tsys"+parentNodeName+".addMode(self.md"+parentNodeName+ "Mode_" + nodename+")\n"
+                        poriscinitstr += "\t\tself.sys"+parentNodeName+".addMode(self.md"+parentNodeName+ "Mode_" + nodename+")\n"
 
                     else:
-                        poriscinitstr += "\t\tsys"+parentNodeName+".addMode(self.md" + nodename+")\n"
+                        poriscinitstr += "\t\tself.sys"+parentNodeName+".addMode(self.md"+parentNodeName + nodename+")\n"
 
             else:
                 if thisclass == "prValue":
@@ -835,12 +835,12 @@ def createCxxCode(nodes_dict,deviceName):
                         prBinning_1x1.parent = &prBinning;
                         '''                
                         if not savemem:
-                            poriscinitstr += "\n\t\tvl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
+                            poriscinitstr += "\n\t\tself.vl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
                             poriscinitstr += "\t\tidentcounter += 1\n"
-                            poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
-                            poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
+                            poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
+                            poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                         
-                        poriscinitstr += "\t\tpr"+parentNodeName+".addValue(self.vl"+parentNodeName+ "_" + nodename+")\n"
+                        poriscinitstr += "\t\tself.pr"+parentNodeName+".addValue(self.vl"+parentNodeName+ "_" + nodename+")\n"
 
                 else:
                     if thisclass == "prValFloat":             
@@ -860,15 +860,15 @@ def createCxxCode(nodes_dict,deviceName):
                         prExpTime_Normal.parent = &prExpTime;                    
                         '''                
                         if not savemem:
-                            poriscinitstr += "\n\t\tvl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
+                            poriscinitstr += "\n\t\tself.vl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
                             poriscinitstr += "\t\tidentcounter += 1\n"
-                            poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
-                            poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
+                            poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
+                            poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                         
-                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".min = "+str(thisnode['min'])+"\n"
-                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".default_data = "+str(thisnode['default_data'])+"\n"
-                        poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".max = "+str(thisnode['max'])+"\n"                  
-                        poriscinitstr += "\t\tpr"+parentNodeName+".addValue(self.vl"+parentNodeName+ "_" + nodename+")\n"
+                        poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".min = "+str(thisnode['min'])+"\n"
+                        poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".default_data = "+str(thisnode['default_data'])+"\n"
+                        poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".max = "+str(thisnode['max'])+"\n"                  
+                        poriscinitstr += "\t\tself.pr"+parentNodeName+".addValue(self.vl"+parentNodeName+ "_" + nodename+")\n"
 
                     else:
                         if thisclass == "prValText":
@@ -887,13 +887,13 @@ def createCxxCode(nodes_dict,deviceName):
                             prShiftList_Normal.parent = &prShiftList;
                             '''                
                             if not savemem:
-                                poriscinitstr += "\n\t\tvl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
+                                poriscinitstr += "\n\t\tself.vl"+parentNodeName+ "_" + nodename+".id = identcounter\n"
                                 poriscinitstr += "\t\tidentcounter += 1\n"
-                                poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
-                                poriscinitstr += "\t\tvl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
+                                poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
+                                poriscinitstr += "\t\tself.vl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                             
                             # TODO: Finish prValText initialization (default data)
-                            poriscinitstr += "\t\tpr"+parentNodeName+".addValue(self.vl"+parentNodeName+ "_" + nodename+")\n"
+                            poriscinitstr += "\t\tself.pr"+parentNodeName+".addValue(self.vl"+parentNodeName+ "_" + nodename+")\n"
 
                         else:
                             porishstr += "\t\t//TODO: Other xx"+parentNodeName+ "_" + nodename+"\n"
