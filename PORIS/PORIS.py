@@ -96,7 +96,7 @@ class PORISMode(PORIS):
             else:
                 # If none of two are found, search the first submode with the same parent
                 if debug:
-                    print("Ni el que me piden ni el que esta, tengo que buscar uno nuevo",self.submodes.keys())
+                    print("None of the two given, I have only these keys",self.submodes.keys())
 
                 for ks in self.submodes.keys():
                     s = self.submodes[ks]
@@ -108,7 +108,7 @@ class PORISMode(PORIS):
                         break
                 
                 if ret is None:
-                    # No he podido aplicar ninguno, así que tengo que aplicar el primero (modo UNKNOWN)
+                    # None of the given or applicable, I have to apply the first (UNKNOWN mode)
                     ret = m.parent.modes[list(m.parent.modes.keys())[0]]
                 
 
@@ -146,7 +146,6 @@ class PORISNode(PORIS):
         self.modes[m.id] = m
         m.parent = self
         if self.selectedMode == None:
-            print("*1 anyado",m)
             self.selectedMode = m
 
     def init(self):
@@ -272,7 +271,6 @@ class PORISParam(PORISNode):
             ret = self.modes[mk]
 
         if ret != self.selectedMode:
-            print("*2 anyado",ret)
             self.selectedMode = ret
             self.setValue(self.selectedValue)
 
@@ -356,11 +354,10 @@ class PORISSys(PORISNode):
         s.parent = self
         
     def setMode(self,m):
-        if True: #debug:
+        if debug:
             print("Entro en Sys setMode de", self.name, "con modo", m.name)
 
         ret = self.getEligibleMode(m)
-        print(ret)
         if ret is None:
             if debug:
                 print("el nuevo modo es NULO que es diferente del seleccionado")
@@ -370,14 +367,13 @@ class PORISSys(PORISNode):
             ret = self.modes[mk]
 
         if ret != self.selectedMode:
-            if True: #debug:
+            if debug:
                 print("el nuevo modo es", ret.name)
                 if self.selectedMode is not None:
                     print (" que es diferente de",self.selectedMode.name)
                 else:
                     print(" que es diferente de NULO")
 
-            print("*3 anyado",ret)
             self.selectedMode = ret
             
             for k in self.params.keys():
