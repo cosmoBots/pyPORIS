@@ -96,7 +96,7 @@ class PORISMode(PORIS):
             else:
                 # If none of two are found, search the first submode with the same parent
                 if debug:
-                    print("Pruebo aqui",self.submodes.keys())
+                    print("Ni el que me piden ni el que esta, tengo que buscar uno nuevo",self.submodes.keys())
 
                 for ks in self.submodes.keys():
                     s = self.submodes[ks]
@@ -106,6 +106,11 @@ class PORISMode(PORIS):
                     if s.parent == m.parent:
                         ret = s
                         break
+                
+                if ret is None:
+                    # No he podido aplicar ninguno, así que tengo que aplicar el primero (modo UNKNOWN)
+                    ret = m.parent.modes[list(m.parent.modes.keys())[0]]
+                
 
         return ret
     
@@ -141,17 +146,18 @@ class PORISNode(PORIS):
         self.modes[m.id] = m
         m.parent = self
         if self.selectedMode == None:
+            print("*1 anyado",m)
             self.selectedMode = m
 
     def init(self):
         if debug:
             print("Init de",self.name,", número de modos:" , len(self.modes))
 
-        firstMode = list(self.modes.keys())[0]
+        firstMode = self.modes[list(self.modes.keys())[0]]
         if debug:
             print("Init ", self.name + ":",firstMode.name)
 
-        self.setMode(firstMode)    
+        self.setMode(firstMode)
     
     def setEligibleMode(self):
         if debug:
@@ -266,6 +272,7 @@ class PORISParam(PORISNode):
             ret = self.modes[mk]
 
         if ret != self.selectedMode:
+            print("*2 anyado",ret)
             self.selectedMode = ret
             self.setValue(self.selectedValue)
 
@@ -349,10 +356,11 @@ class PORISSys(PORISNode):
         s.parent = self
         
     def setMode(self,m):
-        if debug:
+        if True: #debug:
             print("Entro en Sys setMode de", self.name, "con modo", m.name)
 
         ret = self.getEligibleMode(m)
+        print(ret)
         if ret is None:
             if debug:
                 print("el nuevo modo es NULO que es diferente del seleccionado")
@@ -362,13 +370,14 @@ class PORISSys(PORISNode):
             ret = self.modes[mk]
 
         if ret != self.selectedMode:
-            if debug:
+            if True: #debug:
                 print("el nuevo modo es", ret.name)
                 if self.selectedMode is not None:
                     print (" que es diferente de",self.selectedMode.name)
                 else:
                     print(" que es diferente de NULO")
 
+            print("*3 anyado",ret)
             self.selectedMode = ret
             
             for k in self.params.keys():
