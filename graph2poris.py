@@ -355,6 +355,10 @@ def create_ods_file_from_graphml_file(filename, deviceName):
           if node_shape == "roundrectangle":
             node_dict['node_type'] = "prMode"
 
+          else:
+            if node_shape == "ellipse":
+              node_dict['node_type'] = "prCmd"
+
         node_tree = []
 
         if('parent_group_name' in groups_dict[node_dict['node_group_id']]):
