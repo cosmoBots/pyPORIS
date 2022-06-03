@@ -82,7 +82,7 @@
           <y:BorderStyle color="#000000" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#99CCFF" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="90.0" x="0.0" xml:space="preserve" y="0.0">Param</y:NodeLabel>
           <y:Shape type="roundrectangle"/>
-          <y:State closed="false" closedHeight="172.4692382713929" closedWidth="261.2228878541255" innerGraphDisplayEnabled="false"/>
+          <y:State closed="false" closedHeight="172.4692382713929" closedWidth="261.2228878541255" groupDepthFillColorEnabled="false" innerGraphDisplayEnabled="false"/>
           <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
           <y:BorderInsets bottom="0" bottomF="0.0" left="8" leftF="8.0" right="21" rightF="21.0" top="0" topF="0.0"/>
         </y:GroupNode>
@@ -265,6 +265,20 @@
         </y:ProxyAutoBoundsNode>
       </data>
       <graph edgedefault="directed" id="n14:"/>
+    </node>
+    <node id="n15">
+      <data key="d3" xml:space="preserve"><![CDATA[fa53e595-2e56-4b2d-8e78-c3984419a1d2]]></data>
+      <data key="d4"/>
+      <data key="d5" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/4485]]></data>
+      <data key="d7">
+        <y:ShapeNode>
+          <y:Geometry height="50.0" width="115.0" x="0.0" y="1707.3791055961901"/>
+          <y:Fill color="#99FF99" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="69.595703125" x="22.7021484375" xml:space="preserve" y="16.015625">command<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:Shape type="ellipse"/>
+        </y:ShapeNode>
+      </data>
     </node>
     <edge id="e0" source="n5" target="n6">
       <data key="d9" xml:space="preserve"><![CDATA[73528db0-a261-42cb-bfbe-75a22707d127]]></data>

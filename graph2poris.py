@@ -331,7 +331,10 @@ def create_ods_file_from_graphml_file(filename, deviceName):
               if node_color == "#CCCCFF":
                 node_dict['node_type'] = "prValFloat"
                 second_label = node.find('y:NodeLabel',{"textColor":"#0000FF"}).text.strip()
-                valueslist = second_label.split('<')
+                valueslist = second_label.split('≤')
+                if len(valueslist) == 1:
+                  valueslist = second_label.split('<')
+                
                 #print(">>>>>>",valueslist)
                 node_dict['min'] = float(valueslist[0].strip())
                 node_dict['default'] = float(valueslist[1].strip())
@@ -351,6 +354,10 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         else:
           if node_shape == "roundrectangle":
             node_dict['node_type'] = "prMode"
+
+          else:
+            if node_shape == "ellipse":
+              node_dict['node_type'] = "prCmd"
 
         node_tree = []
 

@@ -895,10 +895,15 @@ def createPorisXML(nodes_dict,deviceName):
                         else:
                             if thisdest['tracker'] == "prSys" or thisdest['tracker'] == 'prParam':
                                 dest.setAttribute("type", "SubSystem")
-                            
+
                             else:
-                                dest.setAttribute("type", "Error2!!!")
-                                print("Error2!!")
+                                if thisdest['tracker'] == "prCmd":
+                                    valueText = thisdest['subject']
+                                    dest.setAttribute("type", "Cmd")               
+
+                                else:
+                                    dest.setAttribute("type", "Error2!!!")
+                                    print("Error2!!")
 
                     destidnode = rootInstr.createElement('id')
                     destidnode.setAttribute("type","integer")
