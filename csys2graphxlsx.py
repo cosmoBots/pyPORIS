@@ -57,7 +57,6 @@ def scan_project(p):
 
     for i in p.issues:
         i_ident = i.custom_fields.get(cfdict['csID'].id).value
-        print(i_ident)
         if hasattr(i,'parent') and (i.parent is not None):
             parent = redmine.issue.get(i.parent.id)
             parent_ident = parent.custom_fields.get(cfdict['csID'].id).value
@@ -67,7 +66,13 @@ def scan_project(p):
             parent_ident = ""
 
         rm_issues_dict[i_ident] = i
-        nodestable += [[i_ident,i.subject,parent_ident,str(i.id),rm_server_url+'/issues/'+str(i.id),i.tracker.name,i.description,i.status.name]]
+        if hasattr(i,'description'):
+            idescription = i.description
+
+        else:
+            idescription = ""
+        
+        nodestable += [[i_ident,i.subject,parent_ident,str(i.id),rm_server_url+'/issues/'+str(i.id),i.tracker.name,idescription,i.status.name]]
         for r in i.relations:
             if (not onlyblocks) or (r.relation_type == "blocks"):
                 if r.issue_id == i.id:
