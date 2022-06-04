@@ -145,3 +145,9 @@ models/example.old.graphml
 config_rm_enabled.py
 models/*.backup
 
+/*.png
+/*.xlsx
+/*.svg
+/*.graphml
+.~lock.*
+
