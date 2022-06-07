@@ -19,7 +19,7 @@ fi
 rm $FILE1
 rm $FILE3
 
-cp config_csys_disabled.py config_csys.py
+cp config_csys_enabled.py config_csys.py
 python3 graphdir2poris.py $DIR || { echo "graph2poris could not be processed"; exit 1; }
 if test -f "$FILE1"; then
     echo "Input $FILE1 exists, continuing"
