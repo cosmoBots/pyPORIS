@@ -10,30 +10,11 @@ from config_rm import *
 
 # Importing test configuration file
 import config
-
+from graph2porislib import *
 
 file_data = ['','']
 localcsids = {}
 inverse_localcsids = {}
-
-def convert_list_to_string(list, delimiter):
-  list_string = ''
-
-  if len(list)>0:
-    for item in list[:-1]:
-      list_string = list_string + item + delimiter
-
-    list_string = list_string + list[-1]
-
-  return list_string
-
-def convert_sorted_list_to_dictionary_with_sequence_index(list):
-  dictionary_with_sequence_index = {}
-
-  for index, value in enumerate(list):
-    dictionary_with_sequence_index[value] = index + 1
-
-  return dictionary_with_sequence_index
 
 def create_ods_file_from_graphml_file(filename, deviceName):
   global file_data
@@ -633,18 +614,6 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
   else:
     print("\n\nPROCESS CANCELLED\n\n\n")
-
-
-########################################
-
-  def get_filenames_in_directory(directory):
-    filenames = []
-    for root, dirs, files in os.walk(directory):
-      for filename in files:
-        filenames.append(filename)
-
-    return filenames
-
 
 ######### WE WILL PARSE THE COMMAND LINE ARGUMENTS FOR THE WRAPPER GEN #############
 parser = argparse.ArgumentParser(description='Launches a PORIS device generation ODS from an GraphML diagram describing the PORIS instrument')

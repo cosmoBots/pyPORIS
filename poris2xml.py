@@ -241,17 +241,18 @@ def loadODS():
                 for ch0 in thisnode['children']:
                     if nodes_dict[ch0]['tracker'] == "prSys" or nodes_dict[ch0]['tracker'] == "prParam":
                         for ch in nodes_dict[ch0]['children']:
-                            if nodes_dict[ch]['tracker'] == "prMode":
-                                if nodes_dict[ch]['virtual'] == False:
-                                    virtnode['blocking'] += [ch]
-                                    print(ch,nodes_dict[ch]['subject'],"bloquea a",virtident,virtnode['description'])
-                                    #print(virtnode['blocking'])
+                            if ch in nodes_dict.keys():
+                                if nodes_dict[ch]['tracker'] == "prMode":
+                                    if nodes_dict[ch]['virtual'] == False:
+                                        virtnode['blocking'] += [ch]
+                                        #print(virtnode['blocking'])
 
                 if len(virtnode['blocking']) > 0:
                     nodes_to_add[virtident] = virtnode
                     thisnode['children'].append(virtident)
 
-
+    for n in nodes_to_add.keys():
+        nodes_dict[n] = nodes_to_add[n]
 
     tree_dict = {}
     while len(tree_dict) < len(nodes_dict):
