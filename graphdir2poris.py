@@ -14,6 +14,11 @@ import config
 from graph2porislib import *
 import glob
 
+debug2JSON = False
+
+if debug2JSON:
+  import json
+
 def gettypeabbrev(t):
   if t == "prSys":
     return "s#"
@@ -70,6 +75,8 @@ def create_tree_from_graphml_dir(dirname, deviceName):
   node_aliases = {}
   inverse_aliases = {}
   csys_dict = {}
+  global_file_identifier = ""
+  global_file_cscode = ""
 
   for filename in filenames:
     basefilename = Path(filename).stem
@@ -115,6 +122,10 @@ def create_tree_from_graphml_dir(dirname, deviceName):
         else:
           file_cscode = 'instrument'
 
+    if deviceName == basefilename:
+      global_file_identifier = file_identifier
+      global_file_cscode = file_cscode
+    
     #print("csCode:",file_cscode)
     #print("identifier:",file_identifier)
 
@@ -162,13 +173,13 @@ def create_tree_from_graphml_dir(dirname, deviceName):
 
       node_shape = node.find('y:Shape')['type'].strip()
       normal_node['shape'] = node_shape
-      
+      normal_node['csID'] = None
       normal_node['min'] = None
       normal_node['default'] = None
       normal_node['max'] = None
       normal_node['defaulttext'] = None
       normal_node['project'] = None
-      normal_node['rmid'] = ""
+      normal_node['rmid'] = 0
       normal_node['url'] = ""
       normal_node['relations'] = []
       normal_node['next'] = []
@@ -326,20 +337,18 @@ def create_tree_from_graphml_dir(dirname, deviceName):
   # In the case a normalized node is the root of its drawing, the parent must be taken from the external references
 
 
-  '''
-  import json
-  out_file = open("node_aliases.json", "w")
-  json.dump(node_aliases, out_file, indent=4)
-  out_file.close()  
+  if debug2JSON:
+    out_file = open("node_aliases.json", "w")
+    json.dump(node_aliases, out_file, indent=4)
+    out_file.close()  
 
-  out_file = open("inverse_aliases.json", "w")
-  json.dump(inverse_aliases, out_file, indent=4)
-  out_file.close()  
+    out_file = open("inverse_aliases.json", "w")
+    json.dump(inverse_aliases, out_file, indent=4)
+    out_file.close()  
 
-  out_file = open("normalized_dict.json", "w")
-  json.dump(normalized_dict, out_file, indent=4)
-  out_file.close()
-  '''
+    out_file = open("normalized_dict.json", "w")
+    json.dump(normalized_dict, out_file, indent=4)
+    out_file.close()
 
   # And now, we have to re-link the relationships to the normalized targets
   for key in global_dict:
@@ -353,15 +362,24 @@ def create_tree_from_graphml_dir(dirname, deviceName):
     for r in normal_node['next']:
       normalized_node['normalized_next'] += [node_aliases[r]]
 
-  out_file = open("global_dict.json", "w")
-  json.dump(global_dict, out_file, indent=4)
-  out_file.close()
+  if debug2JSON:
+    out_file = open("global_dict.json", "w")
+    json.dump(global_dict, out_file, indent=4)
+    out_file.close()
 
+  # At this moment, we have finished all the relationships and we are about to create the output file
+  # We will use the information in the csID attributes to translate the keys to be written on it
+
+  translator_dict = {}
+  for key in normalized_dict.keys():
+    n = normalized_dict[key]
+    if n['csID'] is not None:
+      translator_dict[key] = n['csID']
+    
 
 
   rows = [['RM#','url','RMID','ID','row#','subject','','tracker','Rlv?','status','parent', 
   'blocking_items','precedent_items','prMin','prDefault','prMax','prDefaultText','version','priority']]
-
 
   for key in normalized_dict.keys():
     row = []
@@ -374,18 +392,35 @@ def create_tree_from_graphml_dir(dirname, deviceName):
           if len(inverse_aliases[key]) > 0:
             n['parentkey'] = global_dict[inverse_aliases[key][0]]['parentkey']
 
-    print(n['parentkey'])
     if n['parentkey']:
       strparent = node_aliases[n['parentkey']]
+      if strparent in translator_dict.keys():
+        strparent = translator_dict[strparent]
 
     s = ','
     strrel = ''
     if n['normalized_relations'] is not None:
-      strrel = s.join(n['normalized_relations'])
+      rels = []
+      for r in n['normalized_relations']:
+        if r in translator_dict.keys():
+          rels += [translator_dict[r]]
+
+        else:
+          rels += [r]
+
+      strrel = s.join(rels)
 
     strnext = ''
     if n['normalized_next'] is not None:
-      strnext = s.join(n['normalized_next'])
+      rels = []
+      for r in n['normalized_next']:
+        if r in translator_dict.keys():
+          rels += [translator_dict[r]]
+
+        else:
+          rels += [r]
+
+      strnext = s.join(rels)
 
     strmin = ''
     if n['min'] is not None:
@@ -403,7 +438,13 @@ def create_tree_from_graphml_dir(dirname, deviceName):
     if n['defaulttext'] is not None:
       strdefaulttext = n['defaulttext']
 
-    thisid = n['globalpath']
+    #thisid = n['globalpath']
+    if key in translator_dict.keys():
+      thisid = translator_dict[key]
+
+    else:
+      thisid = key
+
      
 
     row += [[n['rmid'],n['url'],n['rmid'],thisid,'',n['name'],'',n['node_type'],'','',
@@ -415,7 +456,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
     rows += row
 
   data.update({"Dict": [['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',5,'',len(rows)+1]
-  , ['',''], ['',''], ['',file_identifier], ['',file_cscode]]})
+  , ['',''], ['',''], ['',global_file_identifier], ['',global_file_cscode]]})
   data.update({"Items": rows})
   data.update({"ExtraFields":[[]]})
 
