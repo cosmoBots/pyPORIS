@@ -326,6 +326,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
   # In the case a normalized node is the root of its drawing, the parent must be taken from the external references
 
 
+  '''
   import json
   out_file = open("node_aliases.json", "w")
   json.dump(node_aliases, out_file, indent=4)
@@ -338,6 +339,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
   out_file = open("normalized_dict.json", "w")
   json.dump(normalized_dict, out_file, indent=4)
   out_file.close()
+  '''
 
   # And now, we have to re-link the relationships to the normalized targets
   for key in global_dict:
@@ -425,7 +427,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
   odsextension = ".ods"
     
 
-  save_data(os.path.join(dirname,onlyname+odsextension), data)
+  save_data(os.path.join(dirname,deviceName+odsextension), data)
 
 
 
