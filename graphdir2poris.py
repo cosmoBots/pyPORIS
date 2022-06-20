@@ -197,7 +197,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
       #print("identifier:",file_identifier)
 
       # Create the local tree
-        groups_dict = {}
+      groups_dict = {}
 
       for group in groups:
         group_node = {}
@@ -294,17 +294,17 @@ def create_tree_from_graphml_dir(dirname, deviceName):
           node.append(csiddatanode)
         
         if rmiddatanode is None:
-          rmiddatanode = soup.new_tag('data',key=csidkey)
+          rmiddatanode = soup.new_tag('data',key=csrmid)
           rmiddatanode.string = ""
           node.append(rmiddatanode)
 
         if urldatanode is None:
-          urldatanode = soup.new_tag('data',key=csidkey)
+          urldatanode = soup.new_tag('data',key=urlkey)
           urldatanode.string = ""
           node.append(urldatanode)
 
         if projectdatanode is None:
-          projectdatanode = soup.new_tag('data',key=csidkey)
+          projectdatanode = soup.new_tag('data',key=csproject)
           projectdatanode.string = ""
           node.append(projectdatanode)
 
