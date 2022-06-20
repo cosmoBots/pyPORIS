@@ -1,4 +1,4 @@
-from config_rm import *
+from config_csys import *
 from redminelib import Redmine
 import argparse                     # This library allows us to easily parse the command line arguments
 # Importing test configuration file
@@ -29,9 +29,9 @@ rmissues = {}
 from redminelib import Redmine
 
 if ignore_cert:
-    redmine = Redmine(rm_server_url,key=rm_key_txt, requests={'verify': False})
+    redmine = Redmine(csys_server_url,key=csys_key_txt, requests={'verify': False})
 else:
-    redmine = Redmine(rm_server_url,key=rm_key_txt)
+    redmine = Redmine(csys_server_url,key=csys_key_txt)
 
 projects = redmine.project.all()
 
@@ -72,7 +72,7 @@ def scan_project(p):
         else:
             idescription = ""
         
-        nodestable += [[i_ident,i.subject,parent_ident,str(i.id),rm_server_url+'/issues/'+str(i.id),i.tracker.name,idescription,i.status.name]]
+        nodestable += [[i_ident,i.subject,parent_ident,str(i.id),csys_server_url+'/issues/'+str(i.id),i.tracker.name,idescription,i.status.name]]
         for r in i.relations:
             if (not onlyblocks) or (r.relation_type == "blocks"):
                 if r.issue_id == i.id:

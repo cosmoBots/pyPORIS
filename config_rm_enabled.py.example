@@ -1,8 +1,0 @@
-rm_use = True
-
-if rm_use:
-    # This section configures the connection between the Datalogger tools and the Redmine instance which implements the requirements database
-    rm_server_url = 'http://csys.cosmobots.eu:3000'	# The cosmoSys URL
-    rm_key_txt = 'APIKEY'			# The API key of the user (or bot) in which name the actions are undertaken.
-    ignore_cert = True  # Set to True if you want to avoid certificate checking
-

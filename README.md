@@ -31,7 +31,7 @@ or, if wanting to sync it with a cosmoSys instance:
 
     ./porispanel_csys.sh example
 
-The cosmoSys instance has to be configured by copying pyPORIS/config_rm_enabled.py.example to pyPORIS/config_rm_enabled.py and adding your secrets there.
+The cosmoSys instance has to be configured by copying pyPORIS/config_csys_enabled.py.example to pyPORIS/config_csys_enabled.py and adding your secrets there.
 ### Windows
 Simply:
 
@@ -41,7 +41,7 @@ or, if wanting to sync it with a cosmoSys instance:
 
     winporispanel_csys.bat example
 
-The cosmoSys instance has to be configured by copying pyPORIS\config_rm_enabled.py.example to pyPORIS\config_rm_enabled.py and adding your secrets there.
+The cosmoSys instance has to be configured by copying pyPORIS\config_csys_enabled.py.example to pyPORIS\config_csys_enabled.py and adding your secrets there.
 
 ## Conclusion
 Happy modeling!
