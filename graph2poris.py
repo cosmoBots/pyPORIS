@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from pyexcel_ods import save_data
 from collections import OrderedDict
 from pathlib import Path
-from config_rm import *
+from config_csys import *
 
 # Importing test configuration file
 import config
@@ -63,7 +63,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
   print("identifier:",file_identifier)
 
   continueProcess = False
-  if not rm_use:
+  if not csys_use:
     continueProcess = True
   else:
     import requests as req
@@ -73,9 +73,9 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     from redminelib import Redmine
 
     if ignore_cert:
-        redmine = Redmine(rm_server_url,key=rm_key_txt, requests={'verify': False})
+        redmine = Redmine(csys_server_url,key=csys_key_txt, requests={'verify': False})
     else:
-        redmine = Redmine(rm_server_url,key=rm_key_txt)
+        redmine = Redmine(csys_server_url,key=csys_key_txt)
 
     projects = redmine.project.all()
 
@@ -402,7 +402,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       
       print(localcsids)
 
-      if rm_use:
+      if csys_use:
         trackerdict = {}
         trackers = redmine.tracker.all()
         for tr in trackers:
@@ -414,7 +414,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
       for n in csv_dict_data:
         rmissueneeded = False
-        if rm_use:
+        if csys_use:
           # See if the id exists in redmine
           if n['csID'] not in rm_issues_dict.keys():
             print("NO",n['csID'],rm_issues_dict.keys())
@@ -432,8 +432,8 @@ def create_ods_file_from_graphml_file(filename, deviceName):
               tracker_id = thistrackerid,
               subject = n['node_name'],
           )
-          url = rm_server_url+'/issues/'+str(thisRmTsk.id)
-          urlwithkey= url +'?key='+rm_key_txt
+          url = csys_server_url+'/issues/'+str(thisRmTsk.id)
+          urlwithkey= url +'?key='+csys_key_txt
           resp = req.get(urlwithkey)
           thisRmTsk = redmine.issue.get(thisRmTsk.id)
           thisCsId = thisRmTsk.custom_fields.get(cfdict['csID'].id).value
@@ -450,7 +450,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         thisgroup = n['node_group_id']
         if thisgroup is not None:
           print("orig",thisgroup)
-          if rm_use:
+          if csys_use:
             if thisgroup in rmtranslator.keys():
               thisgroup = rmtranslator[thisgroup]
           else:
@@ -466,7 +466,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
             first = False
           
           relid = c
-          if rm_use:
+          if csys_use:
             if relid in rmtranslator.keys():
               relid = rmtranslator[relid]
           else:
@@ -487,7 +487,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
             first = False
           
           relid = c
-          if rm_use:
+          if csys_use:
             if relid in rmtranslator.keys():
               relid = rmtranslator[relid]
           else:
@@ -527,7 +527,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
           strdefaulttext = n['defaulttext']
 
         thisid = n['node_id']
-        if rm_use:
+        if csys_use:
           if thisid in rmtranslator.keys():
             thisid = rmtranslator[thisid]
 
@@ -561,7 +561,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
       print(">>>>",nodes_graphml_d6)
 
-      if rm_use:
+      if csys_use:
         print("\nItero por las creadas",rm_issues_created)
         print("\nd6",nodes_graphml_d6.keys())
         print("\npadres",nodes_graphml.keys())
@@ -577,7 +577,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         for k in nodes_dict.keys():
             thisurl = nodes_dict[k]['url']
             if thisurl=="":
-              thisurl = rm_server_url+'/issues/'+str(rm_issues_dict[rmtranslator[k]].id)
+              thisurl = csys_server_url+'/issues/'+str(rm_issues_dict[rmtranslator[k]].id)
 
             if k in nodes_graphml_url.keys():
               nodes_graphml_url[k].string = thisurl

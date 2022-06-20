@@ -84,7 +84,8 @@ def create_tree_from_graphml_dir(dirname, deviceName):
 
   # If we need to sync with cosmoSys, we will try to open the cosmoSys server at the beginning, to avoid later problems
   continueProcess = True
-
+  filesoups = {}
+  
   if csys_use:
     continueProcess = False
 
@@ -110,7 +111,6 @@ def create_tree_from_graphml_dir(dirname, deviceName):
     csys_issues = {}
     csys_prj_dict = {}
     csys_issues_created = {}
-    filesoups = {}
 
     print("Projects:")
     for p in projects:
