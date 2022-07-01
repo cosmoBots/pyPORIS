@@ -14,7 +14,7 @@ import config
 from graph2porislib import *
 import glob
 
-debug2JSON = False
+debug2JSON = True
 
 if debug2JSON:
   import json
@@ -36,12 +36,13 @@ def gettypeabbrev(t):
     return "c#"
 
 def create_local_path(ndict,key):
-  #print("create path for",key)
+  print("create local path for",key)
   n = ndict[key]
   path = gettypeabbrev(n['node_type'])+n['name']
   if 'node_group_id' in n.keys():
     if len(n['node_group_id'])>0:
       path = create_local_path(ndict,n['node_group_id']) + '/' + path
+      print(path)
 
   return path
 
@@ -56,6 +57,7 @@ def create_global_path(ndict,key,project):
         if thispath != None:
           path  = thispath + '/' + path
 
+    print(path)
     return path
 
   else:
@@ -147,7 +149,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
   if continueProcess:
     for filename in filenames:
       basefilename = Path(filename).stem
-      #print("---------------------",basefilename,"------------------------------")
+      print("---------------------",basefilename,"------------------------------")
       with open(filename) as file:
         soup = BeautifulSoup(file, 'lxml-xml')
         graph = soup.find("graph",{"id":"G"})
@@ -164,7 +166,8 @@ def create_tree_from_graphml_dir(dirname, deviceName):
         csproject = soup.find("key",{"attr.name":"project"})['id']
 
       #print("url key",urlkey)
-      #print("csid key",csidkey)
+      print("csid key",csidkey)
+      print("rmid key",csrmid)
 
       # Retrieving file_data
       file_data = graph.find_all('data')
@@ -200,6 +203,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
       groups_dict = {}
 
       for group in groups:
+        #print(group)
         group_node = {}
         group_node['group_id'] = group['id']
         group_node['group_name'] = group.find('y:NodeLabel').text.strip()
@@ -207,6 +211,9 @@ def create_tree_from_graphml_dir(dirname, deviceName):
 
         if(len(group_id_parts) > 1):
           group_node['parent_group_id'] = convert_list_to_string(group_id_parts[:-1], '::')
+          #print(group_node)
+          #print(group_id_parts)
+          #print(group_node['parent_group_id'])
           group_node['parent_group_name'] = groups_dict[group_node['parent_group_id']]['group_name']
 
         groups_dict[group_node['group_id']] = group_node
@@ -309,8 +316,8 @@ def create_tree_from_graphml_dir(dirname, deviceName):
           node.append(projectdatanode)
 
         graphml_csid_nodes_fileid[normal_node['globalid']] = csiddatanode
-        graphml_url_nodes_fileid[normal_node['globalid']] = rmiddatanode
-        graphml_rmid_nodes_fileid[normal_node['globalid']] = urldatanode
+        graphml_url_nodes_fileid[normal_node['globalid']] = urldatanode
+        graphml_rmid_nodes_fileid[normal_node['globalid']] = rmiddatanode
         graphml_project_nodes_fileid[normal_node['globalid']] = projectdatanode
 
         if node not in groups:
@@ -453,14 +460,37 @@ def create_tree_from_graphml_dir(dirname, deviceName):
               normal_node['url'] = url
               csys_issues_created[thisCsId] = normal_node
               # We will update the node where it was supposed to be the csID
+              print(graphml_csid_nodes_fileid)
               n = graphml_csid_nodes_fileid[normal_node['globalid']]
               n.contents[0].replace_with(normal_node['csID'])
               # updating rmid
               n = graphml_rmid_nodes_fileid[normal_node['globalid']]
-              n.contents[0].replace_with(str(normal_node['rmid']))
+              print(normal_node['globalid'])
+              print("----n-begin---")
+              print(n)
+              print("----n-end---")
+              print("----rmid-begin---")
+              print(normal_node['rmid'])
+              print("----rmid-end---")
+              print(n.contents)
+
+              if len(n.contents) >= 1:
+                n.contents[0] = normal_node['rmid']
+              
+              else:
+                n.contents += [normal_node['rmid']]                
+
+              print("----contents0-begin---")              
+              print(n.contents[0])
+              print("----contents0-end---")
               # updating url
               n = graphml_url_nodes_fileid[normal_node['globalid']]
-              n.contents[0].replace_with(normal_node['url'])
+              if len(n.contents) >= 1:
+                n.contents[0].replace_with(normal_node['url'])
+              
+              else:
+                n.contents += [normal_node['url']]
+              
               # updating project
               n = graphml_project_nodes_fileid[normal_node['globalid']]
               n.contents[0].replace_with(normal_node['project'])
@@ -512,6 +542,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
           inverse_aliases[normal_node['globalpath']] += [normal_node['globalid']]
 
     # In the case a normalized node is the root of its drawing, the parent must be taken from the external references
+    print("--------------------------- FILES ALREADY PARSED -----------------------------")
 
     if debug2JSON:
       out_file = open("node_aliases.json", "w")
@@ -526,19 +557,27 @@ def create_tree_from_graphml_dir(dirname, deviceName):
       json.dump(normalized_dict, out_file, indent=4)
       out_file.close()
          
+      out_file = open("global_dict.json", "w")
+      json.dump(global_dict, out_file, indent=4)
+      out_file.close()         
 
     # And now, we have to re-link the relationships to the normalized targets
     for key in global_dict:
+      print("normalize relationships of",key)
       normal_node = global_dict[key]
+      #print("normal_mode",normal_node)
+      #print("alias",node_aliases[key])
       normalized_node = normalized_dict[node_aliases[key]]
+      #print("normalized_node",normalized_node)
       for r in normal_node['relations']:
         normalized_node['normalized_relations'] += [node_aliases[r]]
 
       for r in normal_node['next']:
         normalized_node['normalized_next'] += [node_aliases[r]]
 
+    print("End loop")
     if debug2JSON:
-      out_file = open("global_dict.json", "w")
+      out_file = open("global_dict2.json", "w")
       json.dump(global_dict, out_file, indent=4)
       out_file.close()
 
@@ -558,19 +597,42 @@ def create_tree_from_graphml_dir(dirname, deviceName):
         thisnewnode = csys_issues_created[k]
         # and the normalized new node, which already has been updated
         # We have to look for the aliases
-        for alias_path in inverse_aliases[thisnewnode['globalpath']]:
-          # We will update the node where it was supposed to be the csID
-          n = graphml_csid_nodes_fileid[alias_path]
-          n.contents[0].replace_with(thisnewnode['csID'])
-          # updating rmid
-          n = graphml_rmid_nodes_fileid[alias_path]
-          n.contents[0].replace_with(str(thisnewnode['rmid']))
-          # updating url
-          n = graphml_url_nodes_fileid[alias_path]
-          n.contents[0].replace_with(thisnewnode['url'])
-          # updating project
-          n = graphml_project_nodes_fileid[alias_path]
-          n.contents[0].replace_with(thisnewnode['project'])
+        if thisnewnode['globalpath'] in inverse_aliases.keys():
+          for alias_path in inverse_aliases[thisnewnode['globalpath']]:
+            # We will update the node where it was supposed to be the csID
+            n = graphml_csid_nodes_fileid[alias_path]
+            n.contents[0].replace_with(thisnewnode['csID'])
+            # updating rmid
+            n = graphml_rmid_nodes_fileid[alias_path]
+            print(alias_path)
+            print("----n-begin---")
+            print(n)
+            print("----n-end---")
+            print("----rmid-begin---")
+            print(thisnewnode['rmid'])
+            print("----rmid-end---")
+            print(n.contents)
+            if len(n.contents) >= 1:
+              n.contents[0] = thisnewnode['rmid']
+            
+            else:
+              n.contents += [thisnewnode['rmid']]
+
+            print("----contents0-begin---")              
+            print(n.contents[0])
+            print("----contents0-end---")
+
+            # updating url
+            n = graphml_url_nodes_fileid[alias_path]
+            if len(n.contents) >= 1:
+              n.contents[0].replace_with(thisnewnode['url'])
+            
+            else:
+              n.contents += [thisnewnode['url']]
+
+            # updating project
+            n = graphml_project_nodes_fileid[alias_path]
+            n.contents[0].replace_with(thisnewnode['project'])
 
 
       # Let's update the files
