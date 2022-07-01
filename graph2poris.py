@@ -72,7 +72,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     rmissues = {}
     from redminelib import Redmine
 
-    if ignore_cert:
+    if csys_ignorecert:
         redmine = Redmine(csys_server_url,key=csys_key_txt, requests={'verify': False})
     else:
         redmine = Redmine(csys_server_url,key=csys_key_txt)
