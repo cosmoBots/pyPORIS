@@ -284,7 +284,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
             if len(n.contents) >= 1:
               thiscontent = n.contents[0].strip()
               if len(thiscontent) > 0:
-                normal_node['rmid'] = thiscontent
+                normal_node['rmid'] = int(thiscontent)
 
           if n['key']==csproject:
             projectdatanode = n
@@ -302,12 +302,12 @@ def create_tree_from_graphml_dir(dirname, deviceName):
         
         if rmiddatanode is None:
           rmiddatanode = soup.new_tag('data',key=csrmid)
-          rmiddatanode.string = ""
+          rmiddatanode.string = "0"
           node.append(rmiddatanode)
 
         if urldatanode is None:
           urldatanode = soup.new_tag('data',key=urlkey)
-          urldatanode.string = ""
+          urldatanode.string = "bla"
           node.append(urldatanode)
 
         if projectdatanode is None:
@@ -460,37 +460,24 @@ def create_tree_from_graphml_dir(dirname, deviceName):
               normal_node['url'] = url
               csys_issues_created[thisCsId] = normal_node
               # We will update the node where it was supposed to be the csID
-              print(graphml_csid_nodes_fileid)
               n = graphml_csid_nodes_fileid[normal_node['globalid']]
               n.contents[0].replace_with(normal_node['csID'])
               # updating rmid
               n = graphml_rmid_nodes_fileid[normal_node['globalid']]
-              print(normal_node['globalid'])
-              print("----n-begin---")
-              print(n)
-              print("----n-end---")
-              print("----rmid-begin---")
-              print(normal_node['rmid'])
-              print("----rmid-end---")
-              print(n.contents)
-
               if len(n.contents) >= 1:
-                n.contents[0] = normal_node['rmid']
+                n.contents[0].replace_with(str(normal_node['rmid']))
               
               else:
-                n.contents += [normal_node['rmid']]                
+                n.insert(0,str(normal_node['rmid']))
 
-              print("----contents0-begin---")              
-              print(n.contents[0])
-              print("----contents0-end---")
               # updating url
               n = graphml_url_nodes_fileid[normal_node['globalid']]
               if len(n.contents) >= 1:
                 n.contents[0].replace_with(normal_node['url'])
               
               else:
-                n.contents += [normal_node['url']]
-              
+                n.insert(0,normal_node['url'])
+
               # updating project
               n = graphml_project_nodes_fileid[normal_node['globalid']]
               n.contents[0].replace_with(normal_node['project'])
@@ -604,23 +591,11 @@ def create_tree_from_graphml_dir(dirname, deviceName):
             n.contents[0].replace_with(thisnewnode['csID'])
             # updating rmid
             n = graphml_rmid_nodes_fileid[alias_path]
-            print(alias_path)
-            print("----n-begin---")
-            print(n)
-            print("----n-end---")
-            print("----rmid-begin---")
-            print(thisnewnode['rmid'])
-            print("----rmid-end---")
-            print(n.contents)
             if len(n.contents) >= 1:
-              n.contents[0] = thisnewnode['rmid']
+              n.contents[0].replace_with(str(thisnewnode['rmid']))
             
             else:
-              n.contents += [thisnewnode['rmid']]
-
-            print("----contents0-begin---")              
-            print(n.contents[0])
-            print("----contents0-end---")
+              n.insert(0,str(thisnewnode['rmid']))
 
             # updating url
             n = graphml_url_nodes_fileid[alias_path]
@@ -628,7 +603,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
               n.contents[0].replace_with(thisnewnode['url'])
             
             else:
-              n.contents += [thisnewnode['url']]
+              n.insert(0,thisnewnode['url'])
 
             # updating project
             n = graphml_project_nodes_fileid[alias_path]
