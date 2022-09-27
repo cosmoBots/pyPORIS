@@ -226,6 +226,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
         nodeid_parts = re.findall(r'n\d{1,}', normal_node['nodeid'])
         normal_node['node_group_id'] = convert_list_to_string(nodeid_parts[:-1], '::')
         normal_node['name'] = node.find('y:NodeLabel').text.strip()
+        print("**********",normal_node['name'])
 
         if len(normal_node['node_group_id'])>0:
           normal_node['parentkey'] = basefilename + '/' + normal_node['node_group_id']
@@ -290,7 +291,8 @@ def create_tree_from_graphml_dir(dirname, deviceName):
             projectdatanode = n
             if len(n.contents) >= 1:
               thiscontent = n.contents[0].strip()
-              if len(thiscontent) > 0:            
+              if len(thiscontent) > 0:
+                print("Uno",normal_node['name'],thiscontent)
                 normal_node['project'] = thiscontent
                 if normal_node['project'] != basefilename:
                   normal_node['external'] = True
@@ -314,6 +316,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
           projectdatanode = soup.new_tag('data',key=csproject)
           projectdatanode.string = ""
           node.append(projectdatanode)
+          print("Creo el projectdatanode para",normal_node['name'])
 
         graphml_csid_nodes_fileid[normal_node['globalid']] = csiddatanode
         graphml_url_nodes_fileid[normal_node['globalid']] = urldatanode
@@ -491,6 +494,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
       for key in nodes_dict.keys():
         normal_node = nodes_dict[key]
         normal_node['nodepath'] = basefilename + '/' + create_local_path(nodes_dict,key)
+        print("normalmode['project']",normal_node['project'])
         normal_node['globalpath'] = normal_node['project'] + '/' + create_global_path(nodes_dict,key,normal_node['project'])
 
       # Now we have to express the edges in globalpath language
