@@ -236,6 +236,13 @@ class PORISNode(PORIS):
 
         return ret        
 
+    def getModeFromName(self,myname):
+        ret = None
+        for myid in self.modes.keys():
+            if self.modes[myid].name == myname:
+                ret = self.modes[myid]
+
+        return ret       
 
 class PORISParam(PORISNode):
     selectedValue = None
@@ -281,7 +288,16 @@ class PORISParam(PORISNode):
         if myid in self.values.keys():
             ret = self.values[myid]
 
-        return ret        
+        return ret
+
+    def getValueFromName(self,myname):
+        ret = None
+        for myid in self.values.keys():
+            if self.values[myid].name == myname:
+                ret = self.values[myid]
+
+        return ret
+
 
     def getEligibleValue(self,v,current):
         if debug:
@@ -408,6 +424,14 @@ class PORISSys(PORISNode):
 
         return ret
     
+    def getSubParamFromName(self,myname):
+        ret = None
+        for myid in self.params.keys():
+            if (self.params[myid].name == myname):
+                ret = self.params[myid]
+
+        return ret
+        
     def getDescendantFromId(self,myid):
         ret = self.getSubSystemFromId(myid)
         if ret is None:
@@ -420,7 +444,7 @@ class PORISSys(PORISNode):
         return ret
     
     def getDescendantParamFromId(self,myid):
-        ret = self.getSubParamFromName(myid)
+        ret = self.getSubParamFromId(myid)
         if ret is None:
             print("no es un hijo directo")
             print(myid,self.myid,self.subsystems)
@@ -429,7 +453,26 @@ class PORISSys(PORISNode):
                     print(sk)
 
                 s = self.subsystems[sk]
-                ret = s.getDescendantParamFromName(myid)
+                ret = s.getDescendantParamFromID(myid)
+                if ret is not None:
+                    if debug:
+                        print("Tenemos",ret)
+
+                    break
+
+        return ret
+
+    def getDescendantParamFromName(self,myname):
+        ret = self.getSubParamFromName(myname)
+        if ret is None:
+            print("no es un hijo directo")
+            print(myname,self.id,self.subsystems)
+            for sk in self.subsystems.keys():
+                if debug:
+                    print(sk)
+
+                s = self.subsystems[sk]
+                ret = s.getDescendantParamFromName(myname)
                 if ret is not None:
                     if debug:
                         print("Tenemos",ret)
