@@ -4,204 +4,287 @@ class examplePORIS:
 	def __init__(self):
 		idcounter = 1
 		self.sysInstrument = PORISSys("Instrument")
-		self.mdInstrumentUNKNOWN = PORISMode("UNKNOWN")
+		self.mdInstrumentMode_UNKNOWN = PORISMode("InstrumentMode_UNKNOWN")
 		self.root = self.sysInstrument
 		self.prMasks = PORISParam("Masks")
-		self.mdMasksUNKNOWN = PORISMode("UNKNOWN")
-		self.vlMasks_UNKNOWN = PORISValue("UNKNOWN")
+		self.mdMasksMode_UNKNOWN = PORISMode("MasksMode_UNKNOWN")
+		self.vlMasks_UNKNOWN = PORISValue("Masks_UNKNOWN")
 		self.prDispersion = PORISParam("Dispersion")
-		self.mdDispersionUNKNOWN = PORISMode("UNKNOWN")
-		self.vlDispersion_UNKNOWN = PORISValue("UNKNOWN")
+		self.mdDispersionMode_UNKNOWN = PORISMode("DispersionMode_UNKNOWN")
+		self.vlDispersion_UNKNOWN = PORISValue("Dispersion_UNKNOWN")
 		self.sysDetector = PORISSys("Detector")
-		self.mdDetectorUNKNOWN = PORISMode("UNKNOWN")
+		self.mdDetectorMode_UNKNOWN = PORISMode("DetectorMode_UNKNOWN")
 		self.prexpTime = PORISParam("expTime")
-		self.mdexpTimeUNKNOWN = PORISMode("UNKNOWN")
-		self.vlexpTime_UNKNOWN = PORISValue("UNKNOWN")
+		self.mdexpTimeMode_UNKNOWN = PORISMode("expTimeMode_UNKNOWN")
+		self.vlexpTime_UNKNOWN = PORISValue("expTime_UNKNOWN")
 		self.prBinning = PORISParam("Binning")
-		self.mdBinningUNKNOWN = PORISMode("UNKNOWN")
-		self.vlBinning_UNKNOWN = PORISValue("UNKNOWN")
+		self.mdBinningMode_UNKNOWN = PORISMode("BinningMode_UNKNOWN")
+		self.vlBinning_UNKNOWN = PORISValue("Binning_UNKNOWN")
 		self.sysFilter = PORISSys("Filter")
-		self.mdFilterUNKNOWN = PORISMode("UNKNOWN")
+		self.mdFilterMode_UNKNOWN = PORISMode("FilterMode_UNKNOWN")
 		self.prClassicFilters = PORISParam("ClassicFilters")
-		self.mdClassicFiltersUNKNOWN = PORISMode("UNKNOWN")
-		self.vlClassicFilters_UNKNOWN = PORISValue("UNKNOWN")
-		self.vlMasks_0_6 = PORISValue("0_6")
-		self.vlMasks_1_0 = PORISValue("1_0")
-		self.vlMasks_2_0 = PORISValue("2_0")
-		self.mdMasksSpectroscopy = PORISMode("Spectroscopy")
-		self.vlMasks_Half_field = PORISValue("Half_field")
-		self.mdMasksFastImg = PORISMode("FastImg")
-		self.vlDispersion_R500 = PORISValue("R500")
-		self.vlDispersion_R1000 = PORISValue("R1000")
-		self.vlDispersion_R2000 = PORISValue("R2000")
-		self.mdDispersionNormal = PORISMode("Normal")
-		self.vlexpTime_NormalRange = PORISValueFloat("NormalRange")
-		self.mdexpTimeNormal = PORISMode("Normal")
-		self.mdexpTimeFast = PORISMode("Fast")
-		self.vlexpTime_FastRange = PORISValueFloat("FastRange")
-		self.vlBinning_1x1 = PORISValue("1x1")
-		self.vlBinning_2x1 = PORISValue("2x1")
-		self.vlBinning_1x2 = PORISValue("1x2")
-		self.vlBinning_2x2 = PORISValue("2x2")
-		self.mdBinningNormal = PORISMode("Normal")
-		self.mdBinningSquare = PORISMode("Square")
-		self.mdDetectorNormal = PORISMode("Normal")
-		self.mdDetectorImage = PORISMode("Image")
-		self.mdDetectorFastImage = PORISMode("FastImage")
-		self.mdInstrumentPhotometry = PORISMode("Photometry")
-		self.mdInstrumentSpectroscopy = PORISMode("Spectroscopy")
-		self.mdInstrumentFastPhotometry = PORISMode("FastPhotometry")
-		self.mdFilterClassic = PORISMode("Classic")
-		self.mdFilterTFBlue = PORISMode("TFBlue")
-		self.mdFilterTFRed = PORISMode("TFRed")
-		self.vlClassicFilters_Red = PORISValue("Red")
-		self.vlClassicFilters_Blue = PORISValue("Blue")
-		self.mdClassicFiltersStandard = PORISMode("Standard")
-		self.mdClassicFiltersBlue = PORISMode("Blue")
-		self.mdClassicFiltersRed = PORISMode("Red")
-		self.vlClassicFilters_userFilter = PORISValueText("userFilter")
-		self.mdClassicFiltersUser = PORISMode("User")
+		self.mdClassicFiltersMode_UNKNOWN = PORISMode("ClassicFiltersMode_UNKNOWN")
+		self.vlClassicFilters_UNKNOWN = PORISValue("ClassicFilters_UNKNOWN")
+		self.vlMasks_0_6 = PORISValue("Masks_0_6")
+		self.vlMasks_1_0 = PORISValue("Masks_1_0")
+		self.vlMasks_2_0 = PORISValue("Masks_2_0")
+		self.mdMasksMode_Spectroscopy = PORISMode("MasksMode_Spectroscopy")
+		self.vlMasks_Half_field = PORISValue("Masks_Half_field")
+		self.mdMasksMode_FastImg = PORISMode("MasksMode_FastImg")
+		self.vlDispersion_R500 = PORISValue("Dispersion_R500")
+		self.vlDispersion_R1000 = PORISValue("Dispersion_R1000")
+		self.vlDispersion_R2000 = PORISValue("Dispersion_R2000")
+		self.mdDispersionMode_Normal = PORISMode("DispersionMode_Normal")
+		self.vlexpTime_NormalRange = PORISValueFloat("expTime_NormalRange")
+		self.mdexpTimeMode_Normal = PORISMode("expTimeMode_Normal")
+		self.mdexpTimeMode_Fast = PORISMode("expTimeMode_Fast")
+		self.vlexpTime_FastRange = PORISValueFloat("expTime_FastRange")
+		self.vlBinning_1x1 = PORISValue("Binning_1x1")
+		self.vlBinning_2x1 = PORISValue("Binning_2x1")
+		self.vlBinning_1x2 = PORISValue("Binning_1x2")
+		self.vlBinning_2x2 = PORISValue("Binning_2x2")
+		self.mdBinningMode_Normal = PORISMode("BinningMode_Normal")
+		self.mdBinningMode_Square = PORISMode("BinningMode_Square")
+		self.mdDetectorMode_Normal = PORISMode("DetectorMode_Normal")
+		self.mdDetectorMode_Image = PORISMode("DetectorMode_Image")
+		self.mdDetectorMode_FastImage = PORISMode("DetectorMode_FastImage")
+		self.mdInstrumentMode_Photometry = PORISMode("InstrumentMode_Photometry")
+		self.mdInstrumentMode_Spectroscopy = PORISMode("InstrumentMode_Spectroscopy")
+		self.mdInstrumentMode_FastPhotometry = PORISMode("InstrumentMode_FastPhotometry")
+		self.mdFilterMode_Classic = PORISMode("FilterMode_Classic")
+		self.mdFilterMode_TFBlue = PORISMode("FilterMode_TFBlue")
+		self.mdFilterMode_TFRed = PORISMode("FilterMode_TFRed")
+		self.vlClassicFilters_Red = PORISValue("ClassicFilters_Red")
+		self.vlClassicFilters_Blue = PORISValue("ClassicFilters_Blue")
+		self.mdClassicFiltersMode_Standard = PORISMode("ClassicFiltersMode_Standard")
+		self.mdClassicFiltersMode_Blue = PORISMode("ClassicFiltersMode_Blue")
+		self.mdClassicFiltersMode_Red = PORISMode("ClassicFiltersMode_Red")
+		self.vlClassicFilters_userFilter = PORISValueText("ClassicFilters_userFilter")
+		self.mdClassicFiltersMode_User = PORISMode("ClassicFiltersMode_User")
+		self.mdInstrumentMode_Engineering = PORISMode("InstrumentMode_Engineering")
+		self.mdDetectorMode_Engineering = PORISMode("DetectorMode_Engineering")
+		self.mdFilterMode_Engineering = PORISMode("FilterMode_Engineering")
 
 		self.sysInstrument.id = idcounter
 		idcounter += 1
+		self.sysInstrument.ident = "Instrument"
+		self.sysInstrument.description = ""
 
-		self.mdInstrumentUNKNOWN.id = idcounter
+		self.mdInstrumentMode_UNKNOWN.id = idcounter
 		idcounter += 1
-		self.sysInstrument.addMode(self.mdInstrumentUNKNOWN)
+		self.mdInstrumentMode_UNKNOWN.ident = "InstrumentMode_UNKNOWN"
+		self.mdInstrumentMode_UNKNOWN.description = ""
+		self.sysInstrument.addMode(self.mdInstrumentMode_UNKNOWN)
 
 		self.prMasks.id = idcounter
 		idcounter += 1
+		self.prMasks.ident = "Masks"
+		self.prMasks.description = ""
 		self.sysInstrument.addParam(self.prMasks)
+
+		self.vlMasks_UNKNOWN.id = idcounter
 		idcounter += 1
+		self.vlMasks_UNKNOWN.ident = "Masks_UNKNOWN"
+		self.vlMasks_UNKNOWN.description = "Unknown value for Masks"
 		self.prMasks.addValue(self.vlMasks_UNKNOWN)
 
-		self.mdMasksUNKNOWN.id = idcounter
+		self.mdMasksMode_UNKNOWN.id = idcounter
 		idcounter += 1
-		self.prMasks.addMode(self.mdMasksUNKNOWN)
-		self.mdMasksUNKNOWN.addValue(self.vlMasks_UNKNOWN)
-		self.mdInstrumentUNKNOWN.addSubMode(self.mdMasksUNKNOWN)
+		self.mdMasksMode_UNKNOWN.ident = "MasksMode_UNKNOWN"
+		self.mdMasksMode_UNKNOWN.description = "Unknown mode for Masks"
+		self.prMasks.addMode(self.mdMasksMode_UNKNOWN)
+		self.mdMasksMode_UNKNOWN.addValue(self.vlMasks_UNKNOWN)
+		self.mdInstrumentMode_UNKNOWN.addSubMode(self.mdMasksMode_UNKNOWN)
 
 		self.prDispersion.id = idcounter
 		idcounter += 1
+		self.prDispersion.ident = "Dispersion"
+		self.prDispersion.description = ""
 		self.sysInstrument.addParam(self.prDispersion)
+
+		self.vlDispersion_UNKNOWN.id = idcounter
 		idcounter += 1
+		self.vlDispersion_UNKNOWN.ident = "Dispersion_UNKNOWN"
+		self.vlDispersion_UNKNOWN.description = "Unknown value for Dispersion"
 		self.prDispersion.addValue(self.vlDispersion_UNKNOWN)
 
-		self.mdDispersionUNKNOWN.id = idcounter
+		self.mdDispersionMode_UNKNOWN.id = idcounter
 		idcounter += 1
-		self.prDispersion.addMode(self.mdDispersionUNKNOWN)
-		self.mdDispersionUNKNOWN.addValue(self.vlDispersion_UNKNOWN)
-		self.mdInstrumentUNKNOWN.addSubMode(self.mdDispersionUNKNOWN)
+		self.mdDispersionMode_UNKNOWN.ident = "DispersionMode_UNKNOWN"
+		self.mdDispersionMode_UNKNOWN.description = "Unknown mode for Dispersion"
+		self.prDispersion.addMode(self.mdDispersionMode_UNKNOWN)
+		self.mdDispersionMode_UNKNOWN.addValue(self.vlDispersion_UNKNOWN)
+		self.mdInstrumentMode_UNKNOWN.addSubMode(self.mdDispersionMode_UNKNOWN)
 
 		self.sysDetector.id = idcounter
 		idcounter += 1
+		self.sysDetector.ident = "Detector"
+		self.sysDetector.description = ""
 		self.sysInstrument.addSubsystem(self.sysDetector)
 
-		self.mdDetectorUNKNOWN.id = idcounter
+		self.mdDetectorMode_UNKNOWN.id = idcounter
 		idcounter += 1
-		self.sysDetector.addMode(self.mdDetectorUNKNOWN)
+		self.mdDetectorMode_UNKNOWN.ident = "DetectorMode_UNKNOWN"
+		self.mdDetectorMode_UNKNOWN.description = ""
+		self.sysDetector.addMode(self.mdDetectorMode_UNKNOWN)
 
 		self.prexpTime.id = idcounter
 		idcounter += 1
+		self.prexpTime.ident = "expTime"
+		self.prexpTime.description = ""
 		self.sysDetector.addParam(self.prexpTime)
+
+		self.vlexpTime_UNKNOWN.id = idcounter
 		idcounter += 1
+		self.vlexpTime_UNKNOWN.ident = "expTime_UNKNOWN"
+		self.vlexpTime_UNKNOWN.description = "Unknown value for expTime"
 		self.prexpTime.addValue(self.vlexpTime_UNKNOWN)
 
-		self.mdexpTimeUNKNOWN.id = idcounter
+		self.mdexpTimeMode_UNKNOWN.id = idcounter
 		idcounter += 1
-		self.prexpTime.addMode(self.mdexpTimeUNKNOWN)
-		self.mdexpTimeUNKNOWN.addValue(self.vlexpTime_UNKNOWN)
-		self.mdDetectorUNKNOWN.addSubMode(self.mdexpTimeUNKNOWN)
+		self.mdexpTimeMode_UNKNOWN.ident = "expTimeMode_UNKNOWN"
+		self.mdexpTimeMode_UNKNOWN.description = "Unknown mode for expTime"
+		self.prexpTime.addMode(self.mdexpTimeMode_UNKNOWN)
+		self.mdexpTimeMode_UNKNOWN.addValue(self.vlexpTime_UNKNOWN)
+		self.mdDetectorMode_UNKNOWN.addSubMode(self.mdexpTimeMode_UNKNOWN)
 
 		self.prBinning.id = idcounter
 		idcounter += 1
+		self.prBinning.ident = "Binning"
+		self.prBinning.description = ""
 		self.sysDetector.addParam(self.prBinning)
+
+		self.vlBinning_UNKNOWN.id = idcounter
 		idcounter += 1
+		self.vlBinning_UNKNOWN.ident = "Binning_UNKNOWN"
+		self.vlBinning_UNKNOWN.description = "Unknown value for Binning"
 		self.prBinning.addValue(self.vlBinning_UNKNOWN)
 
-		self.mdBinningUNKNOWN.id = idcounter
+		self.mdBinningMode_UNKNOWN.id = idcounter
 		idcounter += 1
-		self.prBinning.addMode(self.mdBinningUNKNOWN)
-		self.mdBinningUNKNOWN.addValue(self.vlBinning_UNKNOWN)
-		self.mdDetectorUNKNOWN.addSubMode(self.mdBinningUNKNOWN)
+		self.mdBinningMode_UNKNOWN.ident = "BinningMode_UNKNOWN"
+		self.mdBinningMode_UNKNOWN.description = "Unknown mode for Binning"
+		self.prBinning.addMode(self.mdBinningMode_UNKNOWN)
+		self.mdBinningMode_UNKNOWN.addValue(self.vlBinning_UNKNOWN)
+		self.mdDetectorMode_UNKNOWN.addSubMode(self.mdBinningMode_UNKNOWN)
 
 		self.sysFilter.id = idcounter
 		idcounter += 1
+		self.sysFilter.ident = "Filter"
+		self.sysFilter.description = ""
 		self.sysInstrument.addSubsystem(self.sysFilter)
 
-		self.mdFilterUNKNOWN.id = idcounter
+		self.mdFilterMode_UNKNOWN.id = idcounter
 		idcounter += 1
-		self.sysFilter.addMode(self.mdFilterUNKNOWN)
+		self.mdFilterMode_UNKNOWN.ident = "FilterMode_UNKNOWN"
+		self.mdFilterMode_UNKNOWN.description = ""
+		self.sysFilter.addMode(self.mdFilterMode_UNKNOWN)
 
 		self.prClassicFilters.id = idcounter
 		idcounter += 1
+		self.prClassicFilters.ident = "ClassicFilters"
+		self.prClassicFilters.description = ""
 		self.sysFilter.addParam(self.prClassicFilters)
+
+		self.vlClassicFilters_UNKNOWN.id = idcounter
 		idcounter += 1
+		self.vlClassicFilters_UNKNOWN.ident = "ClassicFilters_UNKNOWN"
+		self.vlClassicFilters_UNKNOWN.description = "Unknown value for ClassicFilters"
 		self.prClassicFilters.addValue(self.vlClassicFilters_UNKNOWN)
 
-		self.mdClassicFiltersUNKNOWN.id = idcounter
+		self.mdClassicFiltersMode_UNKNOWN.id = idcounter
 		idcounter += 1
-		self.prClassicFilters.addMode(self.mdClassicFiltersUNKNOWN)
-		self.mdClassicFiltersUNKNOWN.addValue(self.vlClassicFilters_UNKNOWN)
-		self.mdFilterUNKNOWN.addSubMode(self.mdClassicFiltersUNKNOWN)
+		self.mdClassicFiltersMode_UNKNOWN.ident = "ClassicFiltersMode_UNKNOWN"
+		self.mdClassicFiltersMode_UNKNOWN.description = "Unknown mode for ClassicFilters"
+		self.prClassicFilters.addMode(self.mdClassicFiltersMode_UNKNOWN)
+		self.mdClassicFiltersMode_UNKNOWN.addValue(self.vlClassicFilters_UNKNOWN)
+		self.mdFilterMode_UNKNOWN.addSubMode(self.mdClassicFiltersMode_UNKNOWN)
 
 		self.vlMasks_0_6.id = idcounter
 		idcounter += 1
+		self.vlMasks_0_6.ident = "Masks_0_6"
+		self.vlMasks_0_6.description = ""
 		self.prMasks.addValue(self.vlMasks_0_6)
 
 		self.vlMasks_1_0.id = idcounter
 		idcounter += 1
+		self.vlMasks_1_0.ident = "Masks_1_0"
+		self.vlMasks_1_0.description = ""
 		self.prMasks.addValue(self.vlMasks_1_0)
 
 		self.vlMasks_2_0.id = idcounter
 		idcounter += 1
+		self.vlMasks_2_0.ident = "Masks_2_0"
+		self.vlMasks_2_0.description = ""
 		self.prMasks.addValue(self.vlMasks_2_0)
 
-		self.mdMasksSpectroscopy.id = idcounter
+		self.mdMasksMode_Spectroscopy.id = idcounter
 		idcounter += 1
-		self.prMasks.addMode(self.mdMasksSpectroscopy)
+		self.mdMasksMode_Spectroscopy.ident = "MasksMode_Spectroscopy"
+		self.mdMasksMode_Spectroscopy.description = ""
+		self.prMasks.addMode(self.mdMasksMode_Spectroscopy)
 
 		self.vlMasks_Half_field.id = idcounter
 		idcounter += 1
+		self.vlMasks_Half_field.ident = "Masks_Half_field"
+		self.vlMasks_Half_field.description = ""
 		self.prMasks.addValue(self.vlMasks_Half_field)
 
-		self.mdMasksFastImg.id = idcounter
+		self.mdMasksMode_FastImg.id = idcounter
 		idcounter += 1
-		self.prMasks.addMode(self.mdMasksFastImg)
+		self.mdMasksMode_FastImg.ident = "MasksMode_FastImg"
+		self.mdMasksMode_FastImg.description = ""
+		self.prMasks.addMode(self.mdMasksMode_FastImg)
 
 		self.vlDispersion_R500.id = idcounter
 		idcounter += 1
+		self.vlDispersion_R500.ident = "Dispersion_R500"
+		self.vlDispersion_R500.description = ""
 		self.prDispersion.addValue(self.vlDispersion_R500)
 
 		self.vlDispersion_R1000.id = idcounter
 		idcounter += 1
+		self.vlDispersion_R1000.ident = "Dispersion_R1000"
+		self.vlDispersion_R1000.description = ""
 		self.prDispersion.addValue(self.vlDispersion_R1000)
 
 		self.vlDispersion_R2000.id = idcounter
 		idcounter += 1
+		self.vlDispersion_R2000.ident = "Dispersion_R2000"
+		self.vlDispersion_R2000.description = ""
 		self.prDispersion.addValue(self.vlDispersion_R2000)
 
-		self.mdDispersionNormal.id = idcounter
+		self.mdDispersionMode_Normal.id = idcounter
 		idcounter += 1
-		self.prDispersion.addMode(self.mdDispersionNormal)
+		self.mdDispersionMode_Normal.ident = "DispersionMode_Normal"
+		self.mdDispersionMode_Normal.description = ""
+		self.prDispersion.addMode(self.mdDispersionMode_Normal)
 
 		self.vlexpTime_NormalRange.id = idcounter
 		idcounter += 1
+		self.vlexpTime_NormalRange.ident = "expTime_NormalRange"
+		self.vlexpTime_NormalRange.description = ""
 		self.vlexpTime_NormalRange.min = 0
 		self.vlexpTime_NormalRange.default_data = 1
 		self.vlexpTime_NormalRange.max = 3600
 		self.prexpTime.addValue(self.vlexpTime_NormalRange)
 
-		self.mdexpTimeNormal.id = idcounter
+		self.mdexpTimeMode_Normal.id = idcounter
 		idcounter += 1
-		self.prexpTime.addMode(self.mdexpTimeNormal)
+		self.mdexpTimeMode_Normal.ident = "expTimeMode_Normal"
+		self.mdexpTimeMode_Normal.description = ""
+		self.prexpTime.addMode(self.mdexpTimeMode_Normal)
 
-		self.mdexpTimeFast.id = idcounter
+		self.mdexpTimeMode_Fast.id = idcounter
 		idcounter += 1
-		self.prexpTime.addMode(self.mdexpTimeFast)
+		self.mdexpTimeMode_Fast.ident = "expTimeMode_Fast"
+		self.mdexpTimeMode_Fast.description = ""
+		self.prexpTime.addMode(self.mdexpTimeMode_Fast)
 
 		self.vlexpTime_FastRange.id = idcounter
 		idcounter += 1
+		self.vlexpTime_FastRange.ident = "expTime_FastRange"
+		self.vlexpTime_FastRange.description = ""
 		self.vlexpTime_FastRange.min = 0
 		self.vlexpTime_FastRange.default_data = 0.01
 		self.vlexpTime_FastRange.max = 0.5
@@ -209,132 +292,275 @@ class examplePORIS:
 
 		self.vlBinning_1x1.id = idcounter
 		idcounter += 1
+		self.vlBinning_1x1.ident = "Binning_1x1"
+		self.vlBinning_1x1.description = ""
 		self.prBinning.addValue(self.vlBinning_1x1)
 
 		self.vlBinning_2x1.id = idcounter
 		idcounter += 1
+		self.vlBinning_2x1.ident = "Binning_2x1"
+		self.vlBinning_2x1.description = ""
 		self.prBinning.addValue(self.vlBinning_2x1)
 
 		self.vlBinning_1x2.id = idcounter
 		idcounter += 1
+		self.vlBinning_1x2.ident = "Binning_1x2"
+		self.vlBinning_1x2.description = ""
 		self.prBinning.addValue(self.vlBinning_1x2)
 
 		self.vlBinning_2x2.id = idcounter
 		idcounter += 1
+		self.vlBinning_2x2.ident = "Binning_2x2"
+		self.vlBinning_2x2.description = ""
 		self.prBinning.addValue(self.vlBinning_2x2)
 
-		self.mdBinningNormal.id = idcounter
+		self.mdBinningMode_Normal.id = idcounter
 		idcounter += 1
-		self.prBinning.addMode(self.mdBinningNormal)
+		self.mdBinningMode_Normal.ident = "BinningMode_Normal"
+		self.mdBinningMode_Normal.description = ""
+		self.prBinning.addMode(self.mdBinningMode_Normal)
 
-		self.mdBinningSquare.id = idcounter
+		self.mdBinningMode_Square.id = idcounter
 		idcounter += 1
-		self.prBinning.addMode(self.mdBinningSquare)
+		self.mdBinningMode_Square.ident = "BinningMode_Square"
+		self.mdBinningMode_Square.description = ""
+		self.prBinning.addMode(self.mdBinningMode_Square)
 
-		self.mdDetectorNormal.id = idcounter
+		self.mdDetectorMode_Normal.id = idcounter
 		idcounter += 1
-		self.sysDetector.addMode(self.mdDetectorNormal)
+		self.mdDetectorMode_Normal.ident = "DetectorMode_Normal"
+		self.mdDetectorMode_Normal.description = ""
+		self.sysDetector.addMode(self.mdDetectorMode_Normal)
 
-		self.mdDetectorImage.id = idcounter
+		self.mdDetectorMode_Image.id = idcounter
 		idcounter += 1
-		self.sysDetector.addMode(self.mdDetectorImage)
+		self.mdDetectorMode_Image.ident = "DetectorMode_Image"
+		self.mdDetectorMode_Image.description = ""
+		self.sysDetector.addMode(self.mdDetectorMode_Image)
 
-		self.mdDetectorFastImage.id = idcounter
+		self.mdDetectorMode_FastImage.id = idcounter
 		idcounter += 1
-		self.sysDetector.addMode(self.mdDetectorFastImage)
+		self.mdDetectorMode_FastImage.ident = "DetectorMode_FastImage"
+		self.mdDetectorMode_FastImage.description = ""
+		self.sysDetector.addMode(self.mdDetectorMode_FastImage)
 
-		self.mdInstrumentPhotometry.id = idcounter
+		self.mdInstrumentMode_Photometry.id = idcounter
 		idcounter += 1
-		self.sysInstrument.addMode(self.mdInstrumentPhotometry)
+		self.mdInstrumentMode_Photometry.ident = "InstrumentMode_Photometry"
+		self.mdInstrumentMode_Photometry.description = ""
+		self.sysInstrument.addMode(self.mdInstrumentMode_Photometry)
 
-		self.mdInstrumentSpectroscopy.id = idcounter
+		self.mdInstrumentMode_Spectroscopy.id = idcounter
 		idcounter += 1
-		self.sysInstrument.addMode(self.mdInstrumentSpectroscopy)
+		self.mdInstrumentMode_Spectroscopy.ident = "InstrumentMode_Spectroscopy"
+		self.mdInstrumentMode_Spectroscopy.description = ""
+		self.sysInstrument.addMode(self.mdInstrumentMode_Spectroscopy)
 
-		self.mdInstrumentFastPhotometry.id = idcounter
+		self.mdInstrumentMode_FastPhotometry.id = idcounter
 		idcounter += 1
-		self.sysInstrument.addMode(self.mdInstrumentFastPhotometry)
+		self.mdInstrumentMode_FastPhotometry.ident = "InstrumentMode_FastPhotometry"
+		self.mdInstrumentMode_FastPhotometry.description = ""
+		self.sysInstrument.addMode(self.mdInstrumentMode_FastPhotometry)
 
-		self.mdFilterClassic.id = idcounter
+		self.mdFilterMode_Classic.id = idcounter
 		idcounter += 1
-		self.sysFilter.addMode(self.mdFilterClassic)
+		self.mdFilterMode_Classic.ident = "FilterMode_Classic"
+		self.mdFilterMode_Classic.description = ""
+		self.sysFilter.addMode(self.mdFilterMode_Classic)
 
-		self.mdFilterTFBlue.id = idcounter
+		self.mdFilterMode_TFBlue.id = idcounter
 		idcounter += 1
-		self.sysFilter.addMode(self.mdFilterTFBlue)
+		self.mdFilterMode_TFBlue.ident = "FilterMode_TFBlue"
+		self.mdFilterMode_TFBlue.description = ""
+		self.sysFilter.addMode(self.mdFilterMode_TFBlue)
 
-		self.mdFilterTFRed.id = idcounter
+		self.mdFilterMode_TFRed.id = idcounter
 		idcounter += 1
-		self.sysFilter.addMode(self.mdFilterTFRed)
+		self.mdFilterMode_TFRed.ident = "FilterMode_TFRed"
+		self.mdFilterMode_TFRed.description = ""
+		self.sysFilter.addMode(self.mdFilterMode_TFRed)
 
 		self.vlClassicFilters_Red.id = idcounter
 		idcounter += 1
+		self.vlClassicFilters_Red.ident = "ClassicFilters_Red"
+		self.vlClassicFilters_Red.description = ""
 		self.prClassicFilters.addValue(self.vlClassicFilters_Red)
 
 		self.vlClassicFilters_Blue.id = idcounter
 		idcounter += 1
+		self.vlClassicFilters_Blue.ident = "ClassicFilters_Blue"
+		self.vlClassicFilters_Blue.description = ""
 		self.prClassicFilters.addValue(self.vlClassicFilters_Blue)
 
-		self.mdClassicFiltersStandard.id = idcounter
+		self.mdClassicFiltersMode_Standard.id = idcounter
 		idcounter += 1
-		self.prClassicFilters.addMode(self.mdClassicFiltersStandard)
+		self.mdClassicFiltersMode_Standard.ident = "ClassicFiltersMode_Standard"
+		self.mdClassicFiltersMode_Standard.description = ""
+		self.prClassicFilters.addMode(self.mdClassicFiltersMode_Standard)
 
-		self.mdClassicFiltersBlue.id = idcounter
+		self.mdClassicFiltersMode_Blue.id = idcounter
 		idcounter += 1
-		self.prClassicFilters.addMode(self.mdClassicFiltersBlue)
+		self.mdClassicFiltersMode_Blue.ident = "ClassicFiltersMode_Blue"
+		self.mdClassicFiltersMode_Blue.description = ""
+		self.prClassicFilters.addMode(self.mdClassicFiltersMode_Blue)
 
-		self.mdClassicFiltersRed.id = idcounter
+		self.mdClassicFiltersMode_Red.id = idcounter
 		idcounter += 1
-		self.prClassicFilters.addMode(self.mdClassicFiltersRed)
+		self.mdClassicFiltersMode_Red.ident = "ClassicFiltersMode_Red"
+		self.mdClassicFiltersMode_Red.description = ""
+		self.prClassicFilters.addMode(self.mdClassicFiltersMode_Red)
 
 		self.vlClassicFilters_userFilter.id = idcounter
 		idcounter += 1
+		self.vlClassicFilters_userFilter.ident = "ClassicFilters_userFilter"
+		self.vlClassicFilters_userFilter.description = ""
 		self.prClassicFilters.addValue(self.vlClassicFilters_userFilter)
 
-		self.mdClassicFiltersUser.id = idcounter
+		self.mdClassicFiltersMode_User.id = idcounter
 		idcounter += 1
-		self.prClassicFilters.addMode(self.mdClassicFiltersUser)
-		self.mdInstrumentSpectroscopy.addSubMode(self.mdMasksSpectroscopy)
-		self.mdInstrumentFastPhotometry.addSubMode(self.mdMasksFastImg)
-		self.mdMasksSpectroscopy.addValue(self.vlMasks_0_6)
-		self.mdMasksSpectroscopy.addValue(self.vlMasks_2_0)
-		self.mdMasksSpectroscopy.addValue(self.vlMasks_1_0)
-		self.mdMasksFastImg.addValue(self.vlMasks_Half_field)
-		self.mdInstrumentSpectroscopy.addSubMode(self.mdDispersionNormal)
-		self.mdDispersionNormal.addValue(self.vlDispersion_R500)
-		self.mdDispersionNormal.addValue(self.vlDispersion_R1000)
-		self.mdDispersionNormal.addValue(self.vlDispersion_R2000)
-		self.mdInstrumentPhotometry.addSubMode(self.mdDetectorImage)
-		self.mdInstrumentSpectroscopy.addSubMode(self.mdDetectorNormal)
-		self.mdInstrumentFastPhotometry.addSubMode(self.mdDetectorFastImage)
-		self.mdDetectorNormal.addSubMode(self.mdexpTimeNormal)
-		self.mdDetectorImage.addSubMode(self.mdexpTimeNormal)
-		self.mdDetectorFastImage.addSubMode(self.mdexpTimeFast)
-		self.mdexpTimeNormal.addValue(self.vlexpTime_NormalRange)
-		self.mdexpTimeFast.addValue(self.vlexpTime_FastRange)
-		self.mdDetectorNormal.addSubMode(self.mdBinningNormal)
-		self.mdDetectorImage.addSubMode(self.mdBinningSquare)
-		self.mdDetectorFastImage.addSubMode(self.mdBinningSquare)
-		self.mdBinningNormal.addValue(self.vlBinning_1x1)
-		self.mdBinningNormal.addValue(self.vlBinning_2x1)
-		self.mdBinningNormal.addValue(self.vlBinning_1x2)
-		self.mdBinningNormal.addValue(self.vlBinning_2x2)
-		self.mdBinningSquare.addValue(self.vlBinning_1x1)
-		self.mdBinningSquare.addValue(self.vlBinning_2x2)
-		self.mdInstrumentPhotometry.addSubMode(self.mdFilterTFRed)
-		self.mdInstrumentPhotometry.addSubMode(self.mdFilterTFBlue)
-		self.mdInstrumentPhotometry.addSubMode(self.mdFilterClassic)
-		self.mdInstrumentSpectroscopy.addSubMode(self.mdFilterClassic)
-		self.mdInstrumentSpectroscopy.addSubMode(self.mdFilterTFRed)
-		self.mdInstrumentSpectroscopy.addSubMode(self.mdFilterTFBlue)
-		self.mdInstrumentFastPhotometry.addSubMode(self.mdFilterClassic)
-		self.mdFilterClassic.addSubMode(self.mdClassicFiltersStandard)
-		self.mdFilterClassic.addSubMode(self.mdClassicFiltersUser)
-		self.mdFilterTFBlue.addSubMode(self.mdClassicFiltersBlue)
-		self.mdFilterTFRed.addSubMode(self.mdClassicFiltersRed)
-		self.mdClassicFiltersStandard.addValue(self.vlClassicFilters_Red)
-		self.mdClassicFiltersStandard.addValue(self.vlClassicFilters_Blue)
-		self.mdClassicFiltersBlue.addValue(self.vlClassicFilters_Blue)
-		self.mdClassicFiltersRed.addValue(self.vlClassicFilters_Red)
-		self.mdClassicFiltersUser.addValue(self.vlClassicFilters_userFilter)
+		self.mdClassicFiltersMode_User.ident = "ClassicFiltersMode_User"
+		self.mdClassicFiltersMode_User.description = ""
+		self.prClassicFilters.addMode(self.mdClassicFiltersMode_User)
+
+		self.mdInstrumentMode_Engineering.id = idcounter
+		idcounter += 1
+		self.mdInstrumentMode_Engineering.ident = "InstrumentMode_Engineering"
+		self.mdInstrumentMode_Engineering.description = "Instrument engineering mode"
+		self.sysInstrument.addMode(self.mdInstrumentMode_Engineering)
+
+		self.mdDetectorMode_Engineering.id = idcounter
+		idcounter += 1
+		self.mdDetectorMode_Engineering.ident = "DetectorMode_Engineering"
+		self.mdDetectorMode_Engineering.description = "Detector engineering mode"
+		self.sysDetector.addMode(self.mdDetectorMode_Engineering)
+
+		self.mdFilterMode_Engineering.id = idcounter
+		idcounter += 1
+		self.mdFilterMode_Engineering.ident = "FilterMode_Engineering"
+		self.mdFilterMode_Engineering.description = "Filter engineering mode"
+		self.sysFilter.addMode(self.mdFilterMode_Engineering)
+		# Marcamos MasksMode_Spectroscopy como elegible para InstrumentMode_Spectroscopy
+		self.mdInstrumentMode_Spectroscopy.addSubMode(self.mdMasksMode_Spectroscopy)
+		# Marcamos MasksMode_FastImg como elegible para InstrumentMode_FastPhotometry
+		self.mdInstrumentMode_FastPhotometry.addSubMode(self.mdMasksMode_FastImg)
+		# Marcamos MasksMode_Spectroscopy como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdMasksMode_Spectroscopy)
+		# Marcamos MasksMode_FastImg como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdMasksMode_FastImg)
+		# Marcamos Masks_0_6 como elegible para MasksMode_Spectroscopy
+		self.mdMasksMode_Spectroscopy.addValue(self.vlMasks_0_6)
+		# Marcamos Masks_2_0 como elegible para MasksMode_Spectroscopy
+		self.mdMasksMode_Spectroscopy.addValue(self.vlMasks_2_0)
+		# Marcamos Masks_1_0 como elegible para MasksMode_Spectroscopy
+		self.mdMasksMode_Spectroscopy.addValue(self.vlMasks_1_0)
+		# Marcamos Masks_Half_field como elegible para MasksMode_FastImg
+		self.mdMasksMode_FastImg.addValue(self.vlMasks_Half_field)
+		# Marcamos DispersionMode_Normal como elegible para InstrumentMode_Spectroscopy
+		self.mdInstrumentMode_Spectroscopy.addSubMode(self.mdDispersionMode_Normal)
+		# Marcamos DispersionMode_Normal como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdDispersionMode_Normal)
+		# Marcamos Dispersion_R500 como elegible para DispersionMode_Normal
+		self.mdDispersionMode_Normal.addValue(self.vlDispersion_R500)
+		# Marcamos Dispersion_R1000 como elegible para DispersionMode_Normal
+		self.mdDispersionMode_Normal.addValue(self.vlDispersion_R1000)
+		# Marcamos Dispersion_R2000 como elegible para DispersionMode_Normal
+		self.mdDispersionMode_Normal.addValue(self.vlDispersion_R2000)
+		# Marcamos DetectorMode_Image como elegible para InstrumentMode_Photometry
+		self.mdInstrumentMode_Photometry.addSubMode(self.mdDetectorMode_Image)
+		# Marcamos DetectorMode_Normal como elegible para InstrumentMode_Spectroscopy
+		self.mdInstrumentMode_Spectroscopy.addSubMode(self.mdDetectorMode_Normal)
+		# Marcamos DetectorMode_FastImage como elegible para InstrumentMode_FastPhotometry
+		self.mdInstrumentMode_FastPhotometry.addSubMode(self.mdDetectorMode_FastImage)
+		# Marcamos DetectorMode_Normal como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdDetectorMode_Normal)
+		# Marcamos DetectorMode_Image como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdDetectorMode_Image)
+		# Marcamos DetectorMode_FastImage como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdDetectorMode_FastImage)
+		# Marcamos DetectorMode_Engineering como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdDetectorMode_Engineering)
+		# Marcamos expTimeMode_Normal como elegible para DetectorMode_Normal
+		self.mdDetectorMode_Normal.addSubMode(self.mdexpTimeMode_Normal)
+		# Marcamos expTimeMode_Normal como elegible para DetectorMode_Image
+		self.mdDetectorMode_Image.addSubMode(self.mdexpTimeMode_Normal)
+		# Marcamos expTimeMode_Fast como elegible para DetectorMode_FastImage
+		self.mdDetectorMode_FastImage.addSubMode(self.mdexpTimeMode_Fast)
+		# Marcamos expTimeMode_Normal como elegible para DetectorMode_Engineering
+		self.mdDetectorMode_Engineering.addSubMode(self.mdexpTimeMode_Normal)
+		# Marcamos expTimeMode_Fast como elegible para DetectorMode_Engineering
+		self.mdDetectorMode_Engineering.addSubMode(self.mdexpTimeMode_Fast)
+		# Marcamos expTime_NormalRange como elegible para expTimeMode_Normal
+		self.mdexpTimeMode_Normal.addValue(self.vlexpTime_NormalRange)
+		# Marcamos expTime_FastRange como elegible para expTimeMode_Fast
+		self.mdexpTimeMode_Fast.addValue(self.vlexpTime_FastRange)
+		# Marcamos BinningMode_Normal como elegible para DetectorMode_Normal
+		self.mdDetectorMode_Normal.addSubMode(self.mdBinningMode_Normal)
+		# Marcamos BinningMode_Square como elegible para DetectorMode_Image
+		self.mdDetectorMode_Image.addSubMode(self.mdBinningMode_Square)
+		# Marcamos BinningMode_Square como elegible para DetectorMode_FastImage
+		self.mdDetectorMode_FastImage.addSubMode(self.mdBinningMode_Square)
+		# Marcamos BinningMode_Normal como elegible para DetectorMode_Engineering
+		self.mdDetectorMode_Engineering.addSubMode(self.mdBinningMode_Normal)
+		# Marcamos BinningMode_Square como elegible para DetectorMode_Engineering
+		self.mdDetectorMode_Engineering.addSubMode(self.mdBinningMode_Square)
+		# Marcamos Binning_1x1 como elegible para BinningMode_Normal
+		self.mdBinningMode_Normal.addValue(self.vlBinning_1x1)
+		# Marcamos Binning_2x1 como elegible para BinningMode_Normal
+		self.mdBinningMode_Normal.addValue(self.vlBinning_2x1)
+		# Marcamos Binning_1x2 como elegible para BinningMode_Normal
+		self.mdBinningMode_Normal.addValue(self.vlBinning_1x2)
+		# Marcamos Binning_2x2 como elegible para BinningMode_Normal
+		self.mdBinningMode_Normal.addValue(self.vlBinning_2x2)
+		# Marcamos Binning_1x1 como elegible para BinningMode_Square
+		self.mdBinningMode_Square.addValue(self.vlBinning_1x1)
+		# Marcamos Binning_2x2 como elegible para BinningMode_Square
+		self.mdBinningMode_Square.addValue(self.vlBinning_2x2)
+		# Marcamos FilterMode_TFRed como elegible para InstrumentMode_Photometry
+		self.mdInstrumentMode_Photometry.addSubMode(self.mdFilterMode_TFRed)
+		# Marcamos FilterMode_TFBlue como elegible para InstrumentMode_Photometry
+		self.mdInstrumentMode_Photometry.addSubMode(self.mdFilterMode_TFBlue)
+		# Marcamos FilterMode_Classic como elegible para InstrumentMode_Photometry
+		self.mdInstrumentMode_Photometry.addSubMode(self.mdFilterMode_Classic)
+		# Marcamos FilterMode_Classic como elegible para InstrumentMode_Spectroscopy
+		self.mdInstrumentMode_Spectroscopy.addSubMode(self.mdFilterMode_Classic)
+		# Marcamos FilterMode_TFRed como elegible para InstrumentMode_Spectroscopy
+		self.mdInstrumentMode_Spectroscopy.addSubMode(self.mdFilterMode_TFRed)
+		# Marcamos FilterMode_TFBlue como elegible para InstrumentMode_Spectroscopy
+		self.mdInstrumentMode_Spectroscopy.addSubMode(self.mdFilterMode_TFBlue)
+		# Marcamos FilterMode_Classic como elegible para InstrumentMode_FastPhotometry
+		self.mdInstrumentMode_FastPhotometry.addSubMode(self.mdFilterMode_Classic)
+		# Marcamos FilterMode_Classic como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdFilterMode_Classic)
+		# Marcamos FilterMode_TFBlue como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdFilterMode_TFBlue)
+		# Marcamos FilterMode_TFRed como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdFilterMode_TFRed)
+		# Marcamos FilterMode_Engineering como elegible para InstrumentMode_Engineering
+		self.mdInstrumentMode_Engineering.addSubMode(self.mdFilterMode_Engineering)
+		# Marcamos ClassicFiltersMode_Standard como elegible para FilterMode_Classic
+		self.mdFilterMode_Classic.addSubMode(self.mdClassicFiltersMode_Standard)
+		# Marcamos ClassicFiltersMode_User como elegible para FilterMode_Classic
+		self.mdFilterMode_Classic.addSubMode(self.mdClassicFiltersMode_User)
+		# Marcamos ClassicFiltersMode_Blue como elegible para FilterMode_TFBlue
+		self.mdFilterMode_TFBlue.addSubMode(self.mdClassicFiltersMode_Blue)
+		# Marcamos ClassicFiltersMode_Red como elegible para FilterMode_TFRed
+		self.mdFilterMode_TFRed.addSubMode(self.mdClassicFiltersMode_Red)
+		# Marcamos ClassicFiltersMode_Standard como elegible para FilterMode_Engineering
+		self.mdFilterMode_Engineering.addSubMode(self.mdClassicFiltersMode_Standard)
+		# Marcamos ClassicFiltersMode_Blue como elegible para FilterMode_Engineering
+		self.mdFilterMode_Engineering.addSubMode(self.mdClassicFiltersMode_Blue)
+		# Marcamos ClassicFiltersMode_Red como elegible para FilterMode_Engineering
+		self.mdFilterMode_Engineering.addSubMode(self.mdClassicFiltersMode_Red)
+		# Marcamos ClassicFiltersMode_User como elegible para FilterMode_Engineering
+		self.mdFilterMode_Engineering.addSubMode(self.mdClassicFiltersMode_User)
+		# Marcamos ClassicFilters_Red como elegible para ClassicFiltersMode_Standard
+		self.mdClassicFiltersMode_Standard.addValue(self.vlClassicFilters_Red)
+		# Marcamos ClassicFilters_Blue como elegible para ClassicFiltersMode_Standard
+		self.mdClassicFiltersMode_Standard.addValue(self.vlClassicFilters_Blue)
+		# Marcamos ClassicFilters_Blue como elegible para ClassicFiltersMode_Blue
+		self.mdClassicFiltersMode_Blue.addValue(self.vlClassicFilters_Blue)
+		# Marcamos ClassicFilters_Red como elegible para ClassicFiltersMode_Red
+		self.mdClassicFiltersMode_Red.addValue(self.vlClassicFilters_Red)
+		# Marcamos ClassicFilters_userFilter como elegible para ClassicFiltersMode_User
+		self.mdClassicFiltersMode_User.addValue(self.vlClassicFilters_userFilter)
 
