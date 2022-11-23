@@ -79,6 +79,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     cscodekey = soup.find("key",{"attr.name":"csCode"})['id']
     csprjident = soup.find("key",{"attr.name":"identifier"})['id']
     csrootprjident = soup.find("key",{"attr.name":"rootid"})['id']
+    csparentCSIDident = soup.find("key",{"attr.name":"parentCSID"})['id']
     csrmid = soup.find("key",{"attr.name":"rmID"})['id']
 
   print("url key",urlkey)
@@ -118,9 +119,19 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         file_root_identifier = 'instrument'
 
 
+    if n['key'] == csparentCSIDident:
+      if len(n.contents) >= 1:
+        thiscontent = n.contents[0].strip()
+        if len(thiscontent) > 0:                
+          parent_csys_identifier = thiscontent        
+
+      else:
+        parent_csys_identifier = 'instrument'
+
   print("csCode:",file_cscode)
   print("identifier:",file_identifier)
   print("root_identifier:",file_root_identifier)
+  print("parent_csys_identifier:",parent_csys_identifier)
 
   continueProcess = False
   if not csys_use:
@@ -572,6 +583,12 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         strparent = ''
         if thisgroup is not None:
           strparent = thisgroup
+
+        else:
+          # If the item has no parent, then its parent if shall be 
+          # the parentCSID of the project, because a partial diagram must always
+          # belong to a parent system
+          strparent = parent_csys_identifier
 
         strrel = ''
         if n['relations'] is not None:
