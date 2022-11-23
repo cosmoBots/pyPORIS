@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <styles>
+  <style name="PORIS" scope="node" selectionOnly="false">
+    <mapping>
+      <source name="csID" origin="customProperty" type="string"/>
+      <target name="labelText" type="string">
+        <hints>
+          <hint type="int">0</hint>
+          <hint type="boolean">true</hint>
+        </hints>
+      </target>
+      <conversion type="asIs"/>
+    </mapping>
+    <mapping>
+      <source name="subject" origin="customProperty" type="string"/>
+      <target name="labelText" type="string">
+        <hints>
+          <hint type="int">1</hint>
+        </hints>
+      </target>
+      <conversion type="asIs"/>
+    </mapping>
+    <mapping>
+      <source name="URL" origin="customProperty" type="string"/>
+      <target name="url" type="string">
+        <hints/>
+      </target>
+      <conversion type="asIs"/>
+    </mapping>
+  </style>
   <style name="PORISexternal" scope="node" selectionOnly="false">
     <mapping>
       <source name="external" origin="customProperty" type="boolean"/>

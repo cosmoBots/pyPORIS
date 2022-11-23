@@ -610,7 +610,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       for e in error_list:
         print(e)
 
-      print("\n\nPROCESS CANCELLED\n\n\n")
+      print("\n\nPROCESS CANCELLED (identifiers)\n\n\n")
 
   else:
     print("\n\nPROCESS CANCELLED\n\n\n")
