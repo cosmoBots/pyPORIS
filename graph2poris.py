@@ -16,6 +16,53 @@ file_data = ['','']
 localcsids = {}
 inverse_localcsids = {}
 
+def get_project_ancestors(thisproject,rootproject,projects):
+  if (thisproject.id != rootproject.id):
+    parentproj = None
+    if hasattr(thisproject,'parent'):
+      print("The parent id to find for",thisproject.identifier,"is",thisproject.parent.id)
+      for p in projects:
+        if p.id == thisproject.parent.id:
+          parentproj = p
+          break
+
+    else:
+      print("The project",thisproject.identifier,"has no parent",dict(thisproject))
+    
+    if parentproj is not None:
+      result = get_project_ancestors(parentproj,rootproject,projects)
+      result += [thisproject] 
+
+    else:      
+      print("Error, we could not find the parent of ",thisproject.identifier)
+      #result = [thisproject]
+      assert(false)
+  
+  else:
+    # If thisproject is the root project, we have finished    
+    result = [thisproject]
+
+  return result
+
+def get_project_successors(thisproject,projects):
+  result = []
+  for p in projects:
+    if hasattr(p,'parent'):
+      if p.parent.id == thisproject.id:
+        result += [p] + get_project_successors(p,projects)
+
+  return result
+
+def get_project_tree(thisproject,rootproject,projects):
+  # First we will add the ancestors
+  result = get_project_ancestors(thisproject,rootproject,projects)
+
+  # Then we will add the successors
+  result += get_project_successors(thisproject,projects)
+  
+  return result
+
+
 def create_ods_file_from_graphml_file(filename, deviceName):
   global file_data
   global localcsids
@@ -31,6 +78,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     csidkey = soup.find("key",{"attr.name":"csID"})['id']
     cscodekey = soup.find("key",{"attr.name":"csCode"})['id']
     csprjident = soup.find("key",{"attr.name":"identifier"})['id']
+    csrootprjident = soup.find("key",{"attr.name":"rootid"})['id']
     csrmid = soup.find("key",{"attr.name":"rmID"})['id']
 
   print("url key",urlkey)
@@ -40,6 +88,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
   file_data = graph.find_all('data')
   file_cscode = ""
   file_identifier = ""
+  file_root_identifier = ""
   for n in file_data:
     if n['key'] == cscodekey:
       if len(n.contents) >= 1:
@@ -57,10 +106,21 @@ def create_ods_file_from_graphml_file(filename, deviceName):
           file_identifier = thiscontent        
 
       else:
-        file_cscode = 'instrument'
+        file_identifier = 'instrument'
+
+    if n['key'] == csrootprjident:
+      if len(n.contents) >= 1:
+        thiscontent = n.contents[0].strip()
+        if len(thiscontent) > 0:                
+          file_root_identifier = thiscontent        
+
+      else:
+        file_root_identifier = 'instrument'
+
 
   print("csCode:",file_cscode)
   print("identifier:",file_identifier)
+  print("root_identifier:",file_root_identifier)
 
   continueProcess = False
   if not csys_use:
@@ -94,6 +154,12 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       else:
         print ("Obtenemos proyecto: ",my_project.identifier," | ",my_project.name)
 
+      my_root_project = redmine.project.get(file_root_identifier)
+      if my_root_project is None:
+        print("No podemos obtener el proyecto raíz")
+      else:
+        print ("Obtenemos proyecto raíz: ",my_root_project.identifier," | ",my_root_project.name)
+
         # Now we obtain the csCode
         for cf in my_project.custom_fields:
           print(cf)
@@ -107,12 +173,17 @@ def create_ods_file_from_graphml_file(filename, deviceName):
           print(cf)
           cfdict[cf.name] = cf
 
-        rm_issues_dict = {}
-        for i in my_project.issues:
-          print(cfdict)
-          i_ident = i.custom_fields.get(cfdict['csID'].id).value
-          rm_issues_dict[i_ident] = i
+        project_tree = get_project_tree(my_project,my_root_project,projects)
 
+        for p in project_tree:
+          print(p.identifier)
+
+        rm_issues_dict = {}
+        for p in project_tree:
+          for i in p.issues:
+            i_ident = i.custom_fields.get(cfdict['csID'].id).value
+            rm_issues_dict[i_ident] = i
+            print(i_ident,i.subject)
 
         continueProcess = True
 
@@ -439,7 +510,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
           thisCsId = thisRmTsk.custom_fields.get(cfdict['csID'].id).value
           rm_issues_dict[thisCsId] = thisRmTsk
           rmtranslator[n['node_id']] = thisCsId
-          print("------------------------->",n['node_id'])
+          print("------------------------->",n['node_id'],thisCsId)
           n['rmid'] = thisRmTsk.id
           n['url'] = url
       
