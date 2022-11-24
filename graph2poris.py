@@ -84,13 +84,17 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
   print("url key",urlkey)
   print("csid key",csidkey)
+  print("parentCSID key",csparentCSIDident)
 
   # Retrieving file_data
   file_data = graph.find_all('data')
   file_cscode = ""
   file_identifier = ""
   file_root_identifier = ""
+  parent_csys_identifier = ""
+  
   for n in file_data:
+    print(n['key'])
     if n['key'] == cscodekey:
       if len(n.contents) >= 1:
         thiscontent = n.contents[0].strip()
@@ -126,7 +130,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
           parent_csys_identifier = thiscontent        
 
       else:
-        parent_csys_identifier = 'instrument'
+        parent_csys_identifier = ''
 
   print("csCode:",file_cscode)
   print("identifier:",file_identifier)
