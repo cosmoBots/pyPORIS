@@ -1,16 +1,24 @@
-# pyPORIS_user
-An example of how to use pyPORIS to model your own instruments
+# pyPORIS
 
-* graph2poris.py: Creates a PORIS model in ODS format from a PORIS diagram in GraphML.
-* poris2xml.py: Creates a PORIS xml file from a PORIS model in ODS format.
+A set of tools to manipulate PORIS instruments:
+
+- porispanel.sh Creates a PORIS representation in ODS and XML format from a PORIS diagram in GraphML, and launches a configuration panel to validate the model.
+- porispanel_csys.sh Adds to porispanel.sh the synchronization with a cosmoSys instance.
+- porispanel_dir.sh Creates a PORIS representation in an ODS and XML format from a PORIS model which is fragmented in several GraphML files in the same folder.
+- odsporispanel.sh Creates a PORIS representation in XML format an launches a configuration panel from an ODS file representing a PORIS model.
+- porispanel_dir_csys.sh Adds to porispanel_dir.sh the synchronization with a cosmoSys instance.
+- xmlporispanel.sh Launches a configuration panel from a PORIS model representation in XML file.
+- redoPorisPython.sh and doPorisPython.sh converts an ODS representation of a PORIS model into convenient Python classes.
+
+The models are taken from the ./models folder and the Python classes are generated inside ./output folder.
 
 ## Requirements
-* Java
-* Python 3
-    * pip3 install bs4
-    * pip3 install lxml
-    * pip3 install pyexcel_ods
-    * pip3 install python-redmine
+- Java
+- Python 3
+    - pip3 install bs4
+    - pip3 install lxml
+    - pip3 install pyexcel_ods
+    - pip3 install python-redmine
 
 NOTE: In Windows you should use 'pip' instead of 'pip3'
 
