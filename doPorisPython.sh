@@ -110,6 +110,6 @@ fi
 cd ${DEVBASE_PATH}
 echo "Generating the PORIS device products from $1.ods"
 echo ${PORIS_TOOLS_PYTHON_PATH}
-python3 ${PORIS_TOOLS_PYTHON_PATH}/poris2python.py models $1.ods output || { echo 'poris2python.py failed' ; exit 1; }
+python3 ${PORIS_TOOLS_PYTHON_PATH}/poris2python.py models models/$1.ods output || { echo 'poris2python.py failed' ; exit 1; }
 
 echo "Fin!"
