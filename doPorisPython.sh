@@ -47,7 +47,14 @@ DEVBASE_PATH=`pwd`
 
 # Some "constants"
 # The name of the device, get from the script first argument
-DEVNAME=$1
+DEVPATH=$1
+DEVNAME=${DEVPATH##*/}
+OUTPUT_BASE=${DEVPATH%"$DEVNAME"}
+echo ${DEVPATH}
+echo ${DEVNAME}
+echo ${OUTPUT_BASE}
+OUTPUT_PATH=${DEVBASE_PATH}'/output/'${OUTPUT_BASE}
+
 # The path for the C++ base folder for the devices
 
 
@@ -62,7 +69,7 @@ echo ${PORIS_TOOLS_PATH}
 echo ${PORIS_TOOLS_PYTHON_PATH}
 
 # The path for the C++ base folder for the specific (user) custom code of the device
-DEVBASE_USER_PATH=${DEVBASE_PATH}/${DEVNAME}.user
+OUTPUT_PHYS_PATH=${OUTPUT_PATH}/${DEVNAME}_physical
 
 ########### WELCOME MESSAGE CALCULATION AREA ##############
 
@@ -71,25 +78,28 @@ echo "Welcome to Python code generator por PORIS models"
 ######### CLEANING AREA ###############
 # We will clean the previous products
 echo "Cleaning previous generated products"
-rm -rf ${DEVBASE_PATH}/${DEVNAME}
+rm -rf ${OUTPUT_PATH}/${DEVNAME}
 
 ######### CREATING FOLDERS AREA ###############
 # Let's create the product directories
-mkdir -p ${DEVBASE_PATH}/${DEVNAME}
+echo "Creating "${OUTPUT_PATH}/${DEVNAME}
+mkdir -p ${OUTPUT_PATH}/${DEVNAME}
 
 ######### If no USER CUSTOM CODE FOLDER ADDED, COPY THE TEMPLATE ONE #############
-echo "Checking the existence of ${DEVBASE_PYTHON_USER_PATH}"
-if [ -d "$DEVBASE_USER_PATH" ]; then
-  ### Take action if $DEVBASE_USER_PATH exists ###
-  echo "${DEVBASE_USER_PATH} already present, nothing to do"
+echo "Checking the existence of ${DEVBASE_PYTHON_PHYS_PATH}"
+if [ -d "$OUTPUT_PHYS_PATH" ]; then
+  ### Take action if $DEVBASE_PHYS_PATH exists ###
+  echo "${OUTPUT_PHYS_PATH} already present, nothing to do"
 else
-  ###  Control will jump here if $DEVBASE_PYTHON_USER_PATH does NOT exists ###
-  echo "${DEVBASE_USER_PATH} not found. Copying template dir."
-  cp -r ${PORIS_TOOLS_PYTHON_PATH}'/PORIS/$S1.user' ${DEVBASE_USER_PATH}
-  mv ${DEVBASE_USER_PATH}'/$S1_user.py' ${DEVBASE_USER_PATH}/${DEVNAME}_user.py
-  sed -i "s/DEVICENAME/$1/" ${DEVBASE_USER_PATH}/${DEVNAME}_user.py
-  sed -i "s/DEVICENAME/$1/" ${DEVBASE_USER_PATH}/${DEVNAME}_user.py
-  sed -i "s/DEVICENAME/$1/" ${DEVBASE_USER_PATH}/${DEVNAME}_user.py
+  ###  Control will jump here if $DEVBASE_PYTHON_PHYS_PATH does NOT exists ###
+  echo "${OUTPUT_PHYS_PATH} not found. Copying template dir."
+  cp -r ${PORIS_TOOLS_PYTHON_PATH}'/PORIS/$S1_physical' ${OUTPUT_PHYS_PATH}
+  echo ${DEVNAME}
+  echo "Renaming"${OUTPUT_PHYS_PATH}'/$S1_physical.py to '${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
+  mv ${OUTPUT_PHYS_PATH}'/$S1_physical.py' ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
+  sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
+  sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
+  sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
 fi
 
 ######### PARSING THE MODEL AND GENERATING THE PORIS PRODUCTS ###############
@@ -97,6 +107,5 @@ cd ${DEVBASE_PATH}
 echo "Generating the PORIS device products from $1.ods"
 echo ${PORIS_TOOLS_PYTHON_PATH}
 python3 ${PORIS_TOOLS_PYTHON_PATH}/poris2python.py models/$1.ods || { echo 'poris2python.py failed' ; exit 1; }
-
 
 echo "Fin!"

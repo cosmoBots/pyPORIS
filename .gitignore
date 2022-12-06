@@ -130,22 +130,12 @@ dmypy.json
 
 *.ods#
 !*_palette.graphml
-/models/*
-!/models/example*.graphml
-!/models/porispanel.sh
-!/models/porispanel_csys.sh
-!/models/winporispanel.bat
-
-
-
+/models/*/*.backup
 
 config_rm.py
 config_csys.py
-models/example.out.graphml
-models/example.old.graphml
 config_rm_enabled.py
 config_csys_enabled.py
-models/*.backup
 
 /*.png
 /*.xlsx
