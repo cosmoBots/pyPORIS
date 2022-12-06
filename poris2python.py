@@ -198,11 +198,18 @@ def loadODS():
                     for ch0 in thisnode['children']:
                         if nodes_dict[ch0]['tracker'] == "prSys" or nodes_dict[ch0]['tracker'] == "prParam":
                             for ch in nodes_dict[ch0]['children']:
-                                if nodes_dict[ch]['tracker'] == "prMode":
-                                    if nodes_dict[ch]['virtual'] == False:
-                                        virtnode['blocking'] += [ch]
-                                        print(ch,nodes_dict[ch]['subject'],"bloquea a",virtident,virtnode['description'])
-                                        #print(virtnode['blocking'])
+                                # If it is a virtual node, it can be not in nodes_dict, but in nodes_to_add
+                                if ch in nodes_dict.keys():
+                                    if nodes_dict[ch]['tracker'] == "prMode":
+                                        if nodes_dict[ch]['virtual'] == False:
+                                            virtnode['blocking'] += [ch]
+                                            print(ch,nodes_dict[ch]['subject'],"bloquea a",virtident,virtnode['description'])
+                                            #print(virtnode['blocking'])
+                                
+                                else:
+                                    if nodes_to_add[ch]['virtual'] == False:
+                                        print("CHECK THIS: A NON VIRTUAL NODE NOT IN NODES_DICT")
+
 
                     if len(virtnode['blocking']) > 0:
                         nodes_to_add[virtident] = virtnode

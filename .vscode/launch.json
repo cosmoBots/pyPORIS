@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense para saber los atributos posibles.
+    // Mantenga el puntero para ver las descripciones de los existentes atributos.
+    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "doporispython",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": ["models","models/osiris/osiris.ods","output"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "porispanel dir",
+            "type": "python",
+            "request": "launch",
+            "args": "osiris",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}

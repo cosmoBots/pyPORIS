@@ -294,7 +294,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
               if len(thiscontent) > 0:
                 print("Uno",normal_node['name'],thiscontent)
                 normal_node['project'] = thiscontent
-                if normal_node['project'] != basefilename:
+                if normal_node['project'] != file_identifier:
                   normal_node['external'] = True
 
         if csiddatanode is None:
@@ -519,6 +519,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
     # and the node aliases that will be used for relationships
     for key in global_dict:
       normal_node = global_dict[key]
+      print("--->",key,normal_node['external'],normal_node['globalpath'])
       if not normal_node['external']:
         normal_node['normalized_relations'] = []
         normal_node['normalized_next'] = []
@@ -556,8 +557,9 @@ def create_tree_from_graphml_dir(dirname, deviceName):
     for key in global_dict:
       print("normalize relationships of",key)
       normal_node = global_dict[key]
-      #print("normal_mode",normal_node)
-      #print("alias",node_aliases[key])
+      print("normal_mode",normal_node)
+      print("alias",node_aliases[key])
+      print(normalized_dict.keys())
       normalized_node = normalized_dict[node_aliases[key]]
       #print("normalized_node",normalized_node)
       for r in normal_node['relations']:
