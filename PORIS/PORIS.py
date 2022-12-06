@@ -33,6 +33,9 @@ class PORISValueFloat(PORISValue):
         return self.data
 
     def getData(self) -> float:
+        if self.data == None:
+            self.data = self.default_data
+
         return self.data
 
 class PORISValueText(PORISValue):
@@ -46,6 +49,9 @@ class PORISValueText(PORISValue):
         return self.data    
 
     def getData(self) -> str:
+        if self.data == None:
+            self.data = self.default_data
+
         return self.data
 
 
