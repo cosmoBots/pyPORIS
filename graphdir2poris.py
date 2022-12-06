@@ -519,7 +519,6 @@ def create_tree_from_graphml_dir(dirname, deviceName):
     # and the node aliases that will be used for relationships
     for key in global_dict:
       normal_node = global_dict[key]
-      print("--->",key,normal_node['external'],normal_node['globalpath'])
       if not normal_node['external']:
         normal_node['normalized_relations'] = []
         normal_node['normalized_next'] = []
@@ -557,9 +556,8 @@ def create_tree_from_graphml_dir(dirname, deviceName):
     for key in global_dict:
       print("normalize relationships of",key)
       normal_node = global_dict[key]
-      print("normal_mode",normal_node)
-      print("alias",node_aliases[key])
-      print(normalized_dict.keys())
+      #print("normal_mode",normal_node)
+      #print("alias",node_aliases[key])
       normalized_node = normalized_dict[node_aliases[key]]
       #print("normalized_node",normalized_node)
       for r in normal_node['relations']:
