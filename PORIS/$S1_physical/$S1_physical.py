@@ -1,4 +1,3 @@
-
 from DEVICENAMEPORIS import *
 
 class DEVICENAME_physical(DEVICENAMEPORIS):

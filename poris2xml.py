@@ -934,7 +934,7 @@ def createPorisXML(nodes_dict,deviceName):
 
 
 
-    xml_str = rootInstr.toprettyxml(indent ="\t",encoding="UTF-8") 
+    xml_str = rootInstr.toprettyxml(indent ="    ",encoding="UTF-8") 
 
     filename = args.sys_file.name
     dirname = os.path.dirname(filename)

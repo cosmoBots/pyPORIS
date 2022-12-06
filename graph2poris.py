@@ -157,7 +157,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
     print("Proyectos:")
     for p in projects:
-        print("\t",p.identifier," \t| ",p.name)
+        print("    ",p.identifier,"     | ",p.name)
         if p.identifier == file_identifier:
           continueProcess = True
 

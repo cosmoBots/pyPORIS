@@ -95,7 +95,7 @@ def scan_project(p):
 print("Proyectos:",len(projects))
 continueProcess = False
 for p in projects:
-    print("\t",p.identifier," \t| ",p.name)
+    print("    ",p.identifier,"     | ",p.name)
     if p.identifier == prjName:
         continueProcess = True
 

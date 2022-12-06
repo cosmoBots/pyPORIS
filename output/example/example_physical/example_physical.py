@@ -1,12 +1,11 @@
-
 from examplePORIS import *
 
 class example_physical(examplePORIS):
-    dummy = "You should override the action triggers here"
-    # Go to ARCGengIIIPORIS.py, navigate to the ##### Action triggers ##### section
-    # which is normally at the bottom of the class, and copy here the methods 
-    # to start overriding them, in order to convert the virtual device into a physical one
-    # Once this class has any content, remove the dummy attribute
+	dummy = "You should override the action triggers here"
+	# Go to ARCGengIIIPORIS.py, navigate to the ##### Action triggers ##### section
+	# which is normally at the bottom of the class, and copy here the methods 
+	# to start overriding them, in order to convert the virtual device into a physical one
+	# Once this class has any content, remove the dummy attribute
 
 
 thismodel = example_physical()

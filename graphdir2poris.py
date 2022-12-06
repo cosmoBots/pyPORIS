@@ -116,7 +116,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
 
     print("Projects:")
     for p in projects:
-        print("\t",p.identifier," \t| ",p.name)
+        print("    ",p.identifier,"     | ",p.name)
         csys_prj_dict[p.identifier] = p
         if p.identifier == deviceName:
           continueProcess = True
