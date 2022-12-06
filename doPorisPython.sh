@@ -84,6 +84,7 @@ rm -rf ${OUTPUT_PATH}/${DEVNAME}
 # Let's create the product directories
 echo "Creating "${OUTPUT_PATH}/${DEVNAME}
 mkdir -p ${OUTPUT_PATH}/${DEVNAME}
+ln -s ../../../PORIS/PORIS.py ${OUTPUT_PATH}/${DEVNAME}/PORIS.py
 
 ######### If no USER CUSTOM CODE FOLDER ADDED, COPY THE TEMPLATE ONE #############
 echo "Checking the existence of ${DEVBASE_PYTHON_PHYS_PATH}"
@@ -100,12 +101,15 @@ else
   sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
   sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
   sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
+  sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
+  ln -s ../${DEVNAME}/${DEVNAME}PORIS.py ${OUTPUT_PHYS_PATH}/${DEVNAME}PORIS.py
+  ln -s ../../../PORIS/PORIS.py ${OUTPUT_PHYS_PATH}/PORIS.py
 fi
 
 ######### PARSING THE MODEL AND GENERATING THE PORIS PRODUCTS ###############
 cd ${DEVBASE_PATH}
 echo "Generating the PORIS device products from $1.ods"
 echo ${PORIS_TOOLS_PYTHON_PATH}
-python3 ${PORIS_TOOLS_PYTHON_PATH}/poris2python.py models/$1.ods || { echo 'poris2python.py failed' ; exit 1; }
+python3 ${PORIS_TOOLS_PYTHON_PATH}/poris2python.py models $1.ods output || { echo 'poris2python.py failed' ; exit 1; }
 
 echo "Fin!"

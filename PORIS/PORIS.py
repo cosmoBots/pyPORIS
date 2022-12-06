@@ -22,14 +22,17 @@ class PORISValueFloat(PORISValue):
     max = None
     default_data = None
 
-    def setData(self,floatdata):
+    def setData(self,data :float) -> float:
         if debug:
-            print("Applying", floatdata, "name:", self.name, "min:", self.min, "max:", self.max)
+            print("Applying", data, "name:", self.name, "min:", self.min, "max:", self.max)
 
-        if floatdata >= self.min:
-            if floatdata <= max:
-                self.data = floatdata
+        if data >= self.min:
+            if data <= max:
+                self.data = data
         
+        return self.data
+
+    def getData(self) -> float:
         return self.data
 
 class PORISValueText(PORISValue):
@@ -37,10 +40,14 @@ class PORISValueText(PORISValue):
     data = None
     default_data = None
     
-    def setData(self,strdata):
-        self.data = strdata
+    def setData(self,data: str):
+        self.data = str
         
         return self.data    
+
+    def getData(self) -> str:
+        return self.data
+
 
 class PORISMode(PORIS):
     

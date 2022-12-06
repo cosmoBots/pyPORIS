@@ -9,7 +9,6 @@ import os
 # Importing test configuration file
 import config
 
-generate_oldcode = False
 savemem = config.savemem
 
 def nametoidl(n):
@@ -44,30 +43,42 @@ def desctomonit(n):
     return nametoidl(n.split('\n')[0].split('\r')[0])
 
 ######### WE WILL PARSE THE COMMAND LINE ARGUMENTS FOR THE WRAPPER GEN #############
+
+def dir_path(string):
+    if os.path.isdir(string):
+        return string
+    else:
+        raise NotADirectoryError(string)
+
 parser = argparse.ArgumentParser(description='Launches a PORIS device generation from an ODS file describing the PORIS instrument')
 
 ## The second argument is the api ODS file
-parser.add_argument('sys_file',type=argparse.FileType('r'), help="the path of a file containing the PORIS instrument description")
+parser.add_argument('model_root_path',type=dir_path, help="the root path where the models shall be picket from")
+parser.add_argument('model_path',type=argparse.FileType('r'), help="the path for the model to be processed")
+parser.add_argument('output_path',type=dir_path, help="the path to create the Python classes")
 
 # Obtaining the arguments from the command line
 args=parser.parse_args()
 
 # Printing the obtained arguments:
-print("/* The PORIS instrument description ODS filename is:",args.sys_file.name+" */")
-deviceName = Path(args.sys_file.name).stem
+print("/* The PORIS instrument description ODS filename is:",args.model_path.name+" */")
+deviceName = Path(args.model_path.name).stem
 print("Device name:",deviceName)
+
+relativepath = args.model_path.name.replace(args.model_root_path, '', 1)
+relativepath = ''.join(relativepath.rsplit(".ods", 1))
 
 # As an example of a constant defined in the configuration file, we'll print the welcome message
 print(config.welcome_message)
 
 def loadODS():
 
-    dictdata = get_data(args.sys_file.name,start_row=config.dict_max_rows_row, row_limit=config.dict_max_rows_row+1, 
+    dictdata = get_data(args.model_path.name,start_row=config.dict_max_rows_row, row_limit=config.dict_max_rows_row+1, 
         start_column=config.dict_max_rows_column,column_limit=config.dict_max_rows_column)[config.dict_file_sheet]
 
     desc_file_row_limit = dictdata[0][1]
     # Now we read the PORIS instrument description from the file file
-    filedata = get_data(args.sys_file.name,start_row=config.desc_file_start_row, row_limit=desc_file_row_limit, 
+    filedata = get_data(args.model_path.name,start_row=config.desc_file_start_row, row_limit=desc_file_row_limit, 
         start_column=config.desc_file_start_column,column_limit=config.desc_file_column_limit)
     nodesdata = filedata[config.desc_file_sheet]
 
@@ -244,43 +255,12 @@ def loadODS():
 
 methods_dict = {}
 
-def createCxxCode(nodes_dict,deviceName):
+def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
     global methods_dict
-    # Now we read the methods list from the file
-    functionsfile = "./"+deviceName+".user/methods.ods"
-    functionsdata = get_data(functionsfile,start_row=config.methods_file_start_row, row_limit=config.methods_file_row_limit, 
-        start_column=config.methods_file_start_column,column_limit=config.methods_file_column_limit)[config.methods_file_sheet]
 
-
-
-    for row in functionsdata:
-        if (len(row)>1):
-            thiskey = row[config.methods_function_column]
-            if (len(thiskey)>0):
-                print(thiskey)
-                thisnode = {}
-                thisnode['method'] = thiskey
-                thisnode['node'] = row[config.methods_node_column]
-                methods_dict[thiskey] = thisnode
-
-    methodsstr =  "\t//----------------------------------------------------------------------\n"
-    methodsstr += "\t//  Specific methods\n"
-    methodsstr += "\t//----------------------------------------------------------------------\n\n"
-    methodsstr += "\tpublic:\n\n"
-
-    for key in methods_dict.keys():
-        m = methods_dict[key]
-        methodsstr += '\t/** boolean '+key+' */\n\boolean '+key+'(boolean value)\n\n'
-
-    magsstr = "\tprivate:\n\n"
-
-    magsstr += "//Including fragment for PORIS support\n"
-    magsstr +=  "#include \"_"+deviceName+"PORIS.h\"\n\n"
-
-    magsstr +=  "\t//----------------------------------------------------------------------\n"
-    magsstr += "\t//  Device Magnitudes\n"
-    magsstr += "\t//----------------------------------------------------------------------\n\n"
-
+    methodsstr =  "\t#----------------------------------------------------------------------\n"
+    methodsstr += "\t#  Specific methods\n"
+    methodsstr += "\t#----------------------------------------------------------------------\n\n"
     porishstr =  "from PORIS import *\n\n"
     porishstr += "class "+deviceName+"PORIS:\n"
     porishstr += "\tdef __init__(self):\n"
@@ -291,7 +271,6 @@ def createCxxCode(nodes_dict,deviceName):
     poriscinitstr = ""
     poriscinitrelstr = ""
 
-    closefuncstr = "\n\treturn ret\n}\n\n"
 
     for thiskey in nodes_dict.keys():    
         thisnode = nodes_dict[thiskey]
@@ -325,10 +304,14 @@ def createCxxCode(nodes_dict,deviceName):
                     porishstr += "\t\tself.vl"+nodename+"_UNKNOWN = PORISValue(\"UNKNOWN\")\n"
 
 
-                methodsstr += "\t// --------- "+thisclass+" "+nodename+" -----------------\n"
-                methodsstr += "\t/* "+nodename+" */\n"
-                methodsstr += "\t"+enumname+" get_"+nodename+"(void)\n"
-                methodsstr += "\t"+enumname+" set_"+nodename+"("+enumname+" value)\n"
+                methodsstr += "\n\t## "+thisclass+" "+nodename+" \n"
+                methodsstr += "\n\t# "+nodename+"\n"
+                methodsstr += "\tdef get_"+nodename+"(self)-> PORISValue :\n"
+                methodsstr += "\t\treturn self.pr"+nodename+".selectedValue\n\n"
+
+                methodsstr += "\tdef set_"+nodename+"(self, value: PORISValue)-> PORISValue :\n"
+                methodsstr += "\t\treturn self.pr"+nodename+".setValue(value)\n\n"
+
                 '''
                 prBinning.id = idcounter++;
                 prBinning.idx = 1;
@@ -411,6 +394,14 @@ def createCxxCode(nodes_dict,deviceName):
                     poriscinitstr += "\t\tself.md"+nodename+ "UNKNOWN.addValue(self.vl"+nodename+ "_UNKNOWN)\n"
                     poriscinitstr += "\t\tself.md"+parentNodeName+ "UNKNOWN.addSubMode(self.md"+nodename+ "UNKNOWN)\n"
 
+                methodsstr += "\n\t## "+nodename+"Mode \n"
+                methodsstr += "\tdef get_"+nodename+"Mode(self)-> PORISMode:\n"
+                #return self.sysARCGenIII.selectedMode
+                methodsstr += "\t\treturn self.pr"+nodename+".selectedMode\n\n"
+
+                methodsstr += "\tdef set_"+nodename+"Mode(self, mode: PORISMode)-> PORISMode :\n"
+                methodsstr += "\t\treturn self.pr"+nodename+".setMode(mode)\n\n"                    
+
             else:
                 # PORISSys prDetector;
                 porishstr += "\t\tself.sys"+nodename+" = PORISSys(\""+nodename+"\")\n"
@@ -466,57 +457,16 @@ def createCxxCode(nodes_dict,deviceName):
 
                 else:
                     poriscinitstr += "\t\tself.sys"+nodename+".addMode(self.md"+nodename+ "UNKNOWN)\n"
+
+                methodsstr += "\n\t## "+nodename+"Mode \n"
+                methodsstr += "\tdef get_"+nodename+"Mode(self)-> PORISMode:\n"
+                #return self.sysARCGenIII.selectedMode
+                methodsstr += "\t\treturn self.sys"+nodename+".selectedMode\n\n"
+
+                methodsstr += "\tdef set_"+nodename+"Mode(self, mode: PORISMode)-> PORISMode :\n"
+                methodsstr += "\t\treturn self.sys"+nodename+".setMode(mode)\n\n"                
             
 
-            methodsstr += "\t/* "+nodename+"Mode */\n"
-            methodsstr += "\t"+enummodename+" get_"+nodename+"Mode(void)\n"
-            methodsstr += "\t"+enummodename+" set_"+nodename+"Mode("+enummodename+" value)\n\n"
-
-            # methodsstr += "\t/* Get values for "+nodename+" in current */\n"
-            # methodsstr += "\t"+choicesname+" getChoicesFor"+nodename+"()\n\n"
-
-            if thisclass == "prParam":
-                if generate_oldcode:
-                    funcstr = "bool check"+nodename+"Elibility("+nodename+" value)"
-                    porishstr += funcstr+"\n"
-                    poriscstrfp1 = "bool "+deviceName+"::check"+nodename+"Elibility("+nodename+" value)"+"{\n"
-                    poriscstrfp1 += "\tbool ret = false\n\n"
-
-                    funcstr = nodename+" getEligible"+nodename+"(void)"
-                    porishstr += funcstr+"\n"
-                    poriscstrfp2 = deviceName+"::"+nodename+" "+deviceName+"::getEligible"+nodename+"(void)"+"{\n"
-                    poriscstrfp2 += "\t"+nodename+" ret = "+nodename+"_UNKNOWN\n\n"
-                    poriscstrfp2 += "\tif (check"+nodename+"Elibility("+nodevar_+")){\n"
-                    poriscstrfp2 += "\t\tret = "+nodevar_+"\n"
-                    poriscstrfp2 += "\t} else {\n"
-            if generate_oldcode:
-                funcstr = "bool check"+nodename+"ModeElibility("+nodename+"Mode value)"
-                porishstr += funcstr+"\n"
-                poriscstrfm1 = "bool "+deviceName+"::check"+nodename+"ModeElibility("+nodename+"Mode value)"+"{\n"
-                if 'parentnode' in thisnode.keys():
-                    poriscstrfm1 += "\tbool ret = false\n\n"
-
-                else:
-                    poriscstrfm1 += "\tbool ret = true\n\n"
-
-            if generate_oldcode:
-                funcstr = nodename+"Mode getEligible"+nodename+"Mode(void)"
-                porishstr += funcstr+"\n\n"
-                poriscstrfm2 = deviceName+"::"+nodename+"Mode "+deviceName+"::getEligible"+nodename+"Mode(void)"+"{\n"
-                poriscstrfm2 += "\t"+nodename+"Mode ret = "+nodename+"Mode_UNKNOWN\n\n"        
-                poriscstrfm2 += "\tif (check"+nodename+"ModeElibility("+modevar_+")){\n"
-                poriscstrfm2 += "\t\tret = "+modevar_+"\n"
-                poriscstrfm2 += "\t} else {\n"
-
-            magsstr += "\t// --------- "+thisclass+" "+nodename+" -----------------\n"
-            if thisclass == "prParam":
-                magsstr += "\t/**\n"
-                magsstr += "\t* Enum "+nodename+"\n"
-                magsstr += "\t* @description Enum "+desctomonit(thisnode['description'])+"\n"
-    
-            modestr = "\t/**\n"
-            modestr += "\t* Enum "+nodename+"Mode\n"
-            modestr += "\t* @description Enum [Mode]"+desctomonit(thisnode['description'])+"\n"
 
             if thisclass == "prParam":
                 valuesstr = nodename+"_UNKNOWN"
@@ -530,7 +480,6 @@ def createCxxCode(nodes_dict,deviceName):
                 modeliststr = nodename+"UNKNOWN"
                 
             modeshortliststr = "UNKNOWN"
-            modemaxstr = modeliststr
             switchfm2 = False
             if 'parentnode' in thisnode.keys():
                 parentnode = thisnode['parentnode']
@@ -542,11 +491,6 @@ def createCxxCode(nodes_dict,deviceName):
                     parentmodevar_ = parentmodevar+"_"
                     parentnodevar_ = parentnodevar+"_"
                     parentnodemodevar = parentnode
-                    if generate_oldcode:
-                        poriscstrfm1sw = "\tswitch ("+parentmodevar_+"){\n"
-                        poriscstrfm2 += "\t\tswitch ("+parentmodevar_+"){\n"
-                        switchfm2 = True
-                        anyvaluepresentparentouter = False
 
                     for k in parentnode['children']:
                         childnode = nodes_dict[k]
@@ -555,19 +499,13 @@ def createCxxCode(nodes_dict,deviceName):
                         if childclass == "prMode":
                             anyvaluepresentparentinner = False
                             firstfound = False                        
-                            if generate_oldcode:
-                                poriscstrfm1sw2 = "\t\tcase "+parentnodename+"Mode_"+childname+":\n"
-                                poriscstrfm1sw2 += "\t\t\tswitch (value){\n"
                             
                             for kv in childnode['blocking']:
                                 kvnode = nodes_dict[kv]
                                 kvname = nametoidl(kvnode['subject'])
                                 kvclass = kvnode['tracker']
                                 if kvclass == "prMode":
-                                    if kvnode['parentnode'] == thisnode:
-                                        if generate_oldcode:
-                                            poriscstrfm1sw2 += "\t\t\t\tcase "+nodename+"Mode_"+kvname+":\n"
-                                        
+                                    if kvnode['parentnode'] == thisnode:                                     
                                         if not savemem:
                                             poriscinitrelstr += "\t\t# Marcamos "+nodename+"Mode_"+kvname+" como elegible para "+parentnodename+"Mode_"+childname+"\n"
                                             poriscinitrelstr += "\t\tself.md"+parentnodename+"Mode_"+childname+".addSubMode(self.md"+nodename+"Mode_"+kvname+")\n"
@@ -578,42 +516,19 @@ def createCxxCode(nodes_dict,deviceName):
                                         anyvaluepresentparentinner = True
                                         if not firstfound:
                                             firstfound = True
-                                            if generate_oldcode:
-                                                poriscstrfm2 += "\t\t\tcase "+parentnodename+"Mode_"+childname+":\n"
-                                                poriscstrfm2 += "\t\t\t\tret = "+nodename+"Mode_"+kvname+"\n"
-                                                poriscstrfm2 += "\t\t\t\tbreak\n"
 
                             if (anyvaluepresentparentinner):
                                 anyvaluepresentparentouter = True
-                                if generate_oldcode:                            
-                                    poriscstrfm1sw2 += "\t\t\t\t\tret = true\n"
-                                    poriscstrfm1sw2 += "\t\t\t\t\tbreak\n"
-                                    poriscstrfm1sw2 += "\t\t\t}\n"
-                                    poriscstrfm1sw2 += "\t\t\tbreak\n"
-                                    poriscstrfm1sw += poriscstrfm1sw2
-
-                    if anyvaluepresentparentouter:
-                        if generate_oldcode:                        
-                            poriscstrfm1sw += "\t}\n"
-                            poriscstrfm1 += poriscstrfm1sw
 
 
             else:
                 parentnode = None
 
-            if generate_oldcode:
-                switchfp2 = False
-
             monitsetparam = None
-            magsstrfl = ""
             methodsstrfl = ""
             minimum_float = None
             maximum_float = None
             if thisclass == "prParam":
-                if generate_oldcode:
-                    poriscstrfp1sw = "\tswitch ("+modevar_+"){\n"
-                    poriscstrfp2 += "\t\tswitch ("+modevar_+"){\n"
-                    switchfp2 = True
                 for k in thisnode['children']:
                     childnode = nodes_dict[k]
                     childname = nametoidl(childnode['subject'])
@@ -622,28 +537,20 @@ def createCxxCode(nodes_dict,deviceName):
                         if not savemem:
                             modeliststr += ","+nodename+"Mode_"+childname
                             modeshortliststr += ","+childname
-                            modemaxstr = nodename+"Mode_"+childname
+                            
                         else:
                             modeliststr += ","+nodename+childname
                             modeshortliststr += ","+childname
-                            modemaxstr = nodename+childname
-                            
+
 
                         anyvaluepresentinner = False
-                        firstdone = False                    
-                        if generate_oldcode:
-                            poriscstrfp1sw2 = "\t\tcase "+nodename+"Mode_"+childname+":\n"
-                            poriscstrfp1sw2 += "\t\t\tswitch (value){\n"
-                        
+                        firstdone = False
 
                         for kv in childnode['blocking']:
                             kvnode = nodes_dict[kv]
                             kvname = nametoidl(kvnode['subject'])
                             kvclass = kvnode['tracker']
-                            if kvclass == "prValFloat" or kvclass == "prValText" or kvclass == "prValue":
-                                if generate_oldcode:
-                                    poriscstrfp1sw2 += "\t\t\t\tcase "+nodename+"_"+kvname+":\n"
-                                
+                            if kvclass == "prValFloat" or kvclass == "prValText" or kvclass == "prValue":                               
                                 if kvnode['virtual'] == False:
                                     if not savemem:
                                         poriscinitrelstr += "\t\t# Marcamos "+nodename+"_"+kvname+" como elegible para "+nodename+"Mode_"+childname+"\n"
@@ -655,16 +562,8 @@ def createCxxCode(nodes_dict,deviceName):
                                 anyvaluepresentinner = True
                                 if not firstdone:
                                     firstdone = True
-                                    if generate_oldcode:
-                                        poriscstrfp2 += "\t\t\tcase "+nodename+"Mode_"+childname+":\n"
-                                        poriscstrfp2 += "\t\t\t\tret = "+nodename+"_"+kvname+"\n"
-                                        poriscstrfp2 += "\t\t\t\tbreak\n"
 
                                 if kvclass == "prValFloat":
-                                    magsstrfl = "\t// "+thisclass+" "+nodename+"Double -----------------\n"
-                                    magsstrfl += "\t/**\n"
-                                    magsstrfl += "\t* double "+nodename+"Double\n"
-                                    magsstrfl += "\t* @description double "+desctomonit(thisnode['description'])+"\n"
                                     if maximum_float is None:
                                         maximum_float = kvnode['max']
                                     else:
@@ -675,75 +574,30 @@ def createCxxCode(nodes_dict,deviceName):
                                     else:
                                         minimum_float = min(minimum_float,kvnode['min'])
 
-                                    magsstrfl += "\t* @maximum     $$MAX\n"
-                                    magsstrfl += "\t* @minimum     $$MIN\n"
-                                    magsstrfl += "\t*/\n"
-                                    magsstrfl += "\tdouble "+nodename+"Double\n\n"
-                                    methodsstrfl = "\t// --------- "+thisclass+" "+parentNodeName+" -----------------\n"
-                                    methodsstrfl += "\t/* "+nodename+"Double */\n"
-                                    methodsstrfl += "\tdouble get_"+nodename+"Double(void)\n"
-                                    methodsstrfl += "\tdouble set_"+nodename+"Double(double value)\n\n"
+                                    methodsstrfl += "\n\t## "+thisclass+" "+parentNodeName+" \n"
+                                    methodsstrfl += "\n\t# "+nodename+"Double  \n"
+                                    methodsstrfl += "\tdef get_"+nodename+"Double(self)-> float :\n"
+                                    methodsstrfl += "\t\treturn self.pr"+nodename+".selectedValue.getData()\n\n"
+
+                                    methodsstrfl += "\tdef set_"+nodename+"Double(self, data: float)-> float :\n"
+                                    methodsstrfl += "\t\treturn self.pr"+nodename+".selectedValue.setData(data)\n\n"
 
                                 if kvclass == "prValText":
-                                    magsstrfl = "\t// "+thisclass+" "+nodename+"String -----------------\n"
-                                    magsstrfl += "\t/**\n"
-                                    magsstrfl += "\t* string "+nodename+"String\n"
-                                    magsstrfl += "\t* @description string "+desctomonit(thisnode['description'])+"\n"
-                                    magsstrfl += "\t* @default     "+kvnode['deftext']+"\n"
-                                    magsstrfl += "\t*/\n"
-                                    magsstrfl += "\tstring "+nodename+"String\n\n"
-                                    methodsstrfl = "\t// --------- "+thisclass+" "+parentNodeName+" -----------------\n"
-                                    methodsstrfl += "\t/* "+nodename+"String */\n"
-                                    methodsstrfl += "\tstring get_"+nodename+"String(void)\n" 
-                                    methodsstrfl += "\tstring set_"+nodename+"String(string value)\n\n" 
-             
+                                    methodsstrfl += "\n\t## "+thisclass+" "+parentNodeName+" \n"
+                                    methodsstrfl += "\n\t# "+nodename+"String #\n"
+                                    methodsstrfl += "\tdef get_"+nodename+"String(self)-> str :\n"
+                                    methodsstrfl += "\t\treturn self.pr"+nodename+".selectedValue.getData()\n\n"
 
-                        if (anyvaluepresentinner):
-                                anyvaluepresentouter = True
-                                if generate_oldcode:
-                                    poriscstrfp1sw2 += "\t\t\t\t\tret = true\n"
-                                    poriscstrfp1sw2 += "\t\t\t\t\tbreak\n"
-                                    poriscstrfp1sw2 += "\t\t\t}\n"
-                                    poriscstrfp1sw2 += "\t\t\tbreak\n"
-                                    poriscstrfp1sw += poriscstrfp1sw2                        
+                                    methodsstrfl += "\tdef set_"+nodename+"String(self, data: str)-> str :\n"
+                                    methodsstrfl += "\t\treturn self.pr"+nodename+".selectedValue.setData(data)\n\n"
+
                     else:
                         if childclass == "prValFloat" or childclass == "prValText" or childclass == "prValue":
                             valuesstr += ","+nodename+"_"+childname
                             valuesshortstr += ","+childname
                             valuemaxstr = nodename+"_"+childname
 
-
-                if anyvaluepresentouter:
-                    if generate_oldcode:
-                        poriscstrfp1sw += "\t}\n"
-                        poriscstrfp1 += poriscstrfp1sw
-
-                magsstr += "\t* @maximum     "+valuemaxstr+"\n"
-                magsstr += "\t* @minimum     "+nodename+"_UNKNOWN"+"\n"
-                magsstr += "\t* @values      "+valuesstr+"\n"
-                magsstr += "\t*/\n"
-                magsstr += "\tenum class "+enumname+" {"+ valuesstr+"}\n"
-                magsstr += "\t"+enumname+" "+nodevar+"\n\n"
-
-
                 methodsstr += methodsstrfl
-                if (maximum_float is not None):
-                    magsstrfl = magsstrfl.replace("$$MAX",str(maximum_float)).replace("$$MIN",str(minimum_float))
-                    magsstr += magsstrfl
-                    print(maximum_float,"|",minimum_float,"|",magsstrfl)
-
-                else:
-                    magsstr += magsstrfl
-
-                if generate_oldcode:
-                    if switchfp2:
-                        poriscstrfp2 += "\t\t}\n"
-
-                    poriscstrfp2 += "\t}\n"
-
-                    poriscstrfp1 += closefuncstr
-                    poriscstrfp2 += closefuncstr
-                    poriscstr += poriscstrfp1 + poriscstrfp2
 
             else:
                 if thisclass == "prSys":
@@ -755,37 +609,11 @@ def createCxxCode(nodes_dict,deviceName):
                             if not savemem:
                                 modeliststr += ","+nodename+"Mode_"+childname
                                 modeshortliststr += ","+childname
-                                modemaxstr = nodename+"Mode_"+childname
 
                             else:
                                 modeliststr += ","+nodename+childname
                                 modeshortliststr += ","+childname
-                                modemaxstr = nodename+childname
 
-
-            modestr += "\t* @maximum     "+modemaxstr+"\n"
-            if not savemem:            
-                modestr += "\t* @minimum     "+nodename+"Mode_UNKNOWN\n"
-            
-            else:
-                modestr += "\t* @minimum     "+nodename+"UNKNOWN\n"
-
-            modestr += "\t* @values      "+modeliststr+"\n"
-            modestr += "\t*/\n"
-            modestr += "\tenum class "+enummodename+" {"+ modeliststr+"}\n"
-            modestr += "\t"+enummodename+" "+modevar+"\n\n"
-            magsstr += modestr
-
-            if generate_oldcode:
-                if switchfm2:
-                    poriscstrfm2 += "\t\t}\n"
-
-                poriscstrfm2 += "\t}\n"
-
-                poriscstrfm1 += closefuncstr
-                poriscstrfm2 += closefuncstr
-
-                poriscstr += poriscstrfm1 + poriscstrfm2
 
         else:
             parentNode = thisnode['parentnode']
@@ -910,31 +738,28 @@ def createCxxCode(nodes_dict,deviceName):
                             poriscinitstr += "\t\tself.pr"+parentNodeName+".addValue(self.vl"+parentNodeName+ "_" + nodename+")\n"
 
                         else:
-                            porishstr += "\t\t//TODO: Other xx"+parentNodeName+ "_" + nodename+"\n"
+                            if thisclass == "prCmd":
+                                thisnode = {}
+                                thiskey = parentNodeName+ "_" + nodename
+                                thisnode['method'] = "exec"+thiskey
+                                thisnode['node'] = parentNodeName
+                                methods_dict[thiskey] = thisnode
+                                methodsstr += '\n\t## Action trigger '+thiskey+' ##\n'
+                                methodsstr += '\tdef '+thisnode['method']+'(self, value: bool) -> bool:\n'
+                                methodsstr += '\t\t# Override this\n'
+                                methodsstr += '\t\treturn True\n\n'
 
-
-    filestr =  "// Created with PORIS @ which is Copyright (c) 2022 cosmoBots.eu\n"
-    filestr += "// Do ethically correct things. Do not use our tools to do evil stuff\n"
-    filestr += "// Think about enriching all humanity, besides yourself\n\n"
-
-    filestr +="#include \"PORIS.h\"\n\n"
-    filestr += "class "+deviceName+" {\n"
-    filestr += magsstr+"\n"
-    filestr += methodsstr+"\n"
-    filestr += "}\n\n"
-
-    with open("./"+deviceName+"/"+deviceName+".h", "w") as text_file:
-        text_file.write(filestr)
+                            else:                            
+                                porishstr += "\t\t//TODO: Other xx"+parentNodeName+ "_" + nodename+"\n"
 
     poriscinitstr += poriscinitrelstr + "\n"
     
     poriscstr += poriscinitstr 
     
-    with open("./"+deviceName+"/"+deviceName+"PORIS.py", "w+") as text_file:
+    with open("./"+output_path+relative_path+"/"+deviceName+"PORIS.py", "w+") as text_file:
         text_file.write(porishstr)
         text_file.write(poriscstr)
-
-
+        text_file.write(methodsstr)
 
 def replaceStringFile(pattern_file,dest_file,pattern_text, replacement_text):
     # Read in the file
@@ -997,4 +822,4 @@ def fileGenFromPattern(pattern_file_str,src_file_str, dest_file_str,marker_str,p
 nodes_dict = loadODS()
 
 # Creates the code in the src_c++ folder
-createCxxCode(nodes_dict,deviceName)
+createPythonCode(nodes_dict,deviceName,args.output_path, relativepath)
