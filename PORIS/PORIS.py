@@ -1,58 +1,83 @@
 debug = False
 
+class PORISNode:
+    pass
+
 class PORIS:
-    myclassname = "PORIS"
-    id = None
-    idx = None
-    ident = None
-    name = None
-    description = None
-    parent = None
+    __id = None
+    __idx = None
+    __ident = None
+    __name = None
+    __description = None
+    __parent = None
+    
     def __init__(self,name):
-        self.name = name
+        self.__name = name
+
+    def getName(self) -> str:
+        return self.__name
+
+    def setName(self, name: str) -> str:
+        self.__name = name
+
+    def setParent(self, parent: PORISNode):
+        self.__parent = parent
         
+    def getParent(self) -> PORISNode:
+        return self.__parent
         
 class PORISValue(PORIS):
-    myclassname = "PORISValue"
+    pass
     
-class PORISValueFloat(PORISValue):
-    myclassname = "PORISValueFloat"
-    data = None
-    min = None
-    max = None
-    default_data = None
+
+class PORISValueData(PORISValue):
+    __data = None
+    __default_data = None
+    
+    def __init__(self,name,default_data):
+        super().__init__(name)
+        self.__default_data = default_data
+        self.__data = default_data
+
+    def setData(self,data):
+        self.__data = data
+        return self.__data
+
+    def getData(self):
+        return self.__data
+
+class PORISValueString(PORISValueData):
+    def __init__(self,name,default_data: str):
+        super().__init__(name,default_data)
+
+    def setData(self,data: str):
+        return super().setData(data)
+
+    def getData(self) -> str:
+        return super().getData()
+
+
+class PORISValueFloat(PORISValueData):
+    __min = None
+    __max = None
+
+    def __init__(self,name: str,min: float,default_data: float, max:float):
+        super().__init__(name,default_data)
+        self.__min = min
+        self.__max = max
 
     def setData(self,data :float) -> float:
         if debug:
-            print("Applying", data, "name:", self.name, "min:", self.min, "max:", self.max)
+            print("Applying", data, "name:", self.__name, "min:", self.__min, "max:", self.__max)
 
-        if data >= self.min:
-            if data <= max:
-                self.data = data
-        
-        return self.data
+        if data >= self.__min:
+            if data <= self.__max:
+                return super().setData(data)
+                
+        return self.__data
 
     def getData(self) -> float:
-        if self.data == None:
-            self.data = self.default_data
-
-        return self.data
-
-class PORISValueText(PORISValue):
-    myclassname = "PORISValueText"
-    data = None
-    default_data = None
-    
-    def setData(self,data: str):
-        self.data = str
-        
-        return self.data    
-
-    def getData(self) -> str:
-        if self.data == None:
-            self.data = self.default_data
-
-        return self.data
+        return super().getData()
 
 
 class PORISMode(PORIS):
@@ -114,15 +139,15 @@ class PORISMode(PORIS):
                 for ks in self.submodes.keys():
                     s = self.submodes[ks]
                     if debug:
-                        print(s.name,s.parent.name)
+                        print(s.__name,s.__parent.__name)
 
-                    if s.parent == m.parent:
+                    if s.__parent == m.__parent:
                         ret = s
                         break
                 
                 if ret is None:
                     # None of the given or applicable, I have to apply the first (UNKNOWN mode)
-                    ret = m.parent.modes[list(m.parent.modes.keys())[0]]
+                    ret = m.__parent.modes[list(m.__parent.modes.keys())[0]]
                 
 
         return ret
@@ -148,7 +173,7 @@ class PORISMode(PORIS):
         return ret
     
 class PORISNode(PORIS):
-    selectedMode = None
+    __selectedMode = None
 
     def __init__(self,name):
         super(PORISNode, self).__init__(name)
@@ -157,9 +182,9 @@ class PORISNode(PORIS):
     
     def addMode(self,m):
         self.modes[m.id] = m
-        m.parent = self
-        if self.selectedMode == None:
-            self.selectedMode = m
+        m.__parent = self
+        if self.__selectedMode == None:
+            self.__selectedMode = m
 
     def init(self):
         if debug:
@@ -169,37 +194,37 @@ class PORISNode(PORIS):
         if debug:
             print("Init ", self.name + ":",firstMode.name)
 
-        self.setMode(firstMode)
+        self.__selectedMode = firstMode
     
     def setEligibleMode(self):
         if debug:
-            print("Entro en PORISNode setEligibleMode", self.name)
+            print("Entro en PORISNode setEligibleMode", self.__name)
 
-        if self.selectedMode is None:
+        if self.__selectedMode is None:
             if debug:
                 print("- selectedMode es NULO")
 
             self.init()
             
         if debug:
-            print("- selectedMode es ahora", self.selectedMode.name)
+            print("- selectedMode es ahora", self.__selectedMode.__name)
 
-        # TODO: Check if this setMode is redundant
-        return self.setMode(self.selectedMode)
+        # TODO: Check if this selectMode is redundant
+        return self.selectMode(self.__selectedMode)
 
-    def setMode(self,m):
+    def selectMode(self,m):
         return None
 
     def setModeFromIdx(self,idx):
         mk = list(self.modes.keys())[idx]
-        result = self.setMode(self.modes[mk])
+        result = self.selectMode(self.modes[mk])
         if result is None:
             ret = 0
         else:
             ret = result.idx
         
         if debug:
-            print("Acaba la operación setMode con resultado", ret)
+            print("Acaba la operación selectMode con resultado", ret)
 
         return ret
 
@@ -208,7 +233,7 @@ class PORISNode(PORIS):
             print("Entro en PORISNode ",self.name, ".getEligibleMode("+m.name+")")
 
         ret = None
-        if self.parent is None:
+        if self.getParent() is None:
             if debug:
                 print("El padre de", self.name, "es nulo")
 
@@ -216,10 +241,10 @@ class PORISNode(PORIS):
         
         else:
             if debug:
-                print("Buscamos entre los", len(self.parent.selectedMode.submodes),"submodos de",self.parent.name)
-                print("selectedMode",self.selectedMode.name,m.name)
+                print("Buscamos entre los", len(self.__parent.getSelectedMode().submodes),"submodos de",self.__parent.name)
+                print("selectedMode",self.__selectedMode.name,m.name)
 
-            ret = self.parent.selectedMode.getEligibleSubMode(m,self.selectedMode)
+            ret = self.__parent.__selectedMode.getEligibleSubMode(m,self.__selectedMode)
 
         if ret is None:
             if debug:
@@ -255,7 +280,11 @@ class PORISNode(PORIS):
             if self.modes[myid].name == myname:
                 ret = self.modes[myid]
 
-        return ret       
+        return ret
+
+    def getSelectedMode(self) -> PORISMode:
+        return self.__selectedMode
+
 
 class PORISParam(PORISNode):
     selectedValue = None
@@ -266,7 +295,7 @@ class PORISParam(PORISNode):
   
     def addValue(self,v):
         self.values[v.id] = v
-        v.parent = self
+        v.__parent = self
         if self.selectedValue == None:
             self.selectedValue = v
 
@@ -276,9 +305,9 @@ class PORISParam(PORISNode):
 
         return self.setValue(self.selectedValue)
     
-    def setMode(self,m):
+    def selectMode(self,m):
         if debug:
-            print("Entro en Param",self.name+".setMode("+ m.name+"\")")
+            print("Entro en Param",self.name+".selectMode("+ m.name+"\")")
 
         ret = self.getEligibleMode(m)
 
@@ -290,8 +319,8 @@ class PORISParam(PORISNode):
             mk = list(self.modes.keys())[0]
             ret = self.modes[mk]
 
-        if ret != self.selectedMode:
-            self.selectedMode = ret
+        if ret != self.__selectedMode:
+            self.__selectedMode = ret
             self.setValue(self.selectedValue)
 
         return ret
@@ -319,17 +348,17 @@ class PORISParam(PORISNode):
             else:
                 print("Entro en PORISParam getEligibleValue ", self.name, "con valor", v.name)
 
-            print("***",self.name,self.selectedMode.name,self.modes)
+            print("***",self.name,self.__selectedMode.__name,self.modes)
 
         ret = None
         
-        if self.selectedMode is None:
+        if self.__selectedMode is None:
             if debug:
                 print("- selectedMode es NULO")
 
             self.init()
 
-        ret = self.selectedMode.getEligibleValue(v,current)
+        ret = self.__selectedMode.getEligibleValue(v,current)
         
         return ret
 
@@ -342,6 +371,13 @@ class PORISParam(PORISNode):
 
         ret = self.getEligibleValue(v,self.selectedValue)
         if ret != self.selectedValue:
+            # First, try to copy the existing data
+            if isinstance(self.selectedValue,PORISValueData):
+                v = self.selectedValue
+                data = v.getData()
+                ret.setData(data)
+
+            # Then select the new value
             self.selectedValue = ret
             
         return ret
@@ -376,15 +412,15 @@ class PORISSys(PORISNode):
 
     def addParam(self,p):
         self.params[p.id] = p
-        p.parent = self
+        p.__parent = self
 
     def addSubsystem(self,s):
         self.subsystems[s.id] = s
-        s.parent = self
+        s.__parent = self
         
-    def setMode(self,m):
+    def selectMode(self,m):
         if debug:
-            print("Entro en Sys setMode de", self.name, "con modo", m.name)
+            print("Entro en Sys selectMode de", self.name, "con modo", m.name)
 
         ret = self.getEligibleMode(m)
         if ret is None:
@@ -395,15 +431,15 @@ class PORISSys(PORISNode):
             mk = list(self.modes.keys())[0]
             ret = self.modes[mk]
 
-        if ret != self.selectedMode:
+        if ret != self.getSelectedMode():
             if debug:
                 print("el nuevo modo es", ret.name)
-                if self.selectedMode is not None:
-                    print (" que es diferente de",self.selectedMode.name)
+                if self.getSelectedMode() is not None:
+                    print (" que es diferente de",self.__selectedMode.name)
                 else:
                     print(" que es diferente de NULO")
 
-            self.selectedMode = ret
+            self.__selectedMode = ret
             
             for k in self.params.keys():
                 p = self.params[k]
@@ -418,7 +454,7 @@ class PORISSys(PORISNode):
                 print("el modo escogido es el mismo", ret.name)
 
         if debug:
-            print("Salgo de Sys setMode de", self.name, "con m="+m.name, "y resultado =",ret.name)
+            print("Salgo de Sys selectMode de", self.name, "con m="+m.name, "y resultado =",ret.name)
 
         return ret
 

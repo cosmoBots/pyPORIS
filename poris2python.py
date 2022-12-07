@@ -403,11 +403,11 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
 
                 methodsstr += "\n    ## "+nodename+"Mode \n"
                 methodsstr += "    def get_"+nodename+"Mode(self)-> PORISMode:\n"
-                #return self.sysARCGenIII.selectedMode
-                methodsstr += "        return self.pr"+nodename+".selectedMode\n\n"
+                #return self.sysARCGenIII.getSelectedMode()
+                methodsstr += "        return self.pr"+nodename+".getSelectedMode()\n\n"
 
                 methodsstr += "    def set_"+nodename+"Mode(self, mode: PORISMode)-> PORISMode :\n"
-                methodsstr += "        return self.pr"+nodename+".setMode(mode)\n\n"                    
+                methodsstr += "        return self.pr"+nodename+".selectMode(mode)\n\n"                    
 
             else:
                 # PORISSys prDetector;
@@ -467,11 +467,11 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
 
                 methodsstr += "\n    ## "+nodename+"Mode \n"
                 methodsstr += "    def get_"+nodename+"Mode(self)-> PORISMode:\n"
-                #return self.sysARCGenIII.selectedMode
-                methodsstr += "        return self.sys"+nodename+".selectedMode\n\n"
+                #return self.sysARCGenIII.getSelectedMode()
+                methodsstr += "        return self.sys"+nodename+".getSelectedMode()\n\n"
 
                 methodsstr += "    def set_"+nodename+"Mode(self, mode: PORISMode)-> PORISMode :\n"
-                methodsstr += "        return self.sys"+nodename+".setMode(mode)\n\n"                
+                methodsstr += "        return self.sys"+nodename+".selectMode(mode)\n\n"                
             
 
 
@@ -695,10 +695,10 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                     if thisclass == "prValFloat":             
                         #PORISValueFloat prExpTime_Normal;
                         if not savemem:
-                            porishstr += "        self.vl"+parentNodeName+"_" + nodename+" = PORISValueFloat(\""+parentNodeName+"_" + nodename + "\")\n"
+                            porishstr += "        self.vl"+parentNodeName+"_" + nodename+" = PORISValueFloat(\""+parentNodeName+"_" + nodename + "\","+str(thisnode['min'])+","+str(thisnode['default_data'])+","+str(thisnode['max'])+")\n"
 
                         else:
-                            porishstr += "        self.vl"+parentNodeName+"_" + nodename+" = PORISValueFloat(\"" + nodename + "\")\n"
+                            porishstr += "        self.vl"+parentNodeName+"_" + nodename+" = PORISValueFloat(\"" + nodename + "\","+str(thisnode['min'])+","+str(thisnode['default_data'])+","+str(thisnode['max'])+")\n"
 
                         '''
                         prExpTime_Normal.id = idcounter++;
@@ -714,18 +714,18 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                             poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
                             poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                         
-                        poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".min = "+str(thisnode['min'])+"\n"
-                        poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".default_data = "+str(thisnode['default_data'])+"\n"
-                        poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".max = "+str(thisnode['max'])+"\n"                  
+                        #poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".min = "+str(thisnode['min'])+"\n"
+                        #poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".default_data = "+str(thisnode['default_data'])+"\n"
+                        #poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".max = "+str(thisnode['max'])+"\n"                  
                         poriscinitstr += "        self.pr"+parentNodeName+".addValue(self.vl"+parentNodeName+ "_" + nodename+")\n"
 
                     else:
                         if thisclass == "prValText":
                             if not savemem:
-                                porishstr += "        self.vl"+parentNodeName+"_" + nodename+" = PORISValueText(\""+parentNodeName+"_" + nodename+"\")\n"
+                                porishstr += "        self.vl"+parentNodeName+"_" + nodename+" = PORISValueString(\""+parentNodeName+"_" + nodename+"\",'"+str(thisnode['deftext'])+"')\n"
 
                             else:
-                                porishstr += "        self.vl"+parentNodeName+"_" + nodename+" = PORISValueText(\""+nodename+"\")\n"
+                                porishstr += "        self.vl"+parentNodeName+"_" + nodename+" = PORISValueString(\""+nodename+"\",'"+str(thisnode['deftext'])+"')\n"
 
                             '''
                             prShiftList_Normal.id = idcounter++;
@@ -741,7 +741,6 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                                 poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
                                 poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                             
-                            # TODO: Finish prValText initialization (default data)
                             poriscinitstr += "        self.pr"+parentNodeName+".addValue(self.vl"+parentNodeName+ "_" + nodename+")\n"
 
                         else:

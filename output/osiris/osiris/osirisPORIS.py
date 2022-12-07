@@ -152,18 +152,18 @@ class osirisPORIS:
         self.mdAcquisitionMode_Normal = PORISMode("AcquisitionMode_Normal")
         self.mdAcquisitionMode_FrameTransfer = PORISMode("AcquisitionMode_FrameTransfer")
         self.mdAcquisitionMode_Shuffling = PORISMode("AcquisitionMode_Shuffling")
-        self.vlShuffleLines_FullRange = PORISValueFloat("ShuffleLines_FullRange")
+        self.vlShuffleLines_FullRange = PORISValueFloat("ShuffleLines_FullRange",0,200,1000)
         self.mdShuffleLinesMode_Normal = PORISMode("ShuffleLinesMode_Normal")
-        self.vlShiftNumber_FullRange = PORISValueFloat("ShiftNumber_FullRange")
+        self.vlShiftNumber_FullRange = PORISValueFloat("ShiftNumber_FullRange",0,5,1000)
         self.mdShiftNumberMode_Normal = PORISMode("ShiftNumberMode_Normal")
-        self.vlExpTime_FullRange = PORISValueFloat("ExpTime_FullRange")
+        self.vlExpTime_FullRange = PORISValueFloat("ExpTime_FullRange",0,1,10000)
         self.mdExpTimeMode_Normal = PORISMode("ExpTimeMode_Normal")
         self.mdExpTimeMode_Bias = PORISMode("ExpTimeMode_Bias")
         self.vlExpTime_0_0 = PORISValue("ExpTime_0_0")
         self.mdExpTimeMode_FT = PORISMode("ExpTimeMode_FT")
-        self.vlExpTime_FTRange = PORISValueFloat("ExpTime_FTRange")
+        self.vlExpTime_FTRange = PORISValueFloat("ExpTime_FTRange",0,0,360)
         self.mdnumOfFramesMode_Normal = PORISMode("numOfFramesMode_Normal")
-        self.vlnumOfFrames_FullRange = PORISValueFloat("numOfFrames_FullRange")
+        self.vlnumOfFrames_FullRange = PORISValueFloat("numOfFrames_FullRange",0,10,4294967295)
         self.mdMultipleExposureMode_On = PORISMode("MultipleExposureMode_On")
         self.mdMultipleExposureMode_Single = PORISMode("MultipleExposureMode_Single")
         self.vlPixelSpeed_SLW = PORISValue("PixelSpeed_SLW")
@@ -176,7 +176,7 @@ class osirisPORIS:
         self.mdAcquisitionMode_NormalSquare = PORISMode("AcquisitionMode_NormalSquare")
         self.mdAcquisitionMode_ShufflingSquare = PORISMode("AcquisitionMode_ShufflingSquare")
         self.mdAcquisitionMode_GainCalib = PORISMode("AcquisitionMode_GainCalib")
-        self.vlCalibGain_FullRange = PORISValueFloat("CalibGain_FullRange")
+        self.vlCalibGain_FullRange = PORISValueFloat("CalibGain_FullRange",0,2,15)
         self.mdCalibGainMode_Normal = PORISMode("CalibGainMode_Normal")
         self.mdDASMode_SimpleImg = PORISMode("DASMode_SimpleImg")
         self.mdDASMode_SimpleSpec = PORISMode("DASMode_SimpleSpec")
@@ -193,13 +193,13 @@ class osirisPORIS:
         self.mdDASMode_ShufffingImage = PORISMode("DASMode_ShufffingImage")
         self.mdDASMode_SimpleCalib = PORISMode("DASMode_SimpleCalib")
         self.mdDASMode_GainCalib = PORISMode("DASMode_GainCalib")
-        self.vlCurrentEllapsed_Range = PORISValueFloat("CurrentEllapsed_Range")
+        self.vlCurrentEllapsed_Range = PORISValueFloat("CurrentEllapsed_Range",0,0,10000)
         self.mdCurrentEllapsedMode_Normal = PORISMode("CurrentEllapsedMode_Normal")
-        self.vlCurrentImg_Range = PORISValueFloat("CurrentImg_Range")
+        self.vlCurrentImg_Range = PORISValueFloat("CurrentImg_Range",0,0,10000)
         self.mdCurrentImgMode_Normal = PORISMode("CurrentImgMode_Normal")
-        self.vlCurrentPct_Range = PORISValueFloat("CurrentPct_Range")
+        self.vlCurrentPct_Range = PORISValueFloat("CurrentPct_Range",0,0,100)
         self.mdCurrentPctMode_Normal = PORISMode("CurrentPctMode_Normal")
-        self.vlOverallPct_Range = PORISValueFloat("OverallPct_Range")
+        self.vlOverallPct_Range = PORISValueFloat("OverallPct_Range",0,0,100)
         self.mdOverallPctMode_Normal = PORISMode("OverallPctMode_Normal")
         self.mdProcessMonitorMode_Normal = PORISMode("ProcessMonitorMode_Normal")
         self.mdFocalPlaneElementMode_Disabled = PORISMode("FocalPlaneElementMode_Disabled")
@@ -248,36 +248,36 @@ class osirisPORIS:
         self.mdGrismsMode_GrismsR = PORISMode("GrismsMode_GrismsR")
         self.mdPreOpticsMode_GrismB = PORISMode("PreOpticsMode_GrismB")
         self.mdPreOpticsMode_GrismBMOS = PORISMode("PreOpticsMode_GrismBMOS")
-        self.vlRedFWHM_Range2_0 = PORISValueFloat("RedFWHM_Range2_0")
+        self.vlRedFWHM_Range2_0 = PORISValueFloat("RedFWHM_Range2_0",1.2,1.6,2)
         self.mdRedFWHMMode_l2_0 = PORISMode("RedFWHMMode_l2_0")
         self.mdRedFWHMMode_l1_5 = PORISMode("RedFWHMMode_l1_5")
         self.mdRedFWHMMode_l1_4 = PORISMode("RedFWHMMode_l1_4")
         self.mdRedFWHMMode_l1_3 = PORISMode("RedFWHMMode_l1_3")
         self.mdRedFWHMMode_l1_2 = PORISMode("RedFWHMMode_l1_2")
         self.mdRedFWHMMode_l1_2b = PORISMode("RedFWHMMode_l1_2b")
-        self.vlRedFWHM_Range1_5 = PORISValueFloat("RedFWHM_Range1_5")
-        self.vlRedFWHM_Range1_4 = PORISValueFloat("RedFWHM_Range1_4")
-        self.vlRedFWHM_Range1_3 = PORISValueFloat("RedFWHM_Range1_3")
-        self.vlRedFWHM_Range1_2 = PORISValueFloat("RedFWHM_Range1_2")
-        self.vlRedFWHM_Range1_2b = PORISValueFloat("RedFWHM_Range1_2b")
+        self.vlRedFWHM_Range1_5 = PORISValueFloat("RedFWHM_Range1_5",1,1.25,1.5)
+        self.vlRedFWHM_Range1_4 = PORISValueFloat("RedFWHM_Range1_4",0.9,1.2,1.4)
+        self.vlRedFWHM_Range1_3 = PORISValueFloat("RedFWHM_Range1_3",0.8,1.1,1.3)
+        self.vlRedFWHM_Range1_2 = PORISValueFloat("RedFWHM_Range1_2",0.85,1,1.2)
+        self.vlRedFWHM_Range1_2b = PORISValueFloat("RedFWHM_Range1_2b",0.9,1,1.2)
         self.mdRedTFMode_l651_799 = PORISMode("RedTFMode_l651_799")
         self.mdRedTFMode_l800_819 = PORISMode("RedTFMode_l800_819")
         self.mdRedTFMode_l820_839 = PORISMode("RedTFMode_l820_839")
         self.mdRedTFMode_l840_879 = PORISMode("RedTFMode_l840_879")
         self.mdRedTFMode_l880_909 = PORISMode("RedTFMode_l880_909")
         self.mdRedTFMode_l910_934 = PORISMode("RedTFMode_l910_934")
-        self.vlRedLamda_Range651 = PORISValueFloat("RedLamda_Range651")
+        self.vlRedLamda_Range651 = PORISValueFloat("RedLamda_Range651",651,700,799.9)
         self.mdRedLamdaMode_l651_799 = PORISMode("RedLamdaMode_l651_799")
         self.mdRedLamdaMode_l800_819 = PORISMode("RedLamdaMode_l800_819")
         self.mdRedLamdaMode_l820_839 = PORISMode("RedLamdaMode_l820_839")
         self.mdRedLamdaMode_l840_879 = PORISMode("RedLamdaMode_l840_879")
         self.mdRedLamdaMode_l880_909 = PORISMode("RedLamdaMode_l880_909")
         self.mdRedLamdaMode_l910_934 = PORISMode("RedLamdaMode_l910_934")
-        self.vlRedLamda_Range800 = PORISValueFloat("RedLamda_Range800")
-        self.vlRedLamda_Range820 = PORISValueFloat("RedLamda_Range820")
-        self.vlRedLamda_Range840 = PORISValueFloat("RedLamda_Range840")
-        self.vlRedLamda_Range880 = PORISValueFloat("RedLamda_Range880")
-        self.vlRedLamda_Range910 = PORISValueFloat("RedLamda_Range910")
+        self.vlRedLamda_Range800 = PORISValueFloat("RedLamda_Range800",800,810,819.9)
+        self.vlRedLamda_Range820 = PORISValueFloat("RedLamda_Range820",820,830,839.9)
+        self.vlRedLamda_Range840 = PORISValueFloat("RedLamda_Range840",840,860,879.9)
+        self.vlRedLamda_Range880 = PORISValueFloat("RedLamda_Range880",880,895,909.9)
+        self.vlRedLamda_Range910 = PORISValueFloat("RedLamda_Range910",910,920,934.5)
         self.vlBlueFWHM_0_8 = PORISValue("BlueFWHM_0_8")
         self.mdBlueFWHMMode_l0_8 = PORISMode("BlueFWHMMode_l0_8")
         self.mdBlueFWHMMode_l0_85 = PORISMode("BlueFWHMMode_l0_85")
@@ -298,30 +298,30 @@ class osirisPORIS:
         self.mdBlueTFMode_l503_521 = PORISMode("BlueTFMode_l503_521")
         self.mdBlueTFMode_l522_542 = PORISMode("BlueTFMode_l522_542")
         self.mdBlueTFMode_l543_583 = PORISMode("BlueTFMode_l543_583")
-        self.vlBlueLamda_Range448 = PORISValueFloat("BlueLamda_Range448")
+        self.vlBlueLamda_Range448 = PORISValueFloat("BlueLamda_Range448",448,454,463.9)
         self.mdBlueLamdaMode_l448_463 = PORISMode("BlueLamdaMode_l448_463")
         self.mdBlueLamdaMode_l464_480 = PORISMode("BlueLamdaMode_l464_480")
         self.mdBlueLamdaMode_l481_502 = PORISMode("BlueLamdaMode_l481_502")
         self.mdBlueLamdaMode_l503_521 = PORISMode("BlueLamdaMode_l503_521")
         self.mdBlueLamdaMode_l522_542 = PORISMode("BlueLamdaMode_l522_542")
         self.mdBlueLamdaMode_l543_583 = PORISMode("BlueLamdaMode_l543_583")
-        self.vlBlueLamda_Range464 = PORISValueFloat("BlueLamda_Range464")
-        self.vlBlueLamda_Range481 = PORISValueFloat("BlueLamda_Range481")
-        self.vlBlueLamda_Range503 = PORISValueFloat("BlueLamda_Range503")
-        self.vlBlueLamda_Range522 = PORISValueFloat("BlueLamda_Range522")
-        self.vlBlueLamda_Range543 = PORISValueFloat("BlueLamda_Range543")
+        self.vlBlueLamda_Range464 = PORISValueFloat("BlueLamda_Range464",464,472,480.9)
+        self.vlBlueLamda_Range481 = PORISValueFloat("BlueLamda_Range481",481,492,502.9)
+        self.vlBlueLamda_Range503 = PORISValueFloat("BlueLamda_Range503",503,514,521.9)
+        self.vlBlueLamda_Range522 = PORISValueFloat("BlueLamda_Range522",522,536,542.9)
+        self.vlBlueLamda_Range543 = PORISValueFloat("BlueLamda_Range543",543,565,583.9)
         self.mdBlueLamdaMode_l584_609 = PORISMode("BlueLamdaMode_l584_609")
         self.mdBlueLamdaMode_l610_637 = PORISMode("BlueLamdaMode_l610_637")
         self.mdBlueLamdaMode_l638_671 = PORISMode("BlueLamdaMode_l638_671")
-        self.vlBlueLamda_Range584 = PORISValueFloat("BlueLamda_Range584")
-        self.vlBlueLamda_Range610 = PORISValueFloat("BlueLamda_Range610")
-        self.vlBlueLamda_Range638 = PORISValueFloat("BlueLamda_Range638")
+        self.vlBlueLamda_Range584 = PORISValueFloat("BlueLamda_Range584",584,602,609.9)
+        self.vlBlueLamda_Range610 = PORISValueFloat("BlueLamda_Range610",610,622,637.9)
+        self.vlBlueLamda_Range638 = PORISValueFloat("BlueLamda_Range638",638,654,671)
         self.mdBlueTFMode_l584_609 = PORISMode("BlueTFMode_l584_609")
         self.mdBlueTFMode_l610_637 = PORISMode("BlueTFMode_l610_637")
         self.mdBlueTFMode_l638_671 = PORISMode("BlueTFMode_l638_671")
         self.mdPreOpticsMode_RTFCalib = PORISMode("PreOpticsMode_RTFCalib")
         self.mdPreOpticsMode_BTFCalib = PORISMode("PreOpticsMode_BTFCalib")
-        self.vlzzero_NormalRange = PORISValueFloat("zzero_NormalRange")
+        self.vlzzero_NormalRange = PORISValueFloat("zzero_NormalRange",25000,29000,45000)
         self.mdzzeroMode_Normal = PORISMode("zzeroMode_Normal")
         self.mdDetectorMode_FT = PORISMode("DetectorMode_FT")
         self.mdDetectorMode_Window = PORISMode("DetectorMode_Window")
@@ -346,13 +346,13 @@ class osirisPORIS:
         self.mdBinningMode_Off = PORISMode("BinningMode_Off")
         self.mdWindowMode_Enabled = PORISMode("WindowMode_Enabled")
         self.mdRowsMode_Normal = PORISMode("RowsMode_Normal")
-        self.vlRows_FullRange = PORISValueFloat("Rows_FullRange")
+        self.vlRows_FullRange = PORISValueFloat("Rows_FullRange",0,2056,4112)
         self.mdColsMode_Normal = PORISMode("ColsMode_Normal")
-        self.vlCols_FullRange = PORISValueFloat("Cols_FullRange")
+        self.vlCols_FullRange = PORISValueFloat("Cols_FullRange",0,2048,4096)
         self.mdoffsetRowMode_Normal = PORISMode("offsetRowMode_Normal")
-        self.vloffsetRow_FullRange = PORISValueFloat("offsetRow_FullRange")
+        self.vloffsetRow_FullRange = PORISValueFloat("offsetRow_FullRange",0,1028,4112)
         self.mdoffsetColMode_Normal = PORISMode("offsetColMode_Normal")
-        self.vloffsetCol_FullRange = PORISValueFloat("offsetCol_FullRange")
+        self.vloffsetCol_FullRange = PORISValueFloat("offsetCol_FullRange",0,1024,4096)
         self.mdWindowMode_Disabled = PORISMode("WindowMode_Disabled")
         self.mdFiltersMode_OS = PORISMode("FiltersMode_OS")
         self.mdFiltersMode_UFilter = PORISMode("FiltersMode_UFilter")
@@ -1416,9 +1416,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlShuffleLines_FullRange.ident = "ShuffleLines_FullRange"
         self.vlShuffleLines_FullRange.description = ""
-        self.vlShuffleLines_FullRange.min = 0
-        self.vlShuffleLines_FullRange.default_data = 200
-        self.vlShuffleLines_FullRange.max = 1000
         self.prShuffleLines.addValue(self.vlShuffleLines_FullRange)
 
         self.mdShuffleLinesMode_Normal.id = idcounter
@@ -1431,9 +1428,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlShiftNumber_FullRange.ident = "ShiftNumber_FullRange"
         self.vlShiftNumber_FullRange.description = ""
-        self.vlShiftNumber_FullRange.min = 0
-        self.vlShiftNumber_FullRange.default_data = 5
-        self.vlShiftNumber_FullRange.max = 1000
         self.prShiftNumber.addValue(self.vlShiftNumber_FullRange)
 
         self.mdShiftNumberMode_Normal.id = idcounter
@@ -1446,9 +1440,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlExpTime_FullRange.ident = "ExpTime_FullRange"
         self.vlExpTime_FullRange.description = ""
-        self.vlExpTime_FullRange.min = 0
-        self.vlExpTime_FullRange.default_data = 1
-        self.vlExpTime_FullRange.max = 10000
         self.prExpTime.addValue(self.vlExpTime_FullRange)
 
         self.mdExpTimeMode_Normal.id = idcounter
@@ -1479,9 +1470,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlExpTime_FTRange.ident = "ExpTime_FTRange"
         self.vlExpTime_FTRange.description = ""
-        self.vlExpTime_FTRange.min = 0
-        self.vlExpTime_FTRange.default_data = 0
-        self.vlExpTime_FTRange.max = 360
         self.prExpTime.addValue(self.vlExpTime_FTRange)
 
         self.mdnumOfFramesMode_Normal.id = idcounter
@@ -1494,9 +1482,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlnumOfFrames_FullRange.ident = "numOfFrames_FullRange"
         self.vlnumOfFrames_FullRange.description = ""
-        self.vlnumOfFrames_FullRange.min = 0
-        self.vlnumOfFrames_FullRange.default_data = 10
-        self.vlnumOfFrames_FullRange.max = 4294967295
         self.prnumOfFrames.addValue(self.vlnumOfFrames_FullRange)
 
         self.mdMultipleExposureMode_On.id = idcounter
@@ -1575,9 +1560,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlCalibGain_FullRange.ident = "CalibGain_FullRange"
         self.vlCalibGain_FullRange.description = ""
-        self.vlCalibGain_FullRange.min = 0
-        self.vlCalibGain_FullRange.default_data = 2
-        self.vlCalibGain_FullRange.max = 15
         self.prCalibGain.addValue(self.vlCalibGain_FullRange)
 
         self.mdCalibGainMode_Normal.id = idcounter
@@ -1680,9 +1662,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlCurrentEllapsed_Range.ident = "CurrentEllapsed_Range"
         self.vlCurrentEllapsed_Range.description = ""
-        self.vlCurrentEllapsed_Range.min = 0
-        self.vlCurrentEllapsed_Range.default_data = 0
-        self.vlCurrentEllapsed_Range.max = 10000
         self.prCurrentEllapsed.addValue(self.vlCurrentEllapsed_Range)
 
         self.mdCurrentEllapsedMode_Normal.id = idcounter
@@ -1695,9 +1674,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlCurrentImg_Range.ident = "CurrentImg_Range"
         self.vlCurrentImg_Range.description = ""
-        self.vlCurrentImg_Range.min = 0
-        self.vlCurrentImg_Range.default_data = 0
-        self.vlCurrentImg_Range.max = 10000
         self.prCurrentImg.addValue(self.vlCurrentImg_Range)
 
         self.mdCurrentImgMode_Normal.id = idcounter
@@ -1710,9 +1686,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlCurrentPct_Range.ident = "CurrentPct_Range"
         self.vlCurrentPct_Range.description = ""
-        self.vlCurrentPct_Range.min = 0
-        self.vlCurrentPct_Range.default_data = 0
-        self.vlCurrentPct_Range.max = 100
         self.prCurrentPct.addValue(self.vlCurrentPct_Range)
 
         self.mdCurrentPctMode_Normal.id = idcounter
@@ -1725,9 +1698,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlOverallPct_Range.ident = "OverallPct_Range"
         self.vlOverallPct_Range.description = ""
-        self.vlOverallPct_Range.min = 0
-        self.vlOverallPct_Range.default_data = 0
-        self.vlOverallPct_Range.max = 100
         self.prOverallPct.addValue(self.vlOverallPct_Range)
 
         self.mdOverallPctMode_Normal.id = idcounter
@@ -2022,9 +1992,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlRedFWHM_Range2_0.ident = "RedFWHM_Range2_0"
         self.vlRedFWHM_Range2_0.description = ""
-        self.vlRedFWHM_Range2_0.min = 1.2
-        self.vlRedFWHM_Range2_0.default_data = 1.6
-        self.vlRedFWHM_Range2_0.max = 2
         self.prRedFWHM.addValue(self.vlRedFWHM_Range2_0)
 
         self.mdRedFWHMMode_l2_0.id = idcounter
@@ -2067,45 +2034,30 @@ class osirisPORIS:
         idcounter += 1
         self.vlRedFWHM_Range1_5.ident = "RedFWHM_Range1_5"
         self.vlRedFWHM_Range1_5.description = ""
-        self.vlRedFWHM_Range1_5.min = 1
-        self.vlRedFWHM_Range1_5.default_data = 1.25
-        self.vlRedFWHM_Range1_5.max = 1.5
         self.prRedFWHM.addValue(self.vlRedFWHM_Range1_5)
 
         self.vlRedFWHM_Range1_4.id = idcounter
         idcounter += 1
         self.vlRedFWHM_Range1_4.ident = "RedFWHM_Range1_4"
         self.vlRedFWHM_Range1_4.description = ""
-        self.vlRedFWHM_Range1_4.min = 0.9
-        self.vlRedFWHM_Range1_4.default_data = 1.2
-        self.vlRedFWHM_Range1_4.max = 1.4
         self.prRedFWHM.addValue(self.vlRedFWHM_Range1_4)
 
         self.vlRedFWHM_Range1_3.id = idcounter
         idcounter += 1
         self.vlRedFWHM_Range1_3.ident = "RedFWHM_Range1_3"
         self.vlRedFWHM_Range1_3.description = ""
-        self.vlRedFWHM_Range1_3.min = 0.8
-        self.vlRedFWHM_Range1_3.default_data = 1.1
-        self.vlRedFWHM_Range1_3.max = 1.3
         self.prRedFWHM.addValue(self.vlRedFWHM_Range1_3)
 
         self.vlRedFWHM_Range1_2.id = idcounter
         idcounter += 1
         self.vlRedFWHM_Range1_2.ident = "RedFWHM_Range1_2"
         self.vlRedFWHM_Range1_2.description = ""
-        self.vlRedFWHM_Range1_2.min = 0.85
-        self.vlRedFWHM_Range1_2.default_data = 1
-        self.vlRedFWHM_Range1_2.max = 1.2
         self.prRedFWHM.addValue(self.vlRedFWHM_Range1_2)
 
         self.vlRedFWHM_Range1_2b.id = idcounter
         idcounter += 1
         self.vlRedFWHM_Range1_2b.ident = "RedFWHM_Range1_2b"
         self.vlRedFWHM_Range1_2b.description = ""
-        self.vlRedFWHM_Range1_2b.min = 0.9
-        self.vlRedFWHM_Range1_2b.default_data = 1
-        self.vlRedFWHM_Range1_2b.max = 1.2
         self.prRedFWHM.addValue(self.vlRedFWHM_Range1_2b)
 
         self.mdRedTFMode_l651_799.id = idcounter
@@ -2148,9 +2100,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlRedLamda_Range651.ident = "RedLamda_Range651"
         self.vlRedLamda_Range651.description = ""
-        self.vlRedLamda_Range651.min = 651
-        self.vlRedLamda_Range651.default_data = 700
-        self.vlRedLamda_Range651.max = 799.9
         self.prRedLamda.addValue(self.vlRedLamda_Range651)
 
         self.mdRedLamdaMode_l651_799.id = idcounter
@@ -2193,45 +2142,30 @@ class osirisPORIS:
         idcounter += 1
         self.vlRedLamda_Range800.ident = "RedLamda_Range800"
         self.vlRedLamda_Range800.description = ""
-        self.vlRedLamda_Range800.min = 800
-        self.vlRedLamda_Range800.default_data = 810
-        self.vlRedLamda_Range800.max = 819.9
         self.prRedLamda.addValue(self.vlRedLamda_Range800)
 
         self.vlRedLamda_Range820.id = idcounter
         idcounter += 1
         self.vlRedLamda_Range820.ident = "RedLamda_Range820"
         self.vlRedLamda_Range820.description = ""
-        self.vlRedLamda_Range820.min = 820
-        self.vlRedLamda_Range820.default_data = 830
-        self.vlRedLamda_Range820.max = 839.9
         self.prRedLamda.addValue(self.vlRedLamda_Range820)
 
         self.vlRedLamda_Range840.id = idcounter
         idcounter += 1
         self.vlRedLamda_Range840.ident = "RedLamda_Range840"
         self.vlRedLamda_Range840.description = ""
-        self.vlRedLamda_Range840.min = 840
-        self.vlRedLamda_Range840.default_data = 860
-        self.vlRedLamda_Range840.max = 879.9
         self.prRedLamda.addValue(self.vlRedLamda_Range840)
 
         self.vlRedLamda_Range880.id = idcounter
         idcounter += 1
         self.vlRedLamda_Range880.ident = "RedLamda_Range880"
         self.vlRedLamda_Range880.description = ""
-        self.vlRedLamda_Range880.min = 880
-        self.vlRedLamda_Range880.default_data = 895
-        self.vlRedLamda_Range880.max = 909.9
         self.prRedLamda.addValue(self.vlRedLamda_Range880)
 
         self.vlRedLamda_Range910.id = idcounter
         idcounter += 1
         self.vlRedLamda_Range910.ident = "RedLamda_Range910"
         self.vlRedLamda_Range910.description = ""
-        self.vlRedLamda_Range910.min = 910
-        self.vlRedLamda_Range910.default_data = 920
-        self.vlRedLamda_Range910.max = 934.5
         self.prRedLamda.addValue(self.vlRedLamda_Range910)
 
         self.vlBlueFWHM_0_8.id = idcounter
@@ -2358,9 +2292,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlBlueLamda_Range448.ident = "BlueLamda_Range448"
         self.vlBlueLamda_Range448.description = ""
-        self.vlBlueLamda_Range448.min = 448
-        self.vlBlueLamda_Range448.default_data = 454
-        self.vlBlueLamda_Range448.max = 463.9
         self.prBlueLamda.addValue(self.vlBlueLamda_Range448)
 
         self.mdBlueLamdaMode_l448_463.id = idcounter
@@ -2403,45 +2334,30 @@ class osirisPORIS:
         idcounter += 1
         self.vlBlueLamda_Range464.ident = "BlueLamda_Range464"
         self.vlBlueLamda_Range464.description = ""
-        self.vlBlueLamda_Range464.min = 464
-        self.vlBlueLamda_Range464.default_data = 472
-        self.vlBlueLamda_Range464.max = 480.9
         self.prBlueLamda.addValue(self.vlBlueLamda_Range464)
 
         self.vlBlueLamda_Range481.id = idcounter
         idcounter += 1
         self.vlBlueLamda_Range481.ident = "BlueLamda_Range481"
         self.vlBlueLamda_Range481.description = ""
-        self.vlBlueLamda_Range481.min = 481
-        self.vlBlueLamda_Range481.default_data = 492
-        self.vlBlueLamda_Range481.max = 502.9
         self.prBlueLamda.addValue(self.vlBlueLamda_Range481)
 
         self.vlBlueLamda_Range503.id = idcounter
         idcounter += 1
         self.vlBlueLamda_Range503.ident = "BlueLamda_Range503"
         self.vlBlueLamda_Range503.description = ""
-        self.vlBlueLamda_Range503.min = 503
-        self.vlBlueLamda_Range503.default_data = 514
-        self.vlBlueLamda_Range503.max = 521.9
         self.prBlueLamda.addValue(self.vlBlueLamda_Range503)
 
         self.vlBlueLamda_Range522.id = idcounter
         idcounter += 1
         self.vlBlueLamda_Range522.ident = "BlueLamda_Range522"
         self.vlBlueLamda_Range522.description = ""
-        self.vlBlueLamda_Range522.min = 522
-        self.vlBlueLamda_Range522.default_data = 536
-        self.vlBlueLamda_Range522.max = 542.9
         self.prBlueLamda.addValue(self.vlBlueLamda_Range522)
 
         self.vlBlueLamda_Range543.id = idcounter
         idcounter += 1
         self.vlBlueLamda_Range543.ident = "BlueLamda_Range543"
         self.vlBlueLamda_Range543.description = ""
-        self.vlBlueLamda_Range543.min = 543
-        self.vlBlueLamda_Range543.default_data = 565
-        self.vlBlueLamda_Range543.max = 583.9
         self.prBlueLamda.addValue(self.vlBlueLamda_Range543)
 
         self.mdBlueLamdaMode_l584_609.id = idcounter
@@ -2466,27 +2382,18 @@ class osirisPORIS:
         idcounter += 1
         self.vlBlueLamda_Range584.ident = "BlueLamda_Range584"
         self.vlBlueLamda_Range584.description = ""
-        self.vlBlueLamda_Range584.min = 584
-        self.vlBlueLamda_Range584.default_data = 602
-        self.vlBlueLamda_Range584.max = 609.9
         self.prBlueLamda.addValue(self.vlBlueLamda_Range584)
 
         self.vlBlueLamda_Range610.id = idcounter
         idcounter += 1
         self.vlBlueLamda_Range610.ident = "BlueLamda_Range610"
         self.vlBlueLamda_Range610.description = ""
-        self.vlBlueLamda_Range610.min = 610
-        self.vlBlueLamda_Range610.default_data = 622
-        self.vlBlueLamda_Range610.max = 637.9
         self.prBlueLamda.addValue(self.vlBlueLamda_Range610)
 
         self.vlBlueLamda_Range638.id = idcounter
         idcounter += 1
         self.vlBlueLamda_Range638.ident = "BlueLamda_Range638"
         self.vlBlueLamda_Range638.description = ""
-        self.vlBlueLamda_Range638.min = 638
-        self.vlBlueLamda_Range638.default_data = 654
-        self.vlBlueLamda_Range638.max = 671
         self.prBlueLamda.addValue(self.vlBlueLamda_Range638)
 
         self.mdBlueTFMode_l584_609.id = idcounter
@@ -2523,9 +2430,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlzzero_NormalRange.ident = "zzero_NormalRange"
         self.vlzzero_NormalRange.description = ""
-        self.vlzzero_NormalRange.min = 25000
-        self.vlzzero_NormalRange.default_data = 29000
-        self.vlzzero_NormalRange.max = 45000
         self.przzero.addValue(self.vlzzero_NormalRange)
 
         self.mdzzeroMode_Normal.id = idcounter
@@ -2676,9 +2580,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlRows_FullRange.ident = "Rows_FullRange"
         self.vlRows_FullRange.description = ""
-        self.vlRows_FullRange.min = 0
-        self.vlRows_FullRange.default_data = 2056
-        self.vlRows_FullRange.max = 4112
         self.prRows.addValue(self.vlRows_FullRange)
 
         self.mdColsMode_Normal.id = idcounter
@@ -2691,9 +2592,6 @@ class osirisPORIS:
         idcounter += 1
         self.vlCols_FullRange.ident = "Cols_FullRange"
         self.vlCols_FullRange.description = ""
-        self.vlCols_FullRange.min = 0
-        self.vlCols_FullRange.default_data = 2048
-        self.vlCols_FullRange.max = 4096
         self.prCols.addValue(self.vlCols_FullRange)
 
         self.mdoffsetRowMode_Normal.id = idcounter
@@ -2706,9 +2604,6 @@ class osirisPORIS:
         idcounter += 1
         self.vloffsetRow_FullRange.ident = "offsetRow_FullRange"
         self.vloffsetRow_FullRange.description = ""
-        self.vloffsetRow_FullRange.min = 0
-        self.vloffsetRow_FullRange.default_data = 1028
-        self.vloffsetRow_FullRange.max = 4112
         self.proffsetRow.addValue(self.vloffsetRow_FullRange)
 
         self.mdoffsetColMode_Normal.id = idcounter
@@ -2721,9 +2616,6 @@ class osirisPORIS:
         idcounter += 1
         self.vloffsetCol_FullRange.ident = "offsetCol_FullRange"
         self.vloffsetCol_FullRange.description = ""
-        self.vloffsetCol_FullRange.min = 0
-        self.vloffsetCol_FullRange.default_data = 1024
-        self.vloffsetCol_FullRange.max = 4096
         self.proffsetCol.addValue(self.vloffsetCol_FullRange)
 
         self.mdWindowMode_Disabled.id = idcounter
@@ -4769,42 +4661,42 @@ class osirisPORIS:
 
     ## OsirisMode 
     def get_OsirisMode(self)-> PORISMode:
-        return self.sysOsiris.selectedMode
+        return self.sysOsiris.getSelectedMode()
 
     def set_OsirisMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysOsiris.setMode(mode)
+        return self.sysOsiris.selectMode(mode)
 
 
     ## ObservingModesMode 
     def get_ObservingModesMode(self)-> PORISMode:
-        return self.sysObservingModes.selectedMode
+        return self.sysObservingModes.getSelectedMode()
 
     def set_ObservingModesMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysObservingModes.setMode(mode)
+        return self.sysObservingModes.selectMode(mode)
 
 
     ## AcquisitionModesMode 
     def get_AcquisitionModesMode(self)-> PORISMode:
-        return self.sysAcquisitionModes.selectedMode
+        return self.sysAcquisitionModes.getSelectedMode()
 
     def set_AcquisitionModesMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysAcquisitionModes.setMode(mode)
+        return self.sysAcquisitionModes.selectMode(mode)
 
 
     ## DASMode 
     def get_DASMode(self)-> PORISMode:
-        return self.sysDAS.selectedMode
+        return self.sysDAS.getSelectedMode()
 
     def set_DASMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysDAS.setMode(mode)
+        return self.sysDAS.selectMode(mode)
 
 
     ## AcquisitionMode 
     def get_AcquisitionMode(self)-> PORISMode:
-        return self.sysAcquisition.selectedMode
+        return self.sysAcquisition.getSelectedMode()
 
     def set_AcquisitionMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysAcquisition.setMode(mode)
+        return self.sysAcquisition.selectMode(mode)
 
 
     ## prParam ShuffleLines 
@@ -4819,10 +4711,10 @@ class osirisPORIS:
 
     ## ShuffleLinesMode 
     def get_ShuffleLinesMode(self)-> PORISMode:
-        return self.prShuffleLines.selectedMode
+        return self.prShuffleLines.getSelectedMode()
 
     def set_ShuffleLinesMode(self, mode: PORISMode)-> PORISMode :
-        return self.prShuffleLines.setMode(mode)
+        return self.prShuffleLines.selectMode(mode)
 
 
     ## prParam Acquisition 
@@ -4847,10 +4739,10 @@ class osirisPORIS:
 
     ## ShiftNumberMode 
     def get_ShiftNumberMode(self)-> PORISMode:
-        return self.prShiftNumber.selectedMode
+        return self.prShiftNumber.getSelectedMode()
 
     def set_ShiftNumberMode(self, mode: PORISMode)-> PORISMode :
-        return self.prShiftNumber.setMode(mode)
+        return self.prShiftNumber.selectMode(mode)
 
 
     ## prParam Acquisition 
@@ -4875,10 +4767,10 @@ class osirisPORIS:
 
     ## ExpTimeMode 
     def get_ExpTimeMode(self)-> PORISMode:
-        return self.prExpTime.selectedMode
+        return self.prExpTime.getSelectedMode()
 
     def set_ExpTimeMode(self, mode: PORISMode)-> PORISMode :
-        return self.prExpTime.setMode(mode)
+        return self.prExpTime.selectMode(mode)
 
 
     ## prParam Acquisition 
@@ -4895,7 +4787,9 @@ class osirisPORIS:
 
     # ExpTimeDouble  
     def get_ExpTimeDouble(self)-> float :
-        return self.prExpTime.selectedValue.getData()
+        v = self.prExpTime.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_ExpTimeDouble(self, data: float)-> float :
         return self.prExpTime.selectedValue.setData(data)
@@ -4903,10 +4797,10 @@ class osirisPORIS:
 
     ## MultipleExposureMode 
     def get_MultipleExposureMode(self)-> PORISMode:
-        return self.sysMultipleExposure.selectedMode
+        return self.sysMultipleExposure.getSelectedMode()
 
     def set_MultipleExposureMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysMultipleExposure.setMode(mode)
+        return self.sysMultipleExposure.selectMode(mode)
 
 
     ## prParam numOfFrames 
@@ -4921,10 +4815,10 @@ class osirisPORIS:
 
     ## numOfFramesMode 
     def get_numOfFramesMode(self)-> PORISMode:
-        return self.prnumOfFrames.selectedMode
+        return self.prnumOfFrames.getSelectedMode()
 
     def set_numOfFramesMode(self, mode: PORISMode)-> PORISMode :
-        return self.prnumOfFrames.setMode(mode)
+        return self.prnumOfFrames.selectMode(mode)
 
 
     ## prParam MultipleExposure 
@@ -4949,10 +4843,10 @@ class osirisPORIS:
 
     ## PixelSpeedMode 
     def get_PixelSpeedMode(self)-> PORISMode:
-        return self.prPixelSpeed.selectedMode
+        return self.prPixelSpeed.getSelectedMode()
 
     def set_PixelSpeedMode(self, mode: PORISMode)-> PORISMode :
-        return self.prPixelSpeed.setMode(mode)
+        return self.prPixelSpeed.selectMode(mode)
 
 
     ## prParam CalibGain 
@@ -4967,10 +4861,10 @@ class osirisPORIS:
 
     ## CalibGainMode 
     def get_CalibGainMode(self)-> PORISMode:
-        return self.prCalibGain.selectedMode
+        return self.prCalibGain.getSelectedMode()
 
     def set_CalibGainMode(self, mode: PORISMode)-> PORISMode :
-        return self.prCalibGain.setMode(mode)
+        return self.prCalibGain.selectMode(mode)
 
 
     ## prParam Acquisition 
@@ -4985,18 +4879,18 @@ class osirisPORIS:
 
     ## OpenShutterMode 
     def get_OpenShutterMode(self)-> PORISMode:
-        return self.sysOpenShutter.selectedMode
+        return self.sysOpenShutter.getSelectedMode()
 
     def set_OpenShutterMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysOpenShutter.setMode(mode)
+        return self.sysOpenShutter.selectMode(mode)
 
 
     ## ProcessMonitorMode 
     def get_ProcessMonitorMode(self)-> PORISMode:
-        return self.sysProcessMonitor.selectedMode
+        return self.sysProcessMonitor.getSelectedMode()
 
     def set_ProcessMonitorMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysProcessMonitor.setMode(mode)
+        return self.sysProcessMonitor.selectMode(mode)
 
 
     ## prParam CurrentEllapsed 
@@ -5011,10 +4905,10 @@ class osirisPORIS:
 
     ## CurrentEllapsedMode 
     def get_CurrentEllapsedMode(self)-> PORISMode:
-        return self.prCurrentEllapsed.selectedMode
+        return self.prCurrentEllapsed.getSelectedMode()
 
     def set_CurrentEllapsedMode(self, mode: PORISMode)-> PORISMode :
-        return self.prCurrentEllapsed.setMode(mode)
+        return self.prCurrentEllapsed.selectMode(mode)
 
 
     ## prParam ProcessMonitor 
@@ -5039,10 +4933,10 @@ class osirisPORIS:
 
     ## CurrentImgMode 
     def get_CurrentImgMode(self)-> PORISMode:
-        return self.prCurrentImg.selectedMode
+        return self.prCurrentImg.getSelectedMode()
 
     def set_CurrentImgMode(self, mode: PORISMode)-> PORISMode :
-        return self.prCurrentImg.setMode(mode)
+        return self.prCurrentImg.selectMode(mode)
 
 
     ## prParam ProcessMonitor 
@@ -5067,10 +4961,10 @@ class osirisPORIS:
 
     ## CurrentPctMode 
     def get_CurrentPctMode(self)-> PORISMode:
-        return self.prCurrentPct.selectedMode
+        return self.prCurrentPct.getSelectedMode()
 
     def set_CurrentPctMode(self, mode: PORISMode)-> PORISMode :
-        return self.prCurrentPct.setMode(mode)
+        return self.prCurrentPct.selectMode(mode)
 
 
     ## prParam ProcessMonitor 
@@ -5095,10 +4989,10 @@ class osirisPORIS:
 
     ## OverallPctMode 
     def get_OverallPctMode(self)-> PORISMode:
-        return self.prOverallPct.selectedMode
+        return self.prOverallPct.getSelectedMode()
 
     def set_OverallPctMode(self, mode: PORISMode)-> PORISMode :
-        return self.prOverallPct.setMode(mode)
+        return self.prOverallPct.selectMode(mode)
 
 
     ## prParam ProcessMonitor 
@@ -5113,10 +5007,10 @@ class osirisPORIS:
 
     ## FPEMode 
     def get_FPEMode(self)-> PORISMode:
-        return self.sysFPE.selectedMode
+        return self.sysFPE.getSelectedMode()
 
     def set_FPEMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysFPE.setMode(mode)
+        return self.sysFPE.selectMode(mode)
 
 
     ## prParam FocalPlaneElement 
@@ -5131,18 +5025,18 @@ class osirisPORIS:
 
     ## FocalPlaneElementMode 
     def get_FocalPlaneElementMode(self)-> PORISMode:
-        return self.prFocalPlaneElement.selectedMode
+        return self.prFocalPlaneElement.getSelectedMode()
 
     def set_FocalPlaneElementMode(self, mode: PORISMode)-> PORISMode :
-        return self.prFocalPlaneElement.setMode(mode)
+        return self.prFocalPlaneElement.selectMode(mode)
 
 
     ## PreOpticsMode 
     def get_PreOpticsMode(self)-> PORISMode:
-        return self.sysPreOptics.selectedMode
+        return self.sysPreOptics.getSelectedMode()
 
     def set_PreOpticsMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysPreOptics.setMode(mode)
+        return self.sysPreOptics.selectMode(mode)
 
 
     ## prParam Grisms 
@@ -5157,18 +5051,18 @@ class osirisPORIS:
 
     ## GrismsMode 
     def get_GrismsMode(self)-> PORISMode:
-        return self.prGrisms.selectedMode
+        return self.prGrisms.getSelectedMode()
 
     def set_GrismsMode(self, mode: PORISMode)-> PORISMode :
-        return self.prGrisms.setMode(mode)
+        return self.prGrisms.selectMode(mode)
 
 
     ## RedTFMode 
     def get_RedTFMode(self)-> PORISMode:
-        return self.sysRedTF.selectedMode
+        return self.sysRedTF.getSelectedMode()
 
     def set_RedTFMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysRedTF.setMode(mode)
+        return self.sysRedTF.selectMode(mode)
 
 
     ## prParam RedFWHM 
@@ -5183,10 +5077,10 @@ class osirisPORIS:
 
     ## RedFWHMMode 
     def get_RedFWHMMode(self)-> PORISMode:
-        return self.prRedFWHM.selectedMode
+        return self.prRedFWHM.getSelectedMode()
 
     def set_RedFWHMMode(self, mode: PORISMode)-> PORISMode :
-        return self.prRedFWHM.setMode(mode)
+        return self.prRedFWHM.selectMode(mode)
 
 
     ## prParam RedTF 
@@ -5261,10 +5155,10 @@ class osirisPORIS:
 
     ## RedLamdaMode 
     def get_RedLamdaMode(self)-> PORISMode:
-        return self.prRedLamda.selectedMode
+        return self.prRedLamda.getSelectedMode()
 
     def set_RedLamdaMode(self, mode: PORISMode)-> PORISMode :
-        return self.prRedLamda.setMode(mode)
+        return self.prRedLamda.selectMode(mode)
 
 
     ## prParam RedTF 
@@ -5329,10 +5223,10 @@ class osirisPORIS:
 
     ## BlueTFMode 
     def get_BlueTFMode(self)-> PORISMode:
-        return self.sysBlueTF.selectedMode
+        return self.sysBlueTF.getSelectedMode()
 
     def set_BlueTFMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysBlueTF.setMode(mode)
+        return self.sysBlueTF.selectMode(mode)
 
 
     ## prParam BlueFWHM 
@@ -5347,10 +5241,10 @@ class osirisPORIS:
 
     ## BlueFWHMMode 
     def get_BlueFWHMMode(self)-> PORISMode:
-        return self.prBlueFWHM.selectedMode
+        return self.prBlueFWHM.getSelectedMode()
 
     def set_BlueFWHMMode(self, mode: PORISMode)-> PORISMode :
-        return self.prBlueFWHM.setMode(mode)
+        return self.prBlueFWHM.selectMode(mode)
 
 
     ## prParam BlueLamda 
@@ -5365,10 +5259,10 @@ class osirisPORIS:
 
     ## BlueLamdaMode 
     def get_BlueLamdaMode(self)-> PORISMode:
-        return self.prBlueLamda.selectedMode
+        return self.prBlueLamda.getSelectedMode()
 
     def set_BlueLamdaMode(self, mode: PORISMode)-> PORISMode :
-        return self.prBlueLamda.setMode(mode)
+        return self.prBlueLamda.selectMode(mode)
 
 
     ## prParam BlueTF 
@@ -5473,10 +5367,10 @@ class osirisPORIS:
 
     ## zzeroMode 
     def get_zzeroMode(self)-> PORISMode:
-        return self.przzero.selectedMode
+        return self.przzero.getSelectedMode()
 
     def set_zzeroMode(self, mode: PORISMode)-> PORISMode :
-        return self.przzero.setMode(mode)
+        return self.przzero.selectMode(mode)
 
 
     ## prParam PreOptics 
@@ -5491,26 +5385,26 @@ class osirisPORIS:
 
     ## DetectorMode 
     def get_DetectorMode(self)-> PORISMode:
-        return self.sysDetector.selectedMode
+        return self.sysDetector.getSelectedMode()
 
     def set_DetectorMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysDetector.setMode(mode)
+        return self.sysDetector.selectMode(mode)
 
 
     ## OutputSourceMode 
     def get_OutputSourceMode(self)-> PORISMode:
-        return self.sysOutputSource.selectedMode
+        return self.sysOutputSource.getSelectedMode()
 
     def set_OutputSourceMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysOutputSource.setMode(mode)
+        return self.sysOutputSource.selectMode(mode)
 
 
     ## RecompositionMode 
     def get_RecompositionMode(self)-> PORISMode:
-        return self.sysRecomposition.selectedMode
+        return self.sysRecomposition.getSelectedMode()
 
     def set_RecompositionMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysRecomposition.setMode(mode)
+        return self.sysRecomposition.selectMode(mode)
 
 
     ## prParam Binning 
@@ -5525,18 +5419,18 @@ class osirisPORIS:
 
     ## BinningMode 
     def get_BinningMode(self)-> PORISMode:
-        return self.prBinning.selectedMode
+        return self.prBinning.getSelectedMode()
 
     def set_BinningMode(self, mode: PORISMode)-> PORISMode :
-        return self.prBinning.setMode(mode)
+        return self.prBinning.selectMode(mode)
 
 
     ## WindowMode 
     def get_WindowMode(self)-> PORISMode:
-        return self.sysWindow.selectedMode
+        return self.sysWindow.getSelectedMode()
 
     def set_WindowMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysWindow.setMode(mode)
+        return self.sysWindow.selectMode(mode)
 
 
     ## prParam Rows 
@@ -5551,10 +5445,10 @@ class osirisPORIS:
 
     ## RowsMode 
     def get_RowsMode(self)-> PORISMode:
-        return self.prRows.selectedMode
+        return self.prRows.getSelectedMode()
 
     def set_RowsMode(self, mode: PORISMode)-> PORISMode :
-        return self.prRows.setMode(mode)
+        return self.prRows.selectMode(mode)
 
 
     ## prParam Window 
@@ -5579,10 +5473,10 @@ class osirisPORIS:
 
     ## ColsMode 
     def get_ColsMode(self)-> PORISMode:
-        return self.prCols.selectedMode
+        return self.prCols.getSelectedMode()
 
     def set_ColsMode(self, mode: PORISMode)-> PORISMode :
-        return self.prCols.setMode(mode)
+        return self.prCols.selectMode(mode)
 
 
     ## prParam Window 
@@ -5607,10 +5501,10 @@ class osirisPORIS:
 
     ## offsetRowMode 
     def get_offsetRowMode(self)-> PORISMode:
-        return self.proffsetRow.selectedMode
+        return self.proffsetRow.getSelectedMode()
 
     def set_offsetRowMode(self, mode: PORISMode)-> PORISMode :
-        return self.proffsetRow.setMode(mode)
+        return self.proffsetRow.selectMode(mode)
 
 
     ## prParam Window 
@@ -5635,10 +5529,10 @@ class osirisPORIS:
 
     ## offsetColMode 
     def get_offsetColMode(self)-> PORISMode:
-        return self.proffsetCol.selectedMode
+        return self.proffsetCol.getSelectedMode()
 
     def set_offsetColMode(self, mode: PORISMode)-> PORISMode :
-        return self.proffsetCol.setMode(mode)
+        return self.proffsetCol.selectMode(mode)
 
 
     ## prParam Window 
@@ -5653,10 +5547,10 @@ class osirisPORIS:
 
     ## FiltersMode 
     def get_FiltersMode(self)-> PORISMode:
-        return self.sysFilters.selectedMode
+        return self.sysFilters.getSelectedMode()
 
     def set_FiltersMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysFilters.setMode(mode)
+        return self.sysFilters.selectMode(mode)
 
 
     ## prParam UFilters 
@@ -5671,10 +5565,10 @@ class osirisPORIS:
 
     ## UFiltersMode 
     def get_UFiltersMode(self)-> PORISMode:
-        return self.prUFilters.selectedMode
+        return self.prUFilters.getSelectedMode()
 
     def set_UFiltersMode(self, mode: PORISMode)-> PORISMode :
-        return self.prUFilters.setMode(mode)
+        return self.prUFilters.selectMode(mode)
 
 
     ## prParam OS 
@@ -5689,10 +5583,10 @@ class osirisPORIS:
 
     ## OSMode 
     def get_OSMode(self)-> PORISMode:
-        return self.prOS.selectedMode
+        return self.prOS.getSelectedMode()
 
     def set_OSMode(self, mode: PORISMode)-> PORISMode :
-        return self.prOS.setMode(mode)
+        return self.prOS.selectMode(mode)
 
 
     ## prParam Broad 
@@ -5707,10 +5601,10 @@ class osirisPORIS:
 
     ## BroadMode 
     def get_BroadMode(self)-> PORISMode:
-        return self.prBroad.selectedMode
+        return self.prBroad.getSelectedMode()
 
     def set_BroadMode(self, mode: PORISMode)-> PORISMode :
-        return self.prBroad.setMode(mode)
+        return self.prBroad.selectMode(mode)
 
 
     ## Action trigger DAS_acquire ##

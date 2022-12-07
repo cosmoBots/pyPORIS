@@ -1,11 +1,10 @@
 from osirisPORIS import *
 
 class osiris_physical(osirisPORIS):
-    dummy = "You should override the action triggers here"
     # Go to ARCGengIIIPORIS.py, navigate to the ##### Action triggers ##### section
     # which is normally at the bottom of the class, and copy here the methods 
     # to start overriding them, in order to convert the virtual device into a physical one
-    # Once this class has any content, remove the dummy attribute
+    # Once this class has any content, remove the pass clause
 
     ## Action trigger DAS_acquire ##
     def execDAS_acquire(self, value: bool) -> bool:
@@ -21,14 +20,13 @@ class osiris_physical(osirisPORIS):
 
 thismodel = osiris_physical()
 
-print("Let's test our model ",thismodel.root.name)
-print("Current mode is ",thismodel.root.selectedMode.name)
-print("Current exposuretime value is",thismodel.get_ExpTime().name)
-# print("Current exposuretime is",thismodel.get_ExpTimeDouble())
-
+print("Let's test our model ",thismodel.root.getName())
+print("Current mode is ",thismodel.root.getSelectedMode().getName())
+print("Current exposuretime value is",thismodel.get_ExpTime().getName())
 thismodel.set_OsirisMode(thismodel.mdOsirisMode_Imaging)
-print("Current mode is ",thismodel.root.selectedMode.name)
+m = thismodel.get_OsirisMode()
+print("Current mode is ",m.getName())
 value = thismodel.get_ExpTime()
-print("Current exposuretime value is",value.name)
+print("Current exposuretime value is",value.getName())
 print("Current exposuretime is",thismodel.get_ExpTimeDouble())
 print("Current exposuretime is",value.getData())
