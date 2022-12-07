@@ -4721,7 +4721,9 @@ class osirisPORIS:
 
     # ShuffleLinesDouble  
     def get_ShuffleLinesDouble(self)-> float :
-        return self.prShuffleLines.selectedValue.getData()
+        v = self.prShuffleLines.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_ShuffleLinesDouble(self, data: float)-> float :
         return self.prShuffleLines.selectedValue.setData(data)
@@ -4749,7 +4751,9 @@ class osirisPORIS:
 
     # ShiftNumberDouble  
     def get_ShiftNumberDouble(self)-> float :
-        return self.prShiftNumber.selectedValue.getData()
+        v = self.prShiftNumber.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_ShiftNumberDouble(self, data: float)-> float :
         return self.prShiftNumber.selectedValue.setData(data)
@@ -4777,7 +4781,9 @@ class osirisPORIS:
 
     # ExpTimeDouble  
     def get_ExpTimeDouble(self)-> float :
-        return self.prExpTime.selectedValue.getData()
+        v = self.prExpTime.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_ExpTimeDouble(self, data: float)-> float :
         return self.prExpTime.selectedValue.setData(data)
@@ -4825,7 +4831,9 @@ class osirisPORIS:
 
     # numOfFramesDouble  
     def get_numOfFramesDouble(self)-> float :
-        return self.prnumOfFrames.selectedValue.getData()
+        v = self.prnumOfFrames.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_numOfFramesDouble(self, data: float)-> float :
         return self.prnumOfFrames.selectedValue.setData(data)
@@ -4871,7 +4879,9 @@ class osirisPORIS:
 
     # CalibGainDouble  
     def get_CalibGainDouble(self)-> float :
-        return self.prCalibGain.selectedValue.getData()
+        v = self.prCalibGain.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_CalibGainDouble(self, data: float)-> float :
         return self.prCalibGain.selectedValue.setData(data)
@@ -4915,7 +4925,9 @@ class osirisPORIS:
 
     # CurrentEllapsedDouble  
     def get_CurrentEllapsedDouble(self)-> float :
-        return self.prCurrentEllapsed.selectedValue.getData()
+        v = self.prCurrentEllapsed.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_CurrentEllapsedDouble(self, data: float)-> float :
         return self.prCurrentEllapsed.selectedValue.setData(data)
@@ -4943,7 +4955,9 @@ class osirisPORIS:
 
     # CurrentImgDouble  
     def get_CurrentImgDouble(self)-> float :
-        return self.prCurrentImg.selectedValue.getData()
+        v = self.prCurrentImg.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_CurrentImgDouble(self, data: float)-> float :
         return self.prCurrentImg.selectedValue.setData(data)
@@ -4971,7 +4985,9 @@ class osirisPORIS:
 
     # CurrentPctDouble  
     def get_CurrentPctDouble(self)-> float :
-        return self.prCurrentPct.selectedValue.getData()
+        v = self.prCurrentPct.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_CurrentPctDouble(self, data: float)-> float :
         return self.prCurrentPct.selectedValue.setData(data)
@@ -4999,7 +5015,9 @@ class osirisPORIS:
 
     # OverallPctDouble  
     def get_OverallPctDouble(self)-> float :
-        return self.prOverallPct.selectedValue.getData()
+        v = self.prOverallPct.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_OverallPctDouble(self, data: float)-> float :
         return self.prOverallPct.selectedValue.setData(data)
@@ -5087,7 +5105,9 @@ class osirisPORIS:
 
     # RedFWHMDouble  
     def get_RedFWHMDouble(self)-> float :
-        return self.prRedFWHM.selectedValue.getData()
+        v = self.prRedFWHM.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedFWHMDouble(self, data: float)-> float :
         return self.prRedFWHM.selectedValue.setData(data)
@@ -5097,7 +5117,9 @@ class osirisPORIS:
 
     # RedFWHMDouble  
     def get_RedFWHMDouble(self)-> float :
-        return self.prRedFWHM.selectedValue.getData()
+        v = self.prRedFWHM.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedFWHMDouble(self, data: float)-> float :
         return self.prRedFWHM.selectedValue.setData(data)
@@ -5107,7 +5129,9 @@ class osirisPORIS:
 
     # RedFWHMDouble  
     def get_RedFWHMDouble(self)-> float :
-        return self.prRedFWHM.selectedValue.getData()
+        v = self.prRedFWHM.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedFWHMDouble(self, data: float)-> float :
         return self.prRedFWHM.selectedValue.setData(data)
@@ -5117,7 +5141,9 @@ class osirisPORIS:
 
     # RedFWHMDouble  
     def get_RedFWHMDouble(self)-> float :
-        return self.prRedFWHM.selectedValue.getData()
+        v = self.prRedFWHM.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedFWHMDouble(self, data: float)-> float :
         return self.prRedFWHM.selectedValue.setData(data)
@@ -5127,7 +5153,9 @@ class osirisPORIS:
 
     # RedFWHMDouble  
     def get_RedFWHMDouble(self)-> float :
-        return self.prRedFWHM.selectedValue.getData()
+        v = self.prRedFWHM.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedFWHMDouble(self, data: float)-> float :
         return self.prRedFWHM.selectedValue.setData(data)
@@ -5137,7 +5165,9 @@ class osirisPORIS:
 
     # RedFWHMDouble  
     def get_RedFWHMDouble(self)-> float :
-        return self.prRedFWHM.selectedValue.getData()
+        v = self.prRedFWHM.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedFWHMDouble(self, data: float)-> float :
         return self.prRedFWHM.selectedValue.setData(data)
@@ -5165,7 +5195,9 @@ class osirisPORIS:
 
     # RedLamdaDouble  
     def get_RedLamdaDouble(self)-> float :
-        return self.prRedLamda.selectedValue.getData()
+        v = self.prRedLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedLamdaDouble(self, data: float)-> float :
         return self.prRedLamda.selectedValue.setData(data)
@@ -5175,7 +5207,9 @@ class osirisPORIS:
 
     # RedLamdaDouble  
     def get_RedLamdaDouble(self)-> float :
-        return self.prRedLamda.selectedValue.getData()
+        v = self.prRedLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedLamdaDouble(self, data: float)-> float :
         return self.prRedLamda.selectedValue.setData(data)
@@ -5185,7 +5219,9 @@ class osirisPORIS:
 
     # RedLamdaDouble  
     def get_RedLamdaDouble(self)-> float :
-        return self.prRedLamda.selectedValue.getData()
+        v = self.prRedLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedLamdaDouble(self, data: float)-> float :
         return self.prRedLamda.selectedValue.setData(data)
@@ -5195,7 +5231,9 @@ class osirisPORIS:
 
     # RedLamdaDouble  
     def get_RedLamdaDouble(self)-> float :
-        return self.prRedLamda.selectedValue.getData()
+        v = self.prRedLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedLamdaDouble(self, data: float)-> float :
         return self.prRedLamda.selectedValue.setData(data)
@@ -5205,7 +5243,9 @@ class osirisPORIS:
 
     # RedLamdaDouble  
     def get_RedLamdaDouble(self)-> float :
-        return self.prRedLamda.selectedValue.getData()
+        v = self.prRedLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedLamdaDouble(self, data: float)-> float :
         return self.prRedLamda.selectedValue.setData(data)
@@ -5215,7 +5255,9 @@ class osirisPORIS:
 
     # RedLamdaDouble  
     def get_RedLamdaDouble(self)-> float :
-        return self.prRedLamda.selectedValue.getData()
+        v = self.prRedLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RedLamdaDouble(self, data: float)-> float :
         return self.prRedLamda.selectedValue.setData(data)
@@ -5269,7 +5311,9 @@ class osirisPORIS:
 
     # BlueLamdaDouble  
     def get_BlueLamdaDouble(self)-> float :
-        return self.prBlueLamda.selectedValue.getData()
+        v = self.prBlueLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_BlueLamdaDouble(self, data: float)-> float :
         return self.prBlueLamda.selectedValue.setData(data)
@@ -5279,7 +5323,9 @@ class osirisPORIS:
 
     # BlueLamdaDouble  
     def get_BlueLamdaDouble(self)-> float :
-        return self.prBlueLamda.selectedValue.getData()
+        v = self.prBlueLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_BlueLamdaDouble(self, data: float)-> float :
         return self.prBlueLamda.selectedValue.setData(data)
@@ -5289,7 +5335,9 @@ class osirisPORIS:
 
     # BlueLamdaDouble  
     def get_BlueLamdaDouble(self)-> float :
-        return self.prBlueLamda.selectedValue.getData()
+        v = self.prBlueLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_BlueLamdaDouble(self, data: float)-> float :
         return self.prBlueLamda.selectedValue.setData(data)
@@ -5299,7 +5347,9 @@ class osirisPORIS:
 
     # BlueLamdaDouble  
     def get_BlueLamdaDouble(self)-> float :
-        return self.prBlueLamda.selectedValue.getData()
+        v = self.prBlueLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_BlueLamdaDouble(self, data: float)-> float :
         return self.prBlueLamda.selectedValue.setData(data)
@@ -5309,7 +5359,9 @@ class osirisPORIS:
 
     # BlueLamdaDouble  
     def get_BlueLamdaDouble(self)-> float :
-        return self.prBlueLamda.selectedValue.getData()
+        v = self.prBlueLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_BlueLamdaDouble(self, data: float)-> float :
         return self.prBlueLamda.selectedValue.setData(data)
@@ -5319,7 +5371,9 @@ class osirisPORIS:
 
     # BlueLamdaDouble  
     def get_BlueLamdaDouble(self)-> float :
-        return self.prBlueLamda.selectedValue.getData()
+        v = self.prBlueLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_BlueLamdaDouble(self, data: float)-> float :
         return self.prBlueLamda.selectedValue.setData(data)
@@ -5329,7 +5383,9 @@ class osirisPORIS:
 
     # BlueLamdaDouble  
     def get_BlueLamdaDouble(self)-> float :
-        return self.prBlueLamda.selectedValue.getData()
+        v = self.prBlueLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_BlueLamdaDouble(self, data: float)-> float :
         return self.prBlueLamda.selectedValue.setData(data)
@@ -5339,7 +5395,9 @@ class osirisPORIS:
 
     # BlueLamdaDouble  
     def get_BlueLamdaDouble(self)-> float :
-        return self.prBlueLamda.selectedValue.getData()
+        v = self.prBlueLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_BlueLamdaDouble(self, data: float)-> float :
         return self.prBlueLamda.selectedValue.setData(data)
@@ -5349,7 +5407,9 @@ class osirisPORIS:
 
     # BlueLamdaDouble  
     def get_BlueLamdaDouble(self)-> float :
-        return self.prBlueLamda.selectedValue.getData()
+        v = self.prBlueLamda.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_BlueLamdaDouble(self, data: float)-> float :
         return self.prBlueLamda.selectedValue.setData(data)
@@ -5377,7 +5437,9 @@ class osirisPORIS:
 
     # zzeroDouble  
     def get_zzeroDouble(self)-> float :
-        return self.przzero.selectedValue.getData()
+        v = self.przzero.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_zzeroDouble(self, data: float)-> float :
         return self.przzero.selectedValue.setData(data)
@@ -5455,7 +5517,9 @@ class osirisPORIS:
 
     # RowsDouble  
     def get_RowsDouble(self)-> float :
-        return self.prRows.selectedValue.getData()
+        v = self.prRows.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_RowsDouble(self, data: float)-> float :
         return self.prRows.selectedValue.setData(data)
@@ -5483,7 +5547,9 @@ class osirisPORIS:
 
     # ColsDouble  
     def get_ColsDouble(self)-> float :
-        return self.prCols.selectedValue.getData()
+        v = self.prCols.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_ColsDouble(self, data: float)-> float :
         return self.prCols.selectedValue.setData(data)
@@ -5511,7 +5577,9 @@ class osirisPORIS:
 
     # offsetRowDouble  
     def get_offsetRowDouble(self)-> float :
-        return self.proffsetRow.selectedValue.getData()
+        v = self.proffsetRow.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_offsetRowDouble(self, data: float)-> float :
         return self.proffsetRow.selectedValue.setData(data)
@@ -5539,7 +5607,9 @@ class osirisPORIS:
 
     # offsetColDouble  
     def get_offsetColDouble(self)-> float :
-        return self.proffsetCol.selectedValue.getData()
+        v = self.proffsetCol.selectedValue
+        v.__class__ = PORISValueFloat
+        return v.getData()
 
     def set_offsetColDouble(self, data: float)-> float :
         return self.proffsetCol.selectedValue.setData(data)

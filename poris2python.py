@@ -584,7 +584,9 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                                     methodsstrfl += "\n    ## "+thisclass+" "+parentNodeName+" \n"
                                     methodsstrfl += "\n    # "+nodename+"Double  \n"
                                     methodsstrfl += "    def get_"+nodename+"Double(self)-> float :\n"
-                                    methodsstrfl += "        return self.pr"+nodename+".selectedValue.getData()\n\n"
+                                    methodsstrfl += "        v = self.pr"+nodename+".selectedValue\n"
+                                    methodsstrfl += "        v.__class__ = PORISValueFloat\n"
+                                    methodsstrfl += "        return v.getData()\n\n"
 
                                     methodsstrfl += "    def set_"+nodename+"Double(self, data: float)-> float :\n"
                                     methodsstrfl += "        return self.pr"+nodename+".selectedValue.setData(data)\n\n"
@@ -593,7 +595,9 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                                     methodsstrfl += "\n    ## "+thisclass+" "+parentNodeName+" \n"
                                     methodsstrfl += "\n    # "+nodename+"String #\n"
                                     methodsstrfl += "    def get_"+nodename+"String(self)-> str :\n"
-                                    methodsstrfl += "        return self.pr"+nodename+".selectedValue.getData()\n\n"
+                                    methodsstrfl += "        v = self.pr"+nodename+".selectedValue\n"
+                                    methodsstrfl += "        v.__class__ = PORISValueString\n"
+                                    methodsstrfl += "        return v.getData()\n\n"
 
                                     methodsstrfl += "    def set_"+nodename+"String(self, data: str)-> str :\n"
                                     methodsstrfl += "        return self.pr"+nodename+".selectedValue.setData(data)\n\n"
