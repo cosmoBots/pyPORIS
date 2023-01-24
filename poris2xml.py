@@ -904,7 +904,7 @@ def createPorisXML(nodes_dict,deviceName):
 
                                 else:
                                     dest.setAttribute("type", "Error2!!!")
-                                    print("Error2!!")
+                                    print("Error2!! Check if the cosmoSys project PORIS trackers are enabled in the project settings.  Probably the tracker was changed from pr* to 'Bug' when importing")
 
                     destidnode = rootInstr.createElement('id')
                     destidnode.setAttribute("type","integer")

@@ -37,7 +37,7 @@ else
 fi
 timestamp=$(date +%s)
 cp $FILE models/$1.$timestamp.backup
-mv $FILE models/$1.old.graphml
+mv $FILE models/$1.graphml.old
 mv $FILE2 $FILE
 python3 poris2xml.py $FILE1 || { echo "poris2xml could not be processed"; exit 1; } 
 if test -f "$FILE3"; then
