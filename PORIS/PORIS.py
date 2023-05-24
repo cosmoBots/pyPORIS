@@ -27,7 +27,7 @@ class PORISValueFloat(PORISValue):
             print("Applying", data, "name:", self.name, "min:", self.min, "max:", self.max)
 
         if data >= self.min:
-            if data <= max:
+            if data <= self.max:
                 self.data = data
         
         return self.data
