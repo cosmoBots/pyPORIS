@@ -75,7 +75,7 @@ class PORISMode(PORIS):
             else:
                 print("Entro en PORISMode getEligibleValue para el modo", self.name, "con valor propuesto NULO")
     
-            print(self.values.keys())
+            print("Valores posibles para este modo",self.values.keys())
 
         ret = None
         if v.id in self.values.keys():
@@ -97,7 +97,7 @@ class PORISMode(PORIS):
         found = False
 
         if debug:
-            print(self.submodes.keys())
+            print("Submodos:",self.submodes.keys())
 
         if m.id in self.submodes.keys():
             ret = m
@@ -284,7 +284,7 @@ class PORISParam(PORISNode):
 
         if debug:
             print("Estoy en",self.name)
-            print(list(self.modes.keys()))
+            print("Modos:",list(self.modes.keys()))
 
         if ret is None:
             mk = list(self.modes.keys())[0]
