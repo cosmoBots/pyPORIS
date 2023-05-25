@@ -35,10 +35,10 @@ class examplePORIS:
         self.vlDispersion_R1000 = PORISValue("Dispersion_R1000")
         self.vlDispersion_R2000 = PORISValue("Dispersion_R2000")
         self.mdDispersionMode_Normal = PORISMode("DispersionMode_Normal")
-        self.vlexpTime_NormalRange = PORISValueFloat("expTime_NormalRange")
+        self.vlexpTime_NormalRange = PORISValueFloat("expTime_NormalRange",0,1,3600)
         self.mdexpTimeMode_Normal = PORISMode("expTimeMode_Normal")
         self.mdexpTimeMode_Fast = PORISMode("expTimeMode_Fast")
-        self.vlexpTime_FastRange = PORISValueFloat("expTime_FastRange")
+        self.vlexpTime_FastRange = PORISValueFloat("expTime_FastRange",0,0.01,0.5)
         self.vlBinning_1x1 = PORISValue("Binning_1x1")
         self.vlBinning_2x1 = PORISValue("Binning_2x1")
         self.vlBinning_1x2 = PORISValue("Binning_1x2")
@@ -59,7 +59,7 @@ class examplePORIS:
         self.mdClassicFiltersMode_Standard = PORISMode("ClassicFiltersMode_Standard")
         self.mdClassicFiltersMode_Blue = PORISMode("ClassicFiltersMode_Blue")
         self.mdClassicFiltersMode_Red = PORISMode("ClassicFiltersMode_Red")
-        self.vlClassicFilters_userFilter = PORISValueText("ClassicFilters_userFilter")
+        self.vlClassicFilters_userFilter = PORISValueString("ClassicFilters_userFilter",'mycustomfilter')
         self.mdClassicFiltersMode_User = PORISMode("ClassicFiltersMode_User")
         self.mdInstrumentMode_Engineering = PORISMode("InstrumentMode_Engineering")
         self.mdDetectorMode_Engineering = PORISMode("DetectorMode_Engineering")
@@ -264,9 +264,6 @@ class examplePORIS:
         idcounter += 1
         self.vlexpTime_NormalRange.ident = "expTime_NormalRange"
         self.vlexpTime_NormalRange.description = ""
-        self.vlexpTime_NormalRange.min = 0
-        self.vlexpTime_NormalRange.default_data = 1
-        self.vlexpTime_NormalRange.max = 3600
         self.prexpTime.addValue(self.vlexpTime_NormalRange)
 
         self.mdexpTimeMode_Normal.id = idcounter
@@ -285,9 +282,6 @@ class examplePORIS:
         idcounter += 1
         self.vlexpTime_FastRange.ident = "expTime_FastRange"
         self.vlexpTime_FastRange.description = ""
-        self.vlexpTime_FastRange.min = 0
-        self.vlexpTime_FastRange.default_data = 0.01
-        self.vlexpTime_FastRange.max = 0.5
         self.prexpTime.addValue(self.vlexpTime_FastRange)
 
         self.vlBinning_1x1.id = idcounter

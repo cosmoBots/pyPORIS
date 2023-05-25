@@ -72,36 +72,36 @@ class ARCGenIIIPORIS:
         self.mdAcquisitionMode_Normal = PORISMode("AcquisitionMode_Normal")
         self.mdAcquisitionMode_FrameTransfer = PORISMode("AcquisitionMode_FrameTransfer")
         self.mdAcquisitionMode_Shuffling = PORISMode("AcquisitionMode_Shuffling")
-        self.vlShuffleLines_Full_Range = PORISValueFloat("ShuffleLines_Full_Range")
+        self.vlShuffleLines_Full_Range = PORISValueFloat("ShuffleLines_Full_Range",0,200,1000)
         self.mdShuffleLinesMode_Normal = PORISMode("ShuffleLinesMode_Normal")
-        self.vlShiftNumber_Full_Range = PORISValueFloat("ShiftNumber_Full_Range")
+        self.vlShiftNumber_Full_Range = PORISValueFloat("ShiftNumber_Full_Range",0,5,1000)
         self.mdShiftNumberMode_Normal = PORISMode("ShiftNumberMode_Normal")
         self.mdSubarrayFeatureMode_Off = PORISMode("SubarrayFeatureMode_Off")
         self.mdSubarrayFeatureMode_On = PORISMode("SubarrayFeatureMode_On")
         self.mdColsMode_Normal = PORISMode("ColsMode_Normal")
-        self.vlCols_Full_Range = PORISValueFloat("Cols_Full_Range")
+        self.vlCols_Full_Range = PORISValueFloat("Cols_Full_Range",0,2048,4098)
         self.mdoffsetRowMode_Normal = PORISMode("offsetRowMode_Normal")
-        self.vloffsetRow_Full_Range = PORISValueFloat("offsetRow_Full_Range")
+        self.vloffsetRow_Full_Range = PORISValueFloat("offsetRow_Full_Range",0,2048,4098)
         self.mdRowsMode_Normal = PORISMode("RowsMode_Normal")
-        self.vlRows_Full_Range = PORISValueFloat("Rows_Full_Range")
+        self.vlRows_Full_Range = PORISValueFloat("Rows_Full_Range",0,2048,4098)
         self.mdoffsetColMode_Normal = PORISMode("offsetColMode_Normal")
-        self.vloffsetCol_Full_Range = PORISValueFloat("offsetCol_Full_Range")
+        self.vloffsetCol_Full_Range = PORISValueFloat("offsetCol_Full_Range",0,2048,4098)
         self.mdOpenShutterMode_On = PORISMode("OpenShutterMode_On")
         self.mdOpenShutterMode_Off = PORISMode("OpenShutterMode_Off")
-        self.vlExpTime_Full_Range = PORISValueFloat("ExpTime_Full_Range")
+        self.vlExpTime_Full_Range = PORISValueFloat("ExpTime_Full_Range",0,1,4294967.295)
         self.mdExpTimeMode_Normal = PORISMode("ExpTimeMode_Normal")
         self.mdExpTimeMode_FT = PORISMode("ExpTimeMode_FT")
-        self.vlExpTime_FT_Range = PORISValueFloat("ExpTime_FT_Range")
+        self.vlExpTime_FT_Range = PORISValueFloat("ExpTime_FT_Range",0,0,360)
         self.mdPixelSpeedMode_SLW = PORISMode("PixelSpeedMode_SLW")
         self.mdPixelSpeedMode_MED = PORISMode("PixelSpeedMode_MED")
         self.mdPixelSpeedMode_FST = PORISMode("PixelSpeedMode_FST")
         self.mdExposureCtrlMode_Normal = PORISMode("ExposureCtrlMode_Normal")
         self.mdExposureCtrlMode_FT = PORISMode("ExposureCtrlMode_FT")
         self.mdnumOfFramesMode_Multiple = PORISMode("numOfFramesMode_Multiple")
-        self.vlnumOfFrames_Multiple_Range = PORISValueFloat("numOfFrames_Multiple_Range")
+        self.vlnumOfFrames_Multiple_Range = PORISValueFloat("numOfFrames_Multiple_Range",2,10,4294967295)
         self.mdnumOfFramesMode_Single = PORISMode("numOfFramesMode_Single")
         self.vlnumOfFrames_1 = PORISValue("numOfFrames_1")
-        self.vlCalibGain_Normal_Range = PORISValueFloat("CalibGain_Normal_Range")
+        self.vlCalibGain_Normal_Range = PORISValueFloat("CalibGain_Normal_Range",0,2,15)
         self.mdCalibGainMode_Normal = PORISMode("CalibGainMode_Normal")
         self.mdExposureCtrlMode_NoShutter = PORISMode("ExposureCtrlMode_NoShutter")
         self.mdExposureCtrlMode_Calibration = PORISMode("ExposureCtrlMode_Calibration")
@@ -119,11 +119,11 @@ class ARCGenIIIPORIS:
         self.mdRecompositionMode_CDSQuad = PORISMode("RecompositionMode_CDSQuad")
         self.mdRecompositionMode_HawaiiRG = PORISMode("RecompositionMode_HawaiiRG")
         self.mdAcquisitionMode_NormalWindow = PORISMode("AcquisitionMode_NormalWindow")
-        self.vluiRows_Full_Range = PORISValueFloat("uiRows_Full_Range")
+        self.vluiRows_Full_Range = PORISValueFloat("uiRows_Full_Range",0,4112,4112)
         self.mduiRowsMode_Normal = PORISMode("uiRowsMode_Normal")
-        self.vluiRows_FTRange = PORISValueFloat("uiRows_FTRange")
+        self.vluiRows_FTRange = PORISValueFloat("uiRows_FTRange",0,2056,2056)
         self.mduiRowsMode_Half = PORISMode("uiRowsMode_Half")
-        self.vluiCols_Full_Range = PORISValueFloat("uiCols_Full_Range")
+        self.vluiCols_Full_Range = PORISValueFloat("uiCols_Full_Range",0,4096,4096)
         self.mduiColsMode_Normal = PORISMode("uiColsMode_Normal")
         self.mdDimensionsMode_Normal = PORISMode("DimensionsMode_Normal")
         self.mdDimensionsMode_FT = PORISMode("DimensionsMode_FT")
@@ -580,9 +580,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vlShuffleLines_Full_Range.ident = "ShuffleLines_Full_Range"
         self.vlShuffleLines_Full_Range.description = ""
-        self.vlShuffleLines_Full_Range.min = 0
-        self.vlShuffleLines_Full_Range.default_data = 200
-        self.vlShuffleLines_Full_Range.max = 1000
         self.prShuffleLines.addValue(self.vlShuffleLines_Full_Range)
 
         self.mdShuffleLinesMode_Normal.id = idcounter
@@ -595,9 +592,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vlShiftNumber_Full_Range.ident = "ShiftNumber_Full_Range"
         self.vlShiftNumber_Full_Range.description = ""
-        self.vlShiftNumber_Full_Range.min = 0
-        self.vlShiftNumber_Full_Range.default_data = 5
-        self.vlShiftNumber_Full_Range.max = 1000
         self.prShiftNumber.addValue(self.vlShiftNumber_Full_Range)
 
         self.mdShiftNumberMode_Normal.id = idcounter
@@ -628,9 +622,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vlCols_Full_Range.ident = "Cols_Full_Range"
         self.vlCols_Full_Range.description = ""
-        self.vlCols_Full_Range.min = 0
-        self.vlCols_Full_Range.default_data = 2048
-        self.vlCols_Full_Range.max = 4098
         self.prCols.addValue(self.vlCols_Full_Range)
 
         self.mdoffsetRowMode_Normal.id = idcounter
@@ -643,9 +634,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vloffsetRow_Full_Range.ident = "offsetRow_Full_Range"
         self.vloffsetRow_Full_Range.description = ""
-        self.vloffsetRow_Full_Range.min = 0
-        self.vloffsetRow_Full_Range.default_data = 2048
-        self.vloffsetRow_Full_Range.max = 4098
         self.proffsetRow.addValue(self.vloffsetRow_Full_Range)
 
         self.mdRowsMode_Normal.id = idcounter
@@ -658,9 +646,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vlRows_Full_Range.ident = "Rows_Full_Range"
         self.vlRows_Full_Range.description = ""
-        self.vlRows_Full_Range.min = 0
-        self.vlRows_Full_Range.default_data = 2048
-        self.vlRows_Full_Range.max = 4098
         self.prRows.addValue(self.vlRows_Full_Range)
 
         self.mdoffsetColMode_Normal.id = idcounter
@@ -673,9 +658,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vloffsetCol_Full_Range.ident = "offsetCol_Full_Range"
         self.vloffsetCol_Full_Range.description = ""
-        self.vloffsetCol_Full_Range.min = 0
-        self.vloffsetCol_Full_Range.default_data = 2048
-        self.vloffsetCol_Full_Range.max = 4098
         self.proffsetCol.addValue(self.vloffsetCol_Full_Range)
 
         self.mdOpenShutterMode_On.id = idcounter
@@ -694,9 +676,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vlExpTime_Full_Range.ident = "ExpTime_Full_Range"
         self.vlExpTime_Full_Range.description = ""
-        self.vlExpTime_Full_Range.min = 0
-        self.vlExpTime_Full_Range.default_data = 1
-        self.vlExpTime_Full_Range.max = 4294967.295
         self.prExpTime.addValue(self.vlExpTime_Full_Range)
 
         self.mdExpTimeMode_Normal.id = idcounter
@@ -715,9 +694,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vlExpTime_FT_Range.ident = "ExpTime_FT_Range"
         self.vlExpTime_FT_Range.description = ""
-        self.vlExpTime_FT_Range.min = 0
-        self.vlExpTime_FT_Range.default_data = 0
-        self.vlExpTime_FT_Range.max = 360
         self.prExpTime.addValue(self.vlExpTime_FT_Range)
 
         self.mdPixelSpeedMode_SLW.id = idcounter
@@ -760,9 +736,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vlnumOfFrames_Multiple_Range.ident = "numOfFrames_Multiple_Range"
         self.vlnumOfFrames_Multiple_Range.description = ""
-        self.vlnumOfFrames_Multiple_Range.min = 2
-        self.vlnumOfFrames_Multiple_Range.default_data = 10
-        self.vlnumOfFrames_Multiple_Range.max = 4294967295
         self.prnumOfFrames.addValue(self.vlnumOfFrames_Multiple_Range)
 
         self.mdnumOfFramesMode_Single.id = idcounter
@@ -781,9 +754,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vlCalibGain_Normal_Range.ident = "CalibGain_Normal_Range"
         self.vlCalibGain_Normal_Range.description = ""
-        self.vlCalibGain_Normal_Range.min = 0
-        self.vlCalibGain_Normal_Range.default_data = 2
-        self.vlCalibGain_Normal_Range.max = 15
         self.prCalibGain.addValue(self.vlCalibGain_Normal_Range)
 
         self.mdCalibGainMode_Normal.id = idcounter
@@ -892,9 +862,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vluiRows_Full_Range.ident = "uiRows_Full_Range"
         self.vluiRows_Full_Range.description = ""
-        self.vluiRows_Full_Range.min = 0
-        self.vluiRows_Full_Range.default_data = 4112
-        self.vluiRows_Full_Range.max = 4112
         self.pruiRows.addValue(self.vluiRows_Full_Range)
 
         self.mduiRowsMode_Normal.id = idcounter
@@ -907,9 +874,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vluiRows_FTRange.ident = "uiRows_FTRange"
         self.vluiRows_FTRange.description = ""
-        self.vluiRows_FTRange.min = 0
-        self.vluiRows_FTRange.default_data = 2056
-        self.vluiRows_FTRange.max = 2056
         self.pruiRows.addValue(self.vluiRows_FTRange)
 
         self.mduiRowsMode_Half.id = idcounter
@@ -922,9 +886,6 @@ class ARCGenIIIPORIS:
         idcounter += 1
         self.vluiCols_Full_Range.ident = "uiCols_Full_Range"
         self.vluiCols_Full_Range.description = ""
-        self.vluiCols_Full_Range.min = 0
-        self.vluiCols_Full_Range.default_data = 4096
-        self.vluiCols_Full_Range.max = 4096
         self.pruiCols.addValue(self.vluiCols_Full_Range)
 
         self.mduiColsMode_Normal.id = idcounter
