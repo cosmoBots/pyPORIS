@@ -4,23 +4,12 @@ from Controller import Controller
 from View import View
 
 class ViewController(View):
-    __model = None
-    __controller = None
 
     def __init__(self, model: Model):
-        super.init(model)
-
+        super().__init__(model)
+        
     def __init__(self, model: Model, controller: Controller):
-        super.init(model,controller)
-
-    def activate(self):
-        print("Activate!")
-
-    def display(self):
-        print("Display!")
-
-    def getModel(self):
-        return self.__model
+        super().__init__(model,controller)
     
     def handleEvent(self):
         print("Handled!")

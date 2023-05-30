@@ -2,14 +2,13 @@ from BaseClass import BaseClass
 from Observer import Observer
 
 class Model(BaseClass):
-    __name = None
-    __description = None
-    __parent = None
-    __observers = []
-    __notifyFlag = True
 
     def __init__(self, name: str):
         self.__name = name
+        self.__description = None
+        self.__parent = None
+        self.__observers = []
+        self.__notifyFlag = True
 
     def getName(self) -> str:
         return self.__name
@@ -39,7 +38,7 @@ class Model(BaseClass):
         return self.getName()
     
     def equals(self, obj):
-        ret = super.equals(obj)
+        ret = super().equals(obj)
         if ret == False:
             if isinstance(obj, str):
                 ret = self.toString() == obj
@@ -68,7 +67,7 @@ print(m2.toString())
 m3 = m.cloneWithName("Hola2")
 print(m3.toString())
 
-m2.setName("Cambiado")
+m.setName("Cambiado")
 print(m.toString())
 print(m2.toString())
 

@@ -3,9 +3,7 @@ from Model import Model
 from Controller import Controller
 
 class View(Observer):
-    __model = None
-    __controller = None
-
+ 
     def __init__(self, model: Model):
         self.__model = model
         self.__controller = Controller(model,self)
@@ -24,4 +22,7 @@ class View(Observer):
 
     def getModel(self):
         return self.__model
+    
+    def getController(self):
+        return self.__controller
     
