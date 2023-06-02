@@ -13,3 +13,12 @@ def setTextContent(doc: minidom.Document, e: minidom.Element, text: str):
     else:
         e.appendChild(doc.createTextNode(text))
 
+def getTextContent(e: minidom.Element) -> str:
+    ret = None
+    childList = e.childNodes
+    for child in childList:
+        if child.getNodeType() == minidom.Node.TEXT_NODE:
+            ret += child.getNodeValue()
+
+    return ret
+

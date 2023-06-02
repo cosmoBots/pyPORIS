@@ -5,8 +5,6 @@ class Model(BaseClass):
 
     def __init__(self, name: str):
         self.__name = name
-        self.__description = None
-        self.__parent = None
         self.__observers = []
         self.__notifyFlag = True
 

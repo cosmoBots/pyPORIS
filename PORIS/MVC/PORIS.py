@@ -94,7 +94,7 @@ class PORIS(Model):
             self.notifyObs()
 
 
-    def addDestination(self, parent: PORIS):
+    def addSource(self, parent: PORIS):
         if parent not in self.__sources:
             self.__sources.append(parent)
             if self not in parent.__destinations:
@@ -136,7 +136,8 @@ class PORIS(Model):
 
 
     def isConsistent(self) -> bool:
-        return self.__destinations.__len__ > 1 and self.__sources.__len__ > 1
+        # In Python we do not have to worry about this, but...
+        return (self.__destinations is not None) and (self.__sources is not None)
 
 
     def subTree(self, list) -> bool:
@@ -150,8 +151,8 @@ class PORIS(Model):
 
         return ret
 
-
-    def getSNodeInstance(cls, clase, instanceName: bool) -> PORIS:
+    @classmethod
+    def createInstanceOfClass(cls, clase, instanceName: bool) -> PORIS:
         return clase(instanceName)
 
 
@@ -159,7 +160,7 @@ class PORIS(Model):
         return True
 
 
-    def toXML(self, doc: minidom.Document, cls, onlyIdent: bool) -> minidom.Element:
+    def toXML(self, doc: minidom.Document, onlyIdent: bool) -> minidom.Element:
         if self.isConsistent():
             ret = doc.createElement(self.__class__.__name__)
             nameNode = doc.createElement("name")
@@ -202,7 +203,7 @@ class PORIS(Model):
                 for d in self.__destinations:
                     if d.isXMLExportable():
                         destNode = doc.createElement("destination")
-                        destNode.setAttribute("type", d.__class__.__name)
+                        destNode.setAttribute("type", d.__class__.__name__)
                         destIdNode = doc.createElement("id")
                         destIdNode.setAttribute("type", "integer")
                         Utils.setTextContent(doc, destIdNode, str(d.getId()))
@@ -233,12 +234,13 @@ class PORIS(Model):
             print("    PORIS node has the following destinations",self.__destinations)
             for d in self.__destinations:
                 print("Value",d.toString(),"is consistent?",d.isConsistent())
-
+            
+            print("    PORIS node has the following sources",self.__sources)
+            for s in self.__sources:
+                print("Value",s.toString(),"is consistent?",s.isConsistent())
             return None
 
 
-    def toXML(self, doc: minidom.Document, onlyIdent: bool) -> minidom.Element:
-        return self.toXML(doc, self.__class__,onlyIdent)
 
     @classmethod
     def getChildNodeWithName(node: minidom.Node, name: str) -> minidom.Node:
@@ -267,6 +269,76 @@ class PORIS(Model):
         return None
         
 
+    def loadFromXML(self, node: minidom.Node) -> bool:
+        ret = True
+
+        instanceName = Utils.getTextContent(PORIS.getChildNodeWithName(node, "name"))
+        self.setName(instanceName)
+        self.setLabel(instanceName)
+
+        instanceId = int(Utils.getTextContent(PORIS.getChildNodeWithName(node, "id")))
+        self.setId(instanceId)
+        self.__xmlLoaderHashMap[instanceId] = self
+
+        instanceNodeTypeId = int(Utils.getTextContent(PORIS.getChildNodeWithName(node, "node-type-id")))
+        self.setNodeTypeId(instanceNodeTypeId)
+
+        labelsNode = PORIS.getChildNodeWithName(node, "labels")
+        if (labelsNode is not None):
+            childLabels = labelsNode.chilNodes
+            for labelNode in childLabels:
+                if labelNode.getNodeName() =="label":
+                    scopeNode = PORIS.getChildNodeWithName(labelNode, "scope-kind")
+                    if (scopeNode is not None):
+                        scopeNameNode = PORIS.getChildNodeWithName(scopeNode, "name")
+                        scopeName = Utils.getTextContent(scopeNameNode)
+                        if (scopeName == "CfgPanel"):
+                            self.setLabel(Utils.getTextContent(PORIS.getChildNodeWithName(labelNode,"name")))
+        
+        attrsNode = PORIS.getChildNodeWithName(node, "node-attributes")
+        if attrsNode is not None:
+            childAttrs = attrsNode.chilNodes
+            for attrNode in childAttrs:
+                if attrNode.getNodeName() =="label":
+                    attrNameNode = PORIS.getChildNodeWithName(attrNode, "name")
+                    if (attrNameNode is not None):
+                        name = Utils.getTextContent(attrNameNode)
+                        attrContentNode = PORIS.getChildNodeWithName(attrNode, "content")
+                        if (attrContentNode is not None):
+                            visibleNode = PORIS.getChildNodeWithName(attrNode, "visibility")
+                            visible = False
+                            if (visibleNode is not None):
+                                visible =  (Utils.getTextContent(visibleNode) == "true")
+                            
+                            content = Utils.getTextContent(attrContentNode)
+                            attr = PORISAttribute(name,content,visible)
+                            self.addAttribute(attr)
+                            print("+++++ Hemos añadido a "+self.toString()+" el atributo "+attr)
+
+        destinationsNode = PORIS.getChildNodeWithName(node, "destinations")
+        if (destinationsNode is not None):
+            childDests = destinationsNode.childNodes
+            for destNode in childDests:
+                if destNode.getNodeName() == "destination":
+                    destId = int(Utils.getTextContent(PORIS.getChildNodeWithName(destNode, "id")))
+                    newDest = self._xmlLoaderHashMap[destId]
+                    if (newDest is not None):
+                        self.addDestination(newDest)
+
+        return ret
+
+    @classmethod
+    def fromXML(cls, clase, node: minidom.Node) -> PORIS:
+        ret = cls.createInstanceOfClass(clase, "idle")
+        if (ret.loadFromXML(node)):
+            return ret
+        
+        else:
+            print("Error: It was impossible to create the PORIS from the given XML node")
+            return None
+    
+
+
     @classmethod
     def getInstanceList(cls):
         return cls.__instanceList
@@ -280,10 +352,10 @@ class PORIS(Model):
             
         return None
 
-
-
-
-p = PORIS("Hola")
-print(p.getName())
-
-
+    @classmethod
+    def getInstanceForId(cls, id: int) -> PORIS:
+        for i in cls.__instanceList:
+            if i.getId() == id:
+                return i
+            
+        return None
