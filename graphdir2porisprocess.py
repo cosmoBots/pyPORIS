@@ -613,7 +613,7 @@ def create_tree_from_graphml_dir(dirname, deviceName):
 
       # Let's update the files
     for fn in filesoups.keys():
-      with open(os.path.join(dirname,fn+'.graphml.out'), "w", encoding='utf-8') as file:
+      with open(os.path.join(dirname,fn+'.out.graphml'), "w", encoding='utf-8') as file:
         file.write(str(filesoups[fn]))
 
     rows = [['RM#','url','RMID','ID','row#','subject','','tracker','Rlv?','status','parent', 
