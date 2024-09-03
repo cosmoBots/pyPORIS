@@ -14,4 +14,8 @@ else
     exit 1;
 fi
 
-yEd $FILE3
+if ! type yEd &> /dev/null; then
+  yed $FILE3
+else
+  yEd $FILE3
+fi
