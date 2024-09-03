@@ -272,6 +272,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
     porishstr += "class "+deviceName+"PORIS:\n"
     porishstr += "    def __init__(self):\n"
     porishstr += "        idcounter = 1\n"
+    porishstr += "        self.model_nodes = []\n"
 
     poriscstr =  ""
 
@@ -363,6 +364,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                     counter = 0
 
                 poriscinitstr += "\n        self.pr"+nodename+".id = idcounter\n"
+                poriscinitstr += "        self.model_nodes.append(self.pr"+nodename+")\n"
                 poriscinitstr += "        idcounter += 1\n"
                 if not savemem:
                     poriscinitstr += "        self.pr"+nodename+".ident = \""+nodename+"\"\n"
@@ -373,6 +375,8 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
 
                 if not savemem:
                     poriscinitstr += "\n        self.vl"+nodename+ "_UNKNOWN.id = idcounter\n"
+                    poriscinitstr += "        self.model_nodes.append(self.vl"+nodename+"_UNKNOWN)\n"
+                    
                 
                 poriscinitstr += "        idcounter += 1\n"
                 if not savemem:
@@ -383,8 +387,10 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
 
                 if not savemem:
                     poriscinitstr += "\n        self.md"+nodename+ "Mode_UNKNOWN.id = idcounter\n"
+                    poriscinitstr += "        self.model_nodes.append(self.md"+nodename+"Mode_UNKNOWN)\n"
                 else:
                     poriscinitstr += "\n        self.md"+nodename+ "UNKNOWN.id = idcounter\n"
+                    poriscinitstr += "        self.model_nodes.append(self.md"+nodename+"UNKNOWN)\n"
 
                 poriscinitstr += "        idcounter += 1\n"
                 if not savemem:
@@ -443,6 +449,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                 prDetector.parent = NULL;
                 '''
                 poriscinitstr += "\n        self.sys"+nodename+".id = idcounter\n"
+                poriscinitstr += "        self.model_nodes.append(self.sys"+nodename+")\n"                
                 poriscinitstr += "        idcounter += 1\n"
                 if not savemem:
                     poriscinitstr += "        self.sys"+nodename+".ident = \""+nodename+"\"\n"
@@ -453,8 +460,12 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
 
                 if not savemem:
                     poriscinitstr += "\n        self.md"+nodename+ "Mode_UNKNOWN.id = idcounter\n"
+                    poriscinitstr += "        self.model_nodes.append(self.md"+nodename+"Mode_UNKNOWN)\n"
+
                 else:
                     poriscinitstr += "\n        self.md"+nodename+ "UNKNOWN.id = idcounter\n"
+                    poriscinitstr += "        self.model_nodes.append(self.md"+nodename+"UNKNOWN)\n"
+                    
 
                 poriscinitstr += "        idcounter += 1\n"
                 if not savemem:
@@ -646,10 +657,12 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                 prDetectorMode_UNKNOWN.parent = &prDetector;
                 '''
                 if not savemem:
-                    poriscinitstr += "\n        self.md"+parentNodeName+ "Mode_" + nodename+".id = idcounter\n"
+                    poriscinitstr += "\n        self.md"+ parentNodeName + "Mode_" + nodename+".id = idcounter\n"
+                    poriscinitstr += "        self.model_nodes.append(self.md"+parentNodeName+ "Mode_"+nodename+")\n"
 
                 else:
-                    poriscinitstr += "\n        self.md" + parentNodeName + nodename+".id = idcounter\n"
+                    poriscinitstr += "\n        self.md" + parentNodeName + "_" + nodename+".id = idcounter\n"
+                    poriscinitstr += "        self.model_nodes.append(self.md" + parentNodeName + "_" + nodename+")\n"
 
                 poriscinitstr += "        idcounter += 1\n"
                 if not savemem:
@@ -687,7 +700,9 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                         prBinning_1x1.description = "Sin binning";
                         prBinning_1x1.parent = &prBinning;
                         '''                
-                        poriscinitstr += "\n        self.vl"+parentNodeName+ "_" + nodename+".id = idcounter\n"
+                        poriscinitstr += "\n        self.vl"+parentNodeName + "_" + nodename+".id = idcounter\n"
+                        poriscinitstr += "        self.model_nodes.append(self.vl" + parentNodeName+ "_"  + nodename+")\n"
+
                         poriscinitstr += "        idcounter += 1\n"
                         if not savemem:
                             poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
@@ -712,7 +727,9 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                         prExpTime_Normal.description = "Rango normal de valores para ExpTime";
                         prExpTime_Normal.parent = &prExpTime;                    
                         '''                
-                        poriscinitstr += "\n        self.vl"+parentNodeName+ "_" + nodename+".id = idcounter\n"
+                        poriscinitstr += "\n        self.vl"+parentNodeName + "_" + nodename+".id = idcounter\n"
+                        poriscinitstr += "        self.model_nodes.append(self.vl" + parentNodeName + "_" + nodename+")\n"
+
                         poriscinitstr += "        idcounter += 1\n"
                         if not savemem:
                             poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
@@ -740,6 +757,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                             prShiftList_Normal.parent = &prShiftList;
                             '''                
                             poriscinitstr += "\n        self.vl"+parentNodeName+ "_" + nodename+".id = idcounter\n"
+                            poriscinitstr += "        self.model_nodes.append(self.vl" + parentNodeName + "_" + nodename+")\n"
                             poriscinitstr += "        idcounter += 1\n"
                             if not savemem:
                                 poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
