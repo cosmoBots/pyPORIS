@@ -9,8 +9,8 @@ class DEVICENAME_physical(DEVICENAMEPORIS):
     pass
 
 
-thismodel = DEVICENAME_physical()
+thismodel = DEVICENAME_physical(12)
 
-print("Let's test our model ",thismodel.root.getName())
-print("Current mode is ",thismodel.root.getSelectedMode().getName())
+print("Let's test our model ",thismodel.getRoot().getName())
+print("Current mode is ",thismodel.getRoot().getSelectedMode().getName())
 
