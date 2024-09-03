@@ -44,9 +44,12 @@ class PORIS:
     def getXMLNodeType(self) -> int:
         return 0
     
+    def getXMLType(self) -> str:
+        return self.__class__.__name__
+    
+    
     def toXML(self, dom: minidom.Document) -> minidom.Node:
         n_node = dom.createElement(self.getXMLNodeName())
-        n_node.setAttribute("name", self.getName())
        
         idChild = dom.createElement('id')
         idChild.setAttribute("type", "integer")
@@ -77,6 +80,18 @@ class PORIS:
         nodetypeChild.appendChild(valueText)
         n_node.appendChild(nodetypeChild)
         
+        nodetypeChild = dom.createElement('type')
+        valueText = dom.createTextNode(self.getXMLType())
+        nodetypeChild.appendChild(valueText)
+        n_node.appendChild(nodetypeChild)
+        
+        nodetypeChild = dom.createElement('destinations')
+        n_node.appendChild(nodetypeChild)
+        nodeAttributesChild = dom.createElement('node-attributes')
+        n_node.appendChild(nodeAttributesChild)
+        labelsChild = dom.createElement('labels')
+        n_node.appendChild(labelsChild)
+        
         return n_node
 
 #######################################
@@ -87,6 +102,9 @@ class PORISValue(PORIS):
     
     def getXMLNodeType(self) -> int:
         return 5
+'''
+        <value-formatter-id type="integer" nil="true"/>    
+'''    
     
 #######################################
 
@@ -168,7 +186,12 @@ class PORISValueFloat(PORISValueData):
 
     def getXMLNodeName(self) -> str:
         return "value-double-range"
-
+'''
+        <value-formatter-id type="integer">5</value-formatter-id>
+        <default-float type="float">200</default-float>
+        <rangemax type="float">1000</rangemax>
+        <rangemin type="float">0</rangemin>    
+'''
 #######################################
 
 class PORISMode(PORIS):
@@ -268,6 +291,12 @@ class PORISMode(PORIS):
     
     def getXMLNodeType(self) -> int:
         return 6
+
+'''
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+'''    
+    
     
 #######################################    
     
@@ -512,6 +541,9 @@ class PORISParam(PORISNode):
         
         return ret
     
+    def getXMLType(self) -> str:
+        return "PORISNode"
+
 
 #######################################
 
@@ -657,6 +689,9 @@ class PORISSys(PORISNode):
 
         return ret
 
+    def getXMLType(self) -> str:
+        return "PORISNode"
+
 
 #######################################
 
@@ -690,7 +725,6 @@ class PORISDoc:
         self.__node_list.append(n)
         n.id = self.__id_counter
         n.setProjectId(self.__project_id)
-        print("Adding with ProjectId",self.__project_id)
         self.__id_counter += 1
 
     def list_nodes(self):
