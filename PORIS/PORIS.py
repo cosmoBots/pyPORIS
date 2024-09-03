@@ -1,5 +1,7 @@
 debug = False
 
+from xml.dom import minidom
+
 class PORISNode:
     pass
 
@@ -24,6 +26,12 @@ class PORIS:
         
     def getParent(self) -> PORISNode:
         return self.__parent
+    
+    def toXML(self, dom: minidom.Document) -> minidom.Node:
+        n_node = dom.createElement("id_"+str(self.id))
+        n_node.setAttribute("name", self.getName())
+        
+        return n_node
 
         
 class PORISValue(PORIS):
@@ -559,3 +567,38 @@ class PORISSys(PORISNode):
 
         return ret
 
+
+class PORISDoc:
+    __id_counter = 1
+    __node_list = []
+    __root = None
+    
+    def setRoot(self, r:PORIS):
+        self.__root = r
+        print("Setting the root to ", r.getName(),"and",self.__root.getName(),"and",self.getName())
+        
+    def getRoot(self) -> PORIS:
+        return self.__root        
+        
+    def getName(self):
+        return self.__root.getName()
+        
+    def addNode(self, n: PORIS):
+        self.__node_list.append(n)
+        n.id = self.__id_counter
+        self.__id_counter += 1
+
+    def list_nodes(self):
+        for n in self.__node_list:
+            print(str(n.id),n.getName())
+            
+    def toXML(self) -> minidom.Document:
+        rootInstr = minidom.Document()
+        xmlInstr = rootInstr.createElement('poris')
+        rootInstr.appendChild(xmlInstr)
+        for n in self.__node_list:
+            n_node = n.toXML(rootInstr)
+            xmlInstr.appendChild(n_node)
+            
+        return rootInstr
+        
