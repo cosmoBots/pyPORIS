@@ -34,7 +34,7 @@ def get_project_ancestors(thisproject,rootproject,projects):
     else:      
       print("Error, we could not find the parent of ",thisproject.identifier)
       #result = [thisproject]
-      assert(false)
+      assert(False)
   
   else:
     # If thisproject is the root project, we have finished    
