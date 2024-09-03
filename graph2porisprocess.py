@@ -690,7 +690,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
               nodes_graphml[k].append(new_tag)
 
 
-        with open(os.path.join(dirname,onlyname+'.out'+extension), "w", encoding='utf-8') as file:
+        with open(os.path.join(dirname,onlyname+extension+'.out'), "w", encoding='utf-8') as file:
             file.write(str(soup))
 
 

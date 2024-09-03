@@ -299,7 +299,7 @@ def loadODS():
 def createPorisXML(nodes_dict,deviceName):
 
     rootInstr = minidom.Document()
-    xmlInstr = rootInstr.createElement('sub-systems-v4')
+    xmlInstr = rootInstr.createElement('poris')
     rootInstr.appendChild(xmlInstr)
 
 
@@ -403,7 +403,7 @@ def createPorisXML(nodes_dict,deviceName):
             if thisnode['tracker'] == "prValue":
                 # <type>Value</type>
                 typeChild = rootInstr.createElement('type')
-                valueText = rootInstr.createTextNode("Value")
+                valueText = rootInstr.createTextNode("PORISValue")
                 typeChild.appendChild(valueText)
                 valueNode.appendChild(typeChild)            
 
@@ -417,7 +417,7 @@ def createPorisXML(nodes_dict,deviceName):
                 if thisnode['tracker'] == "prValFloat":
                     # <type>ValueDoubleRange</type>
                     typeChild = rootInstr.createElement('type')
-                    valueText = rootInstr.createTextNode("ValueDoubleRange")
+                    valueText = rootInstr.createTextNode("PORISValueFloat")
                     typeChild.appendChild(valueText)
                     valueNode.appendChild(typeChild)
 
@@ -457,7 +457,7 @@ def createPorisXML(nodes_dict,deviceName):
                     if thisnode['tracker'] == "prValText":
                         # <type>ValueString</type>
                         typeChild = rootInstr.createElement('type')
-                        valueText = rootInstr.createTextNode("ValueString")
+                        valueText = rootInstr.createTextNode("PORISValueString")
                         typeChild.appendChild(valueText)
                         valueNode.appendChild(typeChild)
 
@@ -622,7 +622,7 @@ def createPorisXML(nodes_dict,deviceName):
 
             # <type>Mode</type>
             typeChild = rootInstr.createElement('type')
-            valueText = rootInstr.createTextNode("Mode")
+            valueText = rootInstr.createTextNode("PORISMode")
             typeChild.appendChild(valueText)
             modeNode.appendChild(typeChild)
 
@@ -859,7 +859,7 @@ def createPorisXML(nodes_dict,deviceName):
 
             # <type>SubSystem</type>
             typeChild = rootInstr.createElement('type')
-            valueText = rootInstr.createTextNode("SubSystem")
+            valueText = rootInstr.createTextNode("PORISNode")
             typeChild.appendChild(valueText)
             sysNode.appendChild(typeChild)
 
@@ -888,19 +888,27 @@ def createPorisXML(nodes_dict,deviceName):
                     thisdest = nodes_dict[destid]
                     dest = rootInstr.createElement('destination')
                     if thisdest['tracker'] == "prValue" or thisdest['tracker'] == "prValFloat" or thisdest['tracker'] == "prValText":
-                        dest.setAttribute("type", "Value")
+                        if thisdest['tracker'] == "prValue":
+                            dest.setAttribute("type", "PORISValue")
+
+                        if thisdest['tracker'] == "prValFloat":
+                            dest.setAttribute("type", "PORISValueFloat")
+
+                        if thisdest['tracker'] == "prValText":
+                            dest.setAttribute("type", "PORISValueString")
+
                     else:
                         if thisdest['tracker'] == "prMode":
-                            dest.setAttribute("type", "Mode")
+                            dest.setAttribute("type", "PORISMode")
                         
                         else:
                             if thisdest['tracker'] == "prSys" or thisdest['tracker'] == 'prParam':
-                                dest.setAttribute("type", "SubSystem")
+                                dest.setAttribute("type", "PORISNode")
 
                             else:
                                 if thisdest['tracker'] == "prCmd":
                                     valueText = thisdest['subject']
-                                    dest.setAttribute("type", "Cmd")               
+                                    dest.setAttribute("type", "PORISCmd")               
 
                                 else:
                                     dest.setAttribute("type", "Error2!!!")

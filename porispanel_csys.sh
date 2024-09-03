@@ -7,7 +7,7 @@ fi
 
 FILE=models/$1.graphml
 FILE1=models/$1.ods
-FILE2=models/$1.out.graphml
+FILE2=models/$1.graphml.out
 FILE3=models/$1.xml
 
 if test -f "$FILE"; then
