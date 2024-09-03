@@ -270,7 +270,8 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
     methodsstr += "    #----------------------------------------------------------------------\n\n"
     porishstr =  "from PORIS import *\n\n"
     porishstr += "class "+deviceName+"PORIS(PORISDoc):\n"
-    porishstr += "    def __init__(self):\n"
+    porishstr += "    def __init__(self, project_id):\n"
+    porishstr += "        super().__init__(project_id)\n"
     poriscstr =  ""
 
     poriscinitstr = ""
@@ -362,6 +363,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
 
                 poriscinitstr += "        self.addNode(self.pr"+nodename+")\n"
                 if not savemem:
+                    poriscinitstr += "        self.pr"+nodename+".ident = \""+nodename+"\"\n"
                     poriscinitstr += "        self.pr"+nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
                 
                 if parentNode is not None:
@@ -372,6 +374,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                     
                 
                 if not savemem:
+                    poriscinitstr += "        self.vl"+nodename+ "_UNKNOWN.ident = \""+nodename+ "_UNKNOWN\"\n"
                     poriscinitstr += "        self.vl"+nodename+ "_UNKNOWN.description = \"Unknown value for "+nodename+"\"\n"
                 
                 poriscinitstr += "        self.pr"+nodename+".addValue(self.vl"+nodename+ "_UNKNOWN)\n"

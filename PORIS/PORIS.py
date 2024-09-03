@@ -2,8 +2,12 @@ debug = False
 
 from xml.dom import minidom
 
+#######################################
+
 class PORISNode:
     pass
+
+#######################################
 
 class PORIS:
     id = None
@@ -11,6 +15,7 @@ class PORIS:
     __name = None
     description = None
     __parent = None
+    __project_id = 0
     
     def __init__(self,name):
         self.__name = name
@@ -27,16 +32,63 @@ class PORIS:
     def getParent(self) -> PORISNode:
         return self.__parent
     
+    def getProjectId(self) -> int:
+        return self.__project_id
+
+    def setProjectId(self, i: int):
+        self.__project_id = i
+    
+    def getXMLNodeName(self) -> str:
+        return "none"
+    
+    def getXMLNodeType(self) -> int:
+        return 0
+    
     def toXML(self, dom: minidom.Document) -> minidom.Node:
-        n_node = dom.createElement("id_"+str(self.id))
+        n_node = dom.createElement(self.getXMLNodeName())
         n_node.setAttribute("name", self.getName())
+       
+        idChild = dom.createElement('id')
+        idChild.setAttribute("type", "integer")
+        valueText = dom.createTextNode(str(self.id))
+        idChild.appendChild(valueText)
+        n_node.appendChild(idChild)
+        
+        identChild = dom.createElement('ident')
+        valueText = dom.createTextNode(self.ident)
+        identChild.appendChild(valueText)
+        n_node.appendChild(identChild)
+                       
+        nameChild = dom.createElement('name')
+        valueText = dom.createTextNode(self.getName())
+        nameChild.appendChild(valueText)
+        n_node.appendChild(nameChild)
+        
+        nodetypeChild = dom.createElement('node-type-id')
+        nodetypeChild.setAttribute("type", "integer")
+        valueText = dom.createTextNode(str(self.getXMLNodeType()))
+        nodetypeChild.appendChild(valueText)
+        n_node.appendChild(nodetypeChild)
+        
+        
+        nodetypeChild = dom.createElement('project-id')
+        nodetypeChild.setAttribute("type", "integer")
+        valueText = dom.createTextNode(str(self.getProjectId()))
+        nodetypeChild.appendChild(valueText)
+        n_node.appendChild(nodetypeChild)
         
         return n_node
 
+#######################################
         
 class PORISValue(PORIS):
-    pass
+    def getXMLNodeName(self) -> str:
+        return "value"
     
+    def getXMLNodeType(self) -> int:
+        return 5
+    
+#######################################
 
 class PORISValueData(PORISValue):
     __data = None
@@ -47,6 +99,9 @@ class PORISValueData(PORISValue):
         self.__default_data = default_data
         self.__data = default_data
 
+    def getXMLNodeName(self) -> str:
+        return "none"
+
     def setData(self,data):
         self.__data = data
         return self.__data
@@ -56,6 +111,14 @@ class PORISValueData(PORISValue):
     
     def getDefaultData(self):
         return self.__default_data
+    
+    def getXMLNodeName(self) -> str:
+        return "sub-system"
+    
+    def getXMLNodeType(self) -> int:
+        return 5
+
+#######################################
 
 class PORISValueString(PORISValueData):
     def __init__(self,name,default_data: str):
@@ -67,6 +130,13 @@ class PORISValueString(PORISValueData):
     def getData(self) -> str:
         return super().getData()
 
+    def getXMLNodeName(self) -> str:
+        return "value-string"
+      
+    def toXML(self, dom: minidom.Document) -> minidom.Node:
+        n_node = super().toXML(dom)
+    
+#######################################
 
 class PORISValueFloat(PORISValueData):
     __min = None
@@ -96,6 +166,10 @@ class PORISValueFloat(PORISValueData):
     def getMax(self) -> float:
         return self.__max
 
+    def getXMLNodeName(self) -> str:
+        return "value-double-range"
+
+#######################################
 
 class PORISMode(PORIS):
     
@@ -188,6 +262,14 @@ class PORISMode(PORIS):
             ret = result.idx
         
         return ret
+    
+    def getXMLNodeName(self) -> str:
+        return "mode"
+    
+    def getXMLNodeType(self) -> int:
+        return 6
+    
+#######################################    
     
 class PORISNode(PORIS):
     __selectedMode = None
@@ -303,6 +385,13 @@ class PORISNode(PORIS):
     def getSelectedMode(self) -> PORISMode:
         return self.__selectedMode
 
+    def getXMLNodeName(self) -> str:
+        return "sub-system"
+    
+    def getXMLNodeType(self) -> int:
+        return 4    
+
+#######################################
 
 class PORISParam(PORISNode):
     __selectedValue = None
@@ -423,7 +512,8 @@ class PORISParam(PORISNode):
         
         return ret
     
-    
+
+#######################################
 
 class PORISSys(PORISNode):
 
@@ -568,10 +658,23 @@ class PORISSys(PORISNode):
         return ret
 
 
+#######################################
+
 class PORISDoc:
     __id_counter = 1
     __node_list = []
     __root = None
+    __project_id = 0
+    
+    def __init__(self,project_id):
+        self.__project_id = project_id
+        print("Setting the project_id to ", self.__project_id)
+        
+    def setProjectId(self, i: int):
+        self.__project_id = i
+        
+    def getProjectId(self) -> int:
+        return self.__project_id
     
     def setRoot(self, r:PORIS):
         self.__root = r
@@ -586,6 +689,8 @@ class PORISDoc:
     def addNode(self, n: PORIS):
         self.__node_list.append(n)
         n.id = self.__id_counter
+        n.setProjectId(self.__project_id)
+        print("Adding with ProjectId",self.__project_id)
         self.__id_counter += 1
 
     def list_nodes(self):
