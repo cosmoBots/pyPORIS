@@ -1,6 +1,9 @@
 debug = False
 
 from xml.dom import minidom
+from datetime import datetime
+from pytz import timezone
+import pytz
 
 #######################################
 
@@ -9,6 +12,221 @@ class PORISNode:
 
 #######################################
 
+class PORISLabel:
+    __name = None
+    __scope_kind = None
+
+    def __init__(self,name: str, scope_kind: str):
+        self.__name = name
+        self.__scope_kind = scope_kind
+        
+    def getName(self) -> str:
+        return self.__name
+
+    def getScopeKind(self) -> str:
+        return self.__scope_kind
+    
+    def toXML(self, dom: minidom.Document) -> minidom.Node:
+        n_node = dom.createElement("label")
+        node = dom.createElement("name")
+        valueText = dom.createTextNode(self.getName())
+        node.appendChild(valueText)
+        n_node.appendChild(node)
+        node = dom.createElement("scope-kind")
+        node2 = dom.createElement("name")
+        valueText = dom.createTextNode(self.getScopeKind())
+        node2.appendChild(valueText)
+        node.appendChild(node2)        
+        n_node.appendChild(node)
+        
+        return n_node
+
+
+#######################################
+
+class PORISValueFormatter:
+    __name = None
+    __id = None
+    __label = None
+    def __init__(self, name: str, id: int, label: str):
+        self.__name = name
+        self.__id = id
+        self.__label = label
+        
+    def getName(self) -> str:
+        return self.__name    
+    
+    def getId(self) -> int:
+        return self.__id    
+    
+    def getLabel(self) -> str:
+        return self.__label
+
+    def toXMLRef(self, dom: minidom.Document) -> minidom.Node:
+        n_node = dom.createElement('value-formatter-id')
+        n_node.setAttribute("type", "integer")
+        if (self.__id != None):
+            valueText = dom.createTextNode(str(self.__id))
+            n_node.appendChild(valueText)
+            
+        else:
+            n_node.setAttribute("nil", "true")
+                  
+        return n_node
+
+
+class PORISValueDateFormatter(PORISValueFormatter):
+    #dateFormatString = "dd.MM.yyyy HH:mm:ss z"
+    dateFormatString = "%d.%m.%Y %H:%M:%S %z"
+    # defaultDateFormatString = "dd.MM.yyyy HH:mm:ss z"
+    # oldNoTreatmentFormatString = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    # newNoTreatmentFormatString = "yyyy-MM-dd HH:mm:ss z"
+    
+
+    def getValue(self, strValue : str, format: str=dateFormatString) -> datetime:
+        return datetime.strptime(strValue, format)
+    
+    def getString(self, value : datetime, format: str=dateFormatString) -> str:
+        return value.strftime(format)
+    
+    # TODO: Implement the rest of the formatters
+    
+
+class PORISValueDoubleFormatter(PORISValueFormatter):
+    
+    '''
+    def getValue(strValue : str, nospecifictreatment: bool=False):
+        if nospecifictreatment:
+            return super().getValue()
+        
+        else:
+            return float(str)
+    
+    def getString(value : float, nospecifictreatment: bool=False):
+        if nospecifictreatment:
+            return super().getString()
+        
+        else:
+            return str(value)
+    '''
+    def getValue(self, strValue : str, nospecifictreatment: bool=False) -> float:
+        return float(strValue)
+    
+    def getString(self, value : float, nospecifictreatment: bool=False) -> str:
+        return str(value)
+
+class PORISValueDMSFormatter(PORISValueDoubleFormatter):
+
+    def getValue(self, strValue : str, nospecifictreatment: bool=False) -> float:
+        if nospecifictreatment:
+            return super().getValue()
+        
+        else:
+            # TODO: PROCESS IT SPECIFICALLY!!!!
+            return float(strValue)
+    
+    def getString(self, value : float, nospecifictreatment: bool=False) -> str:
+        if nospecifictreatment:
+            return super().getString()
+        
+        else:
+            # TODO: PROCESS IT SPECIFICALLY!!!!
+            return str(value)
+
+
+class PORISValueHMSFormatter(PORISValueDoubleFormatter):
+
+    def getValue(self, strValue : str, nospecifictreatment: bool=False) -> float:
+        if nospecifictreatment:
+            return super().getValue()
+        
+        else:
+            # TODO: PROCESS IT SPECIFICALLY!!!!
+            return float(strValue)
+    
+    def getString(self, value : float, nospecifictreatment: bool=False) -> str:
+        if nospecifictreatment:
+            return super().getString()
+        
+        else:
+            # TODO: PROCESS IT SPECIFICALLY!!!!
+            return str(value)
+
+class PORISValueIntegerFormatter(PORISValueDoubleFormatter):
+
+    def getValue(self, strValue : str, nospecifictreatment: bool=False) -> float:
+        if nospecifictreatment:
+            return super().getValue()
+        
+        else:
+            return int(strValue)
+    
+    def getString(self, value : float, nospecifictreatment: bool=False) -> str:
+        if nospecifictreatment:
+            return super().getString(value)
+        
+        else:
+            # TODO: PROCESS IT SPECIFICALLY!!!!
+            return str(value)
+
+class PORISValueArcMinFormatter(PORISValueDoubleFormatter):
+
+    pass
+
+class PORISValueArcSecFormatter(PORISValueDoubleFormatter):
+
+    pass
+
+### Create singletons
+
+# <value-formatter-id type="integer" nil="true"/>
+PORISVALUEFORMATTER_NIL = PORISValueFormatter("nil",None,None)
+
+# double (null)
+# this.formatter = new ValueDoubleFormatter("double", 0);
+# <value-formatter-id type="integer" nil="true"></value-formatter-id>
+PORISVALUEFORMATTER_DOUBLE = PORISValueFormatter("double",0,None)
+ 
+# public static ValueDoubleFormatter DEFAULT_DOUBLE_FORMATTER = new ValueDoubleFormatter("real", 1, "real");
+# <value-formatter-id type="integer">1</value-formatter-id>
+PORISVALUEFORMATTER_REAL = PORISValueDoubleFormatter("real",1,"real")
+
+# public static ValueHMSFormatter DEFAULT_HMS_FORMATTER = new ValueHMSFormatter("HH:mm:ss.sss", 2, "HH:mm:ss.sss");
+# <value-formatter-id type="integer">2</value-formatter-id>
+PORISVALUEFORMATTER_HMS = PORISValueHMSFormatter("HH:mm:ss.sss", 2, "HH:mm:ss.sss")
+ 
+# public static ValueDMSFormatter DEFAULT_DMS_FORMATTER = new ValueDMSFormatter("DD:mm:ss.sss", 3, "DD:mm:ss.sss");
+# <value-formatter-id type="integer">3</value-formatter-id>
+PORISVALUEFORMATTER_DMS = PORISValueDMSFormatter("DD:mm:ss.sss", 3, "DD:mm:ss.sss")
+
+# public static ValueDoubleFormatter ANGLE_FORMATTER = new ValueDoubleFormatter("angle", 4, "angle");
+# <value-formatter-id type="integer">4</value-formatter-id>
+PORISVALUEFORMATTER_ANGLE = PORISValueDoubleFormatter("angle", 4, "angle")
+ 
+# public static ValueDoubleFormatter S_FORMATTER = new ValueDoubleFormatter("s", 5, "s");
+# <value-formatter-id type="integer">5</value-formatter-id>
+PORISVALUEFORMATTER_S = PORISValueDoubleFormatter("s", 5, "s")
+ 
+# public static ValueDateFormatter DEFAULT_DATE_FORMATTER = new ValueDateFormatter("Date", 6, "dd.MM.yyyy HH:mm:ss z");
+# <value-formatter-id type="integer">6</value-formatter-id>
+PORISVALUEFORMATTER_DATE = PORISValueDateFormatter("Date", 6, "dd.MM.yyyy HH:mm:ss z")
+
+# public static ValueIntegerFormatter DEFAULT_INTEGER_FORMATTER = new ValueIntegerFormatter("integer", 7, "#");
+# <value-formatter-id type="integer">7</value-formatter-id>
+PORISVALUEFORMATTER_INTEGER = PORISValueIntegerFormatter("integer", 7, "#")
+ 
+# public static ValueArcMinFormatter DEFAULT_ARCMIN_FORMATTER = new ValueArcMinFormatter("arcmin", 8, "arcmin");
+# <value-formatter-id type="integer">8</value-formatter-id>
+PORISVALUEFORMATTER_ARCMIN = PORISValueArcMinFormatter("arcmin", 8, "arcmin")
+ 
+# public static ValueArcSecFormatter DEFAULT_ARCSEC_FORMATTER = new ValueArcSecFormatter("arcsec", 9, "arcsec");
+# <value-formatter-id type="integer">9</value-formatter-id>
+PORISVALUEFORMATTER_ARCSEC = PORISValueArcSecFormatter("arcmin", 9, "arcsec")
+
+
+
+#####################################
+
 class PORIS:
     id = None
     ident = None
@@ -16,6 +234,7 @@ class PORIS:
     description = None
     __parent = None
     __project_id = 0
+    __labels = []
     
     def __init__(self,name):
         self.__name = name
@@ -38,6 +257,12 @@ class PORIS:
     def setProjectId(self, i: int):
         self.__project_id = i
     
+    def getLabels(self) -> list:
+        return self.__labels
+    
+    def addLabel(self, label: PORISLabel):
+        self.__labels.append(label)
+        
     def getXMLNodeName(self) -> str:
         return "none"
     
@@ -47,6 +272,16 @@ class PORIS:
     def getXMLType(self) -> str:
         return self.__class__.__name__
     
+    def toXMLRef(self, dom: minidom.Document) -> minidom.Node:
+        idChild = dom.createElement('id')
+        idChild.setAttribute("type", "integer")
+        valueText = dom.createTextNode(str(self.id))
+        idChild.appendChild(valueText)
+                  
+        return idChild
+    
+    def getDestinations(self) -> list:
+        return []
     
     def toXML(self, dom: minidom.Document) -> minidom.Node:
         n_node = dom.createElement(self.getXMLNodeName())
@@ -85,11 +320,46 @@ class PORIS:
         nodetypeChild.appendChild(valueText)
         n_node.appendChild(nodetypeChild)
         
-        nodetypeChild = dom.createElement('destinations')
-        n_node.appendChild(nodetypeChild)
+        destinations_node = dom.createElement('destinations')
+        
+        dests = self.getDestinations()
+        for d in dests:
+            destnode = dom.createElement('destination')
+            destnode.setAttribute("type", d.getXMLType())
+            destnode.appendChild(d.toXMLRef(dom))
+            destinations_node.appendChild(destnode)
+        
+        n_node.appendChild(destinations_node)
+        
         nodeAttributesChild = dom.createElement('node-attributes')
         n_node.appendChild(nodeAttributesChild)
+        
+        '''
+        <labels type="array">
+            <label>
+                <name>Use a pre-imaging file</name>
+                <scope-kind>
+                    <name>CfgPanel</name>
+                </scope-kind>
+            </label>
+        </labels>
+        '''
+        lbs = self.getLabels()
+        
+        '''
+        # For testing only, create a label if there not exist
+        if len(lbs) == 0:
+            lb = PORISLabel(self.getName(),"test")
+            self.addLabel(lb)
+            lbs = self.getLabels()
+        '''
+        
         labelsChild = dom.createElement('labels')
+        labelsChild.setAttribute("type", "array")
+        for l in lbs:
+            lbChild = l.toXML(dom)
+            labelsChild.appendChild(lbChild)
+            
         n_node.appendChild(labelsChild)
         
         return n_node
@@ -102,9 +372,16 @@ class PORISValue(PORIS):
     
     def getXMLNodeType(self) -> int:
         return 5
-'''
-        <value-formatter-id type="integer" nil="true"/>    
-'''    
+    
+    def getXMLFormatter(self) -> PORISValueFormatter:
+        return PORISVALUEFORMATTER_NIL
+
+    def toXML(self, dom: minidom.Document) -> minidom.Node:
+        n_node = super().toXML(dom)
+        n_node.appendChild(self.getXMLFormatter().toXMLRef(dom))
+        
+        return n_node
+
     
 #######################################
 
@@ -150,10 +427,66 @@ class PORISValueString(PORISValueData):
 
     def getXMLNodeName(self) -> str:
         return "value-string"
-      
-    def toXML(self, dom: minidom.Document) -> minidom.Node:
-        n_node = super().toXML(dom)
-    
+
+
+#######################################
+
+class PORISValueFilePath(PORISValueString):
+
+    pass
+
+'''
+    <value-file-path>
+        <default-string>mypreimagingfile.fits</default-string>
+        <id type="integer">628</id>
+        <name>PreImagingFile</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">17</project-id>
+        <type>PORISValueFilePath</type>
+        <value-formatter-id type="integer" nil="true"></value-formatter-id>
+        <destinations type="array"/>
+        <labels type="array"/>
+        <file-extension>fits</file-extension>
+        <file-description>FITS file</file-description>
+        <node-attributes type="array">
+            <node-attribute>
+                <content>370.0</content>
+                <name>rangeMin(&#197;)</name>
+                <visibility type="boolean">true</visibility>
+            </node-attribute>  
+        </node-attributes>
+    </value-file-path>
+'''
+
+class PORISValueDate(PORISValueString):
+
+    def getXMLFormatter(self) -> PORISValueFormatter:
+        return PORISVALUEFORMATTER_DATE
+
+
+
+'''
+
+    public static ValueDateFormatter DEFAULT_DATE_FORMATTER = new ValueDateFormatter("Date", 6, "dd.MM.yyyy HH:mm:ss z");
+    <value-formatter-id type="integer">6</value-formatter-id>
+
+
+    <value-date-range>
+        <date-max type="timestamp">2016-12-31 23:59:00 UTC</date-max>
+        <date-min type="timestamp">2006-02-01 00:00:00 UTC</date-min>
+        <default-date type="timestamp">2011-04-09 00:00:00 UTC</default-date>
+        <id type="integer">613</id>
+        <name>Date</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">17</project-id>
+        <type>PORISValueDate</type>
+        <value-formatter-id type="integer">6</value-formatter-id>
+        <destinations type="array"/>
+        <labels type="array"/>
+        <node-attributes type="array"/>
+    </value-date-range>
+'''
+
 #######################################
 
 class PORISValueFloat(PORISValueData):
@@ -186,12 +519,35 @@ class PORISValueFloat(PORISValueData):
 
     def getXMLNodeName(self) -> str:
         return "value-double-range"
-'''
-        <value-formatter-id type="integer">5</value-formatter-id>
+    
+    def getXMLFormatter(self) -> PORISValueFormatter:
+        return PORISVALUEFORMATTER_REAL
+
+    def toXML(self, dom: minidom.Document) -> minidom.Node:
+        '''
         <default-float type="float">200</default-float>
         <rangemax type="float">1000</rangemax>
         <rangemin type="float">0</rangemin>    
-'''
+        '''
+        n_node = super().toXML(dom)
+        defaultfloatnode = dom.createElement("default-float")
+        defaultfloatnode.setAttribute("type","float")
+        valueText = dom.createTextNode(str(self.getDefaultData()))
+        defaultfloatnode.appendChild(valueText)
+        n_node.appendChild(defaultfloatnode)
+        rangemaxnode = dom.createElement("rangemax")
+        rangemaxnode.setAttribute("type","float")
+        valueText = dom.createTextNode(str(self.getMax()))
+        rangemaxnode.appendChild(valueText)
+        n_node.appendChild(rangemaxnode)
+        rangeminnode = dom.createElement("rangemin")
+        rangeminnode.setAttribute("type","float")
+        valueText = dom.createTextNode(str(self.getMin()))
+        rangeminnode.appendChild(valueText)
+        n_node.appendChild(rangeminnode)
+        
+        return n_node
+
 #######################################
 
 class PORISMode(PORIS):
@@ -207,7 +563,7 @@ class PORISMode(PORIS):
     def addValue(self,v):
         self.values[v.id] = v
     
-    def getEligibleValue(self,v,current):
+    def getEligibleValue(self,v,current) -> PORISValue:
         if debug:
             if (v != None):
                 print("Entro en PORISMode getEligibleValue para el modo", self.getName(), "con valor propuesto", v.getName())
@@ -226,6 +582,7 @@ class PORISMode(PORIS):
                 itk = list(self.values.keys())[0]
                 ret = self.values[itk]
 
+        # print("ret queda",ret.getName())
         return ret
     
     def getEligibleSubMode(self,m,current):
@@ -286,16 +643,39 @@ class PORISMode(PORIS):
         
         return ret
     
+    def getDestinations(self) -> list:
+        ret = []
+        for k in self.values:
+            ret.append(self.values[k])
+
+        for k in self.submodes:
+            ret.append(self.submodes[k])
+            
+        return ret
+    
     def getXMLNodeName(self) -> str:
         return "mode"
     
     def getXMLNodeType(self) -> int:
         return 6
-
-'''
+    
+    def toXML(self, dom: minidom.Document) -> minidom.Node:
+        '''
         <default-mode-id type="integer" nil="true"/>
         <default-value-id type="integer" nil="true"/>
-'''    
+        '''            
+        n_node = super().toXML(dom)
+        defaultmodenode = dom.createElement("default-mode-id")
+        defaultmodenode.setAttribute("type","integer")
+        defaultmodenode.setAttribute("nil","true")
+        n_node.appendChild(defaultmodenode)
+        defaultvaluenode = dom.createElement("default-value-id")
+        defaultvaluenode.setAttribute("type","integer")
+        defaultvaluenode.setAttribute("nil","true")
+        n_node.appendChild(defaultvaluenode)
+        
+        return n_node
+
     
     
 #######################################    
@@ -414,11 +794,31 @@ class PORISNode(PORIS):
     def getSelectedMode(self) -> PORISMode:
         return self.__selectedMode
 
+    def getDestinations(self) -> list:
+        ret = []
+        for k in self.modes:
+            ret.append(self.modes[k])
+            
+        return ret
+
     def getXMLNodeName(self) -> str:
         return "sub-system"
     
     def getXMLNodeType(self) -> int:
-        return 4    
+        return 4
+    
+    def toXML(self, dom: minidom.Document) -> minidom.Node:
+        '''
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        '''            
+        n_node = super().toXML(dom)
+        defaultmodenode = dom.createElement("default-mode-id")
+        defaultmodenode.setAttribute("type","integer")
+        defaultmodenode.setAttribute("nil","true")
+        n_node.appendChild(defaultmodenode)
+        
+        return n_node    
 
 #######################################
 
@@ -451,7 +851,7 @@ class PORISParam(PORISNode):
         ret = self.getEligibleMode(m)
 
         if debug:
-            print("Estoy en",self.name)
+            print("Estoy en",self.getName())
             print(list(self.modes.keys()))
 
         if ret is None:
@@ -511,8 +911,13 @@ class PORISParam(PORISNode):
         ret = self.getEligibleValue(v,self.__selectedValue)
         if ret != self.__selectedValue:
             # First, try to copy the existing data
-            if isinstance(self.__selectedValue,PORISValueData):
+            # print("Vamos a aplicar el valor" , ret.getName())
+            if isinstance(self.__selectedValue,PORISValueData.__class__):
+                print(ret.getName(),"es un PORISValueData")
+                print(ret.__class__.__name__)
                 v = self.__selectedValue
+                print(v.getName())
+                print(ret.getName())
                 data = v.getData()
                 ret.setData(data)
 
@@ -540,6 +945,14 @@ class PORISParam(PORISNode):
             ret = result.idx
         
         return ret
+    
+    def getDestinations(self) -> list:
+        ret = super().getDestinations()
+        for k in self.values:
+            ret.append(self.values[k])
+            
+        return ret
+    
     
     def getXMLType(self) -> str:
         return "PORISNode"
@@ -689,6 +1102,16 @@ class PORISSys(PORISNode):
 
         return ret
 
+    def getDestinations(self) -> list:
+        ret = super().getDestinations()
+        for k in self.subsystems:
+            ret.append(self.subsystems[k])
+        
+        for k in self.params:
+            ret.append(self.params[k])
+                    
+        return ret
+
     def getXMLType(self) -> str:
         return "PORISNode"
 
@@ -697,7 +1120,7 @@ class PORISSys(PORISNode):
 
 class PORISDoc:
     __id_counter = 1
-    __node_list = []
+    __node_dict = {}
     __root = None
     __project_id = 0
     
@@ -722,22 +1145,100 @@ class PORISDoc:
         return self.__root.getName()
         
     def addNode(self, n: PORIS):
-        self.__node_list.append(n)
         n.id = self.__id_counter
+        self.__node_dict[str(n.id)] = n
         n.setProjectId(self.__project_id)
         self.__id_counter += 1
 
     def list_nodes(self):
-        for n in self.__node_list:
+        print(len(self.__node_dict))
+        for k in self.__node_dict.keys():
+            n = self.__node_dict[k]
             print(str(n.id),n.getName())
+        
+        
+    def getOrderedIdList(self) -> list:
+        node_and_destinations = {}
+        for k in self.__node_dict.keys():
+            print(k)
+            n = self.__node_dict[k]
+            thisnode = {}
+            thiskey = k
+            destinations = []
+            for d in n.getDestinations():
+                destinations.append(str(d.id))
+                
+            node_and_destinations[thiskey] = destinations
+
+
+        print(node_and_destinations)
+        print("----> Initial LEN ", len(node_and_destinations))
+        # print("################################")
+        
+        finished = False
+        ordered_list = []
+        
+        while not finished:
+            # Let's look for nodes without destinations
+            nodes_without_destinations = []
+            for k in node_and_destinations:
+                # print(k, len(node_and_destinations[k]), node_and_destinations[k])
+                if len(node_and_destinations[k]) == 0:
+                    nodes_without_destinations.append(int(k))
+
+            # Now, let's add them to the ordered list
+            ordered_list += nodes_without_destinations
+
+            print("################################")
+            print("----> To remove ", len(nodes_without_destinations))
+            print(nodes_without_destinations)
+
+                    
+            # And let's remove them from the nodes_and_destinations dictionary
+            for id in nodes_without_destinations:
+                del node_and_destinations[str(id)]
+
+            # print(node_and_destinations)
+            # print("----> LEN ", len(node_and_destinations))
+
+            # And now let's remove their references from node_and_destinations list
+            for k in node_and_destinations:
+                toremove = []
+                for d in node_and_destinations[k]:
+                    # print(k, node_and_destinations[k])
+                    # print("Trying to remove",d,"from",node_and_destinations[k])
+                    # print("The list of nodes without destinations is ", nodes_without_destinations)
+                    if int(d) in nodes_without_destinations:
+                        # print("Removing",d,"from",k,node_and_destinations[k])
+                        toremove.append(d)
+                        # print("Remaining",node_and_destinations[k])
             
+                for d in toremove:
+                    node_and_destinations[k].remove(d)
+
+            # print("----> Final LEN ", len(node_and_destinations))
+            
+            finished = len(node_and_destinations) == 0
+
+            
+        print(len(ordered_list),ordered_list)
+        return ordered_list
+        
+                    
     def toXML(self) -> minidom.Document:
         rootInstr = minidom.Document()
         xmlInstr = rootInstr.createElement('poris')
         rootInstr.appendChild(xmlInstr)
-        for n in self.__node_list:
+
+        ordered_list = self.getOrderedIdList()
+        for id in ordered_list:
+            n = self.__node_dict[str(id)]
             n_node = n.toXML(rootInstr)
-            xmlInstr.appendChild(n_node)
+            if (n_node == None):
+                print("ERROR: ",n.getName())
+                
+            else:
+                xmlInstr.appendChild(n_node)
             
         return rootInstr
         
