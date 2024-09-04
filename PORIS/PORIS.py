@@ -192,7 +192,7 @@ PORISVALUEFORMATTER_ARCMIN = PORISValueArcMinFormatter("arcmin", 8, "arcmin")
 PORISVALUEFORMATTER_ARCSEC = PORISValueArcSecFormatter("arcmin", 9, "arcsec")
 
 
-############################### PORIS item classes #########################################
+############################### PORIS item classes ############################################################
 
 ####################################################
 # This class is referenced in advance, to prevent
@@ -216,7 +216,7 @@ class PORIS:
     __name = None           # name
     __parent = None         # Parent node (if any)
     __project_id = 0        # The project where the item is described
-    __labels = {}           # A list of labels for this item
+    __labels = {}           # A dictionary of labels for this item, the scope_kind acts as a key
     
     # Constructor, needs a name for the PORIS item
     def __init__(self,name):
@@ -250,69 +250,91 @@ class PORIS:
     def getLabels(self) -> dict:
         return self.__labels
 
-    # Function for adding a label to the labels list    
+    # Function for adding a label to the labels list.
+    # caption is the string to show within a context
+    # scope_kind is an identifier of the context where the caption applies
     def addLabel(self, caption: str, scope_kind: str):
         self.__labels[scope_kind] = caption
-        
+    
+    # Getter for the destinations of this item
+    # It will be overloaded by subclasses
+    def getDestinations(self) -> list:
+        return []
+       
+    ########## XML related functions ########
+    
+    # Getter for the node name (tag name) which depends of the class.
+    # It will be overloaded by subclasses
     def getXMLNodeName(self) -> str:
         return "none"
     
+    # Getter for the nodetype which depends of the class.
+    # It will be overloaded by subclasses
     def getXMLNodeType(self) -> int:
         return 0
     
+    # Getter for the type which depends of the class, by default is the class name
+    # It can overloaded by subclasses.
     def getXMLType(self) -> str:
         return self.__class__.__name__
     
+    # Builds a reference for the item, to be used mainly inside the "destination" tag
     def toXMLRef(self, dom: minidom.Document) -> minidom.Node:
-        idChild = dom.createElement('id')
-        idChild.setAttribute("type", "integer")
+        ret = dom.createElement('id')
+        ret.setAttribute("type", "integer")
         valueText = dom.createTextNode(str(self.id))
-        idChild.appendChild(valueText)
-                  
-        return idChild
+        ret.appendChild(valueText)
+        return ret
     
-    def getDestinations(self) -> list:
-        return []
-    
+    # Dumps the current item to an XML node
+    # PORIS items, after calling this function using super().toXML(doc), 
+    # will add additional nodes which will depend on the class
     def toXML(self, dom: minidom.Document) -> minidom.Node:
+        # Tag name will be normally the class name, but it can be overloaded
+        # so we use a function to get it
         n_node = dom.createElement(self.getXMLNodeName())
        
+        # subnode with an identifying integer
         idChild = dom.createElement('id')
         idChild.setAttribute("type", "integer")
         valueText = dom.createTextNode(str(self.id))
         idChild.appendChild(valueText)
         n_node.appendChild(idChild)
         
+        # ubnode with an identifying string
         identChild = dom.createElement('ident')
         valueText = dom.createTextNode(self.ident)
         identChild.appendChild(valueText)
         n_node.appendChild(identChild)
                        
+        # subnode with the name of the item
         nameChild = dom.createElement('name')
         valueText = dom.createTextNode(self.getName())
         nameChild.appendChild(valueText)
         n_node.appendChild(nameChild)
         
+        # subnode with the node type id
         nodetypeChild = dom.createElement('node-type-id')
         nodetypeChild.setAttribute("type", "integer")
         valueText = dom.createTextNode(str(self.getXMLNodeType()))
         nodetypeChild.appendChild(valueText)
         n_node.appendChild(nodetypeChild)
         
-        
+        # subnode with the project id
         nodetypeChild = dom.createElement('project-id')
         nodetypeChild.setAttribute("type", "integer")
         valueText = dom.createTextNode(str(self.getProjectId()))
         nodetypeChild.appendChild(valueText)
         n_node.appendChild(nodetypeChild)
         
+        # subnode with the type
         nodetypeChild = dom.createElement('type')
         valueText = dom.createTextNode(self.getXMLType())
         nodetypeChild.appendChild(valueText)
         n_node.appendChild(nodetypeChild)
         
+        # array of destinations, containing their XML references
         destinations_node = dom.createElement('destinations')
-        
         dests = self.getDestinations()
         for d in dests:
             destnode = dom.createElement('destination')
@@ -322,66 +344,71 @@ class PORIS:
         
         n_node.appendChild(destinations_node)
         
+        # array of node attributes
+        # TODO: Implement node attributes
         nodeAttributesChild = dom.createElement('node-attributes')
         n_node.appendChild(nodeAttributesChild)
         
-        '''
-        <labels type="array">
-            <label>
-                <name>Use a pre-imaging file</name>
-                <scope-kind>
-                    <name>CfgPanel</name>
-                </scope-kind>
-            </label>
-        </labels>
-        '''
+        # array of labels
         
         lbs = self.getLabels()
-        
-
+        '''
         # For testing only, create a label if there not exist
         if len(lbs) == 0:
             self.addLabel(self.getName(),"test")
             lbs = self.getLabels()
 
-        
+        '''
         labelsChild = dom.createElement('labels')
         labelsChild.setAttribute("type", "array")
         for l in lbs.keys():
-            l_node = dom.createElement("label")
-            
-            node = dom.createElement("name")
+            l_node = dom.createElement("label") 
+            namenode = dom.createElement("name")
             valueText = dom.createTextNode(lbs[l])
-            node.appendChild(valueText)
-            l_node.appendChild(node)
+            namenode.appendChild(valueText)
+            l_node.appendChild(namenode)
             
-            node = dom.createElement("scope-kind")
+            scopenode = dom.createElement("scope-kind")
             
-            node2 = dom.createElement("name")
+            sknamenode = dom.createElement("name")
             valueText = dom.createTextNode(l)
-            node2.appendChild(valueText)
-            node.appendChild(node2)       
+            sknamenode.appendChild(valueText)
+            scopenode.appendChild(sknamenode)       
              
-            l_node.appendChild(node)
+            l_node.appendChild(scopenode)
 
             labelsChild.appendChild(l_node)
             
         n_node.appendChild(labelsChild)
         
+        # PORIS items, after calling this function using super().toXML(doc), 
+        # will add additional nodes which will depend on the class
+        
         return n_node
 
-#######################################
-        
+##################################################
+# Base class for all the PORISValue items
+# Values may have a formatter associated to it
+# if no subclassed, then the item will not take any data
+# Users just select the PORISValue and it's done
+
 class PORISValue(PORIS):
+    
+    ########## XML related functions ########
+        
+    # the tag name will be "value", but subclasses
+    # might overload it
     def getXMLNodeName(self) -> str:
         return "value"
     
+    # getter for the node type (overloading PORIS one)
     def getXMLNodeType(self) -> int:
         return 5
     
     def getXMLFormatter(self) -> PORISValueFormatter:
         return PORISVALUEFORMATTER_NIL
 
+    # Dumps the item's XML (uses PORIS superclass' one and appends information of the formatter)
     def toXML(self, dom: minidom.Document) -> minidom.Node:
         n_node = super().toXML(dom)
         n_node.appendChild(self.getXMLFormatter().toXMLRef(dom))
@@ -389,35 +416,47 @@ class PORISValue(PORIS):
         return n_node
 
     
-#######################################
+########################################################
+# Base class for the PORISValue items which contain data
+# Apart for selecting the PORISValue, user has also to define the data
+# data examples are strings, integers, floats, dates, angles, etc.
 
 class PORISValueData(PORISValue):
     __data = None
     __default_data = None
     
+    # Constructor, appends data and default data
+    # initializers to the super() constructor
     def __init__(self,name,default_data):
         super().__init__(name)
+        # The current data will be the default one at the beginning
         self.__default_data = default_data
         self.__data = default_data
 
-    def getXMLNodeName(self) -> str:
-        return "none"
-
+    # Data getter
+    def getData(self):
+        return self.__data
+    
+    # Data setter
     def setData(self,data):
         self.__data = data
         return self.__data
 
-    def getData(self):
-        return self.__data
-    
+    # Default data getter
     def getDefaultData(self):
         return self.__default_data
     
-    def getXMLNodeName(self) -> str:
-        return "sub-system"
+    ########## XML related functions ########
     
+    # The tag is "none" because this class shall never
+    # be instanced directly
+    def getXMLNodeName(self) -> str:
+        return "none"
+
+    # The node type is 0 because this class shall never
+    # be instanced directly
     def getXMLNodeType(self) -> int:
-        return 5
+        return 0
 
 #######################################
 
@@ -425,14 +464,23 @@ class PORISValueString(PORISValueData):
     def __init__(self,name,default_data: str):
         super().__init__(name,default_data)
 
-    def setData(self,data: str):
-        return super().setData(data)
-
+    # Getter for the data, it is overloading
+    # superclass one, but adding control over datatype
     def getData(self) -> str:
         return super().getData()
 
+    # Setter for the data, it is overloading
+    # superclass one, but adding control over datatype
+    def setData(self,data: str):
+        return super().setData(data)
+
+    # getter for the XML tag name
     def getXMLNodeName(self) -> str:
         return "value-string"
+
+    # The node type is 6 for PORISValueStrings
+    def getXMLNodeType(self) -> int:
+        return 6
 
 
 #######################################
