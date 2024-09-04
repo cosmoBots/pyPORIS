@@ -5,42 +5,9 @@ from datetime import datetime
 from pytz import timezone
 import pytz
 
-#######################################
+############################### PORIS subtype classes (not PORIS items) #########################################
 
-class PORISNode:
-    pass
-
-#######################################
-
-class PORISLabel:
-    __name = None
-    __scope_kind = None
-
-    def __init__(self,name: str, scope_kind: str):
-        self.__name = name
-        self.__scope_kind = scope_kind
-        
-    def getName(self) -> str:
-        return self.__name
-
-    def getScopeKind(self) -> str:
-        return self.__scope_kind
-    
-    def toXML(self, dom: minidom.Document) -> minidom.Node:
-        n_node = dom.createElement("label")
-        node = dom.createElement("name")
-        valueText = dom.createTextNode(self.getName())
-        node.appendChild(valueText)
-        n_node.appendChild(node)
-        node = dom.createElement("scope-kind")
-        node2 = dom.createElement("name")
-        valueText = dom.createTextNode(self.getScopeKind())
-        node2.appendChild(valueText)
-        node.appendChild(node2)        
-        n_node.appendChild(node)
-        
-        return n_node
-
+############################### PORIS Formatters #########################################
 
 #######################################
 
@@ -90,7 +57,8 @@ class PORISValueDateFormatter(PORISValueFormatter):
         return value.strftime(format)
     
     # TODO: Implement the rest of the formatters
-    
+
+######################################    
 
 class PORISValueDoubleFormatter(PORISValueFormatter):
     
@@ -224,44 +192,67 @@ PORISVALUEFORMATTER_ARCMIN = PORISValueArcMinFormatter("arcmin", 8, "arcmin")
 PORISVALUEFORMATTER_ARCSEC = PORISValueArcSecFormatter("arcmin", 9, "arcsec")
 
 
+############################### PORIS item classes #########################################
 
-#####################################
+####################################################
+# This class is referenced in advance, to prevent
+# circular definition errors
+
+class PORISNode:
+    pass
+
+
+####################################################
+# This is the base class for the PORIS items
+# contains the common attributes and functions
+# subclases overload them when convenient
 
 class PORIS:
-    id = None
-    ident = None
-    __name = None
-    description = None
-    __parent = None
-    __project_id = 0
-    __labels = []
+    # Public attributes
+    id = None               # A numeric id for reference
+    ident = None            # A text id for reference
+    description = None      # A description of the item
+    # Private attributes
+    __name = None           # name
+    __parent = None         # Parent node (if any)
+    __project_id = 0        # The project where the item is described
+    __labels = {}           # A list of labels for this item
     
+    # Constructor, needs a name for the PORIS item
     def __init__(self,name):
         self.__name = name
 
+    # Name getter
     def getName(self) -> str:
         return self.__name
 
+    # Name setter
     def setName(self, name: str) -> str:
         self.__name = name
 
+    # Parent getter
     def setParent(self, parent: PORISNode):
         self.__parent = parent
-        
+    
+    # Parent setter
     def getParent(self) -> PORISNode:
         return self.__parent
     
+    # Project ID getter
     def getProjectId(self) -> int:
         return self.__project_id
 
+    # Project ID setter
     def setProjectId(self, i: int):
         self.__project_id = i
     
-    def getLabels(self) -> list:
+    # Labels list getter   
+    def getLabels(self) -> dict:
         return self.__labels
-    
-    def addLabel(self, label: PORISLabel):
-        self.__labels.append(label)
+
+    # Function for adding a label to the labels list    
+    def addLabel(self, caption: str, scope_kind: str):
+        self.__labels[scope_kind] = caption
         
     def getXMLNodeName(self) -> str:
         return "none"
@@ -344,21 +335,36 @@ class PORIS:
             </label>
         </labels>
         '''
+        
         lbs = self.getLabels()
         
-        '''
+
         # For testing only, create a label if there not exist
         if len(lbs) == 0:
-            lb = PORISLabel(self.getName(),"test")
-            self.addLabel(lb)
+            self.addLabel(self.getName(),"test")
             lbs = self.getLabels()
-        '''
+
         
         labelsChild = dom.createElement('labels')
         labelsChild.setAttribute("type", "array")
-        for l in lbs:
-            lbChild = l.toXML(dom)
-            labelsChild.appendChild(lbChild)
+        for l in lbs.keys():
+            l_node = dom.createElement("label")
+            
+            node = dom.createElement("name")
+            valueText = dom.createTextNode(lbs[l])
+            node.appendChild(valueText)
+            l_node.appendChild(node)
+            
+            node = dom.createElement("scope-kind")
+            
+            node2 = dom.createElement("name")
+            valueText = dom.createTextNode(l)
+            node2.appendChild(valueText)
+            node.appendChild(node2)       
+             
+            l_node.appendChild(node)
+
+            labelsChild.appendChild(l_node)
             
         n_node.appendChild(labelsChild)
         
@@ -1156,11 +1162,15 @@ class PORISDoc:
             n = self.__node_dict[k]
             print(str(n.id),n.getName())
         
-        
-    def getOrderedIdList(self) -> list:
+    # Gets a list of PORIS items IDs sorted so their items
+    # are never referencing in their destinations a node which has not been 
+    # listed before.  This is very convenient, because some consumers of products created
+    # from the list - like the PorisGUI panels, which will load the XML created with toXML() -  
+    # may have issues if they process items referencing other items which have not been processed before.
+    def getConsistentReferencesSortedIdsList(self) -> list:
         node_and_destinations = {}
         for k in self.__node_dict.keys():
-            print(k)
+            # print(k)
             n = self.__node_dict[k]
             thisnode = {}
             thiskey = k
@@ -1171,8 +1181,8 @@ class PORISDoc:
             node_and_destinations[thiskey] = destinations
 
 
-        print(node_and_destinations)
-        print("----> Initial LEN ", len(node_and_destinations))
+        # print(node_and_destinations)
+        # print("----> Initial LEN ", len(node_and_destinations))
         # print("################################")
         
         finished = False
@@ -1189,9 +1199,9 @@ class PORISDoc:
             # Now, let's add them to the ordered list
             ordered_list += nodes_without_destinations
 
-            print("################################")
-            print("----> To remove ", len(nodes_without_destinations))
-            print(nodes_without_destinations)
+            # print("################################")
+            # print("----> To remove ", len(nodes_without_destinations))
+            # print(nodes_without_destinations)
 
                     
             # And let's remove them from the nodes_and_destinations dictionary
@@ -1221,7 +1231,7 @@ class PORISDoc:
             finished = len(node_and_destinations) == 0
 
             
-        print(len(ordered_list),ordered_list)
+        # print(len(ordered_list),ordered_list)
         return ordered_list
         
                     
@@ -1230,7 +1240,9 @@ class PORISDoc:
         xmlInstr = rootInstr.createElement('poris')
         rootInstr.appendChild(xmlInstr)
 
-        ordered_list = self.getOrderedIdList()
+        # In order to prevent void references in the consumer, we have to use an ordered list of nodes
+        # with no back-references
+        ordered_list = self.getConsistentReferencesSortedIdsList()
         for id in ordered_list:
             n = self.__node_dict[str(id)]
             n_node = n.toXML(rootInstr)
