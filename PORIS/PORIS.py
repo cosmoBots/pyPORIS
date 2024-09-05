@@ -291,6 +291,12 @@ class PORIS:
         # so we use a function to get it
         n_node = dom.createElement(self.getXMLNodeName())
        
+        # subnode with the name of the item
+        nameChild = dom.createElement('name')
+        valueText = dom.createTextNode(self.getName())
+        nameChild.appendChild(valueText)
+        n_node.appendChild(nameChild)
+       
         # subnode with an identifying integer
         idChild = dom.createElement('id')
         idChild.setAttribute("type", "integer")
@@ -298,17 +304,11 @@ class PORIS:
         idChild.appendChild(valueText)
         n_node.appendChild(idChild)
         
-        # ubnode with an identifying string
-        identChild = dom.createElement('ident')
-        valueText = dom.createTextNode(self.ident)
-        identChild.appendChild(valueText)
-        n_node.appendChild(identChild)
-                       
-        # subnode with the name of the item
-        nameChild = dom.createElement('name')
-        valueText = dom.createTextNode(self.getName())
-        nameChild.appendChild(valueText)
-        n_node.appendChild(nameChild)
+        # subnode with the type
+        nodetypeChild = dom.createElement('type')
+        valueText = dom.createTextNode(self.getXMLType())
+        nodetypeChild.appendChild(valueText)
+        n_node.appendChild(nodetypeChild)
         
         # subnode with the node type id
         nodetypeChild = dom.createElement('node-type-id')
@@ -317,37 +317,20 @@ class PORIS:
         nodetypeChild.appendChild(valueText)
         n_node.appendChild(nodetypeChild)
         
+        # ubnode with an identifying string
+        identChild = dom.createElement('ident')
+        valueText = dom.createTextNode(self.ident)
+        identChild.appendChild(valueText)
+        n_node.appendChild(identChild)
+                               
         # subnode with the project id
         nodetypeChild = dom.createElement('project-id')
         nodetypeChild.setAttribute("type", "integer")
         valueText = dom.createTextNode(str(self.getProjectId()))
         nodetypeChild.appendChild(valueText)
         n_node.appendChild(nodetypeChild)
-        
-        # subnode with the type
-        nodetypeChild = dom.createElement('type')
-        valueText = dom.createTextNode(self.getXMLType())
-        nodetypeChild.appendChild(valueText)
-        n_node.appendChild(nodetypeChild)
-        
-        # array of destinations, containing their XML references
-        destinations_node = dom.createElement('destinations')
-        dests = self.getDestinations()
-        for d in dests:
-            destnode = dom.createElement('destination')
-            destnode.setAttribute("type", d.getXMLType())
-            destnode.appendChild(d.toXMLRef(dom))
-            destinations_node.appendChild(destnode)
-        
-        n_node.appendChild(destinations_node)
-        
-        # array of node attributes
-        # TODO: Implement node attributes
-        nodeAttributesChild = dom.createElement('node-attributes')
-        n_node.appendChild(nodeAttributesChild)
-        
-        # array of labels
-        
+
+        # array of labels       
         lbs = self.getLabels()
         '''
         # For testing only, create a label if there not exist
@@ -382,6 +365,25 @@ class PORIS:
             
         n_node.appendChild(labelsChild)
         
+        # array of destinations, containing their XML references
+        destinations_node = dom.createElement('destinations')
+        destinations_node.setAttribute("type","array")
+        dests = self.getDestinations()
+        for d in dests:
+            destnode = dom.createElement('destination')
+            destnode.setAttribute("type", d.getXMLType())
+            destnode.appendChild(d.toXMLRef(dom))
+            destinations_node.appendChild(destnode)
+        
+        n_node.appendChild(destinations_node)
+        
+        # array of node attributes
+        # TODO: Implement node attributes
+        nodeAttributesChild = dom.createElement('node-attributes')
+        nodeAttributesChild.setAttribute("type","array")
+        n_node.appendChild(nodeAttributesChild)
+        
+        
         # PORIS items, after calling this function using super().toXML(doc), 
         # will add additional nodes which will depend on the class
         
@@ -400,7 +402,7 @@ class PORISValue(PORIS):
     # the tag name will be "value", but subclasses
     # might overload it
     def getXMLNodeName(self) -> str:
-        return "value"
+        return "poris-value"
     
     # getter for the node type (overloading PORIS one)
     def getXMLNodeType(self) -> int:
@@ -478,7 +480,7 @@ class PORISValueString(PORISValueData):
 
     # getter for the XML tag name
     def getXMLNodeName(self) -> str:
-        return "value-string"
+        return "poris-value-string"
 
     # The node type is 6 for PORISValueStrings
     def getXMLNodeType(self) -> int:
@@ -490,7 +492,11 @@ class PORISValueString(PORISValueData):
 # TODO: Develop this class
 class PORISValueFilePath(PORISValueString):
 
-    pass
+    ########## XML related functions ########
+    
+    # Getter for the XML tag name of this item
+    def getXMLNodeName(self) -> str:
+        return "poris-value-file-path"
 
 '''
     <value-file-path>
@@ -524,6 +530,9 @@ class PORISValueDate(PORISValueString):
 
     ########## XML related functions ########
     
+    # Getter for the XML tag name of this item
+    def getXMLNodeName(self) -> str:
+        return "poris-value-date"    
     # getter for the XML tag name
     def getXMLFormatter(self) -> PORISValueFormatter:
         return PORISVALUEFORMATTER_DATE
@@ -583,7 +592,7 @@ class PORISValueFloat(PORISValueData):
     
     # getter for the XML tag name
     def getXMLNodeName(self) -> str:
-        return "value-double-range"
+        return "poris-value-float"
     
     # getter for the formatter, overload super()'s
     def getXMLFormatter(self) -> PORISValueFormatter:
@@ -592,27 +601,25 @@ class PORISValueFloat(PORISValueData):
     # Dumps item to XML, uses super().toXML and 
     # appends specific nodes for this class
     def toXML(self, dom: minidom.Document) -> minidom.Node:
-        '''
-        <default-float type="float">200</default-float>
-        <rangemax type="float">1000</rangemax>
-        <rangemin type="float">0</rangemin>    
-        '''
         n_node = super().toXML(dom)
+
         defaultfloatnode = dom.createElement("default-float")
         defaultfloatnode.setAttribute("type","float")
         valueText = dom.createTextNode(str(self.getDefaultData()))
         defaultfloatnode.appendChild(valueText)
         n_node.appendChild(defaultfloatnode)
-        rangemaxnode = dom.createElement("rangemax")
-        rangemaxnode.setAttribute("type","float")
-        valueText = dom.createTextNode(str(self.getMax()))
-        rangemaxnode.appendChild(valueText)
-        n_node.appendChild(rangemaxnode)
+
         rangeminnode = dom.createElement("rangemin")
         rangeminnode.setAttribute("type","float")
         valueText = dom.createTextNode(str(self.getMin()))
         rangeminnode.appendChild(valueText)
         n_node.appendChild(rangeminnode)
+
+        rangemaxnode = dom.createElement("rangemax")
+        rangemaxnode.setAttribute("type","float")
+        valueText = dom.createTextNode(str(self.getMax()))
+        rangemaxnode.appendChild(valueText)
+        n_node.appendChild(rangemaxnode)
         
         return n_node
 
@@ -807,7 +814,7 @@ class PORISMode(PORIS):
 
     # Getter for the XML tag name of this item
     def getXMLNodeName(self) -> str:
-        return "mode"
+        return "poris-mode"
     
     # Getter for the NodeType of this item
     def getXMLNodeType(self) -> int:
@@ -1087,7 +1094,7 @@ class PORISNode(PORIS):
     # In XML all PORISNodes (no mather if they are systems or params)
     # are <sub-system>
     def getXMLNodeName(self) -> str:
-        return "sub-system"
+        return "poris-node"
     
     # Function to obtain the NodeType, overloading super's
     def getXMLNodeType(self) -> int:
@@ -1103,8 +1110,22 @@ class PORISNode(PORIS):
         n_node = super().toXML(dom)
         defaultmodenode = dom.createElement("default-mode-id")
         defaultmodenode.setAttribute("type","integer")
-        defaultmodenode.setAttribute("nil","true")
-        n_node.appendChild(defaultmodenode)
+        # WARNING: It looks like the java panel is not correctly using default mode
+        m = self.getDefaultMode()
+        if m is None:
+            defaultmodenode.setAttribute("nil","true")
+            
+        else:
+            defaultmodetext = dom.createTextNode(str(m.id))
+            if defaultmodetext is not None:
+                defaultmodenode.appendChild(defaultmodetext)
+                
+            else:
+                print("Error creating a text node for the default value of the",self.getName(),"mode")
+                assert(False)
+            
+        n_node.appendChild(defaultmodenode)        
+        
         
         return n_node    
 
@@ -1631,6 +1652,7 @@ class PORISDoc:
             xmlInstr = xmlDocument.createElement('poris')
             if xmlInstr is not None:
                 # Appends the root tag to the document
+                xmlInstr.setAttribute('id','systems')
                 xmlDocument.appendChild(xmlInstr)
 
                 # In order to prevent void references in the consumer, we have to use an ordered list of nodes
