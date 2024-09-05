@@ -362,12 +362,16 @@ class PORIS:
         labelsChild = dom.createElement('labels')
         labelsChild.setAttribute("type", "array")
         for l in lbs.keys():
+            # Each label is an entry in the labels dict
+            # The value is the caption, which shall
+            # be published under the "name" tag
             l_node = dom.createElement("label") 
             namenode = dom.createElement("name")
             valueText = dom.createTextNode(lbs[l])
             namenode.appendChild(valueText)
             l_node.appendChild(namenode)
-            
+            # The scope_kind is the key, which shall
+            # be published under the scope-kind tag
             scopenode = dom.createElement("scope-kind")
             
             sknamenode = dom.createElement("name")
@@ -474,6 +478,8 @@ class PORISValueString(PORISValueData):
     def setData(self,data: str):
         return super().setData(data)
 
+    ########## XML related functions ########
+
     # getter for the XML tag name
     def getXMLNodeName(self) -> str:
         return "value-string"
@@ -484,7 +490,8 @@ class PORISValueString(PORISValueData):
 
 
 #######################################
-
+# This class is a PORISValuestring for storing a filepath
+# TODO: Develop this class
 class PORISValueFilePath(PORISValueString):
 
     pass
@@ -512,19 +519,20 @@ class PORISValueFilePath(PORISValueString):
     </value-file-path>
 '''
 
+#######################################
+# This class stores Dates in a PORISValueString
+# The difference is in the formatter, and 
+# in the XML 
+# TODO: Develop this class
 class PORISValueDate(PORISValueString):
 
+    ########## XML related functions ########
+    
+    # getter for the XML tag name
     def getXMLFormatter(self) -> PORISValueFormatter:
         return PORISVALUEFORMATTER_DATE
 
-
-
 '''
-
-    public static ValueDateFormatter DEFAULT_DATE_FORMATTER = new ValueDateFormatter("Date", 6, "dd.MM.yyyy HH:mm:ss z");
-    <value-formatter-id type="integer">6</value-formatter-id>
-
-
     <value-date-range>
         <date-max type="timestamp">2016-12-31 23:59:00 UTC</date-max>
         <date-min type="timestamp">2006-02-01 00:00:00 UTC</date-min>
@@ -542,16 +550,23 @@ class PORISValueDate(PORISValueString):
 '''
 
 #######################################
+# This class allows Flat data in a PORISValue
 
 class PORISValueFloat(PORISValueData):
-    __min = None
-    __max = None
+    __min = None    # Min allowed value for the datum
+    __max = None    # Max allowed value for the datum
 
+    # Constructor, overloads PORISValueData and ads min and max values
     def __init__(self,name: str,min: float,default_data: float, max:float):
         super().__init__(name,default_data)
         self.__min = min
         self.__max = max
 
+    # Data getter, uses super()'s, but restricts data type
+    def getData(self) -> float:
+        return super().getData()
+
+    # Data setter, checks range limits and restricts data type
     def setData(self,data :float) -> float:
         if debug:
             print("Applying", data, "name:", self.getName(), "min:", self.__min, "max:", self.__max)
@@ -561,22 +576,27 @@ class PORISValueFloat(PORISValueData):
                 return super().setData(data)
                 
         return self.getData()
-
-    def getData(self) -> float:
-        return super().getData()
     
+    # min getter
     def getMin(self) -> float:
         return self.__min
 
+    # max getter
     def getMax(self) -> float:
         return self.__max
 
+    ########## XML related functions ########
+    
+    # getter for the XML tag name
     def getXMLNodeName(self) -> str:
         return "value-double-range"
     
+    # getter for the formatter, overload super()'s
     def getXMLFormatter(self) -> PORISValueFormatter:
         return PORISVALUEFORMATTER_REAL
 
+    # Dumps item to XML, uses super().toXML and 
+    # appends specific nodes for this class
     def toXML(self, dom: minidom.Document) -> minidom.Node:
         '''
         <default-float type="float">200</default-float>
@@ -603,80 +623,127 @@ class PORISValueFloat(PORISValueData):
         return n_node
 
 #######################################
-
+# This class implements the PORIS Modes
+# PORISModes are used to restrict the eligible values for a PORISParam
+# or to restrict the eligible submodes for a PORISSys
 class PORISMode(PORIS):
     
+    # Constructor, uses super()'s an adds the initialization of the eligible values and submodes
     def __init__(self,name):
         super(PORISMode, self).__init__(name)
         self.values = {}
         self.submodes = {}
         
+    # Function o add a submode as eligible if current mode is active
     def addSubMode(self,m):
         self.submodes[m.id] = m
 
+    # Function o add a value as eligible if current mode is active
     def addValue(self,v):
         self.values[v.id] = v
     
+    # Gets the most suitable value from the list of eligible ones.
+    # The arguments are accepting a candidate and a current value
+    # if the candidate value is eligible, then it will be returned
+    # otherwise if the current value is eligible, then it will be returned
+    # if none of them both were returned, then the first eligible value will be returned
+    # This method plays an inportant role when changes are made at higher levels
+    # of the PORIS tree, helping the subtree to arrive to a consistent state
+    # propagating the change to eligible values in case the triggering changes 
+    # make the tree inconsitent.
     def getEligibleValue(self,v,current) -> PORISValue:
         if debug:
             if (v != None):
-                print("Entro en PORISMode getEligibleValue para el modo", self.getName(), "con valor propuesto", v.getName())
+                print("Entering in PORISMode getEligibleValue for mode", self.getName(), "with the candidate", v.getName())
             else:
-                print("Entro en PORISMode getEligibleValue para el modo", self.getName(), "con valor propuesto NULO")
+                print("Entering in PORISMode getEligibleValue for mode", self.getName(), "with NULL candidate")
     
-            print("Valores posibles para este modo",self.values.keys())
+            print("Eligible valeus for this mode",self.values.keys())
 
         ret = None
         if v.id in self.values.keys():
+            # The candidate was found in the eligible ones
             ret = v
+
         else:
+            # The candidate was not found in the eligible ones
             if current.id in self.values.keys():
+                # The current value was found in the eligible ones
                 ret = current
+            
             else:
+                # Neither the candidate nor the current values were eligible
+                # We will return the first eligible value
+                # TODO: Recover the "default value" for a mode
                 itk = list(self.values.keys())[0]
                 ret = self.values[itk]
 
-        # print("ret queda",ret.getName())
         return ret
     
+    # Gets the most suitable submode from the list of eligible ones.
+    # The arguments are accepting a candidate and a current submode
+    # if the candidate submode is eligible, then it will be returned
+    # otherwise if the current submode is eligible, then it will be returned
+    # if none of them both were returned, then the first eligible submode will be returned
+    # This method plays an inportant role when changes are made at higher levels
+    # of the PORIS tree, helping the subtree to arrive to a consistent state
+    # propagating the change to eligible submodes in case the triggering changes 
+    # make the tree inconsitent.
+    # Important: canddate(m) and current submodes shall belong to the same parent item (param or sys)
+    # Take into account that submodes list is mixing modes of several items.
+    # Finally, if there is no eligible submode belonging to the same parent that the m mode, the UNKNOWN mode
+    # mode of m's parent.  UNKNOwN modes disables the parent item, and this is the method which
+    # allows disabling parts of a PORIS subtree depending on the choices made at higher levels
+    # TODO: Implement a check to confirm m and current are siblings
     def getEligibleSubMode(self,m,current):
         if debug:
-            print("Entro en PORISMode getEligibleSubMode para el modo", self.getName(), "con m =", m.getName())
+            if m != None:
+                print("Entering in PORISMode getEligibleSubMode with mode", self.getName(), "with the candidate", m.getName())
+
+            else:
+                print("Entering in PORISMode getEligibleSubMode with mode", self.getName(), "with NULL candidate")
+
+            print("Eligible submodes:",self.submodes.keys())
 
         ret = None
-        found = False
-
-        if debug:
-            print("Submodos:",self.submodes.keys())
-
         if m.id in self.submodes.keys():
+            # The candidate was found in the eligible ones
             ret = m
         
         else:
+            # The candidate was not found in the eligible ones
             if current.id in self.submodes.keys():
+                # The current value was found in the eligible ones
                 ret = current
                 
             else:
-                # If none of two are found, search the first submode with the same parent
                 if debug:
                     print("None of the two given, I have only these keys",self.submodes.keys())
 
+                # Neither the candidate nor the current submodes were eligible
+                # Search the first submode with the same parent than the candidate
+                # Iterating all submodes
                 for ks in self.submodes.keys():
                     s = self.submodes[ks]
                     if debug:
                         print(s.getParent(),s.getParent().getName())
 
+                    # Selecting the current submode only if it shares parent with candidate mode (m)
                     if s.getParent() == m.getParent():
                         ret = s
+                        # We found the first valid item to return
+                        # We shall exit breaking the loop 
                         break
                 
                 if ret is None:
-                    # None of the given or applicable, I have to apply the first (UNKNOWN mode)
+                    # We finanly did not found an eligible submode for this mode, for the PORISNode item which is parent of m
+                    # So we will return the UNKNOWN mode (the first one of the item)
                     ret = m.getParent().modes[list(m.getParent().modes.keys())[0]]
-                
 
         return ret
     
+    # This functions executes getEligibleValue() using an index to select the candidate
+    # It also returns an index
     def getEligibleValueFromIdx(self,idx,current):
         vk = list(self.values.keys())[idx]
         result = self.getEligibleValue(self.values[vk],current)
@@ -686,7 +753,9 @@ class PORISMode(PORIS):
             ret = result.idx
         
         return ret
-    
+
+    # This functions executes getEligibleSubMode() using an index to select the candidate
+    # It also returns an index
     def getEligibleSubModeFromIdx(self,idx,current):
         mk = list(self.submodes.keys())[idx]
         result = self.getEligibleSubMode(self.submodes[mk],current)
@@ -697,6 +766,7 @@ class PORISMode(PORIS):
         
         return ret
     
+    # Getter for PORISMode destinations, which can be values or submodes
     def getDestinations(self) -> list:
         ret = []
         for k in self.values:
@@ -707,12 +777,20 @@ class PORISMode(PORIS):
             
         return ret
     
+    ########### XML related functions ########
+
+    # Getter for the XML tag name of this item
     def getXMLNodeName(self) -> str:
         return "mode"
     
+    # Getter for the NodeType of this item
     def getXMLNodeType(self) -> int:
         return 6
     
+    # Dumps the XML node from this PORISMode
+    # It uses super's function, and adds the default mode and default value
+    # TODO: Implement the default mode and default value, at this moment we are 
+    # dumping them as NIL, just for consistency with porisjava's XML
     def toXML(self, dom: minidom.Document) -> minidom.Node:
         '''
         <default-mode-id type="integer" nil="true"/>
@@ -732,104 +810,184 @@ class PORISMode(PORIS):
 
     
     
-#######################################    
+#######################################
+# This class is the base one for PORISParam and PORISSys
     
 class PORISNode(PORIS):
+    # A PORISNode has a selected mode 
     __selectedMode = None
 
+    # Constructor, creates the modes dictionary
     def __init__(self,name):
         super(PORISNode, self).__init__(name)
         self.modes = {}
     
-    
+    # This function adds a mode to the current item
+    # If there is no mode selected, the first one is 
+    # then considered as selected
+    # Note: In our initialization we always add the UNKNONW mode, without submodes, in the first position
+    # this is the mechanism to disable a POrISNOde (and all its subtree) when none of its submodes is eligible
+    # NOTE: We should consider creating and adding the UNKNOWN mode in the constructor of the item, to don't let the user
+    # violate the restriction written here, and add an alternative mode as the first one
     def addMode(self,m):
         self.modes[m.id] = m
         m.setParent(self)
         if self.__selectedMode == None:
+            # No mode was selected, this one will be the selected one
             self.__selectedMode = m
 
+    # Getter for the selected mode
+    def getSelectedMode(self) -> PORISMode:
+        return self.__selectedMode
+
+    # Setter for the selected mode, names as the act of select it
+    def selectMode(self, m:PORISMode):
+        if m != None:
+            if m.id in self.modes.keys():
+                # The mode m is in the list of nodes, we can select it
+                self.__selectedMode = m
+                return m
+
+            else:
+                # The mode could not be set, we return None
+                printf("ERROR, the mode",m.getName(),"is not part of the list of modes of",self.getName())
+                return None
+
+        else:
+            # The mode could not be set, we return None
+            printf("ERROR, trying to set None as mode for", self.getName())
+            return None
+
+    # Setter for the selected mode using an index in the modes list, instead of using the mode itself
+    def setModeFromIdx(self,idx):
+        success = False
+        # First we find the mode using the index
+        mk = list(self.modes.keys())[idx]
+        if mk is not None:
+            result = self.selectMode(self.modes[mk])
+            if result is not None:
+                # We succeeded in setting the mode using the index
+                ret = result.idx
+                success = True
+                
+        if not success:
+            # We could not set the mode using the idx
+            # so we will initialize the item to select the UNKNOWN mode
+            result = self.init()
+            # index for UNKNOWN is 0
+            ret = 0
+
+        return ret
+
+    # In case an item has not a selected mode, we can use this function to 
+    # select the first node
+    # This function is normally only called internally, in reaction to
+    # the circumstances of not having a selected mode when it is expected to have
     def init(self):
         if debug:
-            print("Init de",self.getName(),", número de modos:" , len(self.modes))
+            print("----> Init ",self.getName(),", mode list len:" , len(self.modes))
 
+        # We select the first mode of the list, and set it as the selected one
         firstMode = self.modes[list(self.modes.keys())[0]]
+        self.__selectedMode = firstMode
         if debug:
             print("Init ", self.getName() + ":",firstMode.getName())
 
-        self.__selectedMode = firstMode
+        return self.__selectedMode
     
-    def setEligibleMode(self):
+    # This function gets the selected mode of a PORISNode.  In case there is no selected mode
+    # it forces the selection of the first one (UNKNOWN)
+    def getNotNullSelectedMode(self):
         if debug:
-            print("Entro en PORISNode setEligibleMode", self.getName())
+            print("Entering in PORISNode getNotNullSelectedMode", self.getName())
 
-        if self.getSelectedMode() is None:
+        ret = self.getSelectedMode()
+        if ret is None:
+            # There is no selected mode?  Then we will force the item initialization
+            # This normally is not occurring, because from the first mode added, the item
+            # has a selected one
             if debug:
-                print("- selectedMode es NULO")
-
-            self.init()
+                print("- selectedMode is NULL")
+            
+            # If there is no selected mode, we will initialize the item, which will select 
+            # the first mode as the active one (the first mode should be the UNKNOWN one)
+            ret = self.init()
             
         if debug:
-            print("- selectedMode es ahora", self.getSelectedMode().getName())
-
-        # TODO: Check if this selectMode is redundant
+            print("- selectedMode es now", self.getSelectedMode().getName())
+        # This looks like redundant, but it is not!!!
         return self.selectMode(self.getSelectedMode())
 
-    def selectMode(self,m):
-        self.__selectedMode = m
-        return m
 
-    def setModeFromIdx(self,idx):
-        mk = list(self.modes.keys())[idx]
-        result = self.selectMode(self.modes[mk])
-        if result is None:
-            ret = 0
-        else:
-            ret = result.idx
-        
-        if debug:
-            print("Acaba la operación selectMode con resultado", ret)
-
-        return ret
-
+    # Gets the most suitable mode from the list of eligible ones for this item.
+    # The argument is a candidate mode
+    # if the candidate submode is eligible, then it will be returned
+    # otherwise if the current submode is eligible, then it will be returned
+    # if none of them both were returned, then the first eligible submode will be returned
+    # This method plays an inportant role when changes are made at higher levels
+    # of the PORIS tree, helping the subtree to arrive to a consistent state
+    # propagating the change to eligible submodes in case the triggering changes 
+    # make the tree inconsitent.
+    # Important: canddate(m) and current submodes shall belong to the same parent item (param or sys)
+    # Take into account that submodes list is mixing modes of several items.
+    # Finally, if there is no eligible submode belonging to the same parent that the m mode, the UNKNOWN mode
+    # mode of m's parent.  UNKNOwN modes disables the parent item, and this is the method which
+    # allows disabling parts of a PORIS subtree depending on the choices made at higher levels
+    # TODO: Implement a check to confirm m and current are siblings
     def getEligibleMode(self,m):
         if debug:
-            print("Entro en PORISNode ",self.getName(), ".getEligibleMode("+m.getName()+")")
+            print("Entering in PORISNode ",self.getName(), ".getEligibleMode("+m.getName()+")")
 
         ret = None
-        if self.getParent() is None:
-            if debug:
-                print("El padre de", self.getName(), "es nulo")
+        if m.id in self.modes.keys():
+            # m is a mode of the current item
+            if self.getParent() is None:
+                # Current item has no parent, no restrictions to set m
+                if debug:
+                    print("Parent of", self.getName(), "is null, no upper levels for restrictions, we can freely select m")
 
-            ret = m
-        
+                ret = m
+            
+            else:
+                # As this mode has a parent, we need to select a mode which is elegible in the context of the active mode at higher level
+                # presenting the candidate as the candidate one, and the current mode as the alternative candidate
+                if debug:
+                    print("Searching within the", len(self.getParent().getSelectedMode().submodes),"submodes of",self.getParent().getName())
+                    print("selectedMode",self.getSelectedMode().getName(),m.getName())
+
+                ret = self.getParent().getSelectedMode().getEligibleSubMode(m,self.getSelectedMode())
+
+            if ret is None:
+                if debug:
+                    print("ERROR, we were not lucky, there was no way of selecting a mode (NULL after search")
+            
+            else:
+                if debug:
+                    print("El modo seleccionado es",ret.getName())
+
         else:
-            if debug:
-                print("Buscamos entre los", len(self.getParent().getSelectedMode().submodes),"submodos de",self.getParent().getName())
-                print("selectedMode",self.getSelectedMode().getName(),m.getName())
-
-            ret = self.getParent().getSelectedMode().getEligibleSubMode(m,self.getSelectedMode())
-
-        if ret is None:
-            if debug:
-                print("No hubo suerte, el modo a seleccionar es nulo")
-        
-        else:
-            if debug:
-                print("El modo seleccionado es",ret.getName())
+            print("ERROR, trying to select",m.getName(),"which is not a mode of",self.getName())
+            # We then try to find a suitable mode depending on the choices done at higher level
+            # we can not present m as a candidate, so we are presenting the current selected mode as candidate too
+            ret = self.getParent().getSelectedMode().getEligibleSubMode(self.getSelectedMode(),self.getSelectedMode())
         
         return ret
 
 
+    # Function to get an elegible mode using an index
     def getEligibleModeFromIdx(self,idx):
+        ret = 0
+
         mk = list(self.modes.keys())[idx]
-        result = self.getEligibleMode(self.submodes[mk])
-        if result is None:
-            ret = 0
-        else:
-            ret = result.idx
-        
+        if mk is not None:
+            result = self.getEligibleMode(self.submodes[mk])
+            if result is not None:
+                ret = result.idx
+                success = True
+     
         return ret
 
+    # Get a mode from its Idx
     def getModeFromId(self,myid):
         ret = None
         if myid in self.modes.keys():
@@ -837,6 +995,7 @@ class PORISNode(PORIS):
 
         return ret        
 
+    # Get a mode from its name
     def getModeFromName(self,myname):
         ret = None
         for myid in self.modes.keys():
@@ -845,9 +1004,7 @@ class PORISNode(PORIS):
 
         return ret
 
-    def getSelectedMode(self) -> PORISMode:
-        return self.__selectedMode
-
+    # Getter for the destinations list, including the modes
     def getDestinations(self) -> list:
         ret = []
         for k in self.modes:
@@ -855,16 +1012,24 @@ class PORISNode(PORIS):
             
         return ret
 
+    ########### XML related functions ########
+
+    # Function to obtain the tag name for the current item
+    # In XML all PORISNodes (no mather if they are systems or params)
+    # are <sub-system>
     def getXMLNodeName(self) -> str:
         return "sub-system"
     
+    # Function to obtain the NodeType, overloading super's
     def getXMLNodeType(self) -> int:
         return 4
     
+    # Dump XML from this item.  Appends default mode
+    # to super's XML
+    # TODO: At the moment we have not selected default modes
     def toXML(self, dom: minidom.Document) -> minidom.Node:
         '''
         <default-mode-id type="integer" nil="true"/>
-        <default-value-id type="integer" nil="true"/>
         '''            
         n_node = super().toXML(dom)
         defaultmodenode = dom.createElement("default-mode-id")
@@ -875,49 +1040,59 @@ class PORISNode(PORIS):
         return n_node    
 
 #######################################
+# This class implements a param, which is a PORISNode which has values 
+# and does not have subsystems or subparams
 
 class PORISParam(PORISNode):
-    __selectedValue = None
+    __selectedValue = None  # Current selected value for the param
   
+    # Constructor, it adds values to superclass
     def __init__(self,name):
         super(PORISParam, self).__init__(name)
         self.values = {}
   
+    # Getter for the selected value
     def getSelectedValue(self):
         return self.__selectedValue
     
+    # Function to add a value.
+    # If it is the first value added, it also will be the selected one
     def addValue(self,v):
         self.values[v.id] = v
         v.setParent(self)
         if self.__selectedValue == None:
             self.__selectedValue = v
 
+    # Sets an elegible value, by trying to re-select the current one
+    # if the current value is not elegible, setValue will find another one
+    # It returns the finally selected value
     def setEligibleValue(self):
         if debug:
             print("Entro en PORISParam setEligibleValue", self.getName())
 
         return self.setValue(self.__selectedValue)
     
+    # Selects a mode, if it is elegible
     def selectMode(self,m):
         if debug:
-            print("Entro en Param",self.getName()+".selectMode("+ m.getName()+"\")")
+            print("Entering in PORISParam",self.getName()+".selectMode("+ m.getName()+"\")")
 
+        # Finds if the candidate is available
         ret = self.getEligibleMode(m)
-
-        if debug:
-            print("Estoy en",self.getName())
-            print(list(self.modes.keys()))
-
         if ret is None:
-            mk = list(self.modes.keys())[0]
-            ret = self.modes[mk]
+            # The eligible mode returned None, let's initialize this item to select UNKNOWN
+            ret = self.init()
 
         if ret != self.getSelectedMode():
+            # The elibible mode is not the selected one, so we have to 
+            # select the mode using super() so we do not enter in recursivity
             super(PORISParam,self).selectMode(ret)
+            # Once the new mode is selected, we shoult set an elegible value by trying to re-select the current one
             self.setValue(self.__selectedValue)
 
         return ret
 
+    # Getter for value using the ID
     def getValueFromId(self,myid):
         ret = None
         if myid in self.values.keys():
@@ -925,6 +1100,7 @@ class PORISParam(PORISNode):
 
         return ret
 
+    # Getter for value using the name
     def getValueFromName(self,myname):
         ret = None
         for myid in self.values.keys():
@@ -933,73 +1109,98 @@ class PORISParam(PORISNode):
 
         return ret
 
-
+    # Gets an elegible value, presenting a candidate (v) and an alternative (current)
     def getEligibleValue(self,v,current):
         if debug:
             if v is None:
-                print("Entro en PORISParam getEligibleValue ", self.getName(), "con valor NULO")
+                print("Entering in PORISParam getEligibleValue ", self.getName(), "with NULL value")
             else:
-                print("Entro en PORISParam getEligibleValue ", self.getName(), "con valor", v.getName())
+                print("Entering in PORISParam getEligibleValue ", self.getName(), "with value", v.getName())
 
             print("***",self.getName(),self.getSelectedMode().getName(),self.modes)
 
         ret = None
         
+        # First obtain the selected mode to know the elegible ones
         if self.getSelectedMode() is None:
             if debug:
-                print("- selectedMode es NULO")
-
+                print("- selectedMode is NULL")
+            # If there is no selected mode, let's initialize the item
             self.init()
 
+        # Now let`s set the value by get an elegible one from the selected mode, proposing the candidate or the current one as alternative
         ret = self.getSelectedMode().getEligibleValue(v,current)
         
         return ret
 
+    # Setter for the value
     def setValue(self,v):
         if debug:
             if v is None:
-                print("Entro en PORISParam setValue", self.getName(), "con valor NULO")
+                print("Entering in PORISParam setValue", self.getName(), "with NULL value")
             else:
-                print("Entro en PORISParam setValue", self.getName(), "con valor", v.getName())
+                print("Entering in PORISParam setValue", self.getName(), "with value", v.getName())
 
+        # First let's try to see if the candidate is elegible, givin the current one as the alternative
         ret = self.getEligibleValue(v,self.__selectedValue)
+        # if the value was already set, no changes have to be executed
+        # but if the eligible value is not the selected one, we must apply the eligible value
         if ret != self.__selectedValue:
-            # First, try to copy the existing data
-            # print("Vamos a aplicar el valor" , ret.getName())
+            # So we have to apply the change of value
+
+            # First, try to copy the existing data, in case this item contains data
+            # (is instance of a PORISValueData class or subclass)
+            # print("We are going to apply the value " , ret.getName())
             if isinstance(self.__selectedValue,PORISValueData.__class__):
-                print(ret.getName(),"es un PORISValueData")
-                print(ret.__class__.__name__)
+                # print(ret.getName(),"is a PORISValueData of class", ret.__class__.__name__)
                 v = self.__selectedValue
-                print(v.getName())
-                print(ret.getName())
+                # print(v.getName())
+                # print(ret.getName())
                 data = v.getData()
+                # data contains the data from the previous value
+                # let's try to set the same data on the new value
                 ret.setData(data)
 
-            # Then select the new value
+            # Then select the new value which will have the same data, or will have rejected it if no eligible
             self.__selectedValue = ret
             
         return ret
 
+    # Getter for eligible value using an index
     def getEligibleValueFromIdx(self,idx,current):
+        ret = 0
         vk = list(self.values.keys())[idx]
-        result = self.getEligibleValue(self.values[vk],current)
-        if result is None:
-            ret = 0
+        if vk is not None:
+            result = self.getEligibleValue(self.values[vk],current)
+            if result is not None:
+                ret = result.idx
+
+            else:
+                print("ERROR, we could not find an elegible value for",self.getName())
+
         else:
-            ret = result.idx
-        
+            print("ERROR, the index",idx,"is not valid for selecting a value for",self.getName())
+
         return ret
 
+    # Value setter using an index
     def setValueFromIdx(self,idx):
+        ret = 0
         vk = list(self.values.keys())[idx]
-        result = self.setValue(self.values[vk])
-        if result is None:
-            ret = 0
-        else:
-            ret = result.idx
+        if vk is not None:
+            result = self.setValue(self.values[vk])
+            if result is not None:
+                ret = result.idx
+
+            else:
+                print("ERROR, we could not set a value for",self.getName())
         
+        else:
+            print("ERROR, the index",idx,"is not valid for selecting a value for",self.getName())
+
         return ret
     
+    # Getter for destinations, appends values to the super's destination
     def getDestinations(self) -> list:
         ret = super().getDestinations()
         for k in self.values:
@@ -1007,9 +1208,26 @@ class PORISParam(PORISNode):
             
         return ret
     
-    
+    ########### XML related functions ########
+
+    # Function to obtain the type, overrides super's because class name is not used
     def getXMLType(self) -> str:
         return "PORISNode"
+
+    # Dump XML from this item.  Appends default value
+    # to super's XML
+    # TODO: At the moment we have not selected default values
+    def toXML(self, dom: minidom.Document) -> minidom.Node:
+        '''
+        <default-value-id type="integer" nil="true"/>
+        '''            
+        n_node = super().toXML(dom)
+        childnode = dom.createElement("default-value-id")
+        childnode.setAttribute("type","integer")
+        childnode.setAttribute("nil","true")
+        n_node.appendChild(childnode)
+        
+        return n_node    
 
 
 #######################################
@@ -1054,11 +1272,11 @@ class PORISSys(PORISNode):
             
             for k in self.params.keys():
                 p = self.params[k]
-                p.setEligibleMode()
+                p.getNotNullSelectedMode()
 
             for k in self.subsystems.keys():
                 s = self.subsystems[k]
-                s.setEligibleMode()
+                s.getNotNullSelectedMode()
    
         else:
             if debug:
@@ -1069,9 +1287,9 @@ class PORISSys(PORISNode):
 
         return ret
 
-    def setEligibleMode(self):
+    def getNotNullSelectedMode(self):
         if debug:
-            print("Entro en PORISSys setEligibleMode", self.getName())
+            print("Entro en PORISSys getNotNullSelectedMode", self.getName())
 
         if self.getSelectedMode() is None:
             if debug:
