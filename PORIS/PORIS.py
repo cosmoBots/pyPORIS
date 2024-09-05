@@ -12,9 +12,7 @@ import pytz
 #######################################
 
 class PORISValueFormatter:
-    __name = None
-    __id = None
-    __label = None
+
     def __init__(self, name: str, id: int, label: str):
         self.__name = name
         self.__id = id
@@ -208,19 +206,17 @@ class PORISNode:
 # subclases overload them when convenient
 
 class PORIS:
-    # Public attributes
-    id = None               # A numeric id for reference
-    ident = None            # A text id for reference
-    description = None      # A description of the item
-    # Private attributes
-    __name = None           # name
-    __parent = None         # Parent node (if any)
-    __project_id = 0        # The project where the item is described
-    __labels = {}           # A dictionary of labels for this item, the scope_kind acts as a key
     
     # Constructor, needs a name for the PORIS item
     def __init__(self,name):
-        self.__name = name
+        # Public attributes
+        self.id = None               # A numeric id for reference
+        self.ident = None            # A text id for reference
+        self.description = None      # A description of the item
+        # Private attributes
+        self.__name = name           # name
+        self.__parent = None         # Parent node (if any)
+        self.__labels = {}           # A dictionary of labels for this item, the scope_kind acts as a key
 
     # Name getter
     def getName(self) -> str:
@@ -237,15 +233,7 @@ class PORIS:
     # Parent setter
     def getParent(self) -> PORISNode:
         return self.__parent
-    
-    # Project ID getter
-    def getProjectId(self) -> int:
-        return self.__project_id
-
-    # Project ID setter
-    def setProjectId(self, i: int):
-        self.__project_id = i
-    
+      
     # Labels list getter   
     def getLabels(self) -> dict:
         return self.__labels
@@ -426,8 +414,6 @@ class PORISValue(PORIS):
 # data examples are strings, integers, floats, dates, angles, etc.
 
 class PORISValueData(PORISValue):
-    __data = None
-    __default_data = None
     
     # Constructor, appends data and default data
     # initializers to the super() constructor
@@ -465,6 +451,7 @@ class PORISValueData(PORISValue):
 #######################################
 
 class PORISValueString(PORISValueData):
+    
     def __init__(self,name,default_data: str):
         super().__init__(name,default_data)
 
@@ -475,7 +462,7 @@ class PORISValueString(PORISValueData):
 
     # Setter for the data, it is overloading
     # superclass one, but adding control over datatype
-    def setData(self,data: str):
+    def setData(self,data: str) -> str:
         return super().setData(data)
 
     ########## XML related functions ########
@@ -553,8 +540,6 @@ class PORISValueDate(PORISValueString):
 # This class allows Flat data in a PORISValue
 
 class PORISValueFloat(PORISValueData):
-    __min = None    # Min allowed value for the datum
-    __max = None    # Max allowed value for the datum
 
     # Constructor, overloads PORISValueData and ads min and max values
     def __init__(self,name: str,min: float,default_data: float, max:float):
@@ -626,11 +611,17 @@ class PORISValueFloat(PORISValueData):
 # This class implements the PORIS Modes
 # PORISModes are used to restrict the eligible values for a PORISParam
 # or to restrict the eligible submodes for a PORISSys
+
+# As we need to use the class from the class itself, we will need to declare it in advance
+class PORISMode(PORIS):
+    pass
+
+# This is the actual definition of the class
 class PORISMode(PORIS):
     
     # Constructor, uses super()'s an adds the initialization of the eligible values and submodes
     def __init__(self,name):
-        super(PORISMode, self).__init__(name)
+        super().__init__(name)
         self.values = {}
         self.submodes = {}
         
@@ -695,7 +686,7 @@ class PORISMode(PORIS):
     # mode of m's parent.  UNKNOwN modes disables the parent item, and this is the method which
     # allows disabling parts of a PORIS subtree depending on the choices made at higher levels
     # TODO: Implement a check to confirm m and current are siblings
-    def getEligibleSubMode(self,m,current):
+    def getEligibleSubMode(self,m,current) -> PORISMode:
         if debug:
             if m != None:
                 print("Entering in PORISMode getEligibleSubMode with mode", self.getName(), "with the candidate", m.getName())
@@ -744,7 +735,7 @@ class PORISMode(PORIS):
     
     # This functions executes getEligibleValue() using an index to select the candidate
     # It also returns an index
-    def getEligibleValueFromIdx(self,idx,current):
+    def getEligibleValueFromIdx(self,idx,current) -> PORISValue:
         vk = list(self.values.keys())[idx]
         result = self.getEligibleValue(self.values[vk],current)
         if result is None:
@@ -756,7 +747,7 @@ class PORISMode(PORIS):
 
     # This functions executes getEligibleSubMode() using an index to select the candidate
     # It also returns an index
-    def getEligibleSubModeFromIdx(self,idx,current):
+    def getEligibleSubModeFromIdx(self,idx,current) -> int:
         mk = list(self.submodes.keys())[idx]
         result = self.getEligibleSubMode(self.submodes[mk],current)
         if result is None:
@@ -812,14 +803,14 @@ class PORISMode(PORIS):
     
 #######################################
 # This class is the base one for PORISParam and PORISSys
-    
-class PORISNode(PORIS):
-    # A PORISNode has a selected mode 
-    __selectedMode = None
 
+# This is the actual definition of the class
+class PORISNode(PORIS):
     # Constructor, creates the modes dictionary
     def __init__(self,name):
-        super(PORISNode, self).__init__(name)
+        super().__init__(name)
+        # A PORISNode has a selected mode 
+        self.__selectedMode = None
         self.modes = {}
     
     # This function adds a mode to the current item
@@ -841,25 +832,30 @@ class PORISNode(PORIS):
         return self.__selectedMode
 
     # Setter for the selected mode, names as the act of select it
-    def selectMode(self, m:PORISMode):
-        if m != None:
-            if m.id in self.modes.keys():
-                # The mode m is in the list of nodes, we can select it
-                self.__selectedMode = m
-                return m
+    def selectMode(self, m:PORISMode) -> PORISMode:
+        # First we will get an eligible mode givin our candidate
+        ret = self.getEligibleMode(m)
+        if ret is None:
+            if debug:
+                print("New eligible mode is NULL, so we have to set initialize the item to select the unknown mode")
 
-            else:
-                # The mode could not be set, we return None
-                printf("ERROR, the mode",m.getName(),"is not part of the list of modes of",self.getName())
-                return None
+            ret = self.init()
 
-        else:
-            # The mode could not be set, we return None
-            printf("ERROR, trying to set None as mode for", self.getName())
-            return None
+        # If the mode has changed from the previous one, we shall propagate the change
+        if ret != self.getSelectedMode():
+            if debug:
+                print("New mode is", ret.getName())
+                if self.getSelectedMode() is not None:
+                    print (" which is diferent from",self.getSelectedMode().getName())
+                else:
+                    print(" which is different from NULL")        
+
+            self.__selectedMode = ret
+
+        return ret
 
     # Setter for the selected mode using an index in the modes list, instead of using the mode itself
-    def setModeFromIdx(self,idx):
+    def setModeFromIdx(self,idx) -> int:
         success = False
         # First we find the mode using the index
         mk = list(self.modes.keys())[idx]
@@ -883,7 +879,7 @@ class PORISNode(PORIS):
     # select the first node
     # This function is normally only called internally, in reaction to
     # the circumstances of not having a selected mode when it is expected to have
-    def init(self):
+    def init(self) -> PORISMode:
         if debug:
             print("----> Init ",self.getName(),", mode list len:" , len(self.modes))
 
@@ -897,7 +893,7 @@ class PORISNode(PORIS):
     
     # This function gets the selected mode of a PORISNode.  In case there is no selected mode
     # it forces the selection of the first one (UNKNOWN)
-    def getNotNullSelectedMode(self):
+    def getNotNullSelectedMode(self) -> PORISMode:
         if debug:
             print("Entering in PORISNode getNotNullSelectedMode", self.getName())
 
@@ -934,7 +930,7 @@ class PORISNode(PORIS):
     # mode of m's parent.  UNKNOwN modes disables the parent item, and this is the method which
     # allows disabling parts of a PORIS subtree depending on the choices made at higher levels
     # TODO: Implement a check to confirm m and current are siblings
-    def getEligibleMode(self,m):
+    def getEligibleMode(self,m) -> PORISMode:
         if debug:
             print("Entering in PORISNode ",self.getName(), ".getEligibleMode("+m.getName()+")")
 
@@ -963,7 +959,7 @@ class PORISNode(PORIS):
             
             else:
                 if debug:
-                    print("El modo seleccionado es",ret.getName())
+                    print("Selected mode is",ret.getName())
 
         else:
             print("ERROR, trying to select",m.getName(),"which is not a mode of",self.getName())
@@ -975,7 +971,7 @@ class PORISNode(PORIS):
 
 
     # Function to get an elegible mode using an index
-    def getEligibleModeFromIdx(self,idx):
+    def getEligibleModeFromIdx(self,idx) -> int:
         ret = 0
 
         mk = list(self.modes.keys())[idx]
@@ -988,7 +984,7 @@ class PORISNode(PORIS):
         return ret
 
     # Get a mode from its Idx
-    def getModeFromId(self,myid):
+    def getModeFromId(self,myid) -> PORISMode:
         ret = None
         if myid in self.modes.keys():
             ret = self.modes[myid]
@@ -996,7 +992,7 @@ class PORISNode(PORIS):
         return ret        
 
     # Get a mode from its name
-    def getModeFromName(self,myname):
+    def getModeFromName(self,myname) -> PORISMode:
         ret = None
         for myid in self.modes.keys():
             if self.modes[myid].getName() == myname:
@@ -1043,16 +1039,15 @@ class PORISNode(PORIS):
 # This class implements a param, which is a PORISNode which has values 
 # and does not have subsystems or subparams
 
-class PORISParam(PORISNode):
-    __selectedValue = None  # Current selected value for the param
-  
+class PORISParam(PORISNode):  
     # Constructor, it adds values to superclass
     def __init__(self,name):
-        super(PORISParam, self).__init__(name)
+        self.__selectedValue = None  # Current selected value for the param
+        super().__init__(name)
         self.values = {}
   
     # Getter for the selected value
-    def getSelectedValue(self):
+    def getSelectedValue(self) -> PORISValue:
         return self.__selectedValue
     
     # Function to add a value.
@@ -1066,34 +1061,29 @@ class PORISParam(PORISNode):
     # Sets an elegible value, by trying to re-select the current one
     # if the current value is not elegible, setValue will find another one
     # It returns the finally selected value
-    def setEligibleValue(self):
+    def setEligibleValue(self) -> PORISValue:
         if debug:
             print("Entro en PORISParam setEligibleValue", self.getName())
 
         return self.setValue(self.__selectedValue)
     
     # Selects a mode, if it is elegible
-    def selectMode(self,m):
+    def selectMode(self,m) -> PORISMode:
         if debug:
             print("Entering in PORISParam",self.getName()+".selectMode("+ m.getName()+"\")")
 
-        # Finds if the candidate is available
-        ret = self.getEligibleMode(m)
-        if ret is None:
-            # The eligible mode returned None, let's initialize this item to select UNKNOWN
-            ret = self.init()
-
-        if ret != self.getSelectedMode():
-            # The elibible mode is not the selected one, so we have to 
-            # select the mode using super() so we do not enter in recursivity
-            super(PORISParam,self).selectMode(ret)
+        prev_mode = self.getSelectedMode()
+        ret = super().selectMode(m)
+        
+        if ret != prev_mode:
+            # The mode has changed, so we have to set a consistent value
             # Once the new mode is selected, we shoult set an elegible value by trying to re-select the current one
-            self.setValue(self.__selectedValue)
+            self.setValue(self.getSelectedValue())
 
         return ret
 
     # Getter for value using the ID
-    def getValueFromId(self,myid):
+    def getValueFromId(self,myid) -> PORISValue:
         ret = None
         if myid in self.values.keys():
             ret = self.values[myid]
@@ -1101,7 +1091,7 @@ class PORISParam(PORISNode):
         return ret
 
     # Getter for value using the name
-    def getValueFromName(self,myname):
+    def getValueFromName(self,myname) -> PORISValue:
         ret = None
         for myid in self.values.keys():
             if self.values[myid].getName() == myname:
@@ -1110,7 +1100,7 @@ class PORISParam(PORISNode):
         return ret
 
     # Gets an elegible value, presenting a candidate (v) and an alternative (current)
-    def getEligibleValue(self,v,current):
+    def getEligibleValue(self,v,current) -> PORISValue:
         if debug:
             if v is None:
                 print("Entering in PORISParam getEligibleValue ", self.getName(), "with NULL value")
@@ -1134,7 +1124,7 @@ class PORISParam(PORISNode):
         return ret
 
     # Setter for the value
-    def setValue(self,v):
+    def setValue(self,v) -> PORISValue:
         if debug:
             if v is None:
                 print("Entering in PORISParam setValue", self.getName(), "with NULL value")
@@ -1167,7 +1157,7 @@ class PORISParam(PORISNode):
         return ret
 
     # Getter for eligible value using an index
-    def getEligibleValueFromIdx(self,idx,current):
+    def getEligibleValueFromIdx(self,idx :int ,current: PORISValue) -> int:
         ret = 0
         vk = list(self.values.keys())[idx]
         if vk is not None:
@@ -1184,7 +1174,7 @@ class PORISParam(PORISNode):
         return ret
 
     # Value setter using an index
-    def setValueFromIdx(self,idx):
+    def setValueFromIdx(self,idx: int) -> int:
         ret = 0
         vk = list(self.values.keys())[idx]
         if vk is not None:
@@ -1231,201 +1221,257 @@ class PORISParam(PORISNode):
 
 
 #######################################
+# This class implements a PORIS system, which contain modes 
+# and subitems (params or another sub-systems)
 
+# As we need to use the class from the class itself, we will need to declare it in advance
+class PORISSys(PORISNode):
+    pass
+
+# Here comes the actual definition
 class PORISSys(PORISNode):
 
+    # Constructor, which adds the children (params or subsystems)
+    # to the attributes provided by superclass PORISNode
     def __init__(self,name):
-        super(PORISSys, self).__init__(name)
+        super().__init__(name)
         self.params = {}
         self.subsystems = {}
 
-    def addParam(self,p):
+    # Adds a parameters to the parameters dictionary
+    def addParam(self,p: PORISParam):
         self.params[p.id] = p
         p.setParent(self)
 
+    # Adds a subsystem to the subsystems diccionary
     def addSubsystem(self,s):
         self.subsystems[s.id] = s
         s.setParent(self)
         
-    def selectMode(self,m):
+    # This function allows the user to select a mode for the current system
+    # It takes a mode candidate and tries to apply it.  If not possible, then 
+    # it will return the finally selected mode from the eligible ones
+    def selectMode(self,m) -> PORISMode:
         if debug:
-            print("Entro en Sys selectMode de", self.getName(), "con modo", m.getName())
+            print("Entering in Sys selectMode for", self.getName(), "with candidate mode", m.getName())
 
-        ret = self.getEligibleMode(m)
-        if ret is None:
-            if debug:
-                print("el nuevo modo es NULO que es diferente del seleccionado")
-                print(" Hemos de poner el modo UNKNOWN, que por defecto es el primero")
+        # First we call the select mode function from superclass
+        prev_mode = self.getSelectedMode()
+        ret = super().selectMode(m)
 
-            mk = list(self.modes.keys())[0]
-            ret = self.modes[mk]
-
-        if ret != self.getSelectedMode():
-            if debug:
-                print("el nuevo modo es", ret.getName())
-                if self.getSelectedMode() is not None:
-                    print (" que es diferente de",self.getSelectedMode().getName())
-                else:
-                    print(" que es diferente de NULO")
-
-            super(PORISSys, self).selectMode(ret)
+        # Then, if mode changed, we must propagate the change to the params and subsystems        
+        if ret != prev_mode:
             
+            # Propagating mode change to params
             for k in self.params.keys():
                 p = self.params[k]
+                # Propagating the change to the param, by reselecting their current mode if eligible, or forcing a eligible one
                 p.getNotNullSelectedMode()
 
+            # Propagating mode changes to subsystems
             for k in self.subsystems.keys():
                 s = self.subsystems[k]
+                # Propagating the change to the subsystem, by reselecting their current mode if eligible, or forcing a eligible one
                 s.getNotNullSelectedMode()
    
-        else:
-            if debug:
-                print("el modo escogido es el mismo", ret.getName())
-
         if debug:
-            print("Salgo de Sys selectMode de", self.getName(), "con m="+m.getName(), "y resultado =",ret.getName())
+            if m == ret:
+                print("Candidate mode successfully aplied:", ret.getName())
+                
+            else:
+                if ret != prev_mode:
+                    print("Alternative eligible mode applied:",ret.getName())
+
+            print("Exiting PORISSys selectMode for", self.getName(), "with candidate m="+m.getName(), "and result =",ret.getName())
 
         return ret
 
-    def getNotNullSelectedMode(self):
-        if debug:
-            print("Entro en PORISSys getNotNullSelectedMode", self.getName())
-
-        if self.getSelectedMode() is None:
-            if debug:
-                print("- selectedMode es NULO")
-
-            self.init()
-            
-        if debug:
-            print("- selectedMode es ahora", self.getSelectedMode().getName())
-
-        # TODO: Check if this selectMode is redundant
-        return self.selectMode(self.getSelectedMode())
-    
-    def getSubSystemFromId(self,myid):
-        ret = None
-        if myid in self.subsystems.keys():
-            ret = self.subsystems[myid]
-
-        return ret
-    
-    def getSubParamFromId(self,myid):
+    # Getter to obtain a subsystem using the id
+    def getParamFromId(self,myid) -> PORISParam:
         ret = None
         if myid in self.params.keys():
             ret = self.params[myid]
 
         return ret
     
-    def getSubParamFromName(self,myname):
+    # Get a param using the name
+    def getParamFromName(self,myname) -> PORISParam:
         ret = None
         for myid in self.params.keys():
             if (self.params[myid].getName() == myname):
                 ret = self.params[myid]
 
         return ret
-        
-    def getDescendantFromId(self,myid):
-        ret = self.getSubSystemFromId(myid)
-        if ret is None:
-            for sk in self.subsystems.keys():
-                s = self.subsystems[sk]
-                ret = s.getDescendantFromId(myid)
-                if ret is not None:
-                    break
+
+    # Getter to obtain a subsystem using the id
+    def getSubSystemFromId(self,myid) -> PORISSys:
+        ret = None
+        if myid in self.subsystems.keys():
+            ret = self.subsystems[myid]
 
         return ret
     
-    def getDescendantParamFromId(self,myid):
-        ret = self.getSubParamFromId(myid)
-        if ret is None:
-            print("no es un hijo directo")
-            print(myid,self.myid,self.subsystems)
-            for sk in self.subsystems.keys():
-                if debug:
-                    print(sk)
+    # Getter to obtain a subsystem using the name
+    def getSubSystemFromName(self,myname) -> PORISSys:
+        ret = None
+        for myid in self.subsystems.keys():
+            if (self.subsystems[myid].getName() == myname):
+                ret = self.subsystems[myid]
 
+        return ret     
+    
+    # Get a descendant PORISParam using an Id
+    def getDescendantParamFromId(self,myid) -> PORISParam:
+        # First we check the first level of subsystems (children)
+        ret = self.getParamFromId(myid)
+        if ret is None:
+            # If the param is not a children one, we will apply recursivity
+            # searching descendants of the children subsystems
+            for sk in self.subsystems.keys():
+                # Select a child subsystem
                 s = self.subsystems[sk]
+                # recursive call
                 ret = s.getDescendantParamFromID(myid)
                 if ret is not None:
-                    if debug:
-                        print("Tenemos",ret)
-
+                    # found, so we have to return
                     break
 
+            # Recursion end occurs when the descendant is found, or 
+            # when we finished looping all the childrens
+            
         return ret
 
-    def getDescendantParamFromName(self,myname):
-        ret = self.getSubParamFromName(myname)
+    # Get a descendant PORISSys using a name
+    def getDescendantParamFromName(self,myname) -> PORISParam:
+        # First we check the first level of subsystems (children)
+        ret = self.getParamFromName(myname)
         if ret is None:
-            print("no es un hijo directo")
-            print(myname,self.id,self.subsystems)
+            # If the subsystem is not a children one, we will apply recursivity 
+            # searching descendants of the children ones            
             for sk in self.subsystems.keys():
-                if debug:
-                    print(sk)
-
+                # Select a child subsystem
                 s = self.subsystems[sk]
+                # recursive call
                 ret = s.getDescendantParamFromName(myname)
                 if ret is not None:
-                    if debug:
-                        print("Tenemos",ret)
+                    # found, so we have to return
+                    break
+                
+            # Recursion end occurs when the descendant is found, or 
+            # when we finished looping all the childrens
 
+        return ret
+
+    # Get a descendant PORISSys using an Id
+    def getDescendantSysFromId(self,myid) -> PORISSys:
+        # First we check the first level of subsystems (children)
+        ret = self.getSubSystemFromId(myid)
+        if ret is None:
+            # If the subsystem is not a children one, we will apply recursivity 
+            # searching descendants of the children ones
+            for sk in self.subsystems.keys():
+                # Select a child subsystem
+                s = self.subsystems[sk]
+                # recursive call
+                ret = s.getDescendantSysFromId(myid)
+                if ret is not None:
+                    # found, so we have to return
                     break
 
+            # Recursion end occurs when the descendant is found, or 
+            # when we finished looping all the childrens
+            
         return ret
+    
+    # Get a descendant PORISSys using an Id
+    def getDescendantSysFromName(self,myname) -> PORISSys:
+        # First we check the first level of subsystems (children)
+        ret = self.getSubSystemFromName(myname)
+        if ret is None:
+            # If the subsystem is not a children one, we will apply recursivity 
+            # searching descendants of the children ones
+            for sk in self.subsystems.keys():
+                # Select a child subsystem
+                s = self.subsystems[sk]
+                # recursive call
+                ret = s.getDescendantSysFromName(myname)
+                if ret is not None:
+                    # found, so we have to return
+                    break
 
+            # Recursion end occurs when the descendant is found, or 
+            # when we finished looping all the childrens
+            
+        return ret   
+
+    # Getter for destinations
+    # It adds subsystems and params to the list
     def getDestinations(self) -> list:
         ret = super().getDestinations()
-        for k in self.subsystems:
-            ret.append(self.subsystems[k])
-        
+
         for k in self.params:
             ret.append(self.params[k])
-                    
+
+        for k in self.subsystems:
+            ret.append(self.subsystems[k])
+                            
         return ret
 
+    ########### XML related functions ########
+    
+    # Getter for the type.  In this case the type is not the class name
     def getXMLType(self) -> str:
         return "PORISNode"
 
 
 #######################################
+# This class groups a PORIS model inside a "document" with a root
+# The intention is to load and save from documents in serialized formats as XML
 
 class PORISDoc:
-    __id_counter = 1
-    __node_dict = {}
-    __root = None
-    __project_id = 0
     
+    # Constructor, it needs a project_id to easily identify the document
     def __init__(self,project_id):
-        self.__project_id = project_id
-        print("Setting the project_id to ", self.__project_id)
+        self.__id_counter = 1   # This is the counter for incremental identifiers for the PORIS items inside
+        self.__item_dict = {}   # This is a dictionary for accessing easily all the PORIS items by the numeric identifier
+        self.__root = None      # This will point to the root system or param in the document
+        self.__project_id = project_id  # Sets the given project id
         
+    # A setter for the project_id
     def setProjectId(self, i: int):
         self.__project_id = i
         
+    # A getter for the project_id
     def getProjectId(self) -> int:
         return self.__project_id
     
-    def setRoot(self, r:PORIS):
+    # Sets the given PORIS node (param or sys) as the root for the document
+    def setRoot(self, r:PORISNode):
         self.__root = r
-        print("Setting the root to ", r.getName(),"and",self.__root.getName(),"and",self.getName())
+        # print("Setting the root to ", r.getName(),"and",self.__root.getName(),"and",self.getName())
         
-    def getRoot(self) -> PORIS:
+    # Getter for the root node
+    def getRoot(self) -> PORISNode:
         return self.__root        
         
-    def getName(self):
+    # Getter for the document's root node name
+    def getName(self) -> str:
         return self.__root.getName()
         
-    def addNode(self, n: PORIS):
+    # Adds a PORIS item to the document
+    def addItem(self, n: PORIS):
+        # Sets the current counter as the numerical identifier for the item
         n.id = self.__id_counter
-        self.__node_dict[str(n.id)] = n
-        n.setProjectId(self.__project_id)
+        # Adds the item to the item dictionary
+        self.__item_dict[str(n.id)] = n
+        # Increments the id counter
         self.__id_counter += 1
 
-    def list_nodes(self):
-        print(len(self.__node_dict))
-        for k in self.__node_dict.keys():
-            n = self.__node_dict[k]
+    # Prints a list with all the items in the document
+    def list_items(self):
+        print(len(self.__item_dict))
+        for k in self.__item_dict.keys():
+            n = self.__item_dict[k]
             print(str(n.id),n.getName())
         
     # Gets a list of PORIS items IDs sorted so their items
@@ -1435,9 +1481,9 @@ class PORISDoc:
     # may have issues if they process items referencing other items which have not been processed before.
     def getConsistentReferencesSortedIdsList(self) -> list:
         node_and_destinations = {}
-        for k in self.__node_dict.keys():
+        for k in self.__item_dict.keys():
             # print(k)
-            n = self.__node_dict[k]
+            n = self.__item_dict[k]
             thisnode = {}
             thiskey = k
             destinations = []
@@ -1500,23 +1546,43 @@ class PORISDoc:
         # print(len(ordered_list),ordered_list)
         return ordered_list
         
-                    
+    ########### XML related functions ########        
+    
+    # Dumps the contents of the PORISDoc into a XML document
     def toXML(self) -> minidom.Document:
-        rootInstr = minidom.Document()
-        xmlInstr = rootInstr.createElement('poris')
-        rootInstr.appendChild(xmlInstr)
+        # Creates the XML document
+        xmlDocument = minidom.Document()
+        
+        if xmlDocument is not None:
+            # Creates the root tag
+            xmlInstr = xmlDocument.createElement('poris')
+            if xmlInstr is not None:
+                # Appends the root tag to the document
+                xmlDocument.appendChild(xmlInstr)
 
-        # In order to prevent void references in the consumer, we have to use an ordered list of nodes
-        # with no back-references
-        ordered_list = self.getConsistentReferencesSortedIdsList()
-        for id in ordered_list:
-            n = self.__node_dict[str(id)]
-            n_node = n.toXML(rootInstr)
-            if (n_node == None):
-                print("ERROR: ",n.getName())
+                # In order to prevent void references in the consumer, we have to use an ordered list of nodes
+                # with no back-references
+                consistent_list = self.getConsistentReferencesSortedIdsList()
                 
+                # We will serialize the items in the XML document using the order in the consistent list
+                for id in consistent_list:
+                    # Selects the item to dump to an XML node
+                    n = self.__item_dict[str(id)]
+                    # Calls the XML dumper function for the item
+                    n_node = n.toXML(xmlDocument)
+                    if (n_node == None):
+                        print("ERROR: trying to dump",n.getName(),"to XML node")
+                        
+                    else:
+                        # If success, append the node to the root node of the document
+                        xmlInstr.appendChild(n_node)
+                        
             else:
-                xmlInstr.appendChild(n_node)
+                print("ERROR: trying to dump",self.getName(),"we could not create the root tag")
             
-        return rootInstr
+        else:
+            print("ERROR: trying to dump",self.getName(),"we could not create the XML document object")
+            
+        # Returning the XML document
+        return xmlDocument
         

@@ -361,7 +361,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                 else:
                     counter = 0
 
-                poriscinitstr += "        self.addNode(self.pr"+nodename+")\n"
+                poriscinitstr += "        self.addItem(self.pr"+nodename+")\n"
                 if not savemem:
                     poriscinitstr += "        self.pr"+nodename+".ident = \""+nodename+"\"\n"
                     poriscinitstr += "        self.pr"+nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
@@ -370,7 +370,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                     poriscinitstr += "        self.sys"+parentNodeName+".addParam(self.pr"+nodename+")\n"
 
                 if not savemem:
-                    poriscinitstr += "        self.addNode(self.vl"+nodename+"_UNKNOWN)\n"
+                    poriscinitstr += "        self.addItem(self.vl"+nodename+"_UNKNOWN)\n"
                     
                 
                 if not savemem:
@@ -380,9 +380,9 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                 poriscinitstr += "        self.pr"+nodename+".addValue(self.vl"+nodename+ "_UNKNOWN)\n"
 
                 if not savemem:
-                    poriscinitstr += "        self.addNode(self.md"+nodename+"Mode_UNKNOWN)\n"
+                    poriscinitstr += "        self.addItem(self.md"+nodename+"Mode_UNKNOWN)\n"
                 else:
-                    poriscinitstr += "        self.addNode(self.md"+nodename+"UNKNOWN)\n"
+                    poriscinitstr += "        self.addItem(self.md"+nodename+"UNKNOWN)\n"
 
                 if not savemem:
                     poriscinitstr += "        self.md"+nodename+ "Mode_UNKNOWN.ident = \""+nodename+ "Mode_UNKNOWN\"\n"
@@ -439,7 +439,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                 prDetector.description = "Detector";
                 prDetector.parent = NULL;
                 '''
-                poriscinitstr += "        self.addNode(self.sys"+nodename+")\n"                
+                poriscinitstr += "        self.addItem(self.sys"+nodename+")\n"                
                 if not savemem:
                     poriscinitstr += "        self.sys"+nodename+".ident = \""+nodename+"\"\n"
                     poriscinitstr += "        self.sys"+nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
@@ -448,10 +448,10 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                     poriscinitstr += "        self.sys"+parentNodeName+".addSubsystem(self.sys"+nodename+")\n" 
 
                 if not savemem:
-                    poriscinitstr += "        self.addNode(self.md"+nodename+"Mode_UNKNOWN)\n"
+                    poriscinitstr += "        self.addItem(self.md"+nodename+"Mode_UNKNOWN)\n"
 
                 else:
-                    poriscinitstr += "        self.addNode(self.md"+nodename+"UNKNOWN)\n"
+                    poriscinitstr += "        self.addItem(self.md"+nodename+"UNKNOWN)\n"
                     
 
                 if not savemem:
@@ -643,10 +643,10 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                 prDetectorMode_UNKNOWN.parent = &prDetector;
                 '''
                 if not savemem:
-                    poriscinitstr += "        self.addNode(self.md"+parentNodeName+ "Mode_"+nodename+")\n"
+                    poriscinitstr += "        self.addItem(self.md"+parentNodeName+ "Mode_"+nodename+")\n"
 
                 else:
-                    poriscinitstr += "        self.addNode(self.md" + parentNodeName + "_" + nodename+")\n"
+                    poriscinitstr += "        self.addItem(self.md" + parentNodeName + "_" + nodename+")\n"
 
                 if not savemem:
                     poriscinitstr += "        self.md"+parentNodeName+ "Mode_" + nodename+".ident = \""+parentNodeName+ "Mode_" + nodename+"\"\n"
@@ -683,7 +683,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                         prBinning_1x1.description = "Sin binning";
                         prBinning_1x1.parent = &prBinning;
                         '''                
-                        poriscinitstr += "        self.addNode(self.vl" + parentNodeName+ "_"  + nodename+")\n"
+                        poriscinitstr += "        self.addItem(self.vl" + parentNodeName+ "_"  + nodename+")\n"
 
                         if not savemem:
                             poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
@@ -708,7 +708,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                         prExpTime_Normal.description = "Rango normal de valores para ExpTime";
                         prExpTime_Normal.parent = &prExpTime;                    
                         '''                
-                        poriscinitstr += "        self.addNode(self.vl" + parentNodeName + "_" + nodename+")\n"
+                        poriscinitstr += "        self.addItem(self.vl" + parentNodeName + "_" + nodename+")\n"
 
                         if not savemem:
                             poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
@@ -735,7 +735,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                             prShiftList_Normal.description = "Lista _separada por comas_ con los desplazamientos";
                             prShiftList_Normal.parent = &prShiftList;
                             '''                
-                            poriscinitstr += "        self.addNode(self.vl" + parentNodeName + "_" + nodename+")\n"
+                            poriscinitstr += "        self.addItem(self.vl" + parentNodeName + "_" + nodename+")\n"
                             if not savemem:
                                 poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".ident = \""+parentNodeName+ "_" + nodename+"\"\n"
                                 poriscinitstr += "        self.vl"+parentNodeName+ "_" + nodename+".description = \""+desctomonit(thisnode['description'])+"\"\n"
