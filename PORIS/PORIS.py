@@ -217,6 +217,7 @@ class PORIS:
         self.__name = name           # name
         self.__parent = None         # Parent node (if any)
         self.__labels = {}           # A dictionary of labels for this item, the scope_kind acts as a key
+        self.__project_id = 0 # The project where the item is described
 
     # Name getter
     def getName(self) -> str:
@@ -233,7 +234,15 @@ class PORIS:
     # Parent setter
     def getParent(self) -> PORISNode:
         return self.__parent
-      
+    
+    # Project ID getter
+    def getProjectId(self) -> int:
+        return self.__project_id
+
+    # Project ID setter
+    def setProjectId(self, i: int):
+        self.__project_id = i    
+    
     # Labels list getter   
     def getLabels(self) -> dict:
         return self.__labels
@@ -624,15 +633,37 @@ class PORISMode(PORIS):
         super().__init__(name)
         self.values = {}
         self.submodes = {}
+        self.__default_value = None
         
     # Function o add a submode as eligible if current mode is active
-    def addSubMode(self,m):
+    def addSubMode(self,m: PORISMode):
         self.submodes[m.id] = m
 
     # Function o add a value as eligible if current mode is active
-    def addValue(self,v):
+    def addValue(self,v: PORISValue):
         self.values[v.id] = v
+        # If there is no default value of this mode, this will be 
+        # the first default value
+        if self.__default_value == None:
+            self.__default_value = v
     
+    # Setter for the default value
+    def setDefaultValue(self, v: PORISValue) -> PORISValue:
+        ret = self.__default_value
+        if (v.id in self.values):
+            # Setting the candidate as the default value
+            self.__default_value = v
+            ret = v
+            
+        else:
+            print("Error, we can not set a default value",v.getName(),"which is not in the list of values for this mode")
+    
+        return ret
+    
+    # Getter for the default value
+    def getDefaultValue(self) -> PORISValue:
+        return self.__default_value
+        
     # Gets the most suitable value from the list of eligible ones.
     # The arguments are accepting a candidate and a current value
     # if the candidate value is eligible, then it will be returned
@@ -664,10 +695,8 @@ class PORISMode(PORIS):
             
             else:
                 # Neither the candidate nor the current values were eligible
-                # We will return the first eligible value
-                # TODO: Recover the "default value" for a mode
-                itk = list(self.values.keys())[0]
-                ret = self.values[itk]
+                # We will return the default value, which is always eligible
+                ret = self.__default_value
 
         return ret
     
@@ -708,28 +737,34 @@ class PORISMode(PORIS):
                 ret = current
                 
             else:
-                if debug:
-                    print("None of the two given, I have only these keys",self.submodes.keys())
-
-                # Neither the candidate nor the current submodes were eligible
-                # Search the first submode with the same parent than the candidate
-                # Iterating all submodes
-                for ks in self.submodes.keys():
-                    s = self.submodes[ks]
+                # We will try to find the default mode for the PORISNode holding the candidate mode
+                defmode = m.getParent().getDefaultMode()
+                if defmode.id in self.submodes.keys():
+                    ret = defmode
+                    
+                else:
                     if debug:
-                        print(s.getParent(),s.getParent().getName())
+                        print("None of the two given or the default one, I have only these keys",self.submodes.keys())
 
-                    # Selecting the current submode only if it shares parent with candidate mode (m)
-                    if s.getParent() == m.getParent():
-                        ret = s
-                        # We found the first valid item to return
-                        # We shall exit breaking the loop 
-                        break
-                
-                if ret is None:
-                    # We finanly did not found an eligible submode for this mode, for the PORISNode item which is parent of m
-                    # So we will return the UNKNOWN mode (the first one of the item)
-                    ret = m.getParent().modes[list(m.getParent().modes.keys())[0]]
+                    # Neither the candidate nor the current submodes were eligible
+                    # Search the first submode with the same parent than the candidate
+                    # Iterating all submodes
+                    for ks in self.submodes.keys():
+                        s = self.submodes[ks]
+                        if debug:
+                            print(s.getParent(),s.getParent().getName())
+
+                        # Selecting the current submode only if it shares parent with candidate mode (m)
+                        if s.getParent() == m.getParent():
+                            ret = s
+                            # We found the first valid item to return
+                            # We shall exit breaking the loop 
+                            break
+                    
+                    if ret is None:
+                        # We finanly did not found an eligible submode for this mode, for the PORISNode item which is parent of m
+                        # So we will return the UNKNOWN mode (the first one of the item)
+                        ret = m.getParent().modes[list(m.getParent().modes.keys())[0]]
 
         return ret
     
@@ -788,13 +823,26 @@ class PORISMode(PORIS):
         <default-value-id type="integer" nil="true"/>
         '''            
         n_node = super().toXML(dom)
+        # TODO: Think if it makes sense to have a default submode???
         defaultmodenode = dom.createElement("default-mode-id")
         defaultmodenode.setAttribute("type","integer")
         defaultmodenode.setAttribute("nil","true")
         n_node.appendChild(defaultmodenode)
         defaultvaluenode = dom.createElement("default-value-id")
         defaultvaluenode.setAttribute("type","integer")
-        defaultvaluenode.setAttribute("nil","true")
+        v = self.getDefaultValue()
+        if v is None:
+            defaultvaluenode.setAttribute("nil","true")
+            
+        else:
+            defaultvaluetext = dom.createTextNode(str(v.id))
+            if defaultvaluetext is not None:
+                defaultvaluenode.appendChild(defaultvaluetext)
+                
+            else:
+                print("Error creating a text node for the default value of the",self.getName(),"mode")
+                assert(False)
+            
         n_node.appendChild(defaultvaluenode)
         
         return n_node
@@ -812,6 +860,7 @@ class PORISNode(PORIS):
         # A PORISNode has a selected mode 
         self.__selectedMode = None
         self.modes = {}
+        self.__defaultMode = None
     
     # This function adds a mode to the current item
     # If there is no mode selected, the first one is 
@@ -823,10 +872,29 @@ class PORISNode(PORIS):
     def addMode(self,m):
         self.modes[m.id] = m
         m.setParent(self)
+        if self.__defaultMode == None:
+            # No mode was the default one, this one will be the default one
+            self.__defaultMode = m
+
         if self.__selectedMode == None:
             # No mode was selected, this one will be the selected one
             self.__selectedMode = m
 
+    # Getter for the default mode
+    def getDefaultMode(self) -> PORISMode:
+        return self.__defaultMode
+    
+    # Setter for the default mode
+    def setDefaultMode(self, m:PORISMode) -> PORISMode:
+        print("Setting ",m.getName(),"as the default mode for",self.getName())
+        if m.id in self.modes.keys():
+            self.__defaultMode = m
+            
+        else:
+            print("Error, ", m.getName(), "is not one of", self.getName(), "modes")
+        
+        return self.__defaultMode
+    
     # Getter for the selected mode
     def getSelectedMode(self) -> PORISMode:
         return self.__selectedMode
@@ -965,7 +1033,12 @@ class PORISNode(PORIS):
             print("ERROR, trying to select",m.getName(),"which is not a mode of",self.getName())
             # We then try to find a suitable mode depending on the choices done at higher level
             # we can not present m as a candidate, so we are presenting the current selected mode as candidate too
-            ret = self.getParent().getSelectedMode().getEligibleSubMode(self.getSelectedMode(),self.getSelectedMode())
+            if self.getParent() is None:
+                # No parent, we can select the default mode
+                ret = self.__defaultMode
+    
+            else:
+                ret = self.getParent().getSelectedMode().getEligibleSubMode(self.getSelectedMode(), self.__defaultMode)
         
         return ret
 
