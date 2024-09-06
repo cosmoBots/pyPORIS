@@ -217,6 +217,7 @@ class PORIS:
         self.__name = name           # name
         self.__parent = None         # Parent node (if any)
         self.__labels = {}           # A dictionary of labels for this item, the scope_kind acts as a key
+        self.__node_attributes = {}  # A dictionary of node attributes for this item, the content acts as a key
         self.__project_id = 0 # The project where the item is described
 
     # Name getter
@@ -250,9 +251,21 @@ class PORIS:
     # Function for adding a label to the labels list.
     # caption is the string to show within a context
     # scope_kind is an identifier of the context where the caption applies
-    def addLabel(self, caption: str, scope_kind: str):
+    def setLabel(self, caption: str, scope_kind: str):
         self.__labels[scope_kind] = caption
     
+    # Labels list getter   
+    def getNodeAttributes(self) -> dict:
+        return self.__node_attributes
+
+    # Function for setting a node attribute to the node attributes list.
+    # name is the string to show as the caption and identifier of the attribute
+    # it can also include units
+    # content is the value of the attribute
+    # visibility is a flag which determines if the attribute shall be shown to end users, or kept hidden for them
+    def setNodeAttribute(self, name: str, content: str, visibility: bool):
+        self.__node_attributes[name] = {"content": content, "visibility": visibility }
+   
     # Getter for the destinations of this item
     # It will be overloaded by subclasses
     def getDestinations(self) -> list:
@@ -335,7 +348,7 @@ class PORIS:
         '''
         # For testing only, create a label if there not exist
         if len(lbs) == 0:
-            self.addLabel(self.getName(),"test")
+            self.setLabel(self.getName(),"test")
             lbs = self.getLabels()
 
         '''
@@ -378,11 +391,48 @@ class PORIS:
         n_node.appendChild(destinations_node)
         
         # array of node attributes
-        # TODO: Implement node attributes
+
+        nats = self.getNodeAttributes()
+
         nodeAttributesChild = dom.createElement('node-attributes')
-        nodeAttributesChild.setAttribute("type","array")
-        n_node.appendChild(nodeAttributesChild)
-        
+        nodeAttributesChild.setAttribute("type", "array")
+        '''
+            <node-attribute>
+                <content>370.0</content>
+                <name>rangeMin(&#197;)</name>
+                <visibility type="boolean">true</visibility>
+            </node-attribute>  
+        '''
+        for l in nats.keys():
+            # Each label is an entry in the labels dict
+            # The value is the caption, which shall
+            # be published under the "name" tag
+            nat_node = dom.createElement("node-attribute") 
+
+            contentnode = dom.createElement("content")
+            valueText = dom.createTextNode(nats[l]["content"])
+            contentnode.appendChild(valueText)
+            nat_node.appendChild(contentnode)
+
+            namenode = dom.createElement("name")
+            valueText = dom.createTextNode(l)
+            namenode.appendChild(valueText)
+            nat_node.appendChild(namenode)
+
+            visnode = dom.createElement("visibility")
+            visnode.setAttribute("type","boolean")
+            if (nats[l]["visibility"]):
+                valueText = dom.createTextNode("true")
+
+            else:
+                valueText = dom.createTextNode("false")
+
+            visnode.appendChild(valueText)
+            nat_node.appendChild(visnode)
+
+            nodeAttributesChild.appendChild(nat_node)
+            
+        n_node.appendChild(nodeAttributesChild)    
         
         # PORIS items, after calling this function using super().toXML(doc), 
         # will add additional nodes which will depend on the class
