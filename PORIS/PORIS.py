@@ -46,7 +46,7 @@ class PORISValueFormatter:
 
     # Recovers the id of the item from a reference
     def fromXMLRef(n_node: minidom.Node) -> PORISValueFormatter:
-        idnode = n_node.getElementsByTagName('value-formatter-id')
+        idnode = n_node.getElementsByTagName('value-formatter-id')[0]
         for t in idnode.childNodes:
             if t.nodeType == t.TEXT_NODE:
                 return PORISValueFormatter.instances[t.nodeValue]
@@ -467,10 +467,33 @@ class PORIS:
 
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORIS:
-        ret: PORIS
-        # TODO: Parse these values
-        ret.__name = "hola"
-        pdoc.addItem(ret)
+        name = None
+        for e in n_node.childNodes:
+            if e.localName == "name":
+                print("found name")
+                for c in e.childNodes:
+                    if c.nodeType == c.TEXT_NODE:
+                        name = c.nodeValue
+                        print("name is", name)
+                        break
+
+            if e.localName == "id":
+                print("found id")
+                for c in e.childNodes:
+                    if c.nodeType == c.TEXT_NODE:
+                        id = int(c.nodeValue)
+                        print("id is", str(id))
+                        break
+
+            if e.localName == "type":
+                print("found type")
+                for c in e.childNodes:
+                    if c.nodeType == c.TEXT_NODE:
+                        print("type is", c.nodeValue)
+                        break
+
+        ret = PORIS(name)
+        pdoc.addItem(ret, id)
         
         return ret
 
@@ -515,8 +538,8 @@ class PORISValue(PORIS):
 
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValue:
-        ret: PORISValue
         ret = PORIS.fromXML(n_node, pdoc)
+        ret.__class__ = PORISValue
         formatter = PORISValueFormatter.fromXMLRef(n_node)
         ret.setXMLFormatter(formatter)
         
@@ -730,8 +753,8 @@ class PORISValueFloat(PORISValueData):
 
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValueFloat:
-        ret: PORISValueFloat
         ret = PORISValue.fromXML(n_node, pdoc)
+        ret.__class__ = PORISValueFloat
         # TODO: Parse these values
         ret.__max = 1000
         ret.__min = 500
@@ -1258,8 +1281,8 @@ class PORISNode(PORIS):
 
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISNode:
-        ret: PORISNode
         ret = PORIS.fromXML(n_node, pdoc)
+        ret.__class__ = PORISNode
         # TODO: Parse these values
         ret.__selectedMode = None
         ret.modes = {}
@@ -1701,15 +1724,19 @@ class PORISDoc:
         return self.__root.getName()
         
     # Adds a PORIS item to the document
-    def addItem(self, n: PORIS):
-        # Sets the current counter as the numerical identifier for the item
-        n.id = self.__id_counter
+    def addItem(self, n: PORIS, id: str=None):
+        if id is None:
+            # Sets the current counter as the numerical identifier for the item
+            n.id = self.__id_counter
+            # Increments the id counter
+            self.__id_counter += 1
+        else:
+            n.id = id
+        
         # Set the current document as the reference for the id
         n.document = self
         # Adds the item to the item dictionary
         self.__item_dict[str(n.id)] = n
-        # Increments the id counter
-        self.__id_counter += 1
 
     def getItem(self, i: int) -> PORIS:
         return self.item_dict[str(i)]
@@ -1835,7 +1862,42 @@ class PORISDoc:
         return xmlDocument
         
     # Creates the object instance from an XML node
-    def fromXML(self, n_node: minidom.Node) -> PORISNode:
-        ret = None
-        
+    def fromXML(self, doc: minidom.Document) -> bool:
+        ret = False
+        print("ey?")
+        rootnode = doc.firstChild
+        if rootnode is None:
+            print("null!")
+        else:
+            print("notnull!")
+            print(rootnode.localName)
+            if rootnode.localName == "poris":
+                for ch in rootnode.childNodes:
+                    print(ch.localName)
+                    if (ch.localName == "poris-mode"):
+                        # md = PORISMode.fromXML(ch, self)
+                        # print(md.getName())
+                        # print(md.values)
+                        pass
+
+                    else:
+                        if (ch.localName == "poris-node"):
+                            md = PORISNode.fromXML(ch, self)
+                            print(md.getName())
+                            print(md.modes)
+                            pass
+
+                        else:
+                            if (ch.localName == "poris-value"):
+                                md = PORISValue.fromXML(ch, self)
+                                print(md.getName())
+
+                            else:
+                                if (ch.localName == "poris-value-float"):
+                                    md = PORISValueFloat.fromXML(ch, self)
+                                    print("******ahay******",md.getName())
+                                    print(str(md.getMax()))
+            else:
+                print("not parsing")
+    
         return ret
