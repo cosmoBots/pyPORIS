@@ -12,11 +12,16 @@ import pytz
 #######################################
 
 class PORISValueFormatter:
+    pass
 
+class PORISValueFormatter:
+
+    instances = {}
     def __init__(self, name: str, id: int, label: str):
         self.__name = name
         self.__id = id
         self.__label = label
+        PORISValueFormatter.instances[str(id)] = self
         
     def getName(self) -> str:
         return self.__name    
@@ -39,6 +44,14 @@ class PORISValueFormatter:
                   
         return n_node
 
+    # Recovers the id of the item from a reference
+    def fromXMLRef(n_node: minidom.Node) -> PORISValueFormatter:
+        idnode = n_node.getElementsByTagName('value-formatter-id')
+        for t in idnode.childNodes:
+            if t.nodeType == t.TEXT_NODE:
+                return PORISValueFormatter.instances[t.nodeValue]
+            
+        return None
 
 class PORISValueDateFormatter(PORISValueFormatter):
     #dateFormatString = "dd.MM.yyyy HH:mm:ss z"
@@ -199,20 +212,24 @@ PORISVALUEFORMATTER_ARCSEC = PORISValueArcSecFormatter("arcmin", 9, "arcsec")
 class PORISNode:
     pass
 
+class PORISDoc:
+    pass
+
 
 ####################################################
 # This is the base class for the PORIS items
 # contains the common attributes and functions
 # subclases overload them when convenient
-
 class PORIS:
-    
+    pass
+class PORIS:
     # Constructor, needs a name for the PORIS item
     def __init__(self,name):
         # Public attributes
         self.id = None               # A numeric id for reference
         self.ident = None            # A text id for reference
         self.description = None      # A description of the item
+        self.document = None
         # Private attributes
         self.__name = name           # name
         self.__parent = None         # Parent node (if any)
@@ -296,6 +313,15 @@ class PORIS:
         ret.appendChild(valueText)
         return ret
     
+    # Recovers the id of the item from a reference
+    def fromXMLRef(n_node: minidom.Node, pdoc: PORISDoc) -> PORIS:
+        idnode = n_node.getElementsByTagName('id')
+        for t in idnode.childNodes:
+            if t.nodeType == t.TEXT_NODE:
+                return pdoc.getItem(int(t.nodeValue))
+            
+        return None
+
     # Dumps the current item to an XML node
     # PORIS items, after calling this function using super().toXML(doc), 
     # will add additional nodes which will depend on the class
@@ -439,6 +465,15 @@ class PORIS:
         
         return n_node
 
+    # Creates the object instance from an XML node
+    def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORIS:
+        ret: PORIS
+        # TODO: Parse these values
+        ret.__name = "hola"
+        pdoc.addItem(ret)
+        
+        return ret
+
 ##################################################
 # Base class for all the PORISValue items
 # Values may have a formatter associated to it
@@ -446,7 +481,14 @@ class PORIS:
 # Users just select the PORISValue and it's done
 
 class PORISValue(PORIS):
+    pass
+
+class PORISValue(PORIS):
     
+    def __init__(self,name):
+        super().__init__(name)
+        self.__formatter = PORISVALUEFORMATTER_NIL
+
     ########## XML related functions ########
         
     # the tag name will be "value", but subclasses
@@ -459,7 +501,10 @@ class PORISValue(PORIS):
         return 5
     
     def getXMLFormatter(self) -> PORISValueFormatter:
-        return PORISVALUEFORMATTER_NIL
+        return self.__formatter
+    
+    def setXMLFormatter(self, formatter: PORISValueFormatter):
+        self.__formatter = PORISVALUEFORMATTER_NIL
 
     # Dumps the item's XML (uses PORIS superclass' one and appends information of the formatter)
     def toXML(self, dom: minidom.Document) -> minidom.Node:
@@ -467,6 +512,15 @@ class PORISValue(PORIS):
         n_node.appendChild(self.getXMLFormatter().toXMLRef(dom))
         
         return n_node
+
+    # Creates the object instance from an XML node
+    def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValue:
+        ret: PORISValue
+        ret = PORIS.fromXML(n_node, pdoc)
+        formatter = PORISValueFormatter.fromXMLRef(n_node)
+        ret.setXMLFormatter(formatter)
+        
+        return ret
 
     
 ########################################################
@@ -606,7 +660,8 @@ class PORISValueDate(PORISValueString):
 
 #######################################
 # This class allows Flat data in a PORISValue
-
+class PORISValueFloat(PORISValueData):
+    pass
 class PORISValueFloat(PORISValueData):
 
     # Constructor, overloads PORISValueData and ads min and max values
@@ -672,6 +727,19 @@ class PORISValueFloat(PORISValueData):
         n_node.appendChild(rangemaxnode)
         
         return n_node
+
+    # Creates the object instance from an XML node
+    def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValueFloat:
+        ret: PORISValueFloat
+        ret = PORISValue.fromXML(n_node, pdoc)
+        # TODO: Parse these values
+        ret.__max = 1000
+        ret.__min = 500
+        ret.__default_data = 700
+        formatter = PORISValueFormatter.fromXMLRef(n_node)
+        ret.setXMLFormatter(formatter)
+        
+        return ret
 
 #######################################
 # This class implements the PORIS Modes
@@ -904,7 +972,16 @@ class PORISMode(PORIS):
         
         return n_node
 
-    
+    # Creates the object instance from an XML node
+    def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISMode:
+        ret: PORISMode
+        ret = PORIS.fromXML(n_node, pdoc)
+        # TODO: Parse these values
+        ret.values = {}
+        ret.submodes = {}
+        
+        return ret
+
     
 #######################################
 # This class is the base one for PORISParam and PORISSys
@@ -1179,6 +1256,18 @@ class PORISNode(PORIS):
         
         return n_node    
 
+    # Creates the object instance from an XML node
+    def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISNode:
+        ret: PORISNode
+        ret = PORIS.fromXML(n_node, pdoc)
+        # TODO: Parse these values
+        ret.__selectedMode = None
+        ret.modes = {}
+        ret.__defaultMode = None
+        
+        return ret
+
+
 #######################################
 # This class implements a param, which is a PORISNode which has values 
 # and does not have subsystems or subparams
@@ -1363,6 +1452,15 @@ class PORISParam(PORISNode):
         
         return n_node    
 
+    # Creates the object instance from an XML node
+    def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISNode:
+        ret: PORISParam
+        ret = PORISNode.fromXML(n_node, pdoc)
+        # TODO: Parse these values
+        ret.__selectedValues = None
+        ret.values = {}
+        
+        return ret
 
 #######################################
 # This class implements a PORIS system, which contain modes 
@@ -1606,10 +1704,15 @@ class PORISDoc:
     def addItem(self, n: PORIS):
         # Sets the current counter as the numerical identifier for the item
         n.id = self.__id_counter
+        # Set the current document as the reference for the id
+        n.document = self
         # Adds the item to the item dictionary
         self.__item_dict[str(n.id)] = n
         # Increments the id counter
         self.__id_counter += 1
+
+    def getItem(self, i: int) -> PORIS:
+        return self.item_dict[str(i)]
 
     # Prints a list with all the items in the document
     def list_items(self):
@@ -1731,3 +1834,8 @@ class PORISDoc:
         # Returning the XML document
         return xmlDocument
         
+    # Creates the object instance from an XML node
+    def fromXML(self, n_node: minidom.Node) -> PORISNode:
+        ret = None
+        
+        return ret
