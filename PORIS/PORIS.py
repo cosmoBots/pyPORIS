@@ -470,34 +470,26 @@ class PORIS:
         ident = None
         for e in n_node.childNodes:
             if e.localName == "name":
-                print("found name")
                 for c in e.childNodes:
                     if c.nodeType == c.TEXT_NODE:
                         name = c.nodeValue
-                        print("name is", name)
                         break
 
             if e.localName == "id":
-                print("found id")
                 for c in e.childNodes:
                     if c.nodeType == c.TEXT_NODE:
                         id = int(c.nodeValue)
-                        print("id is", str(id))
                         break
 
             if e.localName == "type":
-                print("found type")
                 for c in e.childNodes:
                     if c.nodeType == c.TEXT_NODE:
-                        print("type is", c.nodeValue)
                         break
 
             if e.localName == "ident":
-                print("found ident")
                 for c in e.childNodes:
                     if c.nodeType == c.TEXT_NODE:
                         ident = c.nodeValue
-                        print("ident is", ident)
                         break
 
         ret = PORIS(name)
@@ -586,6 +578,9 @@ class PORISValueData(PORISValue):
     def getDefaultData(self):
         return self.__default_data
     
+    def setDefaultData(self, d):
+        self.__default_data = d
+    
     ########## XML related functions ########
     
     # The tag is "none" because this class shall never
@@ -602,10 +597,6 @@ class PORISValueData(PORISValue):
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValueData:
         ret = super(PORISValueData,PORISValueData).fromXML(n_node, pdoc)
         ret.__class__ = PORISValueData
-        # TODO: Parse these values
-        ret.__max = 1000
-        ret.__min = 500
-        ret.__default_data = 700
         formatter = PORISValueFormatter.fromXMLRef(n_node)
         ret.setXMLFormatter(formatter)
         
@@ -740,9 +731,6 @@ class PORISValueFloat(PORISValueData):
     # max getter
     def getMax(self) -> float:
         return self.__max
-    
-    def getDefaultData(self) -> float:
-        return super().getDefaultData()
 
     ########## XML related functions ########
     
@@ -783,10 +771,34 @@ class PORISValueFloat(PORISValueData):
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValueFloat:
         ret = super(PORISValueFloat,PORISValueFloat).fromXML(n_node, pdoc)
         ret.__class__ = PORISValueFloat
-        # TODO: Parse these values
-        ret.__max = 1000
-        ret.__min = 500
-        ret.__default_data = 700
+
+        defaultfloatnode = n_node.getElementsByTagName('default-float')[0]
+        if (defaultfloatnode is None):
+            print("ERROR! default float is None")
+            
+        else:
+            for t in defaultfloatnode.childNodes:
+                if t.nodeType == t.TEXT_NODE:
+                    ret.setDefaultData(float(t.nodeValue))
+            
+        minnode = n_node.getElementsByTagName('rangemin')[0]
+        if (minnode is None):
+            print("ERROR! default float is None")
+            
+        else:
+            for t in minnode.childNodes:
+                if t.nodeType == t.TEXT_NODE:
+                    ret.__min = float(t.nodeValue)            
+            
+        maxnode = n_node.getElementsByTagName('rangemax')[0]
+        if (maxnode is None):
+            print("ERROR! default float is None")
+            
+        else:
+            for t in maxnode.childNodes:
+                if t.nodeType == t.TEXT_NODE:
+                    ret.__max = float(t.nodeValue)            
+            
         formatter = PORISValueFormatter.fromXMLRef(n_node)
         ret.setXMLFormatter(formatter)
         
@@ -1031,6 +1043,7 @@ class PORISMode(PORIS):
         # TODO: Parse these values
         ret.values = {}
         ret.submodes = {}
+        ret.__default_value = None
         
         return ret
 
@@ -1290,7 +1303,7 @@ class PORISNode(PORIS):
         defaultmodenode = dom.createElement("default-mode-id")
         defaultmodenode.setAttribute("type","integer")
         # WARNING: It looks like the java panel is not correctly using default mode
-        print(self)
+
         m = self.getDefaultMode()
         if m is None:
             defaultmodenode.setAttribute("nil","true")
@@ -1922,50 +1935,35 @@ class PORISDoc:
     # Creates the object instance from an XML node
     def fromXML(self, doc: minidom.Document) -> bool:
         ret = False
-        print("ey?")
         rootnode = doc.firstChild
         if rootnode is None:
             print("null!")
         else:
-            print("notnull!")
-            print(rootnode.localName)
             if rootnode.localName == "poris":
                 for ch in rootnode.childNodes:
-                    print(ch.localName)
                     if (ch.localName == "poris-mode"):
-                        # md = PORISMode.fromXML(ch, self)
-                        # print(md.getName())
-                        # print(md.values)
-                        pass
+                        md = PORISMode.fromXML(ch, self)
 
                     else:
                         if (ch.localName == "poris-node"):
                             md = PORISNode.executeXMLParser(ch, self)
-                            print(md.getName())
-                            print(md.modes)
 
                         else:
                             if (ch.localName == "poris-value"):
                                 md = PORISValue.fromXML(ch, self)
-                                print(md.getName())
 
                             else:
                                 if (ch.localName == "poris-value-float"):
                                     md = PORISValueFloat.fromXML(ch, self)
-                                    print("******ahay******",md.getName())
-                                    print(str(md.getMax()))
 
                                 else:
                                     if (ch.localName == "poris-sys"):
                                         md = PORISSys.fromXML(ch, self)
-                                        print(md.getName())
-                                        print(md.modes)
 
                                     else:
                                         if (ch.localName == "poris-param"):
                                             md = PORISParam.fromXML(ch, self)
-                                            print(md.getName())
-                                            print(md.modes)
+
             else:
                 print("not parsing")
     
