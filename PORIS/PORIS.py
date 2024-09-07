@@ -315,9 +315,13 @@ class PORIS:
     
     # Recovers the id of the item from a reference
     def fromXMLRef(n_node: minidom.Node, pdoc: PORISDoc) -> PORIS:
+        count = 1
+        for e in n_node.childNodes:
+            count += 1
+            
         idnode = n_node.getElementsByTagName('id')[0]
-        if idnode.nodeType == idnode.TEXT_NODE:
-            return pdoc.getItem(int(idnode.nodeValue))
+        if idnode.firstChild.nodeType == idnode.TEXT_NODE:
+            return pdoc.getItem(int(idnode.firstChild.nodeValue))
             
         return None
 
@@ -481,10 +485,6 @@ class PORIS:
                         id = int(c.nodeValue)
                         break
 
-            if e.localName == "type":
-                for c in e.childNodes:
-                    if c.nodeType == c.TEXT_NODE:
-                        break
 
             if e.localName == "ident":
                 for c in e.childNodes:
@@ -495,7 +495,7 @@ class PORIS:
         ret = PORIS(name)
         ret.ident = ident
         pdoc.addItem(ret, id)
-        
+    
         return ret
 
 ##################################################
@@ -1037,7 +1037,6 @@ class PORISMode(PORIS):
 
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISMode:
-        ret: PORISMode
         ret = super(PORISMode,PORISMode).fromXML(n_node, pdoc)
         ret.__class__ = PORISMode
         # TODO: Parse these values
@@ -1045,8 +1044,26 @@ class PORISMode(PORIS):
         ret.submodes = {}
         ret.__default_value = None
         
-        return ret
+        destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
+        print("destnode:",destnode.localName)
+        dest = None
+        print(ret.getName())
+        for d in destnode.childNodes:
+            dest = PORIS.fromXMLRef(d, pdoc)
+            print("d:",dest.getName())
+            if dest is not None:
+                if (issubclass(dest.__class__,PORISValue)):
+                    # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                    ret.addValue(dest)
+                    print(ret.values)
+                    
 
+                if (issubclass(dest.__class__,PORISMode)):
+                    # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                    ret.addSubMode(dest)
+                    print(ret.submodes)        
+        
+        return ret   
     
 #######################################
 # This class is the base one for PORISParam and PORISSys
@@ -1346,10 +1363,24 @@ class PORISNode(PORIS):
         ret = super(PORISNode,PORISNode).fromXML(n_node, pdoc)
         ret.__class__ = PORISNode
         ret.modes = {}
+        ret.__selectedMode = None
         ret.__defaultMode = None
 
+        destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
+        print("destnode:",destnode.localName)
+        dest = None
+        print(ret.getName())
+        for d in destnode.childNodes:
+            dest = PORIS.fromXMLRef(d, pdoc)
+            print("d:",dest.getName())
+            if dest is not None:
+                if (issubclass(dest.__class__,PORISMode)):
+                    # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                    ret.addMode(dest)
+                    print(ret.modes)
+                    
+        
         return ret
-
 
 #######################################
 # This class implements a param, which is a PORISNode which has values 
@@ -1360,8 +1391,8 @@ class PORISParam(PORISNode):
 class PORISParam(PORISNode):  
     # Constructor, it adds values to superclass
     def __init__(self,name):
-        self.__selectedValue = None  # Current selected value for the param
         super().__init__(name)
+        self.__selectedValue = None  # Current selected value for the param
         self.values = {}
   
     # Getter for the selected value
@@ -1541,8 +1572,17 @@ class PORISParam(PORISNode):
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISParam:
         ret = super(PORISParam,PORISParam).fromXML(n_node, pdoc)
         ret.__class__ = PORISParam
-        # TODO: Parse these values
         ret.values = {}
+        ret.__selectedValue = None  # Current selected value for the param
+        
+        destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
+        dest = None
+        for d in destnode.childNodes:
+            dest = PORIS.fromXMLRef(d, pdoc)
+            if dest is not None:
+                if (issubclass(dest.__class__,PORISValue)):
+                    # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                    ret.addValue(dest)            
         
         return ret
 
@@ -1758,6 +1798,25 @@ class PORISSys(PORISNode):
         ret.params = {}
         ret.subsystems = {}
 
+        destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
+        print("destnode:",destnode.localName)
+        dest = None
+        print(ret.getName())
+        for d in destnode.childNodes:
+            dest = PORIS.fromXMLRef(d, pdoc)
+            print("d:",dest.getName())
+            if dest is not None:
+                if (issubclass(dest.__class__,PORISParam)):
+                    # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                    ret.addParam(dest)
+                    print(ret.params)
+                    
+                if (issubclass(dest.__class__,PORISSys)):
+                    # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                    ret.addSubsystem(dest)
+                    print(ret.subsystems)
+                    
+        
         return ret
 
 #######################################
@@ -1810,7 +1869,7 @@ class PORISDoc:
         self.__item_dict[str(n.id)] = n
 
     def getItem(self, i: int) -> PORIS:
-        return self.item_dict[str(i)]
+        return self.__item_dict[str(i)]
 
     # Prints a list with all the items in the document
     def list_items(self):
