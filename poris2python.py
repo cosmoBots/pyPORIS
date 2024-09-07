@@ -374,7 +374,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                     
                 
                 if not savemem:
-                    poriscinitstr += "        self.vl"+nodename+ "_UNKNOWN.ident = \""+nodename+ "_UNKNOWN\"\n"
+                    poriscinitstr += "        self.vl"+nodename+ "_UNKNOWN.ident = \"UNK_"+thisnode['ident']+"\"\n"
                     poriscinitstr += "        self.vl"+nodename+ "_UNKNOWN.description = \"Unknown value for "+nodename+"\"\n"
                 
                 poriscinitstr += "        self.pr"+nodename+".addValue(self.vl"+nodename+ "_UNKNOWN)\n"
@@ -385,7 +385,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                     poriscinitstr += "        self.addItem(self.md"+nodename+"UNKNOWN)\n"
 
                 if not savemem:
-                    poriscinitstr += "        self.md"+nodename+ "Mode_UNKNOWN.ident = \""+nodename+ "Mode_UNKNOWN\"\n"
+                    poriscinitstr += "        self.md"+nodename+ "Mode_UNKNOWN.ident = \"UNKM_"+thisnode['ident']+"\"\n"
                     poriscinitstr += "        self.md"+nodename+ "Mode_UNKNOWN.description = \"Unknown mode for "+nodename+"\"\n"
                 
                 if not savemem:
@@ -455,7 +455,7 @@ def createPythonCode(nodes_dict,deviceName,output_path: str,relative_path: str):
                     
 
                 if not savemem:
-                    poriscinitstr += "        self.md"+nodename+ "Mode_UNKNOWN.ident = \""+nodename+ "Mode_UNKNOWN\"\n"
+                    poriscinitstr += "        self.md"+nodename+ "Mode_UNKNOWN.ident = \"UNKM_"+thisnode['ident']+ "\"\n"
                     poriscinitstr += "        self.md"+nodename+ "Mode_UNKNOWN.description = \""+desctomonit(thisnode['description'])+"\"\n"
                     poriscinitstr += "        self.sys"+nodename+".addMode(self.md"+nodename+ "Mode_UNKNOWN)\n"
 
