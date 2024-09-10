@@ -654,11 +654,11 @@ def createPorisXML(nodes_dict,deviceName):
                         thisdest = nodes_dict[destid]
                         dest = rootInstr.createElement('destination')
                         if thisdest['tracker'] == "prValue" or thisdest['tracker'] == "prValFloat" or thisdest['tracker'] == "prValText":
-                            dest.setAttribute("type", "Value")
+                            dest.setAttribute("type", "PORISValue")
                             blocking_present = True                        
                         else:
                             if thisdest['tracker'] == "prMode":
-                                dest.setAttribute("type", "Mode")
+                                dest.setAttribute("type", "PORISMode")
                                 blocking_present = True                        
                             else:
                                 dest.setAttribute("type", "Error1!!!")
