@@ -600,7 +600,7 @@ class PORISValue(PORIS):
     # the tag name will be "value", but subclasses
     # might overload it
     def getXMLNodeName(self) -> str:
-        return "poris-value"
+        return "value"
     
     # getter for the node type (overloading PORIS one)
     def getXMLNodeType(self) -> int:
@@ -708,7 +708,7 @@ class PORISValueString(PORISValueData):
 
     # getter for the XML tag name
     def getXMLNodeName(self) -> str:
-        return "poris-value-string"
+        return "value-string"
 
     # The node type is 6 for PORISValueStrings
     def getXMLNodeType(self) -> int:
@@ -766,7 +766,7 @@ class PORISValueFilePath(PORISValueString):
     
     # Getter for the XML tag name of this item
     def getXMLNodeName(self) -> str:
-        return "poris-value-file-path"
+        return "value-file-path"
 
     '''
     <value-file-path>
@@ -863,7 +863,7 @@ class PORISValueDate(PORISValueString):
     
     # Getter for the XML tag name of this item
     def getXMLNodeName(self) -> str:
-        return "poris-value-date"    
+        return "value-date"    
     # getter for the XML tag name
     def getXMLFormatter(self) -> PORISValueFormatter:
         return PORISVALUEFORMATTER_DATE
@@ -991,7 +991,7 @@ class PORISValueFloat(PORISValueData):
     
     # getter for the XML tag name
     def getXMLNodeName(self) -> str:
-        return "poris-value-float"
+        return "value-double-range"
     
     # getter for the formatter, overload super()'s
     def getXMLFormatter(self) -> PORISValueFormatter:
@@ -1250,7 +1250,7 @@ class PORISMode(PORIS):
 
     # Getter for the XML tag name of this item
     def getXMLNodeName(self) -> str:
-        return "poris-mode"
+        return "mode"
     
     # Getter for the NodeType of this item
     def getXMLNodeType(self) -> int:
@@ -1559,7 +1559,7 @@ class PORISNode(PORIS):
     # In XML all PORISNodes (no mather if they are systems or params)
     # are <sub-system>
     def getXMLNodeName(self) -> str:
-        return "poris-node"
+        return "sub-system"
     
     # Function to obtain the NodeType, overloading super's
     def getXMLNodeType(self) -> int:
@@ -1820,7 +1820,7 @@ class PORISParam(PORISNode):
 
     # Function to obtain the tag name for the current item
     def getXMLNodeName(self) -> str:
-        return "poris-param"
+        return "sub-system"
 
 
     # Dump XML from this item.  Appends default value
@@ -2063,7 +2063,7 @@ class PORISSys(PORISNode):
 
     # Function to obtain the tag name for the current item
     def getXMLNodeName(self) -> str:
-        return "poris-sys"
+        return "sub-system"
 
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISSys:
@@ -2278,19 +2278,19 @@ class PORISDoc:
                 print("Aqui tenemos el root")
                 for ch in rootnode.childNodes:
                     print(ch.localName)
-                    if (ch.localName == "poris-mode"):
+                    if (ch.localName == "mode"):
                         md = PORISMode.fromXML(ch, self)
 
                     else:
-                        if (ch.localName == "poris-node"):
+                        if (ch.localName == "sub-system"):
                             md = PORISNode.executeXMLParser(ch, self)
 
                         else:
-                            if (ch.localName == "poris-value"):
+                            if (ch.localName == "value"):
                                 md = PORISValue.fromXML(ch, self)
 
                             else:
-                                if (ch.localName == "poris-value-float"):
+                                if (ch.localName == "value-double-range"):
                                     md = PORISValueFloat.fromXML(ch, self)
 
                                 else:
@@ -2302,16 +2302,16 @@ class PORISDoc:
                                             md = PORISParam.fromXML(ch, self)
                                             
                                         else:
-                                            if (ch.localName == "poris-value-string"):
+                                            if (ch.localName == "value-string"):
                                                 md = PORISValueString.fromXML(ch, self)
                                                 
                                             else:
-                                                if (ch.localName == "poris-value-date"):
+                                                if (ch.localName == "value-date"):
                                                     md = PORISValueDate.fromXML(ch, self)
                                                     
                                                 
                                                 else:
-                                                    if (ch.localName == "poris-value-file-path"):
+                                                    if (ch.localName == "value-file-path"):
                                                         md = PORISValueFilePath.fromXML(ch, self)                                                                          
             else:
                 print("not parsing")
