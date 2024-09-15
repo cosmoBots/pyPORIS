@@ -1815,8 +1815,8 @@ class PORISParam(PORISNode):
     ########### XML related functions ########
 
     # Function to obtain the type, overrides super's because class name is not used
-    # def getXMLType(self) -> str:
-    #    return "PORISNode"
+    def getXMLType(self) -> str:
+        return "PORISNode"
 
     # Function to obtain the tag name for the current item
     def getXMLNodeName(self) -> str:
@@ -2058,8 +2058,8 @@ class PORISSys(PORISNode):
     ########### XML related functions ########
     
     # Getter for the type.  In this case the type is not the class name
-    # def getXMLType(self) -> str:
-    #    return "PORISNode"
+    def getXMLType(self) -> str:
+        return "PORISNode"
 
     # Function to obtain the tag name for the current item
     def getXMLNodeName(self) -> str:
