@@ -2241,7 +2241,6 @@ class PORISDoc:
         n.document = self
         # Adds the item to the item dictionary
         self.__item_dict[str(n.getId())] = n
-        self.__item_dict[str(n.getId())] = n
 
     def getItem(self, i: int) -> PORIS:
         return self.__item_dict[str(i)]
