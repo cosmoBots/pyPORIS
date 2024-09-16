@@ -227,16 +227,25 @@ class PORIS:
     def __init__(self,name):
         print("Creating PORIS instance name",name)
         # Public attributes
-        self.id = None               # A numeric id for reference
         self.ident = None            # A text id for reference
         self.description = None      # A description of the item
         self.document = None
         # Private attributes
+        self.__id = None               # A numeric id for reference
         self.__name = name           # name
         self.__parent = None         # Parent node (if any)
         self.__labels = {}           # A dictionary of labels for this item, the scope_kind acts as a key
         self.__node_attributes = {}  # A dictionary of node attributes for this item, the content acts as a key
         self.__project_id = 0 # The project where the item is described
+
+    # ID getter
+    def getId(self) -> int:
+        return self.__id
+
+    # ID setter
+    def setId(self, i: int):
+        self.__id = i
+        return 1
 
     # Name getter
     def getName(self) -> str:
@@ -310,7 +319,7 @@ class PORIS:
     def toXMLRef(self, dom: minidom.Document) -> minidom.Node:
         ret = dom.createElement('id')
         ret.setAttribute("type", "integer")
-        valueText = dom.createTextNode(str(self.id))
+        valueText = dom.createTextNode(str(self.getId()))
         ret.appendChild(valueText)
         return ret
     
@@ -340,7 +349,7 @@ class PORIS:
         # subnode with an identifying integer
         idChild = dom.createElement('id')
         idChild.setAttribute("type", "integer")
-        valueText = dom.createTextNode(str(self.id))
+        valueText = dom.createTextNode(str(self.getId()))
         idChild.appendChild(valueText)
         n_node.appendChild(idChild)
         
@@ -473,110 +482,118 @@ class PORIS:
         ident = None
         natsnode = None
         labsnode = None
+        virtual = False
         for e in n_node.childNodes:
-            if e.localName == "name":
-                for c in e.childNodes:
-                    if c.nodeType == c.TEXT_NODE:
-                        name = c.nodeValue
-                        break
+            if not virtual:
+                if e.localName == "name":
+                    for c in e.childNodes:
+                        if c.nodeType == c.TEXT_NODE:
+                            name = c.nodeValue
+                            break
 
-            if e.localName == "id":
-                for c in e.childNodes:
-                    if c.nodeType == c.TEXT_NODE:
-                        id = int(c.nodeValue)
-                        break
+                if e.localName == "id":
+                    for c in e.childNodes:
+                        if c.nodeType == c.TEXT_NODE:
+                            id = int(c.nodeValue)
+                            if (id < 0):
+                                virtual = True
+                            break
 
 
-            if e.localName == "ident":
-                for c in e.childNodes:
-                    if c.nodeType == c.TEXT_NODE:
-                        ident = c.nodeValue
-                        break
+                if e.localName == "ident":
+                    for c in e.childNodes:
+                        if c.nodeType == c.TEXT_NODE:
+                            ident = c.nodeValue
+                            break
 
-            if e.localName == "node-attributes":
-                natsnode = e
+                if e.localName == "node-attributes":
+                    natsnode = e
 
-            if e.localName == "labels":
-                labsnode = e
+                if e.localName == "labels":
+                    labsnode = e
 
-        ret = PORIS(name)
-        if ident is None:
-            ident = "id_"+str(id)
+        if not virtual:
+            ret = PORIS(name)
+            if ident is None:
+                ident = "id_"+str(id)
+                
+            ret.ident = ident
+            pdoc.addItem(ret, id)
             
-        ret.ident = ident
-        pdoc.addItem(ret, id)
+            '''
+                <node-attribute>
+                    <content>370.0</content>
+                    <name>rangeMin(&#197;)</name>
+                    <visibility type="boolean">true</visibility>
+                </node-attribute>  
+            '''        
+            
+            if natsnode is not None:
+                for e in natsnode.childNodes:
+                    if e.localName == "node-attribute":
+                        thisnat = {}
+                        thiskey = None
+                        for f in e.childNodes:
+                            
+                            if f.localName == "content":
+                                for c in f.childNodes:
+                                    if c.nodeType == c.TEXT_NODE:                            
+                                        thisnat['content'] = c.nodeValue
+
+                            if f.localName == "name":
+                                for c in f.childNodes:
+                                    if c.nodeType == c.TEXT_NODE:                            
+                                        thiskey = c.nodeValue
+
+                            if f.localName == "visibility":
+                                for c in f.childNodes:
+                                    if c.nodeType == c.TEXT_NODE:                            
+                                        thisnat['visibility'] = (c.nodeValue == "true")
         
-        '''
-            <node-attribute>
-                <content>370.0</content>
-                <name>rangeMin(&#197;)</name>
-                <visibility type="boolean">true</visibility>
-            </node-attribute>  
-        '''        
+                        if thiskey is not None:
+                            ret.__node_attributes[thiskey] = thisnat
+                        print("Adding node attribute", thiskey, thisnat)
+                        
+            '''
+                <label>
+                    <name>Don't rotate (0&#186;)</name>
+                    <scope-kind>
+                        <name>CfgPanel</name>
+                    </scope-kind>
+                </label>                    
+            '''
+            if labsnode is not None:
+                for e in labsnode.childNodes:
+                    if e.localName == "label":
+                        thissck = None
+                        thisname = None
+                        for f in e.childNodes:
+                            print(f.localName)
+                            if f.localName == "name":
+                                for c in f.childNodes:
+                                    if c.nodeType == c.TEXT_NODE:                            
+                                        thisname = c.nodeValue
+                                        print(thisname)
+
+                            if f.localName == "scope-kind":
+                                for c in f.childNodes:
+                                    print(c.localName)
+                                    if c.localName == "name":
+                                        for d in c.childNodes:
+                                            if d.nodeType == c.TEXT_NODE:                            
+                                                thissck = d.nodeValue
+                                                print(thissck)
         
-        if natsnode is not None:
-            for e in natsnode.childNodes:
-                if e.localName == "node-attribute":
-                    thisnat = {}
-                    thiskey = None
-                    for f in e.childNodes:
-                        
-                        if f.localName == "content":
-                            for c in f.childNodes:
-                                if c.nodeType == c.TEXT_NODE:                            
-                                    thisnat['content'] = c.nodeValue
-
-                        if f.localName == "name":
-                            for c in f.childNodes:
-                                if c.nodeType == c.TEXT_NODE:                            
-                                    thiskey = c.nodeValue
-
-                        if f.localName == "visibility":
-                            for c in f.childNodes:
-                                if c.nodeType == c.TEXT_NODE:                            
-                                    thisnat['visibility'] = (c.nodeValue == "true")
-    
-                    if thiskey is not None:
-                        ret.__node_attributes[thiskey] = thisnat
-                    print("Adding node attribute", thiskey, thisnat)
-                    
-        '''
-            <label>
-                <name>Don't rotate (0&#186;)</name>
-                <scope-kind>
-                    <name>CfgPanel</name>
-                </scope-kind>
-            </label>                    
-        '''
-        if labsnode is not None:
-            for e in labsnode.childNodes:
-                if e.localName == "label":
-                    thissck = None
-                    thisname = None
-                    for f in e.childNodes:
-                        print(f.localName)
-                        if f.localName == "name":
-                            for c in f.childNodes:
-                                if c.nodeType == c.TEXT_NODE:                            
-                                    thisname = c.nodeValue
-                                    print(thisname)
-
-                        if f.localName == "scope-kind":
-                            for c in f.childNodes:
-                                print(c.localName)
-                                if c.localName == "name":
-                                    for d in c.childNodes:
-                                        if d.nodeType == c.TEXT_NODE:                            
-                                            thissck = d.nodeValue
-                                            print(thissck)
-    
-                    if thisname is not None and thissck is not None:
-                        ret.setLabel(thisname, thissck)
-                        ret.__labels[thisname] = thissck
-                        print("Adding label", thisname, thissck)
-                        
-                    else:
-                        print("ERROR: malformed label")
+                        if thisname is not None and thissck is not None:
+                            ret.setLabel(thisname, thissck)
+                            ret.__labels[thisname] = thissck
+                            print("Adding label", thisname, thissck)
+                            
+                        else:
+                            print("ERROR: malformed label")
+                            
+        else:
+            ret = None
                                         
         return ret
 
@@ -622,9 +639,10 @@ class PORISValue(PORIS):
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValue:
         ret = super(PORISValue,PORISValue).fromXML(n_node, pdoc)
-        ret.__class__ = PORISValue
-        formatter = PORISValueFormatter.fromXMLRef(n_node)
-        ret.setXMLFormatter(formatter)
+        if ret is not None:
+            ret.__class__ = PORISValue
+            formatter = PORISValueFormatter.fromXMLRef(n_node)
+            ret.setXMLFormatter(formatter)
         
         return ret
 
@@ -678,9 +696,10 @@ class PORISValueData(PORISValue):
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValueData:
         ret = super(PORISValueData,PORISValueData).fromXML(n_node, pdoc)
-        ret.__class__ = PORISValueData
-        formatter = PORISValueFormatter.fromXMLRef(n_node)
-        ret.setXMLFormatter(formatter)
+        if ret is not None:
+            ret.__class__ = PORISValueData
+            formatter = PORISValueFormatter.fromXMLRef(n_node)
+            ret.setXMLFormatter(formatter)
         
         return ret
 
@@ -730,21 +749,22 @@ class PORISValueString(PORISValueData):
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValueString:
         ret = super(PORISValueString,PORISValueString).fromXML(n_node, pdoc)
-        ret.__class__ = PORISValueString
+        if ret is not None:
+            ret.__class__ = PORISValueString
 
-        listnodes = n_node.getElementsByTagName('default-string')
-        if len(listnodes) > 0:
-            defaultstringnode = listnodes[0]
-            if (defaultstringnode is None):
-                print("ERROR! default string is None")
-                
-            else:
-                for t in defaultstringnode.childNodes:
-                    if t.nodeType == t.TEXT_NODE:
-                        ret.setDefaultData(t.nodeValue)
-                        
-        formatter = PORISValueFormatter.fromXMLRef(n_node)
-        ret.setXMLFormatter(formatter)
+            listnodes = n_node.getElementsByTagName('default-string')
+            if len(listnodes) > 0:
+                defaultstringnode = listnodes[0]
+                if (defaultstringnode is None):
+                    print("ERROR! default string is None")
+                    
+                else:
+                    for t in defaultstringnode.childNodes:
+                        if t.nodeType == t.TEXT_NODE:
+                            ret.setDefaultData(t.nodeValue)
+                            
+            formatter = PORISValueFormatter.fromXMLRef(n_node)
+            ret.setXMLFormatter(formatter)
         
         return ret
 
@@ -812,30 +832,31 @@ class PORISValueFilePath(PORISValueString):
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValueFilePath:
         ret = super(PORISValueFilePath,PORISValueFilePath).fromXML(n_node, pdoc)
-        ret.__class__ = PORISValueFilePath
-        ret.file_ext = None
-        ret.file_desc = None
-        
-        extnode = n_node.getElementsByTagName('file-extension')[0]
-        if (extnode is None):
-            print("ERROR! default string is None")
+        if ret is not None:
+            ret.__class__ = PORISValueFilePath
+            ret.file_ext = None
+            ret.file_desc = None
             
-        else:
-            for t in extnode.childNodes:
-                if t.nodeType == t.TEXT_NODE:
-                    ret.file_ext = t.nodeValue
-                        
-        descnode = n_node.getElementsByTagName('file-description')[0]
-        if (descnode is None):
-            print("ERROR! default string is None")
-            
-        else:
-            for t in descnode.childNodes:
-                if t.nodeType == t.TEXT_NODE:
-                    ret.file_desc = t.nodeValue
-                        
-        formatter = PORISValueFormatter.fromXMLRef(n_node)
-        ret.setXMLFormatter(formatter)
+            extnode = n_node.getElementsByTagName('file-extension')[0]
+            if (extnode is None):
+                print("ERROR! default string is None")
+                
+            else:
+                for t in extnode.childNodes:
+                    if t.nodeType == t.TEXT_NODE:
+                        ret.file_ext = t.nodeValue
+                            
+            descnode = n_node.getElementsByTagName('file-description')[0]
+            if (descnode is None):
+                print("ERROR! default string is None")
+                
+            else:
+                for t in descnode.childNodes:
+                    if t.nodeType == t.TEXT_NODE:
+                        ret.file_desc = t.nodeValue
+                            
+            formatter = PORISValueFormatter.fromXMLRef(n_node)
+            ret.setXMLFormatter(formatter)
         
         return ret
 
@@ -897,39 +918,40 @@ class PORISValueDate(PORISValueString):
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValueDate:
         ret = super(PORISValueDate,PORISValueDate).fromXML(n_node, pdoc)
-        ret.__class__ = PORISValueDate
-        ret.min_date = None
-        ret.max_date = None
-        
-        defaultstringnode = n_node.getElementsByTagName('default-date')[0]
-        if (defaultstringnode is None):
-            print("ERROR! default string is None")
+        if ret is not None:
+            ret.__class__ = PORISValueDate
+            ret.min_date = None
+            ret.max_date = None
             
-        else:
-            for t in defaultstringnode.childNodes:
-                if t.nodeType == t.TEXT_NODE:
-                    ret.setDefaultData(t.nodeValue)
-                    
-        maxnode = n_node.getElementsByTagName('date-max')[0]
-        if (maxnode is None):
-            print("ERROR! default string is None")
-            
-        else:
-            for t in maxnode.childNodes:
-                if t.nodeType == t.TEXT_NODE:
-                    ret.max_date = t.nodeValue
+            defaultstringnode = n_node.getElementsByTagName('default-date')[0]
+            if (defaultstringnode is None):
+                print("ERROR! default string is None")
+                
+            else:
+                for t in defaultstringnode.childNodes:
+                    if t.nodeType == t.TEXT_NODE:
+                        ret.setDefaultData(t.nodeValue)
                         
-        minnode = n_node.getElementsByTagName('date-min')[0]
-        if (minnode is None):
-            print("ERROR! default string is None")
-            
-        else:
-            for t in minnode.childNodes:
-                if t.nodeType == t.TEXT_NODE:
-                    ret.min_date = t.nodeValue
-                        
-        formatter = PORISValueFormatter.fromXMLRef(n_node)
-        ret.setXMLFormatter(formatter)
+            maxnode = n_node.getElementsByTagName('date-max')[0]
+            if (maxnode is None):
+                print("ERROR! default string is None")
+                
+            else:
+                for t in maxnode.childNodes:
+                    if t.nodeType == t.TEXT_NODE:
+                        ret.max_date = t.nodeValue
+                            
+            minnode = n_node.getElementsByTagName('date-min')[0]
+            if (minnode is None):
+                print("ERROR! default string is None")
+                
+            else:
+                for t in minnode.childNodes:
+                    if t.nodeType == t.TEXT_NODE:
+                        ret.min_date = t.nodeValue
+                            
+            formatter = PORISValueFormatter.fromXMLRef(n_node)
+            ret.setXMLFormatter(formatter)
         
         return ret
 
@@ -1025,37 +1047,38 @@ class PORISValueFloat(PORISValueData):
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISValueFloat:
         ret = super(PORISValueFloat,PORISValueFloat).fromXML(n_node, pdoc)
-        ret.__class__ = PORISValueFloat
+        if ret is not None:
+            ret.__class__ = PORISValueFloat
 
-        defaultfloatnode = n_node.getElementsByTagName('default-float')[0]
-        if (defaultfloatnode is None):
-            print("ERROR! default float is None")
-            
-        else:
-            for t in defaultfloatnode.childNodes:
-                if t.nodeType == t.TEXT_NODE:
-                    ret.setDefaultData(float(t.nodeValue))
-            
-        minnode = n_node.getElementsByTagName('rangemin')[0]
-        if (minnode is None):
-            print("ERROR! default float is None")
-            
-        else:
-            for t in minnode.childNodes:
-                if t.nodeType == t.TEXT_NODE:
-                    ret.__min = float(t.nodeValue)            
-            
-        maxnode = n_node.getElementsByTagName('rangemax')[0]
-        if (maxnode is None):
-            print("ERROR! default float is None")
-            
-        else:
-            for t in maxnode.childNodes:
-                if t.nodeType == t.TEXT_NODE:
-                    ret.__max = float(t.nodeValue)            
-            
-        formatter = PORISValueFormatter.fromXMLRef(n_node)
-        ret.setXMLFormatter(formatter)
+            defaultfloatnode = n_node.getElementsByTagName('default-float')[0]
+            if (defaultfloatnode is None):
+                print("ERROR! default float is None")
+                
+            else:
+                for t in defaultfloatnode.childNodes:
+                    if t.nodeType == t.TEXT_NODE:
+                        ret.setDefaultData(float(t.nodeValue))
+                
+            minnode = n_node.getElementsByTagName('rangemin')[0]
+            if (minnode is None):
+                print("ERROR! default float is None")
+                
+            else:
+                for t in minnode.childNodes:
+                    if t.nodeType == t.TEXT_NODE:
+                        ret.__min = float(t.nodeValue)            
+                
+            maxnode = n_node.getElementsByTagName('rangemax')[0]
+            if (maxnode is None):
+                print("ERROR! default float is None")
+                
+            else:
+                for t in maxnode.childNodes:
+                    if t.nodeType == t.TEXT_NODE:
+                        ret.__max = float(t.nodeValue)            
+                
+            formatter = PORISValueFormatter.fromXMLRef(n_node)
+            ret.setXMLFormatter(formatter)
         
         return ret
 
@@ -1080,11 +1103,15 @@ class PORISMode(PORIS):
         
     # Function o add a submode as eligible if current mode is active
     def addSubMode(self,m: PORISMode):
-        self.submodes[m.id] = m
+        self.submodes[m.getId()] = m
+        p = self.getParent()
+        if p is not None:
+            if self != p.engineeringMode:
+                p.engineeringMode.addSubMode(m)
 
     # Function o add a value as eligible if current mode is active
-    def addValue(self,v: PORISValue):
-        self.values[v.id] = v
+    def addValue(self,v: PORISValue):       
+        self.values[v.getId()] = v
         # If there is no default value of this mode, this will be 
         # the first default value
         if self.__default_value == None:
@@ -1093,7 +1120,7 @@ class PORISMode(PORIS):
     # Setter for the default value
     def setDefaultValue(self, v: PORISValue) -> PORISValue:
         ret = self.__default_value
-        if (v.id in self.values):
+        if (v.getId() in self.values):
             # Setting the candidate as the default value
             self.__default_value = v
             ret = v
@@ -1126,13 +1153,13 @@ class PORISMode(PORIS):
             print("Eligible valeus for this mode",self.values.keys())
 
         ret = None
-        if v.id in self.values.keys():
+        if v.getId() in self.values.keys():
             # The candidate was found in the eligible ones
             ret = v
 
         else:
             # The candidate was not found in the eligible ones
-            if current.id in self.values.keys():
+            if current.getId() in self.values.keys():
                 # The current value was found in the eligible ones
                 ret = current
             
@@ -1169,20 +1196,20 @@ class PORISMode(PORIS):
             print("Eligible submodes:",self.submodes.keys())
 
         ret = None
-        if m.id in self.submodes.keys():
+        if m.getId() in self.submodes.keys():
             # The candidate was found in the eligible ones
             ret = m
         
         else:
             # The candidate was not found in the eligible ones
-            if current.id in self.submodes.keys():
+            if current.getId() in self.submodes.keys():
                 # The current value was found in the eligible ones
                 ret = current
                 
             else:
                 # We will try to find the default mode for the PORISNode holding the candidate mode
                 defmode = m.getParent().getDefaultMode()
-                if defmode.id in self.submodes.keys():
+                if defmode.getId() in self.submodes.keys():
                     ret = defmode
                     
                 else:
@@ -1278,7 +1305,7 @@ class PORISMode(PORIS):
             defaultvaluenode.setAttribute("nil","true")
             
         else:
-            defaultvaluetext = dom.createTextNode(str(v.id))
+            defaultvaluetext = dom.createTextNode(str(v.getId()))
             if defaultvaluetext is not None:
                 defaultvaluenode.appendChild(defaultvaluetext)
                 
@@ -1293,32 +1320,33 @@ class PORISMode(PORIS):
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISMode:
         ret = super(PORISMode,PORISMode).fromXML(n_node, pdoc)
-        ret.__class__ = PORISMode
-        # TODO: Parse these values
-        ret.values = {}
-        ret.submodes = {}
-        ret.__default_value = None
-        
-        destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
-        print("destnode:",destnode.localName)
-        dest = None
-        print(ret.getName())
-        for d in destnode.childNodes:
-            if d.localName == "destination":
-                print("d.localname:", d.localName)
-                dest = PORIS.fromXMLRef(d, pdoc)
-                print("d:",dest.getName())
-                if dest is not None:
-                    if (issubclass(dest.__class__,PORISValue)):
-                        # Let's see the destinations to know if it is a PORISSys or a PORISParam
-                        ret.addValue(dest)
-                        print(ret.values)
-                        
+        if ret is not None:
+            ret.__class__ = PORISMode
+            # TODO: Parse these values
+            ret.values = {}
+            ret.submodes = {}
+            ret.__default_value = None
+            
+            destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
+            print("destnode:",destnode.localName)
+            dest = None
+            print(ret.getName())
+            for d in destnode.childNodes:
+                if d.localName == "destination":
+                    print("d.localname:", d.localName)
+                    dest = PORIS.fromXMLRef(d, pdoc)
+                    print("d:",dest.getName())
+                    if dest is not None:
+                        if (issubclass(dest.__class__,PORISValue)):
+                            # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                            ret.addValue(dest)
+                            print(ret.values)
+                            
 
-                    if (issubclass(dest.__class__,PORISMode)):
-                        # Let's see the destinations to know if it is a PORISSys or a PORISParam
-                        ret.addSubMode(dest)
-                        print(ret.submodes)        
+                        if (issubclass(dest.__class__,PORISMode)):
+                            # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                            ret.addSubMode(dest)
+                            print(ret.submodes)        
         return ret   
     
 #######################################
@@ -1331,8 +1359,42 @@ class PORISNode(PORIS):
         super().__init__(name)
         # A PORISNode has a selected mode 
         self.__selectedMode = None
-        self.modes = {}
         self.__defaultMode = None
+        self.modes = {}
+        self.unknownMode = None
+        self.engineeringMode = None
+        self.unknownMode = PORISMode("UNKNOWN")
+        self.addMode(self.unknownMode)
+        self.engineeringMode = PORISMode("Engineering")
+        self.addMode(self.engineeringMode)
+    
+    # ID setter
+    def setId(self, i: int):
+        ret = super().setId(i)
+
+        prevIdx = self.unknownMode.getId()
+        ret += self.unknownMode.setId(i+ret)
+        if prevIdx is not None:
+            print("Removes ",prevIdx)
+            print(self.modes.keys())
+            self.modes.pop(prevIdx, None)
+            print(self.modes.keys())
+            self.modes[self.unknownMode.getId()] = self.unknownMode
+            print(self.modes.keys())
+            print("------")
+
+        prevIdx = self.engineeringMode.getId()
+        ret += self.engineeringMode.setId(i+ret)
+        if prevIdx is not None:
+            print("Removes ",prevIdx)
+            print(self.modes.keys())
+            self.modes.pop(prevIdx, None)
+            print(self.modes.keys())
+            self.modes[self.engineeringMode.getId()] = self.engineeringMode
+            print(self.modes.keys())
+            print("------")
+        
+        return ret
     
     # This function adds a mode to the current item
     # If there is no mode selected, the first one is 
@@ -1342,7 +1404,18 @@ class PORISNode(PORIS):
     # NOTE: We should consider creating and adding the UNKNOWN mode in the constructor of the item, to don't let the user
     # violate the restriction written here, and add an alternative mode as the first one
     def addMode(self,m):
-        self.modes[m.id] = m
+        if (self.unknownMode == m):
+            index = -1
+            m.setId(index)
+        else:            
+            if (self.engineeringMode == m):
+                index = -3
+                m.setId(index)
+            else:
+                index = m.getId()
+                self.modes[index] = m
+           
+        
         m.setParent(self)
         if self.__defaultMode == None:
             # No mode was the default one, this one will be the default one
@@ -1359,7 +1432,7 @@ class PORISNode(PORIS):
     # Setter for the default mode
     def setDefaultMode(self, m:PORISMode) -> PORISMode:
         print("Setting ",m.getName(),"as the default mode for",self.getName())
-        if m.id in self.modes.keys():
+        if m.getId() in self.modes.keys():
             self.__defaultMode = m
             
         else:
@@ -1423,9 +1496,8 @@ class PORISNode(PORIS):
         if debug:
             print("----> Init ",self.getName(),", mode list len:" , len(self.modes))
 
-        # We select the first mode of the list, and set it as the selected one
-        firstMode = self.modes[list(self.modes.keys())[0]]
-        self.__selectedMode = firstMode
+        # We select the unknown mode
+        self.__selectedMode = self.unknownMode
         if debug:
             print("Init ", self.getName() + ":",firstMode.getName())
 
@@ -1475,7 +1547,7 @@ class PORISNode(PORIS):
             print("Entering in PORISNode ",self.getName(), ".getEligibleMode("+m.getName()+")")
 
         ret = None
-        if m.id in self.modes.keys():
+        if m.getId() in self.modes.keys():
             # m is a mode of the current item
             if self.getParent() is None:
                 # Current item has no parent, no restrictions to set m
@@ -1582,7 +1654,7 @@ class PORISNode(PORIS):
             defaultmodenode.setAttribute("nil","true")
             
         else:
-            defaultmodetext = dom.createTextNode(str(m.id))
+            defaultmodetext = dom.createTextNode(str(m.getId()))
             if defaultmodetext is not None:
                 defaultmodenode.appendChild(defaultmodetext)
                 
@@ -1625,24 +1697,25 @@ class PORISNode(PORIS):
 
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISNode:
         ret = super(PORISNode,PORISNode).fromXML(n_node, pdoc)
-        ret.__class__ = PORISNode
-        ret.modes = {}
-        ret.__selectedMode = None
-        ret.__defaultMode = None
+        if ret is not None:
+            ret.__class__ = PORISNode
+            ret.modes = {}
+            ret.__selectedMode = None
+            ret.__defaultMode = None
 
-        destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
-        print("destnode:",destnode.localName)
-        dest = None
-        print(ret.getName())
-        for d in destnode.childNodes:
-            if d.nodeType != d.TEXT_NODE:
-                dest = PORIS.fromXMLRef(d, pdoc)
-                print("d:",dest.getName())
-                if dest is not None:
-                    if (issubclass(dest.__class__,PORISMode)):
-                        # Let's see the destinations to know if it is a PORISSys or a PORISParam
-                        ret.addMode(dest)
-                        print(ret.modes)
+            destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
+            print("destnode:",destnode.localName)
+            dest = None
+            print(ret.getName())
+            for d in destnode.childNodes:
+                if d.nodeType != d.TEXT_NODE:
+                    dest = PORIS.fromXMLRef(d, pdoc)
+                    print("d:",dest.getName())
+                    if dest is not None:
+                        if (issubclass(dest.__class__,PORISMode)):
+                            # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                            ret.addMode(dest)
+                            print(ret.modes)
                     
         
         return ret
@@ -1659,6 +1732,22 @@ class PORISParam(PORISNode):
         super().__init__(name)
         self.__selectedValue = None  # Current selected value for the param
         self.values = {}
+        self.unknownValue = None
+        self.unknownValue = PORISValue("UNKNOWN")
+        self.addValue(self.unknownValue)
+        self.unknownMode.addValue(self.unknownValue)
+  
+    # ID setter
+    def setId(self, i: int):
+        ret = super().setId(i)
+
+        prevIdx = self.unknownValue.getId()
+        ret += self.unknownValue.setId(i+ret)
+        if prevIdx is not None:
+            self.values.pop(prevIdx, None)
+            self.values[self.unknownValue.getId()] = self.unknownValue
+
+        return ret  
   
     # Getter for the selected value
     def getSelectedValue(self) -> PORISValue:
@@ -1667,10 +1756,17 @@ class PORISParam(PORISNode):
     # Function to add a value.
     # If it is the first value added, it also will be the selected one
     def addValue(self,v):
-        self.values[v.id] = v
+        index = v.getId()
+        if v.getParent() is not None:
+            if v.getParent().unknownValue == v:
+                index = -2
+        
+        self.values[index] = v
         v.setParent(self)
+        self.engineeringMode.addValue(v)
         if self.__selectedValue == None:
             self.__selectedValue = v
+        
 
     # Sets an elegible value, by trying to re-select the current one
     # if the current value is not elegible, setValue will find another one
@@ -1841,19 +1937,20 @@ class PORISParam(PORISNode):
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISParam:
         ret = super(PORISParam,PORISParam).fromXML(n_node, pdoc)
-        ret.__class__ = PORISParam
-        ret.values = {}
-        ret.__selectedValue = None  # Current selected value for the param
-        
-        destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
-        dest = None
-        for d in destnode.childNodes:
-            if d.nodeType != d.TEXT_NODE:            
-                dest = PORIS.fromXMLRef(d, pdoc)
-                if dest is not None:
-                    if (issubclass(dest.__class__,PORISValue)):
-                        # Let's see the destinations to know if it is a PORISSys or a PORISParam
-                        ret.addValue(dest)            
+        if ret is not None:
+            ret.__class__ = PORISParam
+            ret.values = {}
+            ret.__selectedValue = None  # Current selected value for the param
+            
+            destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
+            dest = None
+            for d in destnode.childNodes:
+                if d.nodeType != d.TEXT_NODE:            
+                    dest = PORIS.fromXMLRef(d, pdoc)
+                    if dest is not None:
+                        if (issubclass(dest.__class__,PORISValue)):
+                            # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                            ret.addValue(dest)            
         
         return ret
 
@@ -1878,13 +1975,15 @@ class PORISSys(PORISNode):
 
     # Adds a parameters to the parameters dictionary
     def addParam(self,p: PORISParam):
-        self.params[p.id] = p
+        self.params[p.getId()] = p
         p.setParent(self)
+        # self.engineeringMode.addSubMode(p.engineeringMode)
 
     # Adds a subsystem to the subsystems diccionary
     def addSubsystem(self,s):
-        self.subsystems[s.id] = s
+        self.subsystems[s.getId()] = s
         s.setParent(self)
+        # self.engineeringMode.addSubMode(s.engineeringMode)
         
     # This function allows the user to select a mode for the current system
     # It takes a mode candidate and tries to apply it.  If not possible, then 
@@ -2068,29 +2167,30 @@ class PORISSys(PORISNode):
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISSys:
         ret = super(PORISSys,PORISSys).fromXML(n_node, pdoc)
-        ret.__class__ = PORISSys
-        # TODO: Parse these values
-        ret.params = {}
-        ret.subsystems = {}
+        if ret is not None:
+            ret.__class__ = PORISSys
+            # TODO: Parse these values
+            ret.params = {}
+            ret.subsystems = {}
 
-        destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
-        print("destnode:",destnode.localName)
-        dest = None
-        print(ret.getName())
-        for d in destnode.childNodes:
-            if d.nodeType != d.TEXT_NODE:            
-                dest = PORIS.fromXMLRef(d, pdoc)
-                print("d:",dest.getName())
-                if dest is not None:
-                    if (issubclass(dest.__class__,PORISParam)):
-                        # Let's see the destinations to know if it is a PORISSys or a PORISParam
-                        ret.addParam(dest)
-                        print(ret.params)
-                        
-                    if (issubclass(dest.__class__,PORISSys)):
-                        # Let's see the destinations to know if it is a PORISSys or a PORISParam
-                        ret.addSubsystem(dest)
-                        print(ret.subsystems)
+            destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
+            print("destnode:",destnode.localName)
+            dest = None
+            print(ret.getName())
+            for d in destnode.childNodes:
+                if d.nodeType != d.TEXT_NODE:            
+                    dest = PORIS.fromXMLRef(d, pdoc)
+                    print("d:",dest.getName())
+                    if dest is not None:
+                        if (issubclass(dest.__class__,PORISParam)):
+                            # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                            ret.addParam(dest)
+                            print(ret.params)
+                            
+                        if (issubclass(dest.__class__,PORISSys)):
+                            # Let's see the destinations to know if it is a PORISSys or a PORISParam
+                            ret.addSubsystem(dest)
+                            print(ret.subsystems)
                     
         
         return ret
@@ -2130,19 +2230,18 @@ class PORISDoc:
         return self.__root.getName()
         
     # Adds a PORIS item to the document
-    def addItem(self, n: PORIS, id: str=None):
-        if id is None:
-            # Sets the current counter as the numerical identifier for the item
-            n.id = self.__id_counter
-            # Increments the id counter
-            self.__id_counter += 1
-        else:
-            n.id = id
+    def addItem(self, n: PORIS):
+        # Sets the current counter as the numerical identifier for the item
+        new_id = self.__id_counter
+        # Increments the id counter
+        incr = n.setId(new_id)
+        self.__id_counter += incr
         
         # Set the current document as the reference for the id
         n.document = self
         # Adds the item to the item dictionary
-        self.__item_dict[str(n.id)] = n
+        self.__item_dict[str(n.getId())] = n
+        self.__item_dict[str(n.getId())] = n
 
     def getItem(self, i: int) -> PORIS:
         return self.__item_dict[str(i)]
@@ -2152,7 +2251,7 @@ class PORISDoc:
         print(len(self.__item_dict))
         for k in self.__item_dict.keys():
             n = self.__item_dict[k]
-            print(str(n.id),n.getName())
+            print(str(n.getId()),n.getName())
         
     # Gets a list of PORIS items IDs sorted so their items
     # are never referencing in their destinations a node which has not been 
@@ -2168,7 +2267,7 @@ class PORISDoc:
             thiskey = k
             destinations = []
             for d in n.getDestinations():
-                destinations.append(str(d.id))
+                destinations.append(str(d.getId()))
                 
             node_and_destinations[thiskey] = destinations
 
