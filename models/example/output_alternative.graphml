@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:java="http://www.yworks.com/xml/yfiles-common/1.0/java" xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  <!--Created by yEd 3.23.2-->
+  <key attr.name="Description" attr.type="string" for="graph" id="d0"/>
+  <key attr.name="csCode" attr.type="string" for="graph" id="d1">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="identifier" attr.type="string" for="graph" id="d2">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="parentid" attr.type="string" for="graph" id="d3">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="rootid" attr.type="string" for="graph" id="d4">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="parentCSID" attr.type="string" for="graph" id="d5">
+    <default xml:space="preserve"/>
+  </key>
+  <key for="port" id="d6" yfiles.type="portgraphics"/>
+  <key for="port" id="d7" yfiles.type="portgeometry"/>
+  <key for="port" id="d8" yfiles.type="portuserdata"/>
+  <key attr.name="csID" attr.type="string" for="node" id="d9">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="rmID" attr.type="int" for="node" id="d10">
+    <default xml:space="preserve">0</default>
+  </key>
+  <key attr.name="project" attr.type="string" for="node" id="d11">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="external" attr.type="boolean" for="node" id="d12">
+    <default xml:space="preserve">false</default>
+  </key>
+  <key attr.name="url" attr.type="string" for="node" id="d13"/>
+  <key attr.name="description" attr.type="string" for="node" id="d14"/>
+  <key for="node" id="d15" yfiles.type="nodegraphics"/>
+  <key for="graphml" id="d16" yfiles.type="resources"/>
+  <key attr.name="url" attr.type="string" for="edge" id="d17"/>
+  <key attr.name="description" attr.type="string" for="edge" id="d18"/>
+  <key for="edge" id="d19" yfiles.type="edgegraphics"/>
+  <graph edgedefault="directed" id="G">
+    <data key="d0" xml:space="preserve"/>
+    <data key="d1" xml:space="preserve"><![CDATA[EX]]></data>
+    <data key="d2" xml:space="preserve"><![CDATA[example]]></data>
+    <data key="d4" xml:space="preserve"><![CDATA[example]]></data>
+    <node id="n0" yfiles.foldertype="group">
+      <data key="d9" xml:space="preserve"><![CDATA[ARC-0086]]></data>
+      <data key="d10" xml:space="preserve">86</data>
+      <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+      <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/86]]></data>
+      <data key="d15">
+        <y:ProxyAutoBoundsNode>
+          <y:Realizers active="0">
+            <y:GroupNode>
+              <y:Geometry height="228.921875" width="265.0" x="474.3021878632652" y="182.7971793905649"/>
+              <y:Fill color="#FFFFFF" transparent="false"/>
+              <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="265.0" x="0.0" xml:space="preserve" y="0.0">OutputSource</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+              <y:State closed="false" closedHeight="1557.3791055961901" closedWidth="1419.1561391088312" groupDepthFillColorEnabled="false" innerGraphDisplayEnabled="false"/>
+              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="1.1368683772161603E-13"/>
+            </y:GroupNode>
+            <y:GroupNode>
+              <y:Geometry height="1557.3791055961901" width="1419.1561391088312" x="-221.1728121367347" y="957.4434184725633"/>
+              <y:Fill hasColor="false" transparent="false"/>
+              <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="1419.1561391088312" x="0.0" xml:space="preserve" y="0.0">System</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+              <y:State closed="true" closedHeight="1557.3791055961901" closedWidth="1419.1561391088312" innerGraphDisplayEnabled="false"/>
+              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+            </y:GroupNode>
+          </y:Realizers>
+        </y:ProxyAutoBoundsNode>
+      </data>
+      <graph edgedefault="directed" id="n0:">
+        <node id="n0::n0">
+          <data key="d9" xml:space="preserve"><![CDATA[ARC-0087]]></data>
+          <data key="d10" xml:space="preserve">87</data>
+          <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+          <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/87]]></data>
+          <data key="d15">
+            <y:ShapeNode>
+              <y:Geometry height="30.0" width="30.0" x="550.8021878632652" y="219.25811689056502"/>
+              <y:Fill color="#FFCC00" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="26.37109375" x="1.814453125" xml:space="preserve" y="6.015625">0x0</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+            </y:ShapeNode>
+          </data>
+        </node>
+        <node id="n0::n1">
+          <data key="d9" xml:space="preserve"><![CDATA[ARC-0088]]></data>
+          <data key="d10" xml:space="preserve">88</data>
+          <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+          <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/88]]></data>
+          <data key="d15">
+            <y:ShapeNode>
+              <y:Geometry height="30.0" width="30.0" x="580.8021878632652" y="219.25811689056502"/>
+              <y:Fill color="#FFCC00" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="26.37109375" x="1.814453125" xml:space="preserve" y="6.015625">0x1</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+            </y:ShapeNode>
+          </data>
+        </node>
+        <node id="n0::n2">
+          <data key="d9" xml:space="preserve"><![CDATA[ARC-0089]]></data>
+          <data key="d10" xml:space="preserve">89</data>
+          <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+          <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/89]]></data>
+          <data key="d15">
+            <y:ShapeNode>
+              <y:Geometry height="30.0" width="30.0" x="610.8021878632652" y="219.25811689056502"/>
+              <y:Fill color="#FFCC00" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="26.37109375" x="1.814453125" xml:space="preserve" y="6.015625">0x2</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+            </y:ShapeNode>
+          </data>
+        </node>
+        <node id="n0::n3">
+          <data key="d9" xml:space="preserve"><![CDATA[ARC-0090]]></data>
+          <data key="d10" xml:space="preserve">90</data>
+          <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+          <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/90]]></data>
+          <data key="d15">
+            <y:ShapeNode>
+              <y:Geometry height="30.0" width="30.0" x="640.8021878632652" y="219.25811689056502"/>
+              <y:Fill color="#FFCC00" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="26.37109375" x="1.814453125" xml:space="preserve" y="6.015625">0x3</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+            </y:ShapeNode>
+          </data>
+        </node>
+        <node id="n0::n4">
+          <data key="d9" xml:space="preserve"><![CDATA[ARC-0091]]></data>
+          <data key="d10" xml:space="preserve">91</data>
+          <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+          <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/91]]></data>
+          <data key="d15">
+            <y:ShapeNode>
+              <y:Geometry height="30.0" width="30.0" x="520.8021878632652" y="219.25811689056502"/>
+              <y:Fill color="#FFCC00" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="25.580078125" x="2.2099609375" xml:space="preserve" y="6.015625">ALL</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+            </y:ShapeNode>
+          </data>
+        </node>
+        <node id="n0::n5">
+          <data key="d9" xml:space="preserve"><![CDATA[ARC-0092]]></data>
+          <data key="d10" xml:space="preserve">92</data>
+          <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+          <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/92]]></data>
+          <data key="d15">
+            <y:ShapeNode>
+              <y:Geometry height="30.0" width="30.0" x="670.8021878632652" y="219.25811689056502"/>
+              <y:Fill color="#FFCC00" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="32.640625" x="-1.3203125" xml:space="preserve" y="6.015625">TWO</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+            </y:ShapeNode>
+          </data>
+        </node>
+        <node id="n0::n6" yfiles.foldertype="group">
+          <data key="d9" xml:space="preserve"><![CDATA[ARC-0020]]></data>
+          <data key="d10" xml:space="preserve">17</data>
+          <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+          <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/17]]></data>
+          <data key="d15">
+            <y:ProxyAutoBoundsNode>
+              <y:Realizers active="0">
+                <y:GroupNode>
+                  <y:Geometry height="117.4609375" width="235.0" x="489.3021878632652" y="279.2581168905649"/>
+                  <y:Fill color="#FFFFFF" transparent="false"/>
+                  <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
+                  <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="235.0" x="0.0" xml:space="preserve" y="0.0">Recomposition</y:NodeLabel>
+                  <y:Shape type="roundrectangle"/>
+                  <y:State closed="false" closedHeight="1557.3791055961901" closedWidth="1419.1561391088312" groupDepthFillColorEnabled="false" innerGraphDisplayEnabled="false"/>
+                  <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+                  <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+                </y:GroupNode>
+                <y:GroupNode>
+                  <y:Geometry height="1557.3791055961901" width="1419.1561391088312" x="148.67851296266508" y="879.6427754034776"/>
+                  <y:Fill hasColor="false" transparent="false"/>
+                  <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
+                  <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="1419.1561391088312" x="0.0" xml:space="preserve" y="0.0">System</y:NodeLabel>
+                  <y:Shape type="roundrectangle"/>
+                  <y:State closed="true" closedHeight="1557.3791055961901" closedWidth="1419.1561391088312" innerGraphDisplayEnabled="false"/>
+                  <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+                  <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+                </y:GroupNode>
+              </y:Realizers>
+            </y:ProxyAutoBoundsNode>
+          </data>
+          <graph edgedefault="directed" id="n0::n6:">
+            <node id="n0::n6::n0">
+              <data key="d9" xml:space="preserve"><![CDATA[ARC-0055]]></data>
+              <data key="d10" xml:space="preserve">55</data>
+              <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+              <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/55]]></data>
+              <data key="d15">
+                <y:ShapeNode>
+                  <y:Geometry height="30.0" width="45.0" x="567.3021878632652" y="315.7190543905649"/>
+                  <y:Fill color="#FFCC00" transparent="false"/>
+                  <y:BorderStyle color="#000000" type="line" width="1.0"/>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="35.306640625" x="4.8466796875" xml:space="preserve" y="6.015625">None</y:NodeLabel>
+                  <y:Shape type="roundrectangle"/>
+                </y:ShapeNode>
+              </data>
+            </node>
+            <node id="n0::n6::n1">
+              <data key="d9" xml:space="preserve"><![CDATA[ARC-0056]]></data>
+              <data key="d10" xml:space="preserve">56</data>
+              <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+              <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/56]]></data>
+              <data key="d15">
+                <y:ShapeNode>
+                  <y:Geometry height="30.0" width="52.0" x="657.3021878632652" y="315.7190543905649"/>
+                  <y:Fill color="#FFCC00" transparent="false"/>
+                  <y:BorderStyle color="#000000" type="line" width="1.0"/>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="48.26171875" x="1.869140625" xml:space="preserve" y="6.015625">Parallel</y:NodeLabel>
+                  <y:Shape type="roundrectangle"/>
+                </y:ShapeNode>
+              </data>
+            </node>
+            <node id="n0::n6::n2">
+              <data key="d9" xml:space="preserve"><![CDATA[ARC-0057]]></data>
+              <data key="d10" xml:space="preserve">57</data>
+              <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+              <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/57]]></data>
+              <data key="d15">
+                <y:ShapeNode>
+                  <y:Geometry height="30.0" width="45.0" x="612.3021878632652" y="315.7190543905649"/>
+                  <y:Fill color="#FFCC00" transparent="false"/>
+                  <y:BorderStyle color="#000000" type="line" width="1.0"/>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="37.955078125" x="3.5224609375" xml:space="preserve" y="6.015625">Serial</y:NodeLabel>
+                  <y:Shape type="roundrectangle"/>
+                </y:ShapeNode>
+              </data>
+            </node>
+            <node id="n0::n6::n3">
+              <data key="d9" xml:space="preserve"><![CDATA[ARC-0058]]></data>
+              <data key="d10" xml:space="preserve">58</data>
+              <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+              <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/58]]></data>
+              <data key="d15">
+                <y:ShapeNode>
+                  <y:Geometry height="30.0" width="63.0" x="504.3021878632652" y="315.7190543905649"/>
+                  <y:Fill color="#FFCC00" transparent="false"/>
+                  <y:BorderStyle color="#000000" type="line" width="1.0"/>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="62.01953125" x="0.490234375" xml:space="preserve" y="6.015625">QuadCCD</y:NodeLabel>
+                  <y:Shape type="roundrectangle"/>
+                </y:ShapeNode>
+              </data>
+            </node>
+            <node id="n0::n6::n4">
+              <data key="d9" xml:space="preserve"><![CDATA[ARC-0059]]></data>
+              <data key="d10" xml:space="preserve">59</data>
+              <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+              <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/59]]></data>
+              <data key="d15">
+                <y:ShapeNode>
+                  <y:Geometry height="30.0" width="52.0" x="513.3021878632653" y="351.7190543905649"/>
+                  <y:Fill color="#FFCC00" transparent="false"/>
+                  <y:BorderStyle color="#000000" type="line" width="1.0"/>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="47.8984375" x="2.05078125" xml:space="preserve" y="6.015625">QuadIR</y:NodeLabel>
+                  <y:Shape type="roundrectangle"/>
+                </y:ShapeNode>
+              </data>
+            </node>
+            <node id="n0::n6::n5">
+              <data key="d9" xml:space="preserve"><![CDATA[ARC-0060]]></data>
+              <data key="d10" xml:space="preserve">60</data>
+              <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+              <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/60]]></data>
+              <data key="d15">
+                <y:ShapeNode>
+                  <y:Geometry height="30.0" width="68.0" x="567.3021878632652" y="351.7190543905649"/>
+                  <y:Fill color="#FFCC00" transparent="false"/>
+                  <y:BorderStyle color="#000000" type="line" width="1.0"/>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="61.2578125" x="3.37109375" xml:space="preserve" y="6.015625">CDSQuad</y:NodeLabel>
+                  <y:Shape type="roundrectangle"/>
+                </y:ShapeNode>
+              </data>
+            </node>
+            <node id="n0::n6::n6">
+              <data key="d9" xml:space="preserve"><![CDATA[ARC-0061]]></data>
+              <data key="d10" xml:space="preserve">61</data>
+              <data key="d11" xml:space="preserve"><![CDATA[arcgen]]></data>
+              <data key="d13" xml:space="preserve"><![CDATA[http://csys.cosmobots.eu:3000/issues/61]]></data>
+              <data key="d15">
+                <y:ShapeNode>
+                  <y:Geometry height="30.0" width="68.0" x="635.3021878632652" y="351.7190543905649"/>
+                  <y:Fill color="#FFCC00" transparent="false"/>
+                  <y:BorderStyle color="#000000" type="line" width="1.0"/>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="61.849609375" x="3.0751953125" xml:space="preserve" y="6.015625">HawaiiRG</y:NodeLabel>
+                  <y:Shape type="roundrectangle"/>
+                </y:ShapeNode>
+              </data>
+            </node>
+          </graph>
+        </node>
+      </graph>
+    </node>
+    <edge id="n0::e0" source="n0::n0" target="n0::n6::n0">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e1" source="n0::n1" target="n0::n6::n0">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e2" source="n0::n2" target="n0::n6::n0">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e3" source="n0::n3" target="n0::n6::n0">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e4" source="n0::n4" target="n0::n6::n3">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e5" source="n0::n5" target="n0::n6::n2">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e6" source="n0::n4" target="n0::n6::n4">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e7" source="n0::n4" target="n0::n6::n5">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e8" source="n0::n5" target="n0::n6::n1">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e9" source="n0::n5" target="n0::n6::n6">
+      <data key="d19">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#FF9900" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+  </graph>
+  <data key="d16">
+    <y:Resources/>
+  </data>
+</graphml>
