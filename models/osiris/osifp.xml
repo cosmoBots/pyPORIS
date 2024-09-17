@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<poris>
+    <value>
+        <id type="integer">2000000002</id>
+        <ident>OSI-0117</ident>
+        <name>LS0_4</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000003</id>
+        <ident>OSI-0118</ident>
+        <name>LS0_6</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000004</id>
+        <ident>OSI-0119</ident>
+        <name>LS0_8</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000005</id>
+        <ident>OSI-0120</ident>
+        <name>LS1_0</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000006</id>
+        <ident>OSI-0121</ident>
+        <name>LS1_2</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000007</id>
+        <ident>OSI-0122</ident>
+        <name>LS1_5</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000008</id>
+        <ident>OSI-0123</ident>
+        <name>LS1_8</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000009</id>
+        <ident>OSI-0124</ident>
+        <name>LS2_5</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000010</id>
+        <ident>OSI-0125</ident>
+        <name>LS3_0</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000011</id>
+        <ident>OSI-0126</ident>
+        <name>LS5_0</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000012</id>
+        <ident>OSI-0127</ident>
+        <name>LS10_0</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000013</id>
+        <ident>OSI-0128</ident>
+        <name>LS12_0</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000014</id>
+        <ident>OSI-0129</ident>
+        <name>LS40_0</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000019</id>
+        <ident>OSI-0586</ident>
+        <name>FrameTransferMask</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000020</id>
+        <ident>OSI-0585</ident>
+        <name>FastPhotometryMask</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000021</id>
+        <ident>OSI-0584</ident>
+        <name>MOSmask</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000022</id>
+        <ident>OSI-0583</ident>
+        <name>NoFPE</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000018</id>
+        <ident>FP-0005</ident>
+        <name>LS</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISValue">
+                <id type="integer">2000000007</id>
+                <ident>OSI-0122</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000008</id>
+                <ident>OSI-0123</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000005</id>
+                <ident>OSI-0120</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000011</id>
+                <ident>OSI-0126</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000014</id>
+                <ident>OSI-0129</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000004</id>
+                <ident>OSI-0119</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000006</id>
+                <ident>OSI-0121</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000013</id>
+                <ident>OSI-0128</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000002</id>
+                <ident>OSI-0117</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000009</id>
+                <ident>OSI-0124</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000010</id>
+                <ident>OSI-0125</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000012</id>
+                <ident>OSI-0127</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000003</id>
+                <ident>OSI-0118</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000027</id>
+        <ident>OSI-0142</ident>
+        <name>LSMask</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISMode">
+                <id type="integer">2000000018</id>
+                <ident>FP-0005</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000001</id>
+        <ident>FP-0001</ident>
+        <name>Disabled</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISValue">
+                <id type="integer">2000000022</id>
+                <ident>OSI-0583</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000015</id>
+        <ident>FP-0002</ident>
+        <name>MOS</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISValue">
+                <id type="integer">2000000021</id>
+                <ident>OSI-0584</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000016</id>
+        <ident>FP-0003</ident>
+        <name>FastPhotometry</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISValue">
+                <id type="integer">2000000020</id>
+                <ident>OSI-0585</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000017</id>
+        <ident>FP-0004</ident>
+        <name>FrameTransfer</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISValue">
+                <id type="integer">2000000019</id>
+                <ident>OSI-0586</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000023</id>
+        <ident>OSI-0116</ident>
+        <name>NoFPE</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISMode">
+                <id type="integer">2000000001</id>
+                <ident>FP-0001</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000024</id>
+        <ident>OSI-0130</ident>
+        <name>MOSmask</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISMode">
+                <id type="integer">2000000015</id>
+                <ident>FP-0002</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000025</id>
+        <ident>OSI-0131</ident>
+        <name>FastPhotometryMask</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISMode">
+                <id type="integer">2000000016</id>
+                <ident>FP-0003</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000026</id>
+        <ident>OSI-0132</ident>
+        <name>FrameTransferMask</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISMode">
+                <id type="integer">2000000017</id>
+                <ident>FP-0004</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">-1</id>
+        <ident>ENG-1</ident>
+        <name>Engineering</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISMode">
+                <id type="integer">2000000001</id>
+                <ident>FP-0001</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000015</id>
+                <ident>FP-0002</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000016</id>
+                <ident>FP-0003</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000017</id>
+                <ident>FP-0004</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000018</id>
+                <ident>FP-0005</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <sub-system>
+        <default-mode-id type="integer" nil="true"/>
+        <id type="integer">3799</id>
+        <ident>OSI-0138</ident>
+        <name>FocalPlaneElement</name>
+        <node-type-id type="integer">4</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISNode</type>
+        <destinations type="array">
+            <destination type="PORISMode">
+                <id type="integer">2000000001</id>
+                <ident>FP-0001</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000002</id>
+                <ident>OSI-0117</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000003</id>
+                <ident>OSI-0118</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000004</id>
+                <ident>OSI-0119</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000005</id>
+                <ident>OSI-0120</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000006</id>
+                <ident>OSI-0121</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000007</id>
+                <ident>OSI-0122</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000008</id>
+                <ident>OSI-0123</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000009</id>
+                <ident>OSI-0124</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000010</id>
+                <ident>OSI-0125</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000011</id>
+                <ident>OSI-0126</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000012</id>
+                <ident>OSI-0127</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000013</id>
+                <ident>OSI-0128</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000014</id>
+                <ident>OSI-0129</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000015</id>
+                <ident>FP-0002</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000016</id>
+                <ident>FP-0003</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000017</id>
+                <ident>FP-0004</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000018</id>
+                <ident>FP-0005</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000019</id>
+                <ident>OSI-0586</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000020</id>
+                <ident>OSI-0585</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000021</id>
+                <ident>OSI-0584</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000022</id>
+                <ident>OSI-0583</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </sub-system>
+    <sub-system>
+        <default-mode-id type="integer" nil="true"/>
+        <id type="integer">5994</id>
+        <ident>FP-0006</ident>
+        <name>FPE</name>
+        <node-type-id type="integer">4</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISNode</type>
+        <destinations type="array">
+            <destination type="PORISMode">
+                <id type="integer">2000000023</id>
+                <ident>OSI-0116</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000024</id>
+                <ident>OSI-0130</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000025</id>
+                <ident>OSI-0131</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000026</id>
+                <ident>OSI-0132</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000027</id>
+                <ident>OSI-0142</ident>
+            </destination>
+            <destination type="PORISNode">
+                <id type="integer">3799</id>
+                <ident>OSI-0138</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">-1</id>
+                <ident>ENG-1</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </sub-system>
+</poris>
