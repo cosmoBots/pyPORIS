@@ -635,16 +635,6 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         
         rows += row
 
-    if False:
-      # ONGOING PROCESS
-
-      print("---------rm_issues_dict-------------")
-      print(rm_issues_dict)
-      print("---------rmtranslator-------------")
-      print(rmtranslator)
-      print("---------global_dict-------------")
-      print(global_dict)
-
 
       data.update({"Dict": [['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',5,'',len(csv_dict_data)+1]
       , ['',''], ['',''], ['',file_identifier], ['',file_cscode]]})
