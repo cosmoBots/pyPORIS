@@ -632,7 +632,19 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         '''
         row += [[n['relations'],n['next'],n['default'],n['max']]]
         '''
+        
         rows += row
+
+    if False:
+      # ONGOING PROCESS
+
+      print("---------rm_issues_dict-------------")
+      print(rm_issues_dict)
+      print("---------rmtranslator-------------")
+      print(rmtranslator)
+      print("---------global_dict-------------")
+      print(global_dict)
+
 
       data.update({"Dict": [['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',5,'',len(csv_dict_data)+1]
       , ['',''], ['',''], ['',file_identifier], ['',file_cscode]]})
@@ -651,7 +663,54 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
       print(">>>>",nodes_graphml_d6)
 
-      if csys_use:
+      if False and csys_use:
+      # ONGOING PROCESS
+        
+        for k in global_dict.keys():
+          item = global_dict[k]
+          ident = item['csID']
+          rm = rm_issues_dict[ident]
+          if 'relations' in item.keys():
+            relations = item['relations']
+          
+          else:
+            relations = ""
+            
+          print(ident, rm.subject,rm.tracker.name, "[", relations, "]")
+          print(rm.relations)
+
+          rels = relations.split(',')
+          print(rels)
+
+          rel_existentes = {}
+          for ir in rm.relations:
+            print(dict(ir))
+            if ir.relation_type == 'blocks':
+              rel_existentes[str(ir.issue_id)] = ir
+
+          for r in rels:
+            r = r.strip()
+            if len(r) > 1:
+              other_rm = rm_issues_dict[r]
+              if str(other_rm.id) in rel_existentes.keys():
+                print("Ya existe la relación, la quit ode la lista de relaciones existentes")
+                rel_existentes.pop(str(other_rm.id))
+                
+              else:
+                print("Hemos de crear la relación de bloqueo entre la issue ", rm.id," y la issue ", other_rm.id)
+                relat = redmine.issue_relation.create(
+                  issue_id=other_rm.id,
+                  issue_to_id=rm.id,
+                  relation_type='blocks')
+                
+                
+          for k in rel_existentes.keys():
+            print("Debería borrar la relación con ", ir.issue_to_id)
+            redmine.issue_relation.delete(ir.id)
+          
+        
+        
+        
         print("\nItero por las creadas",rm_issues_created)
         print("\nd6",nodes_graphml_d6.keys())
         print("\npadres",nodes_graphml.keys())
