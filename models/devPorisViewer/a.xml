@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<poris>
+    <value>
+        <id type="integer">2000000001</id>
+        <ident>n0::n0</ident>
+        <name>R500</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000002</id>
+        <ident>n0::n1</ident>
+        <name>R1000</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <value>
+        <id type="integer">2000000003</id>
+        <ident>n0::n2</ident>
+        <name>R2000</name>
+        <node-type-id type="integer">5</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISValue</type>
+        <value-formatter-id type="integer" nil="true"/>
+        <destinations type="array"/>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </value>
+    <mode>
+        <default-mode-id type="integer" nil="true"/>
+        <default-value-id type="integer" nil="true"/>
+        <id type="integer">2000000004</id>
+        <ident>n0::n3</ident>
+        <name>Normal</name>
+        <node-type-id type="integer">6</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISMode</type>
+        <destinations type="array">
+            <destination type="PORISValue">
+                <id type="integer">2000000001</id>
+                <ident>n0::n0</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000002</id>
+                <ident>n0::n1</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000003</id>
+                <ident>n0::n2</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </mode>
+    <sub-system>
+        <default-mode-id type="integer" nil="true"/>
+        <id type="integer">2000000005</id>
+        <ident>n0</ident>
+        <name>Dispersion</name>
+        <node-type-id type="integer">4</node-type-id>
+        <project-id type="integer">13</project-id>
+        <type>PORISNode</type>
+        <destinations type="array">
+            <destination type="PORISValue">
+                <id type="integer">2000000001</id>
+                <ident>n0::n0</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000002</id>
+                <ident>n0::n1</ident>
+            </destination>
+            <destination type="PORISValue">
+                <id type="integer">2000000003</id>
+                <ident>n0::n2</ident>
+            </destination>
+            <destination type="PORISMode">
+                <id type="integer">2000000004</id>
+                <ident>n0::n3</ident>
+            </destination>
+        </destinations>
+        <node-attributes type="array"/>
+        <labels type="array"/>
+    </sub-system>
+</poris>
