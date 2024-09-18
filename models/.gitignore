@@ -1,1 +1,3 @@
-*.out
+*.graphml.out
+*.backup
+*.graphml.old
