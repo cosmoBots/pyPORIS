@@ -1,4 +1,16 @@
-bs4 == 0.0.2
-lxml == 5.3.0
-pyexcel_ods == 0.6.0
-python-redmine == 2.5.0
+beautifulsoup4==4.11.1
+bs4==0.0.2
+certifi==2024.8.30
+charset-normalizer==3.3.2
+defusedxml==0.7.1
+idna==3.10
+lml==0.1.0
+lxml==5.3.0
+odfpy==1.4.1
+pathlib==1.0.1
+pyexcel-io==0.6.6
+pyexcel-ods==0.6.0
+python-redmine==2.5.0
+requests==2.32.3
+soupsieve==2.3.2.post1
+urllib3==2.2.3
