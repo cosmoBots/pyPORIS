@@ -41,6 +41,7 @@ fi
 
 # Defining some environmental variables
 # TODO: Convert them to arguments
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 DEVBASE_PATH=`pwd`
 
 ########### INTERNAL VARIABLES CALCULATION AREA ##############
@@ -62,8 +63,8 @@ OUTPUT_PATH=${DEVBASE_PATH}'/output/'${OUTPUT_BASE}
 # Normally set to PORIS_TOOLS_PYTHON_PATH=${DEVBASE_PYTHON_PATH}/PORIS, but if you
 # change DEVBASE_RELATIVE_PATH you might want to separate the link
 # between the two variables
-PORIS_TOOLS_PATH=${DEVBASE_PATH}
-PORIS_TOOLS_PYTHON_PATH=${DEVBASE_PATH}
+PORIS_TOOLS_PATH=${SCRIPT_DIR}
+PORIS_TOOLS_PYTHON_PATH=${SCRIPT_DIR}
 echo "path"
 echo ${PORIS_TOOLS_PATH}
 echo ${PORIS_TOOLS_PYTHON_PATH}

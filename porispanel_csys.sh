@@ -17,11 +17,14 @@ else
     exit 1;
 fi
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+echo "Script directory: $SCRIPT_DIR"
+
 rm $FILE1
 rm $FILE3
 
-cp config_csys_enabled.py config_csys.py || { echo "config_csys_enabled.py missing"; exit 1; } 
-python3 graph2poris.py $FILE || { echo "graph2poris could not be processed"; exit 1; }
+cp $SCRIPT_DIR/config_csys_enabled.py config_csys.py || { echo "$SCRIPT_DIR/config_csys_enabled.py missing"; exit 1; } 
+python3 $SCRIPT_DIR/graph2poris.py $FILE || { echo "graph2poris could not be processed"; exit 1; }
 if test -f "$FILE1"; then
     echo "Input $FILE1 exists, continuing"
 else
@@ -39,12 +42,12 @@ timestamp=$(date +%s)
 cp $FILE models/$1.$timestamp.backup
 mv $FILE models/$1.graphml.old
 mv $FILE2 $FILE
-python3 poris2xml.py $FILE1 || { echo "poris2xml could not be processed"; exit 1; } 
+python3 $SCRIPT_DIR/poris2xml.py $FILE1 || { echo "poris2xml could not be processed"; exit 1; } 
 if test -f "$FILE3"; then
     echo "Input $FILE3 exists, continuing"
 else
     echo "Input $FILE3 does not exist, aborting"
     exit 1;
 fi
-java -jar AstroPorisPlayer/bin/AstroPorisPlayer.jar $FILE3
+java -jar $SCRIPT_DIR/AstroPorisPlayer/bin/AstroPorisPlayer.jar $FILE3
 
