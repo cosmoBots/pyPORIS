@@ -23,7 +23,7 @@ echo "Script directory: $SCRIPT_DIR"
 rm $FILE1
 rm $FILE3
 
-cp $SCRIPT_DIR/config_csys_enabled.py config_csys.py || { echo "$SCRIPT_DIR/config_csys_enabled.py missing"; exit 1; } 
+cp $SCRIPT_DIR/config_csys_enabled.py $SCRIPT_DIR/config_csys.py || { echo "$SCRIPT_DIR/config_csys_enabled.py missing"; exit 1; } 
 python3 $SCRIPT_DIR/graph2poris.py $FILE || { echo "graph2poris could not be processed"; exit 1; }
 if test -f "$FILE1"; then
     echo "Input $FILE1 exists, continuing"
