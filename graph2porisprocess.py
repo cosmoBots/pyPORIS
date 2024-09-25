@@ -652,6 +652,98 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       print(">>>>",nodes_graphml_d6)
 
       if csys_use:
+        # ONGOING PROCESS
+
+        if True:
+          for k in global_dict.keys():
+            item = global_dict[k]
+            ident = item['csID']
+            print("ident is ",ident)
+            rm = rm_issues_dict[ident]
+            thisparentid = None
+            if 'parent_group_id' in item.keys():
+              thisparentid = item['parent_group_id']
+            
+            else:
+                if 'node_group_id' in item.keys():
+                  thisparentid = item['node_group_id']
+              
+            if thisparentid is not None:
+              print('parent id is ',thisparentid)
+              if thisparentid is not None:
+                thisparentgroup = global_dict[thisparentid]
+                print("thisparentgroup is ", dict(thisparentgroup))
+                thisparentcsID = thisparentgroup['csID']
+                print("thisparentcsID is ", thisparentcsID)
+                rmparent = rm_issues_dict[thisparentcsID]
+                print("parent is ", rmparent.subject)
+                print(dict(rm))
+                if hasattr(rm,'parent'):
+                  prevparentid = rm.parent.id
+                  
+                else:
+                  prevparentid = None
+                
+                if prevparentid != rmparent.id:
+                  print("The parent is not the same")
+                  if prevparentid is None:
+                    print("Parent was none")
+                    
+                  else:
+                    print("Parent was", str(prevparentid))
+                    
+                  rm.parent_issue = rmparent
+                  result = redmine.issue.update(
+                    rm.id,
+                    parent_issue_id = rmparent.id
+                  )
+                  print("Fixing it!",str(result))
+                  # rm.save
+              
+            if 'relations' in item.keys():
+              relations = item['relations']
+              print("found relations ",relations)
+
+            else:
+              relations = ""
+              print("not found relations")
+              print(str(item.keys()))
+
+            print(ident, rm.subject,rm.tracker.name, "[", relations, "]")
+
+            rels = relations.split(',')
+            print(rels)
+
+            rel_existentes = {}
+            for ir in rm.relations:
+              print("ir es ", dict(ir))
+              if ir.relation_type == 'blocks':
+                if (rm.id == ir.issue_to_id):
+                  rel_existentes[str(ir.issue_id)] = ir
+                  
+            print("rel_existentes para ", str(rm.id)," es ",str(rel_existentes.keys()))
+            print("rels es ",rels)
+            for r in rels:
+              r = r.strip()
+              if len(r) > 1:
+                print("r es ", r)
+                other_rm = rm_issues_dict[r]
+                if str(other_rm.id) in rel_existentes.keys():
+                  print("Ya existe la relación " + str(other_rm.id) + ", la quit ode la lista de relaciones existentes")
+                  rel_existentes.pop(str(other_rm.id))
+
+                else:
+                  print("Hemos de crear la relación de bloqueo entre la issue ", rm.id," y la issue ", other_rm.id)
+                  relat = redmine.issue_relation.create(
+                     issue_id=other_rm.id,
+                     issue_to_id=rm.id,
+                     relation_type='blocks')
+
+
+            for k in rel_existentes.keys():
+              print("Debería borrar la relación "+ k + "?" )
+              # redmine.issue_relation.delete(ir.id)
+        
         print("\nItero por las creadas",rm_issues_created)
         print("\nd6",nodes_graphml_d6.keys())
         print("\npadres",nodes_graphml.keys())
