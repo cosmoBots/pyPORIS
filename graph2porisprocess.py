@@ -667,7 +667,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
             else:
                 if 'node_group_id' in item.keys():
                   thisparentid = item['node_group_id']
-              
+             
             if thisparentid is not None:
               print('parent id is ',thisparentid)
               if thisparentid is not None:
@@ -697,8 +697,128 @@ def create_ods_file_from_graphml_file(filename, deviceName):
                     rm.id,
                     parent_issue_id = rmparent.id
                   )
-                  print("Fixing it!",str(result))
+                  # print("Fixing it!",str(result))
                   # rm.save
+
+
+            thismin = None
+            if 'min' in item.keys():
+              thismin = item['min']
+              if thismin is not None:
+                print("thismin is ",thismin)
+
+            thismax = None
+            if 'max' in item.keys():
+              thismax = item['max']
+              if thismax is not None:
+                print("thismax is ",thismax)
+            
+            thisdefault = None
+            if 'default' in item.keys():
+              thisdefault = item['default']
+              if thisdefault is not None:
+                print("thisdefault is ",thisdefault)
+            
+            thisdefaulttext = None
+            if 'defaulttext' in item.keys():
+              thisdefaulttext = item['defaulttext']
+              if thisdefaulttext is not None:
+                print("thisdefaulttext is ",thisdefaulttext)
+
+            shall_update_default = False
+            shall_update_min = False
+            shall_update_max = False
+            shall_update_defaulttext = False
+
+            if thismin is not None:
+              # This is a prValueFloat or similar
+              print("*** Check min value")
+              rm_min = None
+              rm_min_cf = rm.custom_fields.get(cfdict['prMin'].id)
+              if rm_min_cf is not None:
+                print("*** preexisting is not none",dict(rm_min_cf))
+                rm_min = rm_min_cf.value
+                
+              if rm_min != str(thismin):
+                print("Fixing min data")
+                rm_min_cf.value = thismin
+                print("*** Fixed cf is",dict(rm_min_cf))
+                shall_update_min = True
+            
+            if thismax is not None:
+              # This is a prValueFloat or similar
+              print("*** Check max value")
+              rm_max = None
+              rm_max_cf = rm.custom_fields.get(cfdict['prMax'].id)
+              if rm_max_cf is not None:
+                print("*** preexisting is not none",dict(rm_max_cf))
+                rm_max = rm_max_cf.value
+                
+              if rm_max != str(thismax):
+                print("Fixing max data")
+                rm_max_cf.value = thismax
+                print("*** Fixed cf is",dict(rm_max_cf))
+                shall_update_max = True
+            
+            if thisdefault is not None:
+              # This is a prValueFloat or similar
+              print("*** Check default value")
+              rm_default = None
+              rm_default_cf = rm.custom_fields.get(cfdict['prDefault'].id)
+              if rm_default_cf is not None:
+                print("*** preexisting is not none",dict(rm_default_cf))
+                rm_default = rm_default_cf.value
+                
+              if rm_default != str(thisdefault):
+                print("Fixing default data")
+                rm_default_cf.value = thisdefault
+                print("*** Fixed cf is",dict(rm_default_cf))
+                shall_update_default = True
+
+            if thisdefaulttext is not None:
+              # This is a prValueText or similar
+              print("*** Check defaulttext value")
+              rm_defaulttext = None
+              rm_defaulttext_cf = rm.custom_fields.get(cfdict['prDefaultText'].id)
+              if rm_defaulttext_cf is not None:
+                print("*** preexisting is not none",dict(rm_defaulttext_cf))
+                rm_defaulttext = rm_defaulttext_cf.value
+                
+              if rm_defaulttext != thisdefaulttext:
+                print("Fixing defaulttext data")
+                rm_defaulttext_cf.value = thisdefaulttext
+                print("*** Fixed cf is",dict(rm_defaulttext_cf))
+                shall_update_defaulttext = True
+
+            
+            if shall_update_default or shall_update_min or shall_update_max or shall_update_defaulttext:
+              cfs = rm.custom_fields
+              new_cfs = []
+              for c in cfs:
+                thiscv = {}
+                thiscv['id'] = c['id']
+                thiscv['value'] = c['value']
+
+                if c['id'] == cfdict['prMin'].id and shall_update_min:
+                  thiscv['value'] = thismin
+
+                if c['id'] == cfdict['prMax'].id and shall_update_max:
+                  thiscv['value'] = thismax
+
+                if c['id'] == cfdict['prDefault'].id and shall_update_default:
+                  thiscv['value'] = thisdefault
+
+                if c['id'] == cfdict['prDefaultText'].id and shall_update_defaulttext:
+                  thiscv['value'] = thisdefaulttext
+
+                new_cfs.append(thiscv)
+
+              print(new_cfs)
+              result = redmine.issue.update(
+                rm.id,
+                custom_fields = new_cfs
+              )
+              print("result is", result)
               
             if 'relations' in item.keys():
               relations = item['relations']
