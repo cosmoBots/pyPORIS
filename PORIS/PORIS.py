@@ -225,7 +225,7 @@ class PORIS:
 class PORIS:
     # Constructor, needs a name for the PORIS item
     def __init__(self,name):
-        print("Creating PORIS instance name",name)
+        # print("Creating PORIS instance name",name)
         # Public attributes
         self.ident = None            # A text id for reference
         self.description = None      # A description of the item
@@ -325,7 +325,7 @@ class PORIS:
     
     # Recovers the id of the item from a reference
     def fromXMLRef(n_node: minidom.Node, pdoc: PORISDoc) -> PORIS:
-        print("destination_node:",n_node.localName)
+        # print("destination_node:",n_node.localName)
         idnode = n_node.getElementsByTagName('id')[0]
         if idnode.firstChild.nodeType == idnode.TEXT_NODE:
             ident = int(idnode.firstChild.nodeValue)
@@ -373,7 +373,7 @@ class PORIS:
         
         # ubnode with an identifying string
         identChild = dom.createElement('ident')
-        print("Dump", self.getName())
+        # print("Dump", self.getName())
         valueText = dom.createTextNode(self.ident)
         identChild.appendChild(valueText)
         n_node.appendChild(identChild)
@@ -501,7 +501,7 @@ class PORIS:
                         if c.nodeType == c.TEXT_NODE:
                             id = int(c.nodeValue)
                             if (id < 0):
-                                print("Virtual!!!")
+                                # print("Virtual!!!")
                                 virtual = True
                             break
 
@@ -559,7 +559,7 @@ class PORIS:
         
                         if thiskey is not None:
                             ret.__node_attributes[thiskey] = thisnat
-                        print("Adding node attribute", thiskey, thisnat)
+                            #print("Adding node attribute", thiskey, thisnat)
                         
             '''
                 <label>
@@ -575,26 +575,26 @@ class PORIS:
                         thissck = None
                         thisname = None
                         for f in e.childNodes:
-                            print(f.localName)
+                            # print(f.localName)
                             if f.localName == "name":
                                 for c in f.childNodes:
                                     if c.nodeType == c.TEXT_NODE:                            
                                         thisname = c.nodeValue
-                                        print(thisname)
+                                        # print(thisname)
 
                             if f.localName == "scope-kind":
                                 for c in f.childNodes:
-                                    print(c.localName)
+                                    # print(c.localName)
                                     if c.localName == "name":
                                         for d in c.childNodes:
                                             if d.nodeType == c.TEXT_NODE:                            
                                                 thissck = d.nodeValue
-                                                print(thissck)
+                                                # print(thissck)
         
                         if thisname is not None and thissck is not None:
                             ret.setLabel(thisname, thissck)
                             ret.__labels[thisname] = thissck
-                            print("Adding label", thisname, thissck)
+                            # print("Adding label", thisname, thissck)
                             
                         else:
                             print("ERROR: malformed label")
@@ -1335,8 +1335,8 @@ class PORISMode(PORIS):
             ret.__default_value = None
             
             destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
-            print("myname", ret.getName())
-            print("destnode:",destnode.localName)
+            # print("myname", ret.getName())
+            # print("destnode:",destnode.localName)
             dest = None
             for d in destnode.childNodes:
                 if d.localName == "destination":
@@ -1344,18 +1344,18 @@ class PORISMode(PORIS):
                     dest = PORIS.fromXMLRef(d, pdoc)
                     if dest is not None:
                         # Let's skip the virtual ones
-                        print("d:",dest.getName())
+                        # print("d:",dest.getName())
                         if dest is not None:
                             if (issubclass(dest.__class__,PORISValue)):
                                 # Let's see the destinations to know if it is a PORISSys or a PORISParam
                                 ret.addValue(dest)
-                                print(ret.values)
+                                # print(ret.values)
                                 
 
                             if (issubclass(dest.__class__,PORISMode)):
                                 # Let's see the destinations to know if it is a PORISSys or a PORISParam
                                 ret.addSubMode(dest)
-                                print(ret.submodes)        
+                                # print(ret.submodes)
         return ret   
     
 #######################################
@@ -1692,17 +1692,17 @@ class PORISNode(PORIS):
         # Let's see the destinations to know if it is a PORISSys or a PORISParam
         namenode: minidom.Node = n_node.getElementsByTagName("name")[0]
         name = namenode.firstChild.nodeValue
-        print("****** Parsing",t, name)
+        # print("****** Parsing",t, name)
         
         destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
         for d in destnode.childNodes:
             if d.nodeType != d.TEXT_NODE:
                 # print("Name",d.localName)
                 if d.getAttribute("type") == "PORISNode" or d.getAttribute("type") == "PORISSys" or d.getAttribute("type") == "PORISParam":
-                    print("Is a system")
+                    # print("Is a system")
                     return PORISSys.fromXML(n_node, pdoc)
                 
-        print("Is a param")
+        # print("Is a param")
         return PORISParam.fromXML(n_node, pdoc)
 
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISNode:
@@ -1720,9 +1720,9 @@ class PORISNode(PORIS):
             ret.addMode(ret.engineeringMode)
         
             destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
-            print("destnode:",destnode.localName)
+            # print("destnode:",destnode.localName)
             dest = None
-            print(ret.getName())
+            # print(ret.getName())
             for d in destnode.childNodes:
                 if d.nodeType != d.TEXT_NODE:
                     # print(str(d))
@@ -1732,7 +1732,7 @@ class PORISNode(PORIS):
                         if (issubclass(dest.__class__,PORISMode)):
                             # Let's see the destinations to know if it is a PORISSys or a PORISParam
                             ret.addMode(dest)
-                            print(ret.modes)
+                            # print(ret.modes)
                     
         
         return ret
@@ -2196,9 +2196,9 @@ class PORISSys(PORISNode):
             ret.subsystems = {}
 
             destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
-            print("destnode:",destnode.localName)
+            # print("destnode:",destnode.localName)
             dest = None
-            print(ret.getName())
+            # print(ret.getName())
             for d in destnode.childNodes:
                 if d.nodeType != d.TEXT_NODE:            
                     dest = PORIS.fromXMLRef(d, pdoc)
@@ -2207,12 +2207,12 @@ class PORISSys(PORISNode):
                         if (issubclass(dest.__class__,PORISParam)):
                             # Let's see the destinations to know if it is a PORISSys or a PORISParam
                             ret.addParam(dest)
-                            print(ret.params)
+                            # print(ret.params)
                             
                         if (issubclass(dest.__class__,PORISSys)):
                             # Let's see the destinations to know if it is a PORISSys or a PORISParam
                             ret.addSubsystem(dest)
-                            print(ret.subsystems)
+                            # print(ret.subsystems)
                     
         
         return ret
@@ -2404,9 +2404,9 @@ class PORISDoc:
             print("null!")
         else:
             if rootnode.localName == "poris":
-                print("Aqui tenemos el root")
+                # print("Aqui tenemos el root")
                 for ch in rootnode.childNodes:
-                    print(ch.localName)
+                    # print(ch.localName)
                     if (ch.localName == "mode"):
                         md = PORISMode.fromXML(ch, self)
 
