@@ -54,7 +54,7 @@ OUTPUT_BASE=${DEVPATH%"$DEVNAME"}
 echo ${DEVPATH}
 echo ${DEVNAME}
 echo ${OUTPUT_BASE}
-OUTPUT_PATH=${DEVBASE_PATH}'/output/'${OUTPUT_BASE}
+OUTPUT_PATH=${DEVBASE_PATH}'/output/py/'${OUTPUT_BASE}
 
 # The path for the C++ base folder for the devices
 
@@ -85,7 +85,7 @@ rm -rf ${OUTPUT_PATH}/${DEVNAME}
 # Let's create the product directories
 echo "Creating "${OUTPUT_PATH}/${DEVNAME}
 mkdir -p ${OUTPUT_PATH}/${DEVNAME}
-ln -s ../../../PORIS/PORIS.py ${OUTPUT_PATH}/${DEVNAME}/PORIS.py
+ln -s ../../../pyPORIS/PORIS/PORIS.py ${OUTPUT_PATH}/${DEVNAME}/PORIS.py
 
 ######### If no USER CUSTOM CODE FOLDER ADDED, COPY THE TEMPLATE ONE #############
 echo "Checking the existence of ${DEVBASE_PYTHON_PHYS_PATH}"
@@ -104,7 +104,7 @@ else
   sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
   sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
   ln -s ../${DEVNAME}/${DEVNAME}PORIS.py ${OUTPUT_PHYS_PATH}/${DEVNAME}PORIS.py
-  ln -s ../../../PORIS/PORIS.py ${OUTPUT_PHYS_PATH}/PORIS.py
+  ln -s ../../../pyPORIS/PORIS/PORIS.py ${OUTPUT_PHYS_PATH}/PORIS.py
 fi
 
 ######### PARSING THE MODEL AND GENERATING THE PORIS PRODUCTS ###############
