@@ -212,7 +212,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
     nodes_graphml_url = {}
     nodes_graphml_rmid = {}
     nodes_graphml = {}
-    rm_issues_created = []
+    rm_issues_created = {}
 
     for group in groups:
       group_dict = {}
@@ -509,7 +509,6 @@ def create_ods_file_from_graphml_file(filename, deviceName):
 
 
         if rmissueneeded:
-          rm_issues_created += [n['node_id']]
           print("New rmissue for ", n['node_id'])
           thistrackerid = trackerdict[n['node_type']].id
           thisRmTsk = redmine.issue.create(project_id = my_project.id,
@@ -526,6 +525,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
           print("------------------------->",n['node_id'],thisCsId)
           n['rmid'] = thisRmTsk.id
           n['url'] = url
+          rm_issues_created[n['node_id']] = thisCsId
       
       print("******************************************************************")
       print(rmtranslator)
@@ -652,6 +652,15 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       print(">>>>",nodes_graphml_d6)
 
       if csys_use:
+        print(global_dict.keys())
+        print(rm_issues_created.keys())
+
+        # We shall add the csID keys
+        for k in rm_issues_created.keys():
+          print(global_dict[k])
+          # First we update the csId field
+          global_dict[k]['csID'] = rm_issues_created[k]
+        
         # ONGOING PROCESS
 
         if True:
@@ -867,7 +876,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
         print("\nItero por las creadas",rm_issues_created)
         print("\nd6",nodes_graphml_d6.keys())
         print("\npadres",nodes_graphml.keys())
-        for k in rm_issues_created:
+        for k in rm_issues_created.keys():
             if k in nodes_graphml_d6.keys():
               nodes_graphml_d6[k].contents[0].replace_with(rmtranslator[k])
             
