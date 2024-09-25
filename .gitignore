@@ -130,7 +130,6 @@ dmypy.json
 
 *.ods#
 !*_palette.graphml
-/models/*/*.backup
 
 config_rm.py
 config_csys.py
