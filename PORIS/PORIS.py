@@ -1280,6 +1280,15 @@ class PORISMode(PORIS):
             
         return ret
     
+    # Get a mode from its name
+    def getSubModeFromName(self,myname) -> PORISMode:
+        ret = None
+        for myid in self.submodes.keys():
+            if self.submodes[myid].getName() == myname:
+                ret = self.submodes[myid]
+
+        return ret    
+    
     ########### XML related functions ########
 
     # Getter for the XML tag name of this item
