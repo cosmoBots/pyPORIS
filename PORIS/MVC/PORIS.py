@@ -160,9 +160,13 @@ class PORIS(Model):
         return True
 
 
+    def xmlTagName(self) -> str:
+        return "error"
+
+
     def toXML(self, doc: minidom.Document, onlyIdent: bool) -> minidom.Element:
         if self.isConsistent():
-            ret = doc.createElement(self.__class__.__name__)
+            ret = doc.createElement(self.xmlTagName())
             nameNode = doc.createElement("name")
             Utils.setTextContent(doc, nameNode,self.getName())
             ret.appendChild(nameNode)

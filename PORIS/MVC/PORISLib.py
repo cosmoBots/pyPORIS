@@ -34,12 +34,16 @@ class PORISLib(Model):
             return None
         
 
-    def addPORISItems(self,items):
+    def addPORISItems(self,items: list):
         for i in items:
             self.__nodeList.append(i)
 
         self.notifyObs()
 
+    def addPORISItem(self,item: PORIS):
+        self.__nodeList.append(item)
+
+        self.notifyObs()
 
     
     def fromXML(self, node: minidom.Node):

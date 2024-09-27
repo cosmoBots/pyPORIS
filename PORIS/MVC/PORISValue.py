@@ -62,6 +62,8 @@ class PORISValue(PORIS):
         
         return super().toString()
 
+    def xmlTagName(self) -> str:
+        return "value"
 
     def toXML(self, doc: minidom.Document, onlyIdent: bool) -> minidom.Element:
         ret = super().toXML(doc, onlyIdent)

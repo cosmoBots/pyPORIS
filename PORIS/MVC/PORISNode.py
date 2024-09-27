@@ -92,6 +92,8 @@ class PORISNode(PORIS):
                 
         return None
 
+    def xmlTagName(self) -> str:
+        return "sub-system"
 
     def toXML(self, doc: minidom.Document, tagClass, onlyIdent: bool) -> minidom.Element:
         ret = super().toXML(doc, tagClass, onlyIdent)
