@@ -1711,8 +1711,12 @@ class PORISNode(PORIS):
                     # print("Is a system")
                     return PORISSys.fromXML(n_node, pdoc)
                 
+                else:
+                    if d.getAttribute("type") == "PORISValue":
+                        return PORISParam.fromXML(n_node, pdoc)
+                
         # print("Is a param")
-        return PORISParam.fromXML(n_node, pdoc)
+        return PORISSys.fromXML(n_node, pdoc)
 
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISNode:
         ret = super(PORISNode,PORISNode).fromXML(n_node, pdoc)
@@ -1724,7 +1728,9 @@ class PORISNode(PORIS):
             ret.unknownMode = None
             ret.engineeringMode = None
             ret.unknownMode = PORISMode("UNKNOWN")
+            # print("1x. unknownMode Id is now", str(ret.unknownMode.getId()))
             ret.addMode(ret.unknownMode)
+            # print("2x. unknownMode Id is now", str(ret.unknownMode.getId()))
             ret.engineeringMode = PORISMode("Engineering")
             ret.addMode(ret.engineeringMode)
         
@@ -1760,7 +1766,9 @@ class PORISParam(PORISNode):
         self.values = {}
         self.unknownValue = None
         self.unknownValue = PORISValue("UNKNOWN")
+        # print("1. unknownValue Id is now", str(self.unknownValue.getId()))
         self.addValue(self.unknownValue)
+        # print("2. unknownValue Id is now", str(self.unknownValue.getId()))
         self.unknownMode.addValue(self.unknownValue)
   
     # ID setter
@@ -1782,11 +1790,16 @@ class PORISParam(PORISNode):
     # Function to add a value.
     # If it is the first value added, it also will be the selected one
     def addValue(self,v):
-        index = v.getId()
-        if v.getParent() is not None:
-            if v.getParent().unknownValue == v:
-                index = -2
+        if (self.unknownValue == v):
+            index = -2
+            v.setId(index)
         
+        else:                
+            index = v.getId()
+            if v.getParent() is not None:
+                if v.getParent().unknownValue == v:
+                    index = -2
+            
         self.values[index] = v
         v.setParent(self)
         self.engineeringMode.addValue(v)
@@ -1969,7 +1982,9 @@ class PORISParam(PORISNode):
             ret.__selectedValue = None  # Current selected value for the param
             ret.unknownValue = None
             ret.unknownValue = PORISValue("UNKNOWN")
+            # print("1x. unknownValue Id is now", str(ret.unknownValue.getId()))
             ret.addValue(ret.unknownValue)
+            # print("2x. unknownValue Id is now", str(ret.unknownValue.getId()))
             ret.unknownMode.addValue(ret.unknownValue)
             
             
@@ -2311,7 +2326,7 @@ class PORISDoc:
             node_and_destinations[thiskey] = destinations
 
 
-        # print(node_and_destinations)
+        print(node_and_destinations)
         # print("----> Initial LEN ", len(node_and_destinations))
         # print("################################")
         
@@ -2322,16 +2337,16 @@ class PORISDoc:
             # Let's look for nodes without destinations
             nodes_without_destinations = []
             for k in node_and_destinations:
-                # print(k, len(node_and_destinations[k]), node_and_destinations[k])
+                print(k, len(node_and_destinations[k]), node_and_destinations[k])
                 if len(node_and_destinations[k]) == 0:
                     nodes_without_destinations.append(int(k))
 
             # Now, let's add them to the ordered list
             ordered_list += nodes_without_destinations
 
-            # print("################################")
-            # print("----> To remove ", len(nodes_without_destinations))
-            # print(nodes_without_destinations)
+            print("################################")
+            print("----> To remove ", len(nodes_without_destinations))
+            print(nodes_without_destinations)
 
                     
             # And let's remove them from the nodes_and_destinations dictionary
@@ -2343,6 +2358,7 @@ class PORISDoc:
 
             # And now let's remove their references from node_and_destinations list
             for k in node_and_destinations:
+                # print("dest:",k)
                 toremove = []
                 for d in node_and_destinations[k]:
                     # print(k, node_and_destinations[k])
@@ -2351,10 +2367,12 @@ class PORISDoc:
                     if int(d) in nodes_without_destinations:
                         # print("Removing",d,"from",k,node_and_destinations[k])
                         toremove.append(d)
-                        # print("Remaining",node_and_destinations[k])
+
             
                 for d in toremove:
                     node_and_destinations[k].remove(d)
+                
+                # print("Remaining",node_and_destinations[k])
 
             # print("----> Final LEN ", len(node_and_destinations))
             
@@ -2457,8 +2475,10 @@ class PORISDoc:
         # Now we have to locate the root, which is the one which has no parents
         found = False
         for k in self.__item_dict.keys():
+            print(k)
             thisitem = self.__item_dict[k]
-            if (thisitem.__class__ == PORISSys or thisitem.__class__ == PORISSys):
+            print(str(thisitem.__class__))
+            if (thisitem.__class__ == PORISSys or thisitem.__class__ == PORISParam):
                 if thisitem.getParent() is None:
                     found = True
                     self.setRoot(thisitem)
