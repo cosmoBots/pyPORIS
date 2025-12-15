@@ -1,17 +1,38 @@
 #!/bin/bash
 
-if [ $# -eq 0 ]
-  then
-    echo "No arguments supplied"
-    exit 1;
+if [ $# -eq 0 ]; then
+  echo "No arguments supplied"
+  exit 1;
 fi
 
-FILE=models/$1.graphml
-if test -f "$FILE"; then
-    echo "Input $FILE exists, continuing"
+DIRMODE=0
+
+if [ "$1" = "--dir" ]; then
+  DIRMODE=1
+  shift
+fi
+
+if [ -z "$1" ]; then
+  echo "No device name supplied"
+  exit 1
+fi
+
+if [ $DIRMODE -eq 1 ]; then
+  FILE=models/$1
+  if [ -d "$FILE" ]; then
+      echo "Input dir $FILE exists, continuing"
+  else
+      echo "Input dir $FILE does not exist, aborting"
+      exit 1;
+  fi
 else
-    echo "Input $FILE does not exist, aborting"
-    exit 1;
+  FILE=models/$1.graphml
+  if test -f "$FILE"; then
+      echo "Input $FILE exists, continuing"
+  else
+      echo "Input $FILE does not exist, aborting"
+      exit 1;
+  fi
 fi
 
 if [ -z ${PORIS_SAFETY_OVERRIDE+x} ]; then 
@@ -111,6 +132,10 @@ fi
 cd ${DEVBASE_PATH}
 echo "Generating the PORIS device products from $1.graphml"
 echo ${PORIS_TOOLS_PYTHON_PATH}
-python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py models/$1.graphml --output-dir ${OUTPUT_PATH}/${DEVNAME} || { echo 'graph2poris.py failed' ; exit 1; }
+if [ $DIRMODE -eq 1 ]; then
+  python3 ${PORIS_TOOLS_PYTHON_PATH}/graphdir2poris.py --output-dir ${OUTPUT_PATH}/${DEVNAME} models/$1 || { echo 'graphdir2poris.py failed' ; exit 1; }
+else
+  python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py models/$1.graphml --output-dir ${OUTPUT_PATH}/${DEVNAME} || { echo 'graph2poris.py failed' ; exit 1; }
+fi
 
 echo "Fin!"

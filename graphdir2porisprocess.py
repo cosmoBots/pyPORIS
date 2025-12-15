@@ -8,6 +8,7 @@ from config_csys import *
 # Importing test configuration file
 import config
 from graph2porislib import *
+from poris_codegen import build_nodes_tree, createPythonCode
 import glob
 
 debug2JSON = True
@@ -59,7 +60,7 @@ def create_global_path(ndict,key,project):
   else:
     return None
 
-def create_tree_from_graphml_dir(dirname, deviceName):
+def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python=True, python_output_dir=None):
   #print(dirname+'/*.graphml')
   filenames = glob.glob(dirname+'/*.graphml')
   #filenames = glob.glob(dirname+'/*')
@@ -705,5 +706,44 @@ def create_tree_from_graphml_dir(dirname, deviceName):
     extension = basenamelist[1]
     odsextension = ".ods"
     
-    save_data(os.path.join(dirname,deviceName+odsextension), data)
+    if emit_ods:
+      save_data(os.path.join(dirname,deviceName+odsextension), data)
 
+    if emit_python:
+      python_nodes = {}
+      for key, n in normalized_dict.items():
+        ident = translator_dict.get(key, key)
+        parent_ident = translator_dict.get(n['parent'], n['parent'])
+        rels = []
+        for rel in n['relations']:
+          if rel in translator_dict:
+            rels.append(translator_dict[rel])
+          else:
+            rels.append(rel)
+
+        nexts = []
+        for rel in n['next']:
+          if rel in translator_dict:
+            nexts.append(translator_dict[rel])
+          else:
+            nexts.append(rel)
+
+        python_nodes[ident] = {
+          'ident': ident,
+          'id': n['rmid'] if n['rmid'] is not None else ident,
+          'subject': n['name'],
+          'description': n['defaulttext'] if n['defaulttext'] is not None else "",
+          'parent': parent_ident,
+          'tracker': n['node_type'],
+          'blocking': rels,
+          'precedents': nexts,
+          'min': n['min'],
+          'default_data': n['default'],
+          'max': n['max'],
+          'deftext': n['defaulttext'],
+          'children': [],
+          'virtual': False
+        }
+
+      python_tree = build_nodes_tree(python_nodes)
+      createPythonCode(python_tree, deviceName, python_output_dir if python_output_dir is not None else dirname, "")
