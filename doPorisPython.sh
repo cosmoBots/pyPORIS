@@ -6,11 +6,25 @@ if [ $# -eq 0 ]; then
 fi
 
 DIRMODE=0
+GENERATE_ODS=0
 
-if [ "$1" = "--dir" ]; then
-  DIRMODE=1
-  shift
-fi
+# Parse optional flags
+while [[ "$1" == --* ]]; do
+  case "$1" in
+    --dir)
+      DIRMODE=1
+      shift
+      ;;
+    --ods)
+      GENERATE_ODS=1
+      shift
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+done
 
 if [ -z "$1" ]; then
   echo "No device name supplied"
@@ -133,10 +147,14 @@ fi
 cd ${DEVBASE_PATH}
 echo "Generating the PORIS device products from $1.graphml"
 echo ${PORIS_TOOLS_PYTHON_PATH}
+ODS_FLAG="--no-ods"
+if [ $GENERATE_ODS -eq 1 ]; then
+  ODS_FLAG=""
+fi
 if [ $DIRMODE -eq 1 ]; then
-  python3 ${PORIS_TOOLS_PYTHON_PATH}/graphdir2poris.py --output-dir ${OUTPUT_PORIS_DIR} models/$1 || { echo 'graphdir2poris.py failed' ; exit 1; }
+  python3 ${PORIS_TOOLS_PYTHON_PATH}/graphdir2poris.py $ODS_FLAG --output-dir ${OUTPUT_PORIS_DIR} models/$1 || { echo 'graphdir2poris.py failed' ; exit 1; }
 else
-  python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py models/$1.graphml --output-dir ${OUTPUT_PORIS_DIR} || { echo 'graph2poris.py failed' ; exit 1; }
+  python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py $ODS_FLAG models/$1.graphml --output-dir ${OUTPUT_PORIS_DIR} || { echo 'graph2poris.py failed' ; exit 1; }
 fi
 
 echo "Fin!"
