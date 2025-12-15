@@ -713,16 +713,23 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
       python_nodes = {}
       for key, n in normalized_dict.items():
         ident = translator_dict.get(key, key)
-        parent_ident = translator_dict.get(n['parent'], n['parent'])
+        # parentkey stores the globalid of the parent group; convert it to globalpath via node_aliases, then to ident
+        parent_key = n.get('parentkey') or n.get('parent')
+        parent_ident = None
+        if parent_key:
+          parent_path = node_aliases.get(parent_key, parent_key)
+          parent_ident = translator_dict.get(parent_path, parent_path)
         rels = []
-        for rel in n['relations']:
+        rel_sources = n.get('normalized_relations', n.get('relations', [])) or []
+        for rel in rel_sources:
           if rel in translator_dict:
             rels.append(translator_dict[rel])
           else:
             rels.append(rel)
 
         nexts = []
-        for rel in n['next']:
+        next_sources = n.get('normalized_next', n.get('next', [])) or []
+        for rel in next_sources:
           if rel in translator_dict:
             nexts.append(translator_dict[rel])
           else:
