@@ -705,9 +705,10 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
     onlyname = basenamelist[0]
     extension = basenamelist[1]
     odsextension = ".ods"
-    
     if emit_ods:
-      save_data(os.path.join(dirname,deviceName+odsextension), data)
+      ods_dir = python_output_dir if python_output_dir is not None else dirname
+      os.makedirs(ods_dir, exist_ok=True)
+      save_data(os.path.join(ods_dir, deviceName + odsextension), data)
 
     if emit_python:
       python_nodes = {}
