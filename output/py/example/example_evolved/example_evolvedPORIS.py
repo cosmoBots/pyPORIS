@@ -29,10 +29,10 @@ class example_evolvedPORIS(PORISDoc):
         self.vlDispersion_R1000 = PORISValue("Dispersion_R1000")
         self.vlDispersion_R2000 = PORISValue("Dispersion_R2000")
         self.mdDispersionMode_Normal = PORISMode("DispersionMode_Normal")
-        self.vlexpTime_NormalRange = PORISValueFloat("expTime_NormalRange",0,1,3600)
+        self.vlexpTime_NormalRange = PORISValueFloat("expTime_NormalRange",0.0,1.0,3600.0)
         self.mdexpTimeMode_Normal = PORISMode("expTimeMode_Normal")
         self.mdexpTimeMode_Fast = PORISMode("expTimeMode_Fast")
-        self.vlexpTime_FastRange = PORISValueFloat("expTime_FastRange",0,0.01,0.5)
+        self.vlexpTime_FastRange = PORISValueFloat("expTime_FastRange",0.0,0.01,0.5)
         self.vlBinning_1x1 = PORISValue("Binning_1x1")
         self.vlBinning_2x1 = PORISValue("Binning_2x1")
         self.vlBinning_1x2 = PORISValue("Binning_1x2")
@@ -275,7 +275,7 @@ class example_evolvedPORIS(PORISDoc):
         self.prClassicFilters.addMode(self.mdClassicFiltersMode_Red)
         self.addItem(self.vlClassicFilters_userFilter)
         self.vlClassicFilters_userFilter.ident = "n0::n0::n0::n6::n3::n5"
-        self.vlClassicFilters_userFilter.description = ""
+        self.vlClassicFilters_userFilter.description = "mycustomfilter"
         self.prClassicFilters.addValue(self.vlClassicFilters_userFilter)
         self.addItem(self.mdClassicFiltersMode_User)
         self.mdClassicFiltersMode_User.ident = "n0::n0::n0::n6::n3::n6"
@@ -330,27 +330,27 @@ class example_evolvedPORIS(PORISDoc):
         self.mdEngineerMode_Operator.description = ""
         self.sysEngineer.addMode(self.mdEngineerMode_Operator)
         self.addItem(self.mdEngineerMode_Engineering)
-        self.mdEngineerMode_Engineering.ident = "ENG-2"
+        self.mdEngineerMode_Engineering.ident = "ENG-1"
         self.mdEngineerMode_Engineering.description = "Engineer engineering mode"
         self.sysEngineer.addMode(self.mdEngineerMode_Engineering)
         self.addItem(self.mdOperatorMode_Engineering)
-        self.mdOperatorMode_Engineering.ident = "ENG-3"
+        self.mdOperatorMode_Engineering.ident = "ENG-2"
         self.mdOperatorMode_Engineering.description = "Operator engineering mode"
         self.sysOperator.addMode(self.mdOperatorMode_Engineering)
         self.addItem(self.mdInstrumentMode_Engineering)
-        self.mdInstrumentMode_Engineering.ident = "ENG-4"
+        self.mdInstrumentMode_Engineering.ident = "ENG-3"
         self.mdInstrumentMode_Engineering.description = "Instrument engineering mode"
         self.sysInstrument.addMode(self.mdInstrumentMode_Engineering)
         self.addItem(self.mdDetectorMode_Engineering)
-        self.mdDetectorMode_Engineering.ident = "ENG-5"
+        self.mdDetectorMode_Engineering.ident = "ENG-4"
         self.mdDetectorMode_Engineering.description = "Detector engineering mode"
         self.sysDetector.addMode(self.mdDetectorMode_Engineering)
         self.addItem(self.mdFilterMode_Engineering)
-        self.mdFilterMode_Engineering.ident = "ENG-6"
+        self.mdFilterMode_Engineering.ident = "ENG-5"
         self.mdFilterMode_Engineering.description = "Filter engineering mode"
         self.sysFilter.addMode(self.mdFilterMode_Engineering)
         self.addItem(self.mdSlicerMode_Engineering)
-        self.mdSlicerMode_Engineering.ident = "ENG-7"
+        self.mdSlicerMode_Engineering.ident = "ENG-6"
         self.mdSlicerMode_Engineering.description = "Slicer engineering mode"
         self.sysSlicer.addMode(self.mdSlicerMode_Engineering)
         # Marcamos OperatorMode_Ciencia como elegible para EngineerMode_Operator

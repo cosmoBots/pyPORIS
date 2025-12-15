@@ -22,10 +22,10 @@ class examplePORIS(PORISDoc):
         self.vlDispersion_R1000 = PORISValue("Dispersion_R1000")
         self.vlDispersion_R2000 = PORISValue("Dispersion_R2000")
         self.mdDispersionMode_Normal = PORISMode("DispersionMode_Normal")
-        self.vlexpTime_NormalRange = PORISValueFloat("expTime_NormalRange",0,1,3600)
+        self.vlexpTime_NormalRange = PORISValueFloat("expTime_NormalRange",0.0,1.0,3600.0)
         self.mdexpTimeMode_Normal = PORISMode("expTimeMode_Normal")
         self.mdexpTimeMode_Fast = PORISMode("expTimeMode_Fast")
-        self.vlexpTime_FastRange = PORISValueFloat("expTime_FastRange",0,0.01,0.5)
+        self.vlexpTime_FastRange = PORISValueFloat("expTime_FastRange",0.0,0.01,0.5)
         self.vlBinning_1x1 = PORISValue("Binning_1x1")
         self.vlBinning_2x1 = PORISValue("Binning_2x1")
         self.vlBinning_1x2 = PORISValue("Binning_1x2")
@@ -220,7 +220,7 @@ class examplePORIS(PORISDoc):
         self.prClassicFilters.addMode(self.mdClassicFiltersMode_Red)
         self.addItem(self.vlClassicFilters_userFilter)
         self.vlClassicFilters_userFilter.ident = "EX-1860"
-        self.vlClassicFilters_userFilter.description = ""
+        self.vlClassicFilters_userFilter.description = "mycustomfilter"
         self.prClassicFilters.addValue(self.vlClassicFilters_userFilter)
         self.addItem(self.mdClassicFiltersMode_User)
         self.mdClassicFiltersMode_User.ident = "EX-1861"

@@ -6,7 +6,7 @@ if [ $# -eq 0 ]
     exit 1;
 fi
 
-FILE=models/$1.ods
+FILE=models/$1.graphml
 if test -f "$FILE"; then
     echo "Input $FILE exists, continuing"
 else
@@ -109,8 +109,8 @@ fi
 
 ######### PARSING THE MODEL AND GENERATING THE PORIS PRODUCTS ###############
 cd ${DEVBASE_PATH}
-echo "Generating the PORIS device products from $1.ods"
+echo "Generating the PORIS device products from $1.graphml"
 echo ${PORIS_TOOLS_PYTHON_PATH}
-python3 ${PORIS_TOOLS_PYTHON_PATH}/poris2python.py models models/$1.ods output || { echo 'poris2python.py failed' ; exit 1; }
+python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py models/$1.graphml --output-dir ${OUTPUT_PATH}/${DEVNAME} || { echo 'graph2poris.py failed' ; exit 1; }
 
 echo "Fin!"

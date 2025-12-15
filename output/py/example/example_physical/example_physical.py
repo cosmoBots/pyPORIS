@@ -9,7 +9,7 @@ class example_physical(examplePORIS):
     pass
 
 
-thismodel = example_physical(1)
+thismodel = example_physical(12)
 
 print("Let's test our model ",thismodel.getRoot().getName())
 print("Current mode is ",thismodel.getRoot().getSelectedMode().getName())
