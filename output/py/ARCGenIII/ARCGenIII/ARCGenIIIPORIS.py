@@ -37,36 +37,36 @@ class ARCGenIIIPORIS(PORISDoc):
         self.mdAcquisitionMode_Normal = PORISMode("AcquisitionMode_Normal")
         self.mdAcquisitionMode_FrameTransfer = PORISMode("AcquisitionMode_FrameTransfer")
         self.mdAcquisitionMode_Shuffling = PORISMode("AcquisitionMode_Shuffling")
-        self.vlShuffleLines_Full_Range = PORISValueFloat("ShuffleLines_Full_Range",0,200,1000)
+        self.vlShuffleLines_Full_Range = PORISValueFloat("ShuffleLines_Full_Range",0.0,200.0,1000.0)
         self.mdShuffleLinesMode_Normal = PORISMode("ShuffleLinesMode_Normal")
-        self.vlShiftNumber_Full_Range = PORISValueFloat("ShiftNumber_Full_Range",0,5,1000)
+        self.vlShiftNumber_Full_Range = PORISValueFloat("ShiftNumber_Full_Range",0.0,5.0,1000.0)
         self.mdShiftNumberMode_Normal = PORISMode("ShiftNumberMode_Normal")
         self.mdSubarrayFeatureMode_Off = PORISMode("SubarrayFeatureMode_Off")
         self.mdSubarrayFeatureMode_On = PORISMode("SubarrayFeatureMode_On")
         self.mdColsMode_Normal = PORISMode("ColsMode_Normal")
-        self.vlCols_Full_Range = PORISValueFloat("Cols_Full_Range",0,2048,4098)
+        self.vlCols_Full_Range = PORISValueFloat("Cols_Full_Range",0.0,2048.0,4098.0)
         self.mdoffsetRowMode_Normal = PORISMode("offsetRowMode_Normal")
-        self.vloffsetRow_Full_Range = PORISValueFloat("offsetRow_Full_Range",0,2048,4098)
+        self.vloffsetRow_Full_Range = PORISValueFloat("offsetRow_Full_Range",0.0,2048.0,4098.0)
         self.mdRowsMode_Normal = PORISMode("RowsMode_Normal")
-        self.vlRows_Full_Range = PORISValueFloat("Rows_Full_Range",0,2048,4098)
+        self.vlRows_Full_Range = PORISValueFloat("Rows_Full_Range",0.0,2048.0,4098.0)
         self.mdoffsetColMode_Normal = PORISMode("offsetColMode_Normal")
-        self.vloffsetCol_Full_Range = PORISValueFloat("offsetCol_Full_Range",0,2048,4098)
+        self.vloffsetCol_Full_Range = PORISValueFloat("offsetCol_Full_Range",0.0,2048.0,4098.0)
         self.mdOpenShutterMode_On = PORISMode("OpenShutterMode_On")
         self.mdOpenShutterMode_Off = PORISMode("OpenShutterMode_Off")
-        self.vlExpTime_Full_Range = PORISValueFloat("ExpTime_Full_Range",0,1,4294967.295)
+        self.vlExpTime_Full_Range = PORISValueFloat("ExpTime_Full_Range",0.0,1.0,4294967.295)
         self.mdExpTimeMode_Normal = PORISMode("ExpTimeMode_Normal")
         self.mdExpTimeMode_FT = PORISMode("ExpTimeMode_FT")
-        self.vlExpTime_FT_Range = PORISValueFloat("ExpTime_FT_Range",0,0,360)
+        self.vlExpTime_FT_Range = PORISValueFloat("ExpTime_FT_Range",0.0,0.0,360.0)
         self.mdPixelSpeedMode_SLW = PORISMode("PixelSpeedMode_SLW")
         self.mdPixelSpeedMode_MED = PORISMode("PixelSpeedMode_MED")
         self.mdPixelSpeedMode_FST = PORISMode("PixelSpeedMode_FST")
         self.mdExposureCtrlMode_Normal = PORISMode("ExposureCtrlMode_Normal")
         self.mdExposureCtrlMode_FT = PORISMode("ExposureCtrlMode_FT")
         self.mdnumOfFramesMode_Multiple = PORISMode("numOfFramesMode_Multiple")
-        self.vlnumOfFrames_Multiple_Range = PORISValueFloat("numOfFrames_Multiple_Range",2,10,4294967295)
+        self.vlnumOfFrames_Multiple_Range = PORISValueFloat("numOfFrames_Multiple_Range",2.0,10.0,4294967295.0)
         self.mdnumOfFramesMode_Single = PORISMode("numOfFramesMode_Single")
         self.vlnumOfFrames_1 = PORISValue("numOfFrames_1")
-        self.vlCalibGain_Normal_Range = PORISValueFloat("CalibGain_Normal_Range",0,2,15)
+        self.vlCalibGain_Normal_Range = PORISValueFloat("CalibGain_Normal_Range",0.0,2.0,15.0)
         self.mdCalibGainMode_Normal = PORISMode("CalibGainMode_Normal")
         self.mdExposureCtrlMode_NoShutter = PORISMode("ExposureCtrlMode_NoShutter")
         self.mdExposureCtrlMode_Calibration = PORISMode("ExposureCtrlMode_Calibration")
@@ -84,11 +84,11 @@ class ARCGenIIIPORIS(PORISDoc):
         self.mdRecompositionMode_CDSQuad = PORISMode("RecompositionMode_CDSQuad")
         self.mdRecompositionMode_HawaiiRG = PORISMode("RecompositionMode_HawaiiRG")
         self.mdAcquisitionMode_NormalWindow = PORISMode("AcquisitionMode_NormalWindow")
-        self.vluiRows_Full_Range = PORISValueFloat("uiRows_Full_Range",0,4112,4112)
+        self.vluiRows_Full_Range = PORISValueFloat("uiRows_Full_Range",0.0,4112.0,4112.0)
         self.mduiRowsMode_Normal = PORISMode("uiRowsMode_Normal")
-        self.vluiRows_FTRange = PORISValueFloat("uiRows_FTRange",0,2056,2056)
+        self.vluiRows_FTRange = PORISValueFloat("uiRows_FTRange",0.0,2056.0,2056.0)
         self.mduiRowsMode_Half = PORISMode("uiRowsMode_Half")
-        self.vluiCols_Full_Range = PORISValueFloat("uiCols_Full_Range",0,4096,4096)
+        self.vluiCols_Full_Range = PORISValueFloat("uiCols_Full_Range",0.0,4096.0,4096.0)
         self.mduiColsMode_Normal = PORISMode("uiColsMode_Normal")
         self.mdDimensionsMode_Normal = PORISMode("DimensionsMode_Normal")
         self.mdDimensionsMode_FT = PORISMode("DimensionsMode_FT")
@@ -497,35 +497,35 @@ class ARCGenIIIPORIS(PORISDoc):
         self.mdVariantsMode_Extended_2.description = ""
         self.sysVariants.addMode(self.mdVariantsMode_Extended_2)
         self.addItem(self.mdARCGenIIIMode_Engineering)
-        self.mdARCGenIIIMode_Engineering.ident = "ENG-14"
+        self.mdARCGenIIIMode_Engineering.ident = "ENG-1"
         self.mdARCGenIIIMode_Engineering.description = "ARCGenIII engineering mode"
         self.sysARCGenIII.addMode(self.mdARCGenIIIMode_Engineering)
         self.addItem(self.mdFirmwareMode_Engineering)
-        self.mdFirmwareMode_Engineering.ident = "ENG-15"
+        self.mdFirmwareMode_Engineering.ident = "ENG-2"
         self.mdFirmwareMode_Engineering.description = "Firmware engineering mode"
         self.sysFirmware.addMode(self.mdFirmwareMode_Engineering)
         self.addItem(self.mdVariantsMode_Engineering)
-        self.mdVariantsMode_Engineering.ident = "ENG-16"
+        self.mdVariantsMode_Engineering.ident = "ENG-3"
         self.mdVariantsMode_Engineering.description = "Variants engineering mode"
         self.sysVariants.addMode(self.mdVariantsMode_Engineering)
         self.addItem(self.mdAcquisitionMode_Engineering)
-        self.mdAcquisitionMode_Engineering.ident = "ENG-17"
+        self.mdAcquisitionMode_Engineering.ident = "ENG-4"
         self.mdAcquisitionMode_Engineering.description = "Acquisition engineering mode"
         self.sysAcquisition.addMode(self.mdAcquisitionMode_Engineering)
         self.addItem(self.mdSubarrayFeatureMode_Engineering)
-        self.mdSubarrayFeatureMode_Engineering.ident = "ENG-18"
+        self.mdSubarrayFeatureMode_Engineering.ident = "ENG-5"
         self.mdSubarrayFeatureMode_Engineering.description = "SubarrayFeature engineering mode"
         self.sysSubarrayFeature.addMode(self.mdSubarrayFeatureMode_Engineering)
         self.addItem(self.mdExposureCtrlMode_Engineering)
-        self.mdExposureCtrlMode_Engineering.ident = "ENG-19"
+        self.mdExposureCtrlMode_Engineering.ident = "ENG-6"
         self.mdExposureCtrlMode_Engineering.description = "ExposureCtrl engineering mode"
         self.sysExposureCtrl.addMode(self.mdExposureCtrlMode_Engineering)
         self.addItem(self.mdOutputSourceMode_Engineering)
-        self.mdOutputSourceMode_Engineering.ident = "ENG-22"
+        self.mdOutputSourceMode_Engineering.ident = "ENG-7"
         self.mdOutputSourceMode_Engineering.description = "OutputSource engineering mode"
         self.sysOutputSource.addMode(self.mdOutputSourceMode_Engineering)
         self.addItem(self.mdDimensionsMode_Engineering)
-        self.mdDimensionsMode_Engineering.ident = "ENG-24"
+        self.mdDimensionsMode_Engineering.ident = "ENG-8"
         self.mdDimensionsMode_Engineering.description = "Dimensions engineering mode"
         self.sysDimensions.addMode(self.mdDimensionsMode_Engineering)
         # Marcamos FirmwareMode_tim como elegible para ARCGenIIIMode_Real

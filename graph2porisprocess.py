@@ -9,6 +9,7 @@ from config_csys import *
 # Importing test configuration file
 import config
 from graph2porislib import *
+from poris_codegen import build_nodes_tree, createPythonCode
 
 file_data = ['','']
 localcsids = {}
@@ -61,7 +62,7 @@ def get_project_tree(thisproject,rootproject,projects):
   return result
 
 
-def create_ods_file_from_graphml_file(filename, deviceName):
+def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_python=True, python_output_dir=None):
   global file_data
   global localcsids
   global inverse_localcsids
@@ -69,7 +70,7 @@ def create_ods_file_from_graphml_file(filename, deviceName):
   with open(filename) as file:
     soup = BeautifulSoup(file, 'lxml-xml')
     graph = soup.find("graph",{"id":"G"})
-    nodes = soup.findAll("node", {"yfiles.foldertype":""})
+    nodes = [n for n in soup.find_all("node") if n.get("yfiles.foldertype") != "group"]
     groups = soup.find_all("node", {"yfiles.foldertype":"group"})
     edges = soup.findAll("edge")
     urlkey = soup.find("key",{"attr.name":"url"})['id']
@@ -529,6 +530,50 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       
       print("******************************************************************")
       print(rmtranslator)
+
+      def translate_id(rawid):
+        if rawid is None:
+          return None
+        if csys_use and rawid in rmtranslator.keys():
+          return rmtranslator[rawid]
+        if (not csys_use) and rawid in localcsids.keys():
+          return localcsids[rawid]
+        return rawid
+
+      python_nodes = {}
+      for n in csv_dict_data:
+        ident = translate_id(n['node_id'])
+        parent_ident = translate_id(n['node_group_id'])
+        blocking_list = []
+        for rel in n['relations']:
+          trel = translate_id(rel)
+          if trel is not None:
+            blocking_list.append(trel)
+
+        precedents_list = []
+        for rel in n['next']:
+          trel = translate_id(rel)
+          if trel is not None:
+            precedents_list.append(trel)
+
+        python_nodes[ident] = {
+          'ident': ident,
+          'id': n['rmid'] if n['rmid'] is not None else ident,
+          'subject': n['node_name'],
+          'description': n['defaulttext'] if n['defaulttext'] is not None else "",
+          'parent': parent_ident,
+          'tracker': n['node_type'],
+          'blocking': blocking_list,
+          'precedents': precedents_list,
+          'min': n['min'],
+          'default_data': n['default'],
+          'max': n['max'],
+          'deftext': n['defaulttext'],
+          'children': [],
+          'virtual': False
+        }
+
+      python_tree = build_nodes_tree(python_nodes)
       for n in csv_dict_data:
         row = []
         thisgroup = n['node_group_id']
@@ -647,7 +692,12 @@ def create_ods_file_from_graphml_file(filename, deviceName):
       odsextension = ".ods"
         
 
-      save_data(os.path.join(dirname,onlyname+odsextension), data)
+      if emit_ods:
+        save_data(os.path.join(dirname,onlyname+odsextension), data)
+
+      if emit_python:
+        target_dir = python_output_dir if python_output_dir is not None else dirname
+        createPythonCode(python_tree, onlyname, target_dir, "")
 
       print(">>>>",nodes_graphml_d6)
 
