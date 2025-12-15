@@ -9,7 +9,7 @@ class ARCGenIII_physical(ARCGenIIIPORIS):
     pass
 
 
-thismodel = ARCGenIII_physical(1)
+thismodel = ARCGenIII_physical(12)
 
 print("Let's test our model ",thismodel.getRoot().getName())
 print("Current mode is ",thismodel.getRoot().getSelectedMode().getName())
