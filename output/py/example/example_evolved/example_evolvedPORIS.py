@@ -4,36 +4,18 @@ class example_evolvedPORIS(PORISDoc):
     def __init__(self, project_id):
         super().__init__(project_id)
         self.sysEngineer = PORISSys("Engineer")
-        self.mdEngineerMode_UNKNOWN = PORISMode("EngineerMode_UNKNOWN")
         self.setRoot(self.sysEngineer)
         self.sysOperator = PORISSys("Operator")
-        self.mdOperatorMode_UNKNOWN = PORISMode("OperatorMode_UNKNOWN")
         self.sysInstrument = PORISSys("Instrument")
-        self.mdInstrumentMode_UNKNOWN = PORISMode("InstrumentMode_UNKNOWN")
         self.prMasks = PORISParam("Masks")
-        self.mdMasksMode_UNKNOWN = PORISMode("MasksMode_UNKNOWN")
-        self.vlMasks_UNKNOWN = PORISValue("Masks_UNKNOWN")
         self.prDispersion = PORISParam("Dispersion")
-        self.mdDispersionMode_UNKNOWN = PORISMode("DispersionMode_UNKNOWN")
-        self.vlDispersion_UNKNOWN = PORISValue("Dispersion_UNKNOWN")
         self.sysDetector = PORISSys("Detector")
-        self.mdDetectorMode_UNKNOWN = PORISMode("DetectorMode_UNKNOWN")
         self.prexpTime = PORISParam("expTime")
-        self.mdexpTimeMode_UNKNOWN = PORISMode("expTimeMode_UNKNOWN")
-        self.vlexpTime_UNKNOWN = PORISValue("expTime_UNKNOWN")
         self.prBinning = PORISParam("Binning")
-        self.mdBinningMode_UNKNOWN = PORISMode("BinningMode_UNKNOWN")
-        self.vlBinning_UNKNOWN = PORISValue("Binning_UNKNOWN")
         self.sysFilter = PORISSys("Filter")
-        self.mdFilterMode_UNKNOWN = PORISMode("FilterMode_UNKNOWN")
         self.prClassicFilters = PORISParam("ClassicFilters")
-        self.mdClassicFiltersMode_UNKNOWN = PORISMode("ClassicFiltersMode_UNKNOWN")
-        self.vlClassicFilters_UNKNOWN = PORISValue("ClassicFilters_UNKNOWN")
         self.sysSlicer = PORISSys("Slicer")
-        self.mdSlicerMode_UNKNOWN = PORISMode("SlicerMode_UNKNOWN")
         self.prDoblador = PORISParam("Doblador")
-        self.mdDobladorMode_UNKNOWN = PORISMode("DobladorMode_UNKNOWN")
-        self.vlDoblador_UNKNOWN = PORISValue("Doblador_UNKNOWN")
         self.vlMasks_0_6 = PORISValue("Masks_0_6")
         self.vlMasks_1_0 = PORISValue("Masks_1_0")
         self.vlMasks_2_0 = PORISValue("Masks_2_0")
@@ -95,134 +77,50 @@ class example_evolvedPORIS(PORISDoc):
         self.addItem(self.sysEngineer)
         self.sysEngineer.ident = "n0"
         self.sysEngineer.description = ""
-        self.addItem(self.mdEngineerMode_UNKNOWN)
-        self.mdEngineerMode_UNKNOWN.ident = "EngineerMode_UNKNOWN"
-        self.mdEngineerMode_UNKNOWN.description = ""
-        self.sysEngineer.addMode(self.mdEngineerMode_UNKNOWN)
         self.addItem(self.sysOperator)
         self.sysOperator.ident = "n0::n0"
         self.sysOperator.description = ""
         self.sysEngineer.addSubsystem(self.sysOperator)
-        self.addItem(self.mdOperatorMode_UNKNOWN)
-        self.mdOperatorMode_UNKNOWN.ident = "OperatorMode_UNKNOWN"
-        self.mdOperatorMode_UNKNOWN.description = ""
-        self.sysOperator.addMode(self.mdOperatorMode_UNKNOWN)
         self.addItem(self.sysInstrument)
         self.sysInstrument.ident = "n0::n0::n0"
         self.sysInstrument.description = ""
         self.sysOperator.addSubsystem(self.sysInstrument)
-        self.addItem(self.mdInstrumentMode_UNKNOWN)
-        self.mdInstrumentMode_UNKNOWN.ident = "InstrumentMode_UNKNOWN"
-        self.mdInstrumentMode_UNKNOWN.description = ""
-        self.sysInstrument.addMode(self.mdInstrumentMode_UNKNOWN)
         self.addItem(self.prMasks)
         self.prMasks.ident = "n0::n0::n0::n0"
         self.prMasks.description = ""
         self.sysInstrument.addParam(self.prMasks)
-        self.addItem(self.vlMasks_UNKNOWN)
-        self.vlMasks_UNKNOWN.ident = "Masks_UNKNOWN"
-        self.vlMasks_UNKNOWN.description = "Unknown value for Masks"
-        self.prMasks.addValue(self.vlMasks_UNKNOWN)
-        self.addItem(self.mdMasksMode_UNKNOWN)
-        self.mdMasksMode_UNKNOWN.ident = "MasksMode_UNKNOWN"
-        self.mdMasksMode_UNKNOWN.description = "Unknown mode for Masks"
-        self.prMasks.addMode(self.mdMasksMode_UNKNOWN)
-        self.mdMasksMode_UNKNOWN.addValue(self.vlMasks_UNKNOWN)
-        self.mdInstrumentMode_UNKNOWN.addSubMode(self.mdMasksMode_UNKNOWN)
         self.addItem(self.prDispersion)
         self.prDispersion.ident = "n0::n0::n0::n1"
         self.prDispersion.description = ""
         self.sysInstrument.addParam(self.prDispersion)
-        self.addItem(self.vlDispersion_UNKNOWN)
-        self.vlDispersion_UNKNOWN.ident = "Dispersion_UNKNOWN"
-        self.vlDispersion_UNKNOWN.description = "Unknown value for Dispersion"
-        self.prDispersion.addValue(self.vlDispersion_UNKNOWN)
-        self.addItem(self.mdDispersionMode_UNKNOWN)
-        self.mdDispersionMode_UNKNOWN.ident = "DispersionMode_UNKNOWN"
-        self.mdDispersionMode_UNKNOWN.description = "Unknown mode for Dispersion"
-        self.prDispersion.addMode(self.mdDispersionMode_UNKNOWN)
-        self.mdDispersionMode_UNKNOWN.addValue(self.vlDispersion_UNKNOWN)
-        self.mdInstrumentMode_UNKNOWN.addSubMode(self.mdDispersionMode_UNKNOWN)
         self.addItem(self.sysDetector)
         self.sysDetector.ident = "n0::n0::n0::n2"
         self.sysDetector.description = ""
         self.sysInstrument.addSubsystem(self.sysDetector)
-        self.addItem(self.mdDetectorMode_UNKNOWN)
-        self.mdDetectorMode_UNKNOWN.ident = "DetectorMode_UNKNOWN"
-        self.mdDetectorMode_UNKNOWN.description = ""
-        self.sysDetector.addMode(self.mdDetectorMode_UNKNOWN)
         self.addItem(self.prexpTime)
         self.prexpTime.ident = "n0::n0::n0::n2::n0"
         self.prexpTime.description = ""
         self.sysDetector.addParam(self.prexpTime)
-        self.addItem(self.vlexpTime_UNKNOWN)
-        self.vlexpTime_UNKNOWN.ident = "expTime_UNKNOWN"
-        self.vlexpTime_UNKNOWN.description = "Unknown value for expTime"
-        self.prexpTime.addValue(self.vlexpTime_UNKNOWN)
-        self.addItem(self.mdexpTimeMode_UNKNOWN)
-        self.mdexpTimeMode_UNKNOWN.ident = "expTimeMode_UNKNOWN"
-        self.mdexpTimeMode_UNKNOWN.description = "Unknown mode for expTime"
-        self.prexpTime.addMode(self.mdexpTimeMode_UNKNOWN)
-        self.mdexpTimeMode_UNKNOWN.addValue(self.vlexpTime_UNKNOWN)
-        self.mdDetectorMode_UNKNOWN.addSubMode(self.mdexpTimeMode_UNKNOWN)
         self.addItem(self.prBinning)
         self.prBinning.ident = "n0::n0::n0::n2::n1"
         self.prBinning.description = ""
         self.sysDetector.addParam(self.prBinning)
-        self.addItem(self.vlBinning_UNKNOWN)
-        self.vlBinning_UNKNOWN.ident = "Binning_UNKNOWN"
-        self.vlBinning_UNKNOWN.description = "Unknown value for Binning"
-        self.prBinning.addValue(self.vlBinning_UNKNOWN)
-        self.addItem(self.mdBinningMode_UNKNOWN)
-        self.mdBinningMode_UNKNOWN.ident = "BinningMode_UNKNOWN"
-        self.mdBinningMode_UNKNOWN.description = "Unknown mode for Binning"
-        self.prBinning.addMode(self.mdBinningMode_UNKNOWN)
-        self.mdBinningMode_UNKNOWN.addValue(self.vlBinning_UNKNOWN)
-        self.mdDetectorMode_UNKNOWN.addSubMode(self.mdBinningMode_UNKNOWN)
         self.addItem(self.sysFilter)
         self.sysFilter.ident = "n0::n0::n0::n6"
         self.sysFilter.description = ""
         self.sysInstrument.addSubsystem(self.sysFilter)
-        self.addItem(self.mdFilterMode_UNKNOWN)
-        self.mdFilterMode_UNKNOWN.ident = "FilterMode_UNKNOWN"
-        self.mdFilterMode_UNKNOWN.description = ""
-        self.sysFilter.addMode(self.mdFilterMode_UNKNOWN)
         self.addItem(self.prClassicFilters)
         self.prClassicFilters.ident = "n0::n0::n0::n6::n3"
         self.prClassicFilters.description = ""
         self.sysFilter.addParam(self.prClassicFilters)
-        self.addItem(self.vlClassicFilters_UNKNOWN)
-        self.vlClassicFilters_UNKNOWN.ident = "ClassicFilters_UNKNOWN"
-        self.vlClassicFilters_UNKNOWN.description = "Unknown value for ClassicFilters"
-        self.prClassicFilters.addValue(self.vlClassicFilters_UNKNOWN)
-        self.addItem(self.mdClassicFiltersMode_UNKNOWN)
-        self.mdClassicFiltersMode_UNKNOWN.ident = "ClassicFiltersMode_UNKNOWN"
-        self.mdClassicFiltersMode_UNKNOWN.description = "Unknown mode for ClassicFilters"
-        self.prClassicFilters.addMode(self.mdClassicFiltersMode_UNKNOWN)
-        self.mdClassicFiltersMode_UNKNOWN.addValue(self.vlClassicFilters_UNKNOWN)
-        self.mdFilterMode_UNKNOWN.addSubMode(self.mdClassicFiltersMode_UNKNOWN)
         self.addItem(self.sysSlicer)
         self.sysSlicer.ident = "n0::n0::n0::n8"
         self.sysSlicer.description = ""
         self.sysInstrument.addSubsystem(self.sysSlicer)
-        self.addItem(self.mdSlicerMode_UNKNOWN)
-        self.mdSlicerMode_UNKNOWN.ident = "SlicerMode_UNKNOWN"
-        self.mdSlicerMode_UNKNOWN.description = ""
-        self.sysSlicer.addMode(self.mdSlicerMode_UNKNOWN)
         self.addItem(self.prDoblador)
         self.prDoblador.ident = "n0::n0::n0::n8::n2"
         self.prDoblador.description = ""
         self.sysSlicer.addParam(self.prDoblador)
-        self.addItem(self.vlDoblador_UNKNOWN)
-        self.vlDoblador_UNKNOWN.ident = "Doblador_UNKNOWN"
-        self.vlDoblador_UNKNOWN.description = "Unknown value for Doblador"
-        self.prDoblador.addValue(self.vlDoblador_UNKNOWN)
-        self.addItem(self.mdDobladorMode_UNKNOWN)
-        self.mdDobladorMode_UNKNOWN.ident = "DobladorMode_UNKNOWN"
-        self.mdDobladorMode_UNKNOWN.description = "Unknown mode for Doblador"
-        self.prDoblador.addMode(self.mdDobladorMode_UNKNOWN)
-        self.mdDobladorMode_UNKNOWN.addValue(self.vlDoblador_UNKNOWN)
-        self.mdSlicerMode_UNKNOWN.addSubMode(self.mdDobladorMode_UNKNOWN)
         self.addItem(self.vlMasks_0_6)
         self.vlMasks_0_6.ident = "n0::n0::n0::n0::n0"
         self.vlMasks_0_6.description = ""

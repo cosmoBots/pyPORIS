@@ -4,27 +4,14 @@ class examplePORIS(PORISDoc):
     def __init__(self, project_id):
         super().__init__(project_id)
         self.sysInstrument = PORISSys("Instrument")
-        self.mdInstrumentMode_UNKNOWN = PORISMode("InstrumentMode_UNKNOWN")
         self.setRoot(self.sysInstrument)
         self.prMasks = PORISParam("Masks")
-        self.mdMasksMode_UNKNOWN = PORISMode("MasksMode_UNKNOWN")
-        self.vlMasks_UNKNOWN = PORISValue("Masks_UNKNOWN")
         self.prDispersion = PORISParam("Dispersion")
-        self.mdDispersionMode_UNKNOWN = PORISMode("DispersionMode_UNKNOWN")
-        self.vlDispersion_UNKNOWN = PORISValue("Dispersion_UNKNOWN")
         self.sysDetector = PORISSys("Detector")
-        self.mdDetectorMode_UNKNOWN = PORISMode("DetectorMode_UNKNOWN")
         self.prexpTime = PORISParam("expTime")
-        self.mdexpTimeMode_UNKNOWN = PORISMode("expTimeMode_UNKNOWN")
-        self.vlexpTime_UNKNOWN = PORISValue("expTime_UNKNOWN")
         self.prBinning = PORISParam("Binning")
-        self.mdBinningMode_UNKNOWN = PORISMode("BinningMode_UNKNOWN")
-        self.vlBinning_UNKNOWN = PORISValue("Binning_UNKNOWN")
         self.sysFilter = PORISSys("Filter")
-        self.mdFilterMode_UNKNOWN = PORISMode("FilterMode_UNKNOWN")
         self.prClassicFilters = PORISParam("ClassicFilters")
-        self.mdClassicFiltersMode_UNKNOWN = PORISMode("ClassicFiltersMode_UNKNOWN")
-        self.vlClassicFilters_UNKNOWN = PORISValue("ClassicFilters_UNKNOWN")
         self.vlMasks_0_6 = PORISValue("Masks_0_6")
         self.vlMasks_1_0 = PORISValue("Masks_1_0")
         self.vlMasks_2_0 = PORISValue("Masks_2_0")
@@ -67,96 +54,34 @@ class examplePORIS(PORISDoc):
         self.addItem(self.sysInstrument)
         self.sysInstrument.ident = "EX-1862"
         self.sysInstrument.description = ""
-        self.addItem(self.mdInstrumentMode_UNKNOWN)
-        self.mdInstrumentMode_UNKNOWN.ident = "InstrumentMode_UNKNOWN"
-        self.mdInstrumentMode_UNKNOWN.description = ""
-        self.sysInstrument.addMode(self.mdInstrumentMode_UNKNOWN)
         self.addItem(self.prMasks)
         self.prMasks.ident = "EX-1863"
         self.prMasks.description = ""
         self.sysInstrument.addParam(self.prMasks)
-        self.addItem(self.vlMasks_UNKNOWN)
-        self.vlMasks_UNKNOWN.ident = "Masks_UNKNOWN"
-        self.vlMasks_UNKNOWN.description = "Unknown value for Masks"
-        self.prMasks.addValue(self.vlMasks_UNKNOWN)
-        self.addItem(self.mdMasksMode_UNKNOWN)
-        self.mdMasksMode_UNKNOWN.ident = "MasksMode_UNKNOWN"
-        self.mdMasksMode_UNKNOWN.description = "Unknown mode for Masks"
-        self.prMasks.addMode(self.mdMasksMode_UNKNOWN)
-        self.mdMasksMode_UNKNOWN.addValue(self.vlMasks_UNKNOWN)
-        self.mdInstrumentMode_UNKNOWN.addSubMode(self.mdMasksMode_UNKNOWN)
         self.addItem(self.prDispersion)
         self.prDispersion.ident = "EX-1864"
         self.prDispersion.description = ""
         self.sysInstrument.addParam(self.prDispersion)
-        self.addItem(self.vlDispersion_UNKNOWN)
-        self.vlDispersion_UNKNOWN.ident = "Dispersion_UNKNOWN"
-        self.vlDispersion_UNKNOWN.description = "Unknown value for Dispersion"
-        self.prDispersion.addValue(self.vlDispersion_UNKNOWN)
-        self.addItem(self.mdDispersionMode_UNKNOWN)
-        self.mdDispersionMode_UNKNOWN.ident = "DispersionMode_UNKNOWN"
-        self.mdDispersionMode_UNKNOWN.description = "Unknown mode for Dispersion"
-        self.prDispersion.addMode(self.mdDispersionMode_UNKNOWN)
-        self.mdDispersionMode_UNKNOWN.addValue(self.vlDispersion_UNKNOWN)
-        self.mdInstrumentMode_UNKNOWN.addSubMode(self.mdDispersionMode_UNKNOWN)
         self.addItem(self.sysDetector)
         self.sysDetector.ident = "EX-1865"
         self.sysDetector.description = ""
         self.sysInstrument.addSubsystem(self.sysDetector)
-        self.addItem(self.mdDetectorMode_UNKNOWN)
-        self.mdDetectorMode_UNKNOWN.ident = "DetectorMode_UNKNOWN"
-        self.mdDetectorMode_UNKNOWN.description = ""
-        self.sysDetector.addMode(self.mdDetectorMode_UNKNOWN)
         self.addItem(self.prexpTime)
         self.prexpTime.ident = "EX-1866"
         self.prexpTime.description = ""
         self.sysDetector.addParam(self.prexpTime)
-        self.addItem(self.vlexpTime_UNKNOWN)
-        self.vlexpTime_UNKNOWN.ident = "expTime_UNKNOWN"
-        self.vlexpTime_UNKNOWN.description = "Unknown value for expTime"
-        self.prexpTime.addValue(self.vlexpTime_UNKNOWN)
-        self.addItem(self.mdexpTimeMode_UNKNOWN)
-        self.mdexpTimeMode_UNKNOWN.ident = "expTimeMode_UNKNOWN"
-        self.mdexpTimeMode_UNKNOWN.description = "Unknown mode for expTime"
-        self.prexpTime.addMode(self.mdexpTimeMode_UNKNOWN)
-        self.mdexpTimeMode_UNKNOWN.addValue(self.vlexpTime_UNKNOWN)
-        self.mdDetectorMode_UNKNOWN.addSubMode(self.mdexpTimeMode_UNKNOWN)
         self.addItem(self.prBinning)
         self.prBinning.ident = "EX-1867"
         self.prBinning.description = ""
         self.sysDetector.addParam(self.prBinning)
-        self.addItem(self.vlBinning_UNKNOWN)
-        self.vlBinning_UNKNOWN.ident = "Binning_UNKNOWN"
-        self.vlBinning_UNKNOWN.description = "Unknown value for Binning"
-        self.prBinning.addValue(self.vlBinning_UNKNOWN)
-        self.addItem(self.mdBinningMode_UNKNOWN)
-        self.mdBinningMode_UNKNOWN.ident = "BinningMode_UNKNOWN"
-        self.mdBinningMode_UNKNOWN.description = "Unknown mode for Binning"
-        self.prBinning.addMode(self.mdBinningMode_UNKNOWN)
-        self.mdBinningMode_UNKNOWN.addValue(self.vlBinning_UNKNOWN)
-        self.mdDetectorMode_UNKNOWN.addSubMode(self.mdBinningMode_UNKNOWN)
         self.addItem(self.sysFilter)
         self.sysFilter.ident = "EX-1868"
         self.sysFilter.description = ""
         self.sysInstrument.addSubsystem(self.sysFilter)
-        self.addItem(self.mdFilterMode_UNKNOWN)
-        self.mdFilterMode_UNKNOWN.ident = "FilterMode_UNKNOWN"
-        self.mdFilterMode_UNKNOWN.description = ""
-        self.sysFilter.addMode(self.mdFilterMode_UNKNOWN)
         self.addItem(self.prClassicFilters)
         self.prClassicFilters.ident = "EX-1869"
         self.prClassicFilters.description = ""
         self.sysFilter.addParam(self.prClassicFilters)
-        self.addItem(self.vlClassicFilters_UNKNOWN)
-        self.vlClassicFilters_UNKNOWN.ident = "ClassicFilters_UNKNOWN"
-        self.vlClassicFilters_UNKNOWN.description = "Unknown value for ClassicFilters"
-        self.prClassicFilters.addValue(self.vlClassicFilters_UNKNOWN)
-        self.addItem(self.mdClassicFiltersMode_UNKNOWN)
-        self.mdClassicFiltersMode_UNKNOWN.ident = "ClassicFiltersMode_UNKNOWN"
-        self.mdClassicFiltersMode_UNKNOWN.description = "Unknown mode for ClassicFilters"
-        self.prClassicFilters.addMode(self.mdClassicFiltersMode_UNKNOWN)
-        self.mdClassicFiltersMode_UNKNOWN.addValue(self.vlClassicFilters_UNKNOWN)
-        self.mdFilterMode_UNKNOWN.addSubMode(self.mdClassicFiltersMode_UNKNOWN)
         self.addItem(self.vlMasks_0_6)
         self.vlMasks_0_6.ident = "EX-1826"
         self.vlMasks_0_6.description = ""
