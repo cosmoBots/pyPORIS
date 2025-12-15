@@ -4,81 +4,35 @@ class osirisPORIS(PORISDoc):
     def __init__(self, project_id):
         super().__init__(project_id)
         self.sysOsiris = PORISSys("Osiris")
-        self.mdOsirisMode_UNKNOWN = PORISMode("OsirisMode_UNKNOWN")
         self.setRoot(self.sysOsiris)
         self.sysObservingModes = PORISSys("ObservingModes")
-        self.mdObservingModesMode_UNKNOWN = PORISMode("ObservingModesMode_UNKNOWN")
         self.sysAcquisitionModes = PORISSys("AcquisitionModes")
-        self.mdAcquisitionModesMode_UNKNOWN = PORISMode("AcquisitionModesMode_UNKNOWN")
-        self.sysDAS = PORISSys("DAS")
-        self.mdDASMode_UNKNOWN = PORISMode("DASMode_UNKNOWN")
-        self.sysAcquisition = PORISSys("Acquisition")
-        self.mdAcquisitionMode_UNKNOWN = PORISMode("AcquisitionMode_UNKNOWN")
-        self.prShuffleLines = PORISParam("ShuffleLines")
-        self.mdShuffleLinesMode_UNKNOWN = PORISMode("ShuffleLinesMode_UNKNOWN")
-        self.vlShuffleLines_UNKNOWN = PORISValue("ShuffleLines_UNKNOWN")
-        self.prShiftNumber = PORISParam("ShiftNumber")
-        self.mdShiftNumberMode_UNKNOWN = PORISMode("ShiftNumberMode_UNKNOWN")
-        self.vlShiftNumber_UNKNOWN = PORISValue("ShiftNumber_UNKNOWN")
-        self.prExpTime = PORISParam("ExpTime")
-        self.mdExpTimeMode_UNKNOWN = PORISMode("ExpTimeMode_UNKNOWN")
-        self.vlExpTime_UNKNOWN = PORISValue("ExpTime_UNKNOWN")
-        self.sysMultipleExposure = PORISSys("MultipleExposure")
-        self.mdMultipleExposureMode_UNKNOWN = PORISMode("MultipleExposureMode_UNKNOWN")
-        self.prnumOfFrames = PORISParam("numOfFrames")
-        self.mdnumOfFramesMode_UNKNOWN = PORISMode("numOfFramesMode_UNKNOWN")
-        self.vlnumOfFrames_UNKNOWN = PORISValue("numOfFrames_UNKNOWN")
-        self.prPixelSpeed = PORISParam("PixelSpeed")
-        self.mdPixelSpeedMode_UNKNOWN = PORISMode("PixelSpeedMode_UNKNOWN")
-        self.vlPixelSpeed_UNKNOWN = PORISValue("PixelSpeed_UNKNOWN")
-        self.prCalibGain = PORISParam("CalibGain")
-        self.mdCalibGainMode_UNKNOWN = PORISMode("CalibGainMode_UNKNOWN")
-        self.vlCalibGain_UNKNOWN = PORISValue("CalibGain_UNKNOWN")
-        self.sysOpenShutter = PORISSys("OpenShutter")
-        self.mdOpenShutterMode_UNKNOWN = PORISMode("OpenShutterMode_UNKNOWN")
-        self.sysProcessMonitor = PORISSys("ProcessMonitor")
-        self.mdProcessMonitorMode_UNKNOWN = PORISMode("ProcessMonitorMode_UNKNOWN")
-        self.prCurrentEllapsed = PORISParam("CurrentEllapsed")
-        self.mdCurrentEllapsedMode_UNKNOWN = PORISMode("CurrentEllapsedMode_UNKNOWN")
-        self.vlCurrentEllapsed_UNKNOWN = PORISValue("CurrentEllapsed_UNKNOWN")
-        self.prCurrentImg = PORISParam("CurrentImg")
-        self.mdCurrentImgMode_UNKNOWN = PORISMode("CurrentImgMode_UNKNOWN")
-        self.vlCurrentImg_UNKNOWN = PORISValue("CurrentImg_UNKNOWN")
-        self.prCurrentPct = PORISParam("CurrentPct")
-        self.mdCurrentPctMode_UNKNOWN = PORISMode("CurrentPctMode_UNKNOWN")
-        self.vlCurrentPct_UNKNOWN = PORISValue("CurrentPct_UNKNOWN")
-        self.prOverallPct = PORISParam("OverallPct")
-        self.mdOverallPctMode_UNKNOWN = PORISMode("OverallPctMode_UNKNOWN")
-        self.vlOverallPct_UNKNOWN = PORISValue("OverallPct_UNKNOWN")
-        self.sysPreOptics = PORISSys("PreOptics")
-        self.mdPreOpticsMode_UNKNOWN = PORISMode("PreOpticsMode_UNKNOWN")
-        self.prGrisms = PORISParam("Grisms")
-        self.mdGrismsMode_UNKNOWN = PORISMode("GrismsMode_UNKNOWN")
-        self.vlGrisms_UNKNOWN = PORISValue("Grisms_UNKNOWN")
-        self.sysRedTF = PORISSys("RedTF")
-        self.mdRedTFMode_UNKNOWN = PORISMode("RedTFMode_UNKNOWN")
-        self.prRedFWHM = PORISParam("RedFWHM")
-        self.mdRedFWHMMode_UNKNOWN = PORISMode("RedFWHMMode_UNKNOWN")
-        self.vlRedFWHM_UNKNOWN = PORISValue("RedFWHM_UNKNOWN")
-        self.prRedLamda = PORISParam("RedLamda")
-        self.mdRedLamdaMode_UNKNOWN = PORISMode("RedLamdaMode_UNKNOWN")
-        self.vlRedLamda_UNKNOWN = PORISValue("RedLamda_UNKNOWN")
-        self.sysBlueTF = PORISSys("BlueTF")
-        self.mdBlueTFMode_UNKNOWN = PORISMode("BlueTFMode_UNKNOWN")
-        self.prBlueFWHM = PORISParam("BlueFWHM")
-        self.mdBlueFWHMMode_UNKNOWN = PORISMode("BlueFWHMMode_UNKNOWN")
-        self.vlBlueFWHM_UNKNOWN = PORISValue("BlueFWHM_UNKNOWN")
-        self.prBlueLamda = PORISParam("BlueLamda")
-        self.mdBlueLamdaMode_UNKNOWN = PORISMode("BlueLamdaMode_UNKNOWN")
-        self.vlBlueLamda_UNKNOWN = PORISValue("BlueLamda_UNKNOWN")
-        self.przzero = PORISParam("zzero")
-        self.mdzzeroMode_UNKNOWN = PORISMode("zzeroMode_UNKNOWN")
-        self.vlzzero_UNKNOWN = PORISValue("zzero_UNKNOWN")
         self.sysFPE = PORISSys("FPE")
-        self.mdFPEMode_UNKNOWN = PORISMode("FPEMode_UNKNOWN")
         self.prFocalPlaneElement = PORISParam("FocalPlaneElement")
-        self.mdFocalPlaneElementMode_UNKNOWN = PORISMode("FocalPlaneElementMode_UNKNOWN")
-        self.vlFocalPlaneElement_UNKNOWN = PORISValue("FocalPlaneElement_UNKNOWN")
+        self.sysDAS = PORISSys("DAS")
+        self.sysAcquisition = PORISSys("Acquisition")
+        self.prShuffleLines = PORISParam("ShuffleLines")
+        self.prShiftNumber = PORISParam("ShiftNumber")
+        self.prExpTime = PORISParam("ExpTime")
+        self.sysMultipleExposure = PORISSys("MultipleExposure")
+        self.prnumOfFrames = PORISParam("numOfFrames")
+        self.prPixelSpeed = PORISParam("PixelSpeed")
+        self.prCalibGain = PORISParam("CalibGain")
+        self.sysOpenShutter = PORISSys("OpenShutter")
+        self.sysProcessMonitor = PORISSys("ProcessMonitor")
+        self.prCurrentEllapsed = PORISParam("CurrentEllapsed")
+        self.prCurrentImg = PORISParam("CurrentImg")
+        self.prCurrentPct = PORISParam("CurrentPct")
+        self.prOverallPct = PORISParam("OverallPct")
+        self.sysPreOptics = PORISSys("PreOptics")
+        self.prGrisms = PORISParam("Grisms")
+        self.sysRedTF = PORISSys("RedTF")
+        self.prRedFWHM = PORISParam("RedFWHM")
+        self.prRedLamda = PORISParam("RedLamda")
+        self.sysBlueTF = PORISSys("BlueTF")
+        self.prBlueFWHM = PORISParam("BlueFWHM")
+        self.prBlueLamda = PORISParam("BlueLamda")
+        self.przzero = PORISParam("zzero")
         self.mdOsirisMode_Imaging = PORISMode("OsirisMode_Imaging")
         self.mdOsirisMode_Spectroscopy = PORISMode("OsirisMode_Spectroscopy")
         self.mdOsirisMode_Calibration = PORISMode("OsirisMode_Calibration")
@@ -116,186 +70,9 @@ class osirisPORIS(PORISDoc):
         self.mdObservingModesMode_CalibLamp = PORISMode("ObservingModesMode_CalibLamp")
         self.mdObservingModesMode_TFCalib = PORISMode("ObservingModesMode_TFCalib")
         self.sysFilters = PORISSys("Filters")
-        self.mdFiltersMode_UNKNOWN = PORISMode("FiltersMode_UNKNOWN")
         self.prUFilters = PORISParam("UFilters")
-        self.mdUFiltersMode_UNKNOWN = PORISMode("UFiltersMode_UNKNOWN")
-        self.vlUFilters_UNKNOWN = PORISValue("UFilters_UNKNOWN")
         self.prOS = PORISParam("OS")
-        self.mdOSMode_UNKNOWN = PORISMode("OSMode_UNKNOWN")
-        self.vlOS_UNKNOWN = PORISValue("OS_UNKNOWN")
         self.prBroad = PORISParam("Broad")
-        self.mdBroadMode_UNKNOWN = PORISMode("BroadMode_UNKNOWN")
-        self.vlBroad_UNKNOWN = PORISValue("Broad_UNKNOWN")
-        self.sysDetector = PORISSys("Detector")
-        self.mdDetectorMode_UNKNOWN = PORISMode("DetectorMode_UNKNOWN")
-        self.sysOutputSource = PORISSys("OutputSource")
-        self.mdOutputSourceMode_UNKNOWN = PORISMode("OutputSourceMode_UNKNOWN")
-        self.sysRecomposition = PORISSys("Recomposition")
-        self.mdRecompositionMode_UNKNOWN = PORISMode("RecompositionMode_UNKNOWN")
-        self.prBinning = PORISParam("Binning")
-        self.mdBinningMode_UNKNOWN = PORISMode("BinningMode_UNKNOWN")
-        self.vlBinning_UNKNOWN = PORISValue("Binning_UNKNOWN")
-        self.sysWindow = PORISSys("Window")
-        self.mdWindowMode_UNKNOWN = PORISMode("WindowMode_UNKNOWN")
-        self.prRows = PORISParam("Rows")
-        self.mdRowsMode_UNKNOWN = PORISMode("RowsMode_UNKNOWN")
-        self.vlRows_UNKNOWN = PORISValue("Rows_UNKNOWN")
-        self.prCols = PORISParam("Cols")
-        self.mdColsMode_UNKNOWN = PORISMode("ColsMode_UNKNOWN")
-        self.vlCols_UNKNOWN = PORISValue("Cols_UNKNOWN")
-        self.proffsetRow = PORISParam("offsetRow")
-        self.mdoffsetRowMode_UNKNOWN = PORISMode("offsetRowMode_UNKNOWN")
-        self.vloffsetRow_UNKNOWN = PORISValue("offsetRow_UNKNOWN")
-        self.proffsetCol = PORISParam("offsetCol")
-        self.mdoffsetColMode_UNKNOWN = PORISMode("offsetColMode_UNKNOWN")
-        self.vloffsetCol_UNKNOWN = PORISValue("offsetCol_UNKNOWN")
-        self.mdAcquisitionMode_Normal = PORISMode("AcquisitionMode_Normal")
-        self.mdAcquisitionMode_FrameTransfer = PORISMode("AcquisitionMode_FrameTransfer")
-        self.mdAcquisitionMode_Shuffling = PORISMode("AcquisitionMode_Shuffling")
-        self.vlShuffleLines_FullRange = PORISValueFloat("ShuffleLines_FullRange",0,200,1000)
-        self.mdShuffleLinesMode_Normal = PORISMode("ShuffleLinesMode_Normal")
-        self.vlShiftNumber_FullRange = PORISValueFloat("ShiftNumber_FullRange",0,5,1000)
-        self.mdShiftNumberMode_Normal = PORISMode("ShiftNumberMode_Normal")
-        self.vlExpTime_FullRange = PORISValueFloat("ExpTime_FullRange",0,1,10000)
-        self.mdExpTimeMode_Normal = PORISMode("ExpTimeMode_Normal")
-        self.mdExpTimeMode_Bias = PORISMode("ExpTimeMode_Bias")
-        self.vlExpTime_0_0 = PORISValue("ExpTime_0_0")
-        self.mdExpTimeMode_FT = PORISMode("ExpTimeMode_FT")
-        self.vlExpTime_FTRange = PORISValueFloat("ExpTime_FTRange",0,0,360)
-        self.mdnumOfFramesMode_Normal = PORISMode("numOfFramesMode_Normal")
-        self.vlnumOfFrames_FullRange = PORISValueFloat("numOfFrames_FullRange",0,10,4294967295)
-        self.mdMultipleExposureMode_On = PORISMode("MultipleExposureMode_On")
-        self.mdMultipleExposureMode_Single = PORISMode("MultipleExposureMode_Single")
-        self.vlPixelSpeed_SLW = PORISValue("PixelSpeed_SLW")
-        self.vlPixelSpeed_MED = PORISValue("PixelSpeed_MED")
-        self.vlPixelSpeed_FST = PORISValue("PixelSpeed_FST")
-        self.mdPixelSpeedMode_All = PORISMode("PixelSpeedMode_All")
-        self.mdAcquisitionMode_FTBias = PORISMode("AcquisitionMode_FTBias")
-        self.mdAcquisitionMode_NormalBias = PORISMode("AcquisitionMode_NormalBias")
-        self.mdAcquisitionMode_ShufflingBias = PORISMode("AcquisitionMode_ShufflingBias")
-        self.mdAcquisitionMode_NormalSquare = PORISMode("AcquisitionMode_NormalSquare")
-        self.mdAcquisitionMode_ShufflingSquare = PORISMode("AcquisitionMode_ShufflingSquare")
-        self.mdAcquisitionMode_GainCalib = PORISMode("AcquisitionMode_GainCalib")
-        self.vlCalibGain_FullRange = PORISValueFloat("CalibGain_FullRange",0,2,15)
-        self.mdCalibGainMode_Normal = PORISMode("CalibGainMode_Normal")
-        self.mdDASMode_SimpleImg = PORISMode("DASMode_SimpleImg")
-        self.mdDASMode_SimpleSpec = PORISMode("DASMode_SimpleSpec")
-        self.mdDASMode_ShufffingSpec = PORISMode("DASMode_ShufffingSpec")
-        self.mdOpenShutterMode_On = PORISMode("OpenShutterMode_On")
-        self.mdOpenShutterMode_Off = PORISMode("OpenShutterMode_Off")
-        self.mdDASMode_FTImg = PORISMode("DASMode_FTImg")
-        self.mdDASMode_FTDark = PORISMode("DASMode_FTDark")
-        self.mdDASMode_FTBias = PORISMode("DASMode_FTBias")
-        self.mdDASMode_SimpleBias = PORISMode("DASMode_SimpleBias")
-        self.mdDASMode_SimpleDark = PORISMode("DASMode_SimpleDark")
-        self.mdDASMode_ShufffingDark = PORISMode("DASMode_ShufffingDark")
-        self.mdDASMode_ShufffingBias = PORISMode("DASMode_ShufffingBias")
-        self.mdDASMode_ShufffingImage = PORISMode("DASMode_ShufffingImage")
-        self.mdDASMode_SimpleCalib = PORISMode("DASMode_SimpleCalib")
-        self.mdDASMode_GainCalib = PORISMode("DASMode_GainCalib")
-        self.vlCurrentEllapsed_Range = PORISValueFloat("CurrentEllapsed_Range",0,0,10000)
-        self.mdCurrentEllapsedMode_Normal = PORISMode("CurrentEllapsedMode_Normal")
-        self.vlCurrentImg_Range = PORISValueFloat("CurrentImg_Range",0,0,10000)
-        self.mdCurrentImgMode_Normal = PORISMode("CurrentImgMode_Normal")
-        self.vlCurrentPct_Range = PORISValueFloat("CurrentPct_Range",0,0,100)
-        self.mdCurrentPctMode_Normal = PORISMode("CurrentPctMode_Normal")
-        self.vlOverallPct_Range = PORISValueFloat("OverallPct_Range",0,0,100)
-        self.mdOverallPctMode_Normal = PORISMode("OverallPctMode_Normal")
-        self.mdProcessMonitorMode_Normal = PORISMode("ProcessMonitorMode_Normal")
-        self.mdPreOpticsMode_NoDispersion = PORISMode("PreOpticsMode_NoDispersion")
-        self.mdPreOpticsMode_RTF = PORISMode("PreOpticsMode_RTF")
-        self.mdPreOpticsMode_GrismR = PORISMode("PreOpticsMode_GrismR")
-        self.mdPreOpticsMode_BTF = PORISMode("PreOpticsMode_BTF")
-        self.vlGrisms_R300B = PORISValue("Grisms_R300B")
-        self.vlGrisms_R300R = PORISValue("Grisms_R300R")
-        self.vlGrisms_R500B = PORISValue("Grisms_R500B")
-        self.vlGrisms_R500R = PORISValue("Grisms_R500R")
-        self.vlGrisms_R1000B = PORISValue("Grisms_R1000B")
-        self.vlGrisms_R1000R = PORISValue("Grisms_R1000R")
-        self.vlGrisms_R2000B = PORISValue("Grisms_R2000B")
-        self.vlGrisms_R2500U = PORISValue("Grisms_R2500U")
-        self.vlGrisms_R2500V = PORISValue("Grisms_R2500V")
-        self.vlGrisms_R2500R = PORISValue("Grisms_R2500R")
-        self.vlGrisms_R2500I = PORISValue("Grisms_R2500I")
-        self.mdGrismsMode_GrismsB = PORISMode("GrismsMode_GrismsB")
-        self.mdGrismsMode_GrismsR = PORISMode("GrismsMode_GrismsR")
-        self.mdPreOpticsMode_GrismB = PORISMode("PreOpticsMode_GrismB")
-        self.mdPreOpticsMode_GrismBMOS = PORISMode("PreOpticsMode_GrismBMOS")
-        self.vlRedFWHM_Range2_0 = PORISValueFloat("RedFWHM_Range2_0",1.2,1.6,2)
-        self.mdRedFWHMMode_l2_0 = PORISMode("RedFWHMMode_l2_0")
-        self.mdRedFWHMMode_l1_5 = PORISMode("RedFWHMMode_l1_5")
-        self.mdRedFWHMMode_l1_4 = PORISMode("RedFWHMMode_l1_4")
-        self.mdRedFWHMMode_l1_3 = PORISMode("RedFWHMMode_l1_3")
-        self.mdRedFWHMMode_l1_2 = PORISMode("RedFWHMMode_l1_2")
-        self.mdRedFWHMMode_l1_2b = PORISMode("RedFWHMMode_l1_2b")
-        self.vlRedFWHM_Range1_5 = PORISValueFloat("RedFWHM_Range1_5",1,1.25,1.5)
-        self.vlRedFWHM_Range1_4 = PORISValueFloat("RedFWHM_Range1_4",0.9,1.2,1.4)
-        self.vlRedFWHM_Range1_3 = PORISValueFloat("RedFWHM_Range1_3",0.8,1.1,1.3)
-        self.vlRedFWHM_Range1_2 = PORISValueFloat("RedFWHM_Range1_2",0.85,1,1.2)
-        self.vlRedFWHM_Range1_2b = PORISValueFloat("RedFWHM_Range1_2b",0.9,1,1.2)
-        self.mdRedTFMode_l651_799 = PORISMode("RedTFMode_l651_799")
-        self.mdRedTFMode_l800_819 = PORISMode("RedTFMode_l800_819")
-        self.mdRedTFMode_l820_839 = PORISMode("RedTFMode_l820_839")
-        self.mdRedTFMode_l840_879 = PORISMode("RedTFMode_l840_879")
-        self.mdRedTFMode_l880_909 = PORISMode("RedTFMode_l880_909")
-        self.mdRedTFMode_l910_934 = PORISMode("RedTFMode_l910_934")
-        self.vlRedLamda_Range651 = PORISValueFloat("RedLamda_Range651",651,700,799.9)
-        self.mdRedLamdaMode_l651_799 = PORISMode("RedLamdaMode_l651_799")
-        self.mdRedLamdaMode_l800_819 = PORISMode("RedLamdaMode_l800_819")
-        self.mdRedLamdaMode_l820_839 = PORISMode("RedLamdaMode_l820_839")
-        self.mdRedLamdaMode_l840_879 = PORISMode("RedLamdaMode_l840_879")
-        self.mdRedLamdaMode_l880_909 = PORISMode("RedLamdaMode_l880_909")
-        self.mdRedLamdaMode_l910_934 = PORISMode("RedLamdaMode_l910_934")
-        self.vlRedLamda_Range800 = PORISValueFloat("RedLamda_Range800",800,810,819.9)
-        self.vlRedLamda_Range820 = PORISValueFloat("RedLamda_Range820",820,830,839.9)
-        self.vlRedLamda_Range840 = PORISValueFloat("RedLamda_Range840",840,860,879.9)
-        self.vlRedLamda_Range880 = PORISValueFloat("RedLamda_Range880",880,895,909.9)
-        self.vlRedLamda_Range910 = PORISValueFloat("RedLamda_Range910",910,920,934.5)
-        self.vlBlueFWHM_0_8 = PORISValue("BlueFWHM_0_8")
-        self.mdBlueFWHMMode_l0_8 = PORISMode("BlueFWHMMode_l0_8")
-        self.mdBlueFWHMMode_l0_85 = PORISMode("BlueFWHMMode_l0_85")
-        self.mdBlueFWHMMode_l0_50 = PORISMode("BlueFWHMMode_l0_50")
-        self.mdBlueFWHMMode_l0_45 = PORISMode("BlueFWHMMode_l0_45")
-        self.vlBlueFWHM_0_85 = PORISValue("BlueFWHM_0_85")
-        self.vlBlueFWHM_0_50 = PORISValue("BlueFWHM_0_50")
-        self.vlBlueFWHM_0_45 = PORISValue("BlueFWHM_0_45")
-        self.vlBlueFWHM_0_70 = PORISValue("BlueFWHM_0_70")
-        self.mdBlueFWHMMode_l0_70 = PORISMode("BlueFWHMMode_l0_70")
-        self.mdBlueFWHMMode_l0_90 = PORISMode("BlueFWHMMode_l0_90")
-        self.mdBlueFWHMMode_l1_10 = PORISMode("BlueFWHMMode_l1_10")
-        self.vlBlueFWHM_0_90 = PORISValue("BlueFWHM_0_90")
-        self.vlBlueFWHM_1_10 = PORISValue("BlueFWHM_1_10")
-        self.mdBlueTFMode_l448_463 = PORISMode("BlueTFMode_l448_463")
-        self.mdBlueTFMode_l464_480 = PORISMode("BlueTFMode_l464_480")
-        self.mdBlueTFMode_l481_502 = PORISMode("BlueTFMode_l481_502")
-        self.mdBlueTFMode_l503_521 = PORISMode("BlueTFMode_l503_521")
-        self.mdBlueTFMode_l522_542 = PORISMode("BlueTFMode_l522_542")
-        self.mdBlueTFMode_l543_583 = PORISMode("BlueTFMode_l543_583")
-        self.vlBlueLamda_Range448 = PORISValueFloat("BlueLamda_Range448",448,454,463.9)
-        self.mdBlueLamdaMode_l448_463 = PORISMode("BlueLamdaMode_l448_463")
-        self.mdBlueLamdaMode_l464_480 = PORISMode("BlueLamdaMode_l464_480")
-        self.mdBlueLamdaMode_l481_502 = PORISMode("BlueLamdaMode_l481_502")
-        self.mdBlueLamdaMode_l503_521 = PORISMode("BlueLamdaMode_l503_521")
-        self.mdBlueLamdaMode_l522_542 = PORISMode("BlueLamdaMode_l522_542")
-        self.mdBlueLamdaMode_l543_583 = PORISMode("BlueLamdaMode_l543_583")
-        self.vlBlueLamda_Range464 = PORISValueFloat("BlueLamda_Range464",464,472,480.9)
-        self.vlBlueLamda_Range481 = PORISValueFloat("BlueLamda_Range481",481,492,502.9)
-        self.vlBlueLamda_Range503 = PORISValueFloat("BlueLamda_Range503",503,514,521.9)
-        self.vlBlueLamda_Range522 = PORISValueFloat("BlueLamda_Range522",522,536,542.9)
-        self.vlBlueLamda_Range543 = PORISValueFloat("BlueLamda_Range543",543,565,583.9)
-        self.mdBlueLamdaMode_l584_609 = PORISMode("BlueLamdaMode_l584_609")
-        self.mdBlueLamdaMode_l610_637 = PORISMode("BlueLamdaMode_l610_637")
-        self.mdBlueLamdaMode_l638_671 = PORISMode("BlueLamdaMode_l638_671")
-        self.vlBlueLamda_Range584 = PORISValueFloat("BlueLamda_Range584",584,602,609.9)
-        self.vlBlueLamda_Range610 = PORISValueFloat("BlueLamda_Range610",610,622,637.9)
-        self.vlBlueLamda_Range638 = PORISValueFloat("BlueLamda_Range638",638,654,671)
-        self.mdBlueTFMode_l584_609 = PORISMode("BlueTFMode_l584_609")
-        self.mdBlueTFMode_l610_637 = PORISMode("BlueTFMode_l610_637")
-        self.mdBlueTFMode_l638_671 = PORISMode("BlueTFMode_l638_671")
-        self.mdPreOpticsMode_RTFCalib = PORISMode("PreOpticsMode_RTFCalib")
-        self.mdPreOpticsMode_BTFCalib = PORISMode("PreOpticsMode_BTFCalib")
-        self.vlzzero_NormalRange = PORISValueFloat("zzero_NormalRange",25000,29000,45000)
-        self.mdzzeroMode_Normal = PORISMode("zzeroMode_Normal")
         self.mdFocalPlaneElementMode_Disabled = PORISMode("FocalPlaneElementMode_Disabled")
         self.vlFocalPlaneElement_LS0_4 = PORISValue("FocalPlaneElement_LS0_4")
         self.vlFocalPlaneElement_LS0_6 = PORISValue("FocalPlaneElement_LS0_6")
@@ -323,6 +100,162 @@ class osirisPORIS(PORISDoc):
         self.mdFPEMode_FastPhotometryMask = PORISMode("FPEMode_FastPhotometryMask")
         self.mdFPEMode_FrameTransferMask = PORISMode("FPEMode_FrameTransferMask")
         self.mdFPEMode_LSMask = PORISMode("FPEMode_LSMask")
+        self.sysDetector = PORISSys("Detector")
+        self.sysOutputSource = PORISSys("OutputSource")
+        self.sysRecomposition = PORISSys("Recomposition")
+        self.prBinning = PORISParam("Binning")
+        self.sysWindow = PORISSys("Window")
+        self.prRows = PORISParam("Rows")
+        self.prCols = PORISParam("Cols")
+        self.proffsetRow = PORISParam("offsetRow")
+        self.proffsetCol = PORISParam("offsetCol")
+        self.mdAcquisitionMode_Normal = PORISMode("AcquisitionMode_Normal")
+        self.mdAcquisitionMode_FrameTransfer = PORISMode("AcquisitionMode_FrameTransfer")
+        self.mdAcquisitionMode_Shuffling = PORISMode("AcquisitionMode_Shuffling")
+        self.vlShuffleLines_FullRange = PORISValueFloat("ShuffleLines_FullRange",0.0,200.0,1000.0)
+        self.mdShuffleLinesMode_Normal = PORISMode("ShuffleLinesMode_Normal")
+        self.vlShiftNumber_FullRange = PORISValueFloat("ShiftNumber_FullRange",0.0,5.0,1000.0)
+        self.mdShiftNumberMode_Normal = PORISMode("ShiftNumberMode_Normal")
+        self.vlExpTime_FullRange = PORISValueFloat("ExpTime_FullRange",0.0,1.0,10000.0)
+        self.mdExpTimeMode_Normal = PORISMode("ExpTimeMode_Normal")
+        self.mdExpTimeMode_Bias = PORISMode("ExpTimeMode_Bias")
+        self.vlExpTime_0_0 = PORISValue("ExpTime_0_0")
+        self.mdExpTimeMode_FT = PORISMode("ExpTimeMode_FT")
+        self.vlExpTime_FTRange = PORISValueFloat("ExpTime_FTRange",0.0,0.0,360.0)
+        self.mdnumOfFramesMode_Normal = PORISMode("numOfFramesMode_Normal")
+        self.vlnumOfFrames_FullRange = PORISValueFloat("numOfFrames_FullRange",0.0,10.0,4294967295.0)
+        self.mdMultipleExposureMode_On = PORISMode("MultipleExposureMode_On")
+        self.mdMultipleExposureMode_Single = PORISMode("MultipleExposureMode_Single")
+        self.vlPixelSpeed_SLW = PORISValue("PixelSpeed_SLW")
+        self.vlPixelSpeed_MED = PORISValue("PixelSpeed_MED")
+        self.vlPixelSpeed_FST = PORISValue("PixelSpeed_FST")
+        self.mdPixelSpeedMode_All = PORISMode("PixelSpeedMode_All")
+        self.mdAcquisitionMode_FTBias = PORISMode("AcquisitionMode_FTBias")
+        self.mdAcquisitionMode_NormalBias = PORISMode("AcquisitionMode_NormalBias")
+        self.mdAcquisitionMode_ShufflingBias = PORISMode("AcquisitionMode_ShufflingBias")
+        self.mdAcquisitionMode_NormalSquare = PORISMode("AcquisitionMode_NormalSquare")
+        self.mdAcquisitionMode_ShufflingSquare = PORISMode("AcquisitionMode_ShufflingSquare")
+        self.mdAcquisitionMode_GainCalib = PORISMode("AcquisitionMode_GainCalib")
+        self.vlCalibGain_FullRange = PORISValueFloat("CalibGain_FullRange",0.0,2.0,15.0)
+        self.mdCalibGainMode_Normal = PORISMode("CalibGainMode_Normal")
+        self.mdDASMode_SimpleImg = PORISMode("DASMode_SimpleImg")
+        self.mdDASMode_SimpleSpec = PORISMode("DASMode_SimpleSpec")
+        self.mdDASMode_ShufffingSpec = PORISMode("DASMode_ShufffingSpec")
+        self.mdOpenShutterMode_On = PORISMode("OpenShutterMode_On")
+        self.mdOpenShutterMode_Off = PORISMode("OpenShutterMode_Off")
+        self.mdDASMode_FTImg = PORISMode("DASMode_FTImg")
+        self.mdDASMode_FTDark = PORISMode("DASMode_FTDark")
+        self.mdDASMode_FTBias = PORISMode("DASMode_FTBias")
+        self.mdDASMode_SimpleBias = PORISMode("DASMode_SimpleBias")
+        self.mdDASMode_SimpleDark = PORISMode("DASMode_SimpleDark")
+        self.mdDASMode_ShufffingDark = PORISMode("DASMode_ShufffingDark")
+        self.mdDASMode_ShufffingBias = PORISMode("DASMode_ShufffingBias")
+        self.mdDASMode_ShufffingImage = PORISMode("DASMode_ShufffingImage")
+        self.mdDASMode_SimpleCalib = PORISMode("DASMode_SimpleCalib")
+        self.mdDASMode_GainCalib = PORISMode("DASMode_GainCalib")
+        self.vlCurrentEllapsed_Range = PORISValueFloat("CurrentEllapsed_Range",0.0,0.0,10000.0)
+        self.mdCurrentEllapsedMode_Normal = PORISMode("CurrentEllapsedMode_Normal")
+        self.vlCurrentImg_Range = PORISValueFloat("CurrentImg_Range",0.0,0.0,10000.0)
+        self.mdCurrentImgMode_Normal = PORISMode("CurrentImgMode_Normal")
+        self.vlCurrentPct_Range = PORISValueFloat("CurrentPct_Range",0.0,0.0,100.0)
+        self.mdCurrentPctMode_Normal = PORISMode("CurrentPctMode_Normal")
+        self.vlOverallPct_Range = PORISValueFloat("OverallPct_Range",0.0,0.0,100.0)
+        self.mdOverallPctMode_Normal = PORISMode("OverallPctMode_Normal")
+        self.mdProcessMonitorMode_Normal = PORISMode("ProcessMonitorMode_Normal")
+        self.mdPreOpticsMode_NoDispersion = PORISMode("PreOpticsMode_NoDispersion")
+        self.mdPreOpticsMode_RTF = PORISMode("PreOpticsMode_RTF")
+        self.mdPreOpticsMode_GrismR = PORISMode("PreOpticsMode_GrismR")
+        self.mdPreOpticsMode_BTF = PORISMode("PreOpticsMode_BTF")
+        self.vlGrisms_R300B = PORISValue("Grisms_R300B")
+        self.vlGrisms_R300R = PORISValue("Grisms_R300R")
+        self.vlGrisms_R500B = PORISValue("Grisms_R500B")
+        self.vlGrisms_R500R = PORISValue("Grisms_R500R")
+        self.vlGrisms_R1000B = PORISValue("Grisms_R1000B")
+        self.vlGrisms_R1000R = PORISValue("Grisms_R1000R")
+        self.vlGrisms_R2000B = PORISValue("Grisms_R2000B")
+        self.vlGrisms_R2500U = PORISValue("Grisms_R2500U")
+        self.vlGrisms_R2500V = PORISValue("Grisms_R2500V")
+        self.vlGrisms_R2500R = PORISValue("Grisms_R2500R")
+        self.vlGrisms_R2500I = PORISValue("Grisms_R2500I")
+        self.mdGrismsMode_GrismsB = PORISMode("GrismsMode_GrismsB")
+        self.mdGrismsMode_GrismsR = PORISMode("GrismsMode_GrismsR")
+        self.mdPreOpticsMode_GrismB = PORISMode("PreOpticsMode_GrismB")
+        self.mdPreOpticsMode_GrismBMOS = PORISMode("PreOpticsMode_GrismBMOS")
+        self.vlRedFWHM_Range2_0 = PORISValueFloat("RedFWHM_Range2_0",1.2,1.6,2.0)
+        self.mdRedFWHMMode_l2_0 = PORISMode("RedFWHMMode_l2_0")
+        self.mdRedFWHMMode_l1_5 = PORISMode("RedFWHMMode_l1_5")
+        self.mdRedFWHMMode_l1_4 = PORISMode("RedFWHMMode_l1_4")
+        self.mdRedFWHMMode_l1_3 = PORISMode("RedFWHMMode_l1_3")
+        self.mdRedFWHMMode_l1_2 = PORISMode("RedFWHMMode_l1_2")
+        self.mdRedFWHMMode_l1_2b = PORISMode("RedFWHMMode_l1_2b")
+        self.vlRedFWHM_Range1_5 = PORISValueFloat("RedFWHM_Range1_5",1.0,1.25,1.5)
+        self.vlRedFWHM_Range1_4 = PORISValueFloat("RedFWHM_Range1_4",0.9,1.2,1.4)
+        self.vlRedFWHM_Range1_3 = PORISValueFloat("RedFWHM_Range1_3",0.8,1.1,1.3)
+        self.vlRedFWHM_Range1_2 = PORISValueFloat("RedFWHM_Range1_2",0.85,1.0,1.2)
+        self.vlRedFWHM_Range1_2b = PORISValueFloat("RedFWHM_Range1_2b",0.9,1.0,1.2)
+        self.mdRedTFMode_l651_799 = PORISMode("RedTFMode_l651_799")
+        self.mdRedTFMode_l800_819 = PORISMode("RedTFMode_l800_819")
+        self.mdRedTFMode_l820_839 = PORISMode("RedTFMode_l820_839")
+        self.mdRedTFMode_l840_879 = PORISMode("RedTFMode_l840_879")
+        self.mdRedTFMode_l880_909 = PORISMode("RedTFMode_l880_909")
+        self.mdRedTFMode_l910_934 = PORISMode("RedTFMode_l910_934")
+        self.vlRedLamda_Range651 = PORISValueFloat("RedLamda_Range651",651.0,700.0,799.9)
+        self.mdRedLamdaMode_l651_799 = PORISMode("RedLamdaMode_l651_799")
+        self.mdRedLamdaMode_l800_819 = PORISMode("RedLamdaMode_l800_819")
+        self.mdRedLamdaMode_l820_839 = PORISMode("RedLamdaMode_l820_839")
+        self.mdRedLamdaMode_l840_879 = PORISMode("RedLamdaMode_l840_879")
+        self.mdRedLamdaMode_l880_909 = PORISMode("RedLamdaMode_l880_909")
+        self.mdRedLamdaMode_l910_934 = PORISMode("RedLamdaMode_l910_934")
+        self.vlRedLamda_Range800 = PORISValueFloat("RedLamda_Range800",800.0,810.0,819.9)
+        self.vlRedLamda_Range820 = PORISValueFloat("RedLamda_Range820",820.0,830.0,839.9)
+        self.vlRedLamda_Range840 = PORISValueFloat("RedLamda_Range840",840.0,860.0,879.9)
+        self.vlRedLamda_Range880 = PORISValueFloat("RedLamda_Range880",880.0,895.0,909.9)
+        self.vlRedLamda_Range910 = PORISValueFloat("RedLamda_Range910",910.0,920.0,934.5)
+        self.vlBlueFWHM_0_8 = PORISValue("BlueFWHM_0_8")
+        self.mdBlueFWHMMode_l0_8 = PORISMode("BlueFWHMMode_l0_8")
+        self.mdBlueFWHMMode_l0_85 = PORISMode("BlueFWHMMode_l0_85")
+        self.mdBlueFWHMMode_l0_50 = PORISMode("BlueFWHMMode_l0_50")
+        self.mdBlueFWHMMode_l0_45 = PORISMode("BlueFWHMMode_l0_45")
+        self.vlBlueFWHM_0_85 = PORISValue("BlueFWHM_0_85")
+        self.vlBlueFWHM_0_50 = PORISValue("BlueFWHM_0_50")
+        self.vlBlueFWHM_0_45 = PORISValue("BlueFWHM_0_45")
+        self.vlBlueFWHM_0_70 = PORISValue("BlueFWHM_0_70")
+        self.mdBlueFWHMMode_l0_70 = PORISMode("BlueFWHMMode_l0_70")
+        self.mdBlueFWHMMode_l0_90 = PORISMode("BlueFWHMMode_l0_90")
+        self.mdBlueFWHMMode_l1_10 = PORISMode("BlueFWHMMode_l1_10")
+        self.vlBlueFWHM_0_90 = PORISValue("BlueFWHM_0_90")
+        self.vlBlueFWHM_1_10 = PORISValue("BlueFWHM_1_10")
+        self.mdBlueTFMode_l448_463 = PORISMode("BlueTFMode_l448_463")
+        self.mdBlueTFMode_l464_480 = PORISMode("BlueTFMode_l464_480")
+        self.mdBlueTFMode_l481_502 = PORISMode("BlueTFMode_l481_502")
+        self.mdBlueTFMode_l503_521 = PORISMode("BlueTFMode_l503_521")
+        self.mdBlueTFMode_l522_542 = PORISMode("BlueTFMode_l522_542")
+        self.mdBlueTFMode_l543_583 = PORISMode("BlueTFMode_l543_583")
+        self.vlBlueLamda_Range448 = PORISValueFloat("BlueLamda_Range448",448.0,454.0,463.9)
+        self.mdBlueLamdaMode_l448_463 = PORISMode("BlueLamdaMode_l448_463")
+        self.mdBlueLamdaMode_l464_480 = PORISMode("BlueLamdaMode_l464_480")
+        self.mdBlueLamdaMode_l481_502 = PORISMode("BlueLamdaMode_l481_502")
+        self.mdBlueLamdaMode_l503_521 = PORISMode("BlueLamdaMode_l503_521")
+        self.mdBlueLamdaMode_l522_542 = PORISMode("BlueLamdaMode_l522_542")
+        self.mdBlueLamdaMode_l543_583 = PORISMode("BlueLamdaMode_l543_583")
+        self.vlBlueLamda_Range464 = PORISValueFloat("BlueLamda_Range464",464.0,472.0,480.9)
+        self.vlBlueLamda_Range481 = PORISValueFloat("BlueLamda_Range481",481.0,492.0,502.9)
+        self.vlBlueLamda_Range503 = PORISValueFloat("BlueLamda_Range503",503.0,514.0,521.9)
+        self.vlBlueLamda_Range522 = PORISValueFloat("BlueLamda_Range522",522.0,536.0,542.9)
+        self.vlBlueLamda_Range543 = PORISValueFloat("BlueLamda_Range543",543.0,565.0,583.9)
+        self.mdBlueLamdaMode_l584_609 = PORISMode("BlueLamdaMode_l584_609")
+        self.mdBlueLamdaMode_l610_637 = PORISMode("BlueLamdaMode_l610_637")
+        self.mdBlueLamdaMode_l638_671 = PORISMode("BlueLamdaMode_l638_671")
+        self.vlBlueLamda_Range584 = PORISValueFloat("BlueLamda_Range584",584.0,602.0,609.9)
+        self.vlBlueLamda_Range610 = PORISValueFloat("BlueLamda_Range610",610.0,622.0,637.9)
+        self.vlBlueLamda_Range638 = PORISValueFloat("BlueLamda_Range638",638.0,654.0,671.0)
+        self.mdBlueTFMode_l584_609 = PORISMode("BlueTFMode_l584_609")
+        self.mdBlueTFMode_l610_637 = PORISMode("BlueTFMode_l610_637")
+        self.mdBlueTFMode_l638_671 = PORISMode("BlueTFMode_l638_671")
+        self.mdPreOpticsMode_RTFCalib = PORISMode("PreOpticsMode_RTFCalib")
+        self.mdPreOpticsMode_BTFCalib = PORISMode("PreOpticsMode_BTFCalib")
+        self.vlzzero_NormalRange = PORISValueFloat("zzero_NormalRange",25000.0,29000.0,45000.0)
+        self.mdzzeroMode_Normal = PORISMode("zzeroMode_Normal")
         self.mdFiltersMode_OS = PORISMode("FiltersMode_OS")
         self.mdFiltersMode_UFilter = PORISMode("FiltersMode_UFilter")
         self.vlUFilters_U500_17 = PORISValue("UFilters_U500_17")
@@ -451,18 +384,14 @@ class osirisPORIS(PORISDoc):
         self.mdBinningMode_Off = PORISMode("BinningMode_Off")
         self.mdWindowMode_Enabled = PORISMode("WindowMode_Enabled")
         self.mdRowsMode_Normal = PORISMode("RowsMode_Normal")
-        self.vlRows_FullRange = PORISValueFloat("Rows_FullRange",0,2056,4112)
+        self.vlRows_FullRange = PORISValueFloat("Rows_FullRange",0.0,2056.0,4112.0)
         self.mdColsMode_Normal = PORISMode("ColsMode_Normal")
-        self.vlCols_FullRange = PORISValueFloat("Cols_FullRange",0,2048,4096)
+        self.vlCols_FullRange = PORISValueFloat("Cols_FullRange",0.0,2048.0,4096.0)
         self.mdoffsetRowMode_Normal = PORISMode("offsetRowMode_Normal")
-        self.vloffsetRow_FullRange = PORISValueFloat("offsetRow_FullRange",0,1028,4112)
+        self.vloffsetRow_FullRange = PORISValueFloat("offsetRow_FullRange",0.0,1028.0,4112.0)
         self.mdoffsetColMode_Normal = PORISMode("offsetColMode_Normal")
-        self.vloffsetCol_FullRange = PORISValueFloat("offsetCol_FullRange",0,1024,4096)
+        self.vloffsetCol_FullRange = PORISValueFloat("offsetCol_FullRange",0.0,1024.0,4096.0)
         self.mdWindowMode_Disabled = PORISMode("WindowMode_Disabled")
-        self.mdOsirisMode_Engineering = PORISMode("OsirisMode_Engineering")
-        self.mdObservingModesMode_Engineering = PORISMode("ObservingModesMode_Engineering")
-        self.mdAcquisitionModesMode_Engineering = PORISMode("AcquisitionModesMode_Engineering")
-        self.mdFiltersMode_Engineering = PORISMode("FiltersMode_Engineering")
         self.mdDetectorMode_Engineering = PORISMode("DetectorMode_Engineering")
         self.mdOutputSourceMode_Engineering = PORISMode("OutputSourceMode_Engineering")
         self.mdWindowMode_Engineering = PORISMode("WindowMode_Engineering")
@@ -473,1934 +402,1620 @@ class osirisPORIS(PORISDoc):
         self.mdPreOpticsMode_Engineering = PORISMode("PreOpticsMode_Engineering")
         self.mdRedTFMode_Engineering = PORISMode("RedTFMode_Engineering")
         self.mdBlueTFMode_Engineering = PORISMode("BlueTFMode_Engineering")
+        self.mdOsirisMode_Engineering = PORISMode("OsirisMode_Engineering")
+        self.mdObservingModesMode_Engineering = PORISMode("ObservingModesMode_Engineering")
+        self.mdAcquisitionModesMode_Engineering = PORISMode("AcquisitionModesMode_Engineering")
+        self.mdFiltersMode_Engineering = PORISMode("FiltersMode_Engineering")
         self.mdFPEMode_Engineering = PORISMode("FPEMode_Engineering")
-        self.addNode(self.sysOsiris)
-        self.sysOsiris.ident = "Osiris"
+        self.addItem(self.sysOsiris)
+        self.sysOsiris.ident = "OSI-0474"
         self.sysOsiris.description = ""
-        self.addNode(self.mdOsirisMode_UNKNOWN)
-        self.mdOsirisMode_UNKNOWN.ident = "OsirisMode_UNKNOWN"
-        self.mdOsirisMode_UNKNOWN.description = ""
-        self.sysOsiris.addMode(self.mdOsirisMode_UNKNOWN)
-        self.addNode(self.sysObservingModes)
-        self.sysObservingModes.ident = "ObservingModes"
+        self.addItem(self.sysObservingModes)
+        self.sysObservingModes.ident = "OSI-0733"
         self.sysObservingModes.description = ""
         self.sysOsiris.addSubsystem(self.sysObservingModes)
-        self.addNode(self.mdObservingModesMode_UNKNOWN)
-        self.mdObservingModesMode_UNKNOWN.ident = "ObservingModesMode_UNKNOWN"
-        self.mdObservingModesMode_UNKNOWN.description = ""
-        self.sysObservingModes.addMode(self.mdObservingModesMode_UNKNOWN)
-        self.addNode(self.sysAcquisitionModes)
-        self.sysAcquisitionModes.ident = "AcquisitionModes"
+        self.addItem(self.sysAcquisitionModes)
+        self.sysAcquisitionModes.ident = "OSI-0133"
         self.sysAcquisitionModes.description = ""
         self.sysObservingModes.addSubsystem(self.sysAcquisitionModes)
-        self.addNode(self.mdAcquisitionModesMode_UNKNOWN)
-        self.mdAcquisitionModesMode_UNKNOWN.ident = "AcquisitionModesMode_UNKNOWN"
-        self.mdAcquisitionModesMode_UNKNOWN.description = ""
-        self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_UNKNOWN)
-        self.addNode(self.sysDAS)
-        self.sysDAS.ident = "DAS"
-        self.sysDAS.description = ""
-        self.sysAcquisitionModes.addSubsystem(self.sysDAS)
-        self.addNode(self.mdDASMode_UNKNOWN)
-        self.mdDASMode_UNKNOWN.ident = "DASMode_UNKNOWN"
-        self.mdDASMode_UNKNOWN.description = ""
-        self.sysDAS.addMode(self.mdDASMode_UNKNOWN)
-        self.addNode(self.sysAcquisition)
-        self.sysAcquisition.ident = "Acquisition"
-        self.sysAcquisition.description = ""
-        self.sysDAS.addSubsystem(self.sysAcquisition)
-        self.addNode(self.mdAcquisitionMode_UNKNOWN)
-        self.mdAcquisitionMode_UNKNOWN.ident = "AcquisitionMode_UNKNOWN"
-        self.mdAcquisitionMode_UNKNOWN.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_UNKNOWN)
-        self.addNode(self.prShuffleLines)
-        self.prShuffleLines.ident = "ShuffleLines"
-        self.prShuffleLines.description = ""
-        self.sysAcquisition.addParam(self.prShuffleLines)
-        self.addNode(self.vlShuffleLines_UNKNOWN)
-        self.vlShuffleLines_UNKNOWN.ident = "ShuffleLines_UNKNOWN"
-        self.vlShuffleLines_UNKNOWN.description = "Unknown value for ShuffleLines"
-        self.prShuffleLines.addValue(self.vlShuffleLines_UNKNOWN)
-        self.addNode(self.mdShuffleLinesMode_UNKNOWN)
-        self.mdShuffleLinesMode_UNKNOWN.ident = "ShuffleLinesMode_UNKNOWN"
-        self.mdShuffleLinesMode_UNKNOWN.description = "Unknown mode for ShuffleLines"
-        self.prShuffleLines.addMode(self.mdShuffleLinesMode_UNKNOWN)
-        self.mdShuffleLinesMode_UNKNOWN.addValue(self.vlShuffleLines_UNKNOWN)
-        self.mdAcquisitionMode_UNKNOWN.addSubMode(self.mdShuffleLinesMode_UNKNOWN)
-        self.addNode(self.prShiftNumber)
-        self.prShiftNumber.ident = "ShiftNumber"
-        self.prShiftNumber.description = ""
-        self.sysAcquisition.addParam(self.prShiftNumber)
-        self.addNode(self.vlShiftNumber_UNKNOWN)
-        self.vlShiftNumber_UNKNOWN.ident = "ShiftNumber_UNKNOWN"
-        self.vlShiftNumber_UNKNOWN.description = "Unknown value for ShiftNumber"
-        self.prShiftNumber.addValue(self.vlShiftNumber_UNKNOWN)
-        self.addNode(self.mdShiftNumberMode_UNKNOWN)
-        self.mdShiftNumberMode_UNKNOWN.ident = "ShiftNumberMode_UNKNOWN"
-        self.mdShiftNumberMode_UNKNOWN.description = "Unknown mode for ShiftNumber"
-        self.prShiftNumber.addMode(self.mdShiftNumberMode_UNKNOWN)
-        self.mdShiftNumberMode_UNKNOWN.addValue(self.vlShiftNumber_UNKNOWN)
-        self.mdAcquisitionMode_UNKNOWN.addSubMode(self.mdShiftNumberMode_UNKNOWN)
-        self.addNode(self.prExpTime)
-        self.prExpTime.ident = "ExpTime"
-        self.prExpTime.description = ""
-        self.sysAcquisition.addParam(self.prExpTime)
-        self.addNode(self.vlExpTime_UNKNOWN)
-        self.vlExpTime_UNKNOWN.ident = "ExpTime_UNKNOWN"
-        self.vlExpTime_UNKNOWN.description = "Unknown value for ExpTime"
-        self.prExpTime.addValue(self.vlExpTime_UNKNOWN)
-        self.addNode(self.mdExpTimeMode_UNKNOWN)
-        self.mdExpTimeMode_UNKNOWN.ident = "ExpTimeMode_UNKNOWN"
-        self.mdExpTimeMode_UNKNOWN.description = "Unknown mode for ExpTime"
-        self.prExpTime.addMode(self.mdExpTimeMode_UNKNOWN)
-        self.mdExpTimeMode_UNKNOWN.addValue(self.vlExpTime_UNKNOWN)
-        self.mdAcquisitionMode_UNKNOWN.addSubMode(self.mdExpTimeMode_UNKNOWN)
-        self.addNode(self.sysMultipleExposure)
-        self.sysMultipleExposure.ident = "MultipleExposure"
-        self.sysMultipleExposure.description = ""
-        self.sysAcquisition.addSubsystem(self.sysMultipleExposure)
-        self.addNode(self.mdMultipleExposureMode_UNKNOWN)
-        self.mdMultipleExposureMode_UNKNOWN.ident = "MultipleExposureMode_UNKNOWN"
-        self.mdMultipleExposureMode_UNKNOWN.description = ""
-        self.sysMultipleExposure.addMode(self.mdMultipleExposureMode_UNKNOWN)
-        self.addNode(self.prnumOfFrames)
-        self.prnumOfFrames.ident = "numOfFrames"
-        self.prnumOfFrames.description = ""
-        self.sysMultipleExposure.addParam(self.prnumOfFrames)
-        self.addNode(self.vlnumOfFrames_UNKNOWN)
-        self.vlnumOfFrames_UNKNOWN.ident = "numOfFrames_UNKNOWN"
-        self.vlnumOfFrames_UNKNOWN.description = "Unknown value for numOfFrames"
-        self.prnumOfFrames.addValue(self.vlnumOfFrames_UNKNOWN)
-        self.addNode(self.mdnumOfFramesMode_UNKNOWN)
-        self.mdnumOfFramesMode_UNKNOWN.ident = "numOfFramesMode_UNKNOWN"
-        self.mdnumOfFramesMode_UNKNOWN.description = "Unknown mode for numOfFrames"
-        self.prnumOfFrames.addMode(self.mdnumOfFramesMode_UNKNOWN)
-        self.mdnumOfFramesMode_UNKNOWN.addValue(self.vlnumOfFrames_UNKNOWN)
-        self.mdMultipleExposureMode_UNKNOWN.addSubMode(self.mdnumOfFramesMode_UNKNOWN)
-        self.addNode(self.prPixelSpeed)
-        self.prPixelSpeed.ident = "PixelSpeed"
-        self.prPixelSpeed.description = ""
-        self.sysAcquisition.addParam(self.prPixelSpeed)
-        self.addNode(self.vlPixelSpeed_UNKNOWN)
-        self.vlPixelSpeed_UNKNOWN.ident = "PixelSpeed_UNKNOWN"
-        self.vlPixelSpeed_UNKNOWN.description = "Unknown value for PixelSpeed"
-        self.prPixelSpeed.addValue(self.vlPixelSpeed_UNKNOWN)
-        self.addNode(self.mdPixelSpeedMode_UNKNOWN)
-        self.mdPixelSpeedMode_UNKNOWN.ident = "PixelSpeedMode_UNKNOWN"
-        self.mdPixelSpeedMode_UNKNOWN.description = "Unknown mode for PixelSpeed"
-        self.prPixelSpeed.addMode(self.mdPixelSpeedMode_UNKNOWN)
-        self.mdPixelSpeedMode_UNKNOWN.addValue(self.vlPixelSpeed_UNKNOWN)
-        self.mdAcquisitionMode_UNKNOWN.addSubMode(self.mdPixelSpeedMode_UNKNOWN)
-        self.addNode(self.prCalibGain)
-        self.prCalibGain.ident = "CalibGain"
-        self.prCalibGain.description = ""
-        self.sysAcquisition.addParam(self.prCalibGain)
-        self.addNode(self.vlCalibGain_UNKNOWN)
-        self.vlCalibGain_UNKNOWN.ident = "CalibGain_UNKNOWN"
-        self.vlCalibGain_UNKNOWN.description = "Unknown value for CalibGain"
-        self.prCalibGain.addValue(self.vlCalibGain_UNKNOWN)
-        self.addNode(self.mdCalibGainMode_UNKNOWN)
-        self.mdCalibGainMode_UNKNOWN.ident = "CalibGainMode_UNKNOWN"
-        self.mdCalibGainMode_UNKNOWN.description = "Unknown mode for CalibGain"
-        self.prCalibGain.addMode(self.mdCalibGainMode_UNKNOWN)
-        self.mdCalibGainMode_UNKNOWN.addValue(self.vlCalibGain_UNKNOWN)
-        self.mdAcquisitionMode_UNKNOWN.addSubMode(self.mdCalibGainMode_UNKNOWN)
-        self.addNode(self.sysOpenShutter)
-        self.sysOpenShutter.ident = "OpenShutter"
-        self.sysOpenShutter.description = ""
-        self.sysDAS.addSubsystem(self.sysOpenShutter)
-        self.addNode(self.mdOpenShutterMode_UNKNOWN)
-        self.mdOpenShutterMode_UNKNOWN.ident = "OpenShutterMode_UNKNOWN"
-        self.mdOpenShutterMode_UNKNOWN.description = ""
-        self.sysOpenShutter.addMode(self.mdOpenShutterMode_UNKNOWN)
-        self.addNode(self.sysProcessMonitor)
-        self.sysProcessMonitor.ident = "ProcessMonitor"
-        self.sysProcessMonitor.description = ""
-        self.sysDAS.addSubsystem(self.sysProcessMonitor)
-        self.addNode(self.mdProcessMonitorMode_UNKNOWN)
-        self.mdProcessMonitorMode_UNKNOWN.ident = "ProcessMonitorMode_UNKNOWN"
-        self.mdProcessMonitorMode_UNKNOWN.description = ""
-        self.sysProcessMonitor.addMode(self.mdProcessMonitorMode_UNKNOWN)
-        self.addNode(self.prCurrentEllapsed)
-        self.prCurrentEllapsed.ident = "CurrentEllapsed"
-        self.prCurrentEllapsed.description = ""
-        self.sysProcessMonitor.addParam(self.prCurrentEllapsed)
-        self.addNode(self.vlCurrentEllapsed_UNKNOWN)
-        self.vlCurrentEllapsed_UNKNOWN.ident = "CurrentEllapsed_UNKNOWN"
-        self.vlCurrentEllapsed_UNKNOWN.description = "Unknown value for CurrentEllapsed"
-        self.prCurrentEllapsed.addValue(self.vlCurrentEllapsed_UNKNOWN)
-        self.addNode(self.mdCurrentEllapsedMode_UNKNOWN)
-        self.mdCurrentEllapsedMode_UNKNOWN.ident = "CurrentEllapsedMode_UNKNOWN"
-        self.mdCurrentEllapsedMode_UNKNOWN.description = "Unknown mode for CurrentEllapsed"
-        self.prCurrentEllapsed.addMode(self.mdCurrentEllapsedMode_UNKNOWN)
-        self.mdCurrentEllapsedMode_UNKNOWN.addValue(self.vlCurrentEllapsed_UNKNOWN)
-        self.mdProcessMonitorMode_UNKNOWN.addSubMode(self.mdCurrentEllapsedMode_UNKNOWN)
-        self.addNode(self.prCurrentImg)
-        self.prCurrentImg.ident = "CurrentImg"
-        self.prCurrentImg.description = ""
-        self.sysProcessMonitor.addParam(self.prCurrentImg)
-        self.addNode(self.vlCurrentImg_UNKNOWN)
-        self.vlCurrentImg_UNKNOWN.ident = "CurrentImg_UNKNOWN"
-        self.vlCurrentImg_UNKNOWN.description = "Unknown value for CurrentImg"
-        self.prCurrentImg.addValue(self.vlCurrentImg_UNKNOWN)
-        self.addNode(self.mdCurrentImgMode_UNKNOWN)
-        self.mdCurrentImgMode_UNKNOWN.ident = "CurrentImgMode_UNKNOWN"
-        self.mdCurrentImgMode_UNKNOWN.description = "Unknown mode for CurrentImg"
-        self.prCurrentImg.addMode(self.mdCurrentImgMode_UNKNOWN)
-        self.mdCurrentImgMode_UNKNOWN.addValue(self.vlCurrentImg_UNKNOWN)
-        self.mdProcessMonitorMode_UNKNOWN.addSubMode(self.mdCurrentImgMode_UNKNOWN)
-        self.addNode(self.prCurrentPct)
-        self.prCurrentPct.ident = "CurrentPct"
-        self.prCurrentPct.description = ""
-        self.sysProcessMonitor.addParam(self.prCurrentPct)
-        self.addNode(self.vlCurrentPct_UNKNOWN)
-        self.vlCurrentPct_UNKNOWN.ident = "CurrentPct_UNKNOWN"
-        self.vlCurrentPct_UNKNOWN.description = "Unknown value for CurrentPct"
-        self.prCurrentPct.addValue(self.vlCurrentPct_UNKNOWN)
-        self.addNode(self.mdCurrentPctMode_UNKNOWN)
-        self.mdCurrentPctMode_UNKNOWN.ident = "CurrentPctMode_UNKNOWN"
-        self.mdCurrentPctMode_UNKNOWN.description = "Unknown mode for CurrentPct"
-        self.prCurrentPct.addMode(self.mdCurrentPctMode_UNKNOWN)
-        self.mdCurrentPctMode_UNKNOWN.addValue(self.vlCurrentPct_UNKNOWN)
-        self.mdProcessMonitorMode_UNKNOWN.addSubMode(self.mdCurrentPctMode_UNKNOWN)
-        self.addNode(self.prOverallPct)
-        self.prOverallPct.ident = "OverallPct"
-        self.prOverallPct.description = ""
-        self.sysProcessMonitor.addParam(self.prOverallPct)
-        self.addNode(self.vlOverallPct_UNKNOWN)
-        self.vlOverallPct_UNKNOWN.ident = "OverallPct_UNKNOWN"
-        self.vlOverallPct_UNKNOWN.description = "Unknown value for OverallPct"
-        self.prOverallPct.addValue(self.vlOverallPct_UNKNOWN)
-        self.addNode(self.mdOverallPctMode_UNKNOWN)
-        self.mdOverallPctMode_UNKNOWN.ident = "OverallPctMode_UNKNOWN"
-        self.mdOverallPctMode_UNKNOWN.description = "Unknown mode for OverallPct"
-        self.prOverallPct.addMode(self.mdOverallPctMode_UNKNOWN)
-        self.mdOverallPctMode_UNKNOWN.addValue(self.vlOverallPct_UNKNOWN)
-        self.mdProcessMonitorMode_UNKNOWN.addSubMode(self.mdOverallPctMode_UNKNOWN)
-        self.addNode(self.sysPreOptics)
-        self.sysPreOptics.ident = "PreOptics"
-        self.sysPreOptics.description = ""
-        self.sysAcquisitionModes.addSubsystem(self.sysPreOptics)
-        self.addNode(self.mdPreOpticsMode_UNKNOWN)
-        self.mdPreOpticsMode_UNKNOWN.ident = "PreOpticsMode_UNKNOWN"
-        self.mdPreOpticsMode_UNKNOWN.description = ""
-        self.sysPreOptics.addMode(self.mdPreOpticsMode_UNKNOWN)
-        self.addNode(self.prGrisms)
-        self.prGrisms.ident = "Grisms"
-        self.prGrisms.description = ""
-        self.sysPreOptics.addParam(self.prGrisms)
-        self.addNode(self.vlGrisms_UNKNOWN)
-        self.vlGrisms_UNKNOWN.ident = "Grisms_UNKNOWN"
-        self.vlGrisms_UNKNOWN.description = "Unknown value for Grisms"
-        self.prGrisms.addValue(self.vlGrisms_UNKNOWN)
-        self.addNode(self.mdGrismsMode_UNKNOWN)
-        self.mdGrismsMode_UNKNOWN.ident = "GrismsMode_UNKNOWN"
-        self.mdGrismsMode_UNKNOWN.description = "Unknown mode for Grisms"
-        self.prGrisms.addMode(self.mdGrismsMode_UNKNOWN)
-        self.mdGrismsMode_UNKNOWN.addValue(self.vlGrisms_UNKNOWN)
-        self.mdPreOpticsMode_UNKNOWN.addSubMode(self.mdGrismsMode_UNKNOWN)
-        self.addNode(self.sysRedTF)
-        self.sysRedTF.ident = "RedTF"
-        self.sysRedTF.description = ""
-        self.sysPreOptics.addSubsystem(self.sysRedTF)
-        self.addNode(self.mdRedTFMode_UNKNOWN)
-        self.mdRedTFMode_UNKNOWN.ident = "RedTFMode_UNKNOWN"
-        self.mdRedTFMode_UNKNOWN.description = ""
-        self.sysRedTF.addMode(self.mdRedTFMode_UNKNOWN)
-        self.addNode(self.prRedFWHM)
-        self.prRedFWHM.ident = "RedFWHM"
-        self.prRedFWHM.description = ""
-        self.sysRedTF.addParam(self.prRedFWHM)
-        self.addNode(self.vlRedFWHM_UNKNOWN)
-        self.vlRedFWHM_UNKNOWN.ident = "RedFWHM_UNKNOWN"
-        self.vlRedFWHM_UNKNOWN.description = "Unknown value for RedFWHM"
-        self.prRedFWHM.addValue(self.vlRedFWHM_UNKNOWN)
-        self.addNode(self.mdRedFWHMMode_UNKNOWN)
-        self.mdRedFWHMMode_UNKNOWN.ident = "RedFWHMMode_UNKNOWN"
-        self.mdRedFWHMMode_UNKNOWN.description = "Unknown mode for RedFWHM"
-        self.prRedFWHM.addMode(self.mdRedFWHMMode_UNKNOWN)
-        self.mdRedFWHMMode_UNKNOWN.addValue(self.vlRedFWHM_UNKNOWN)
-        self.mdRedTFMode_UNKNOWN.addSubMode(self.mdRedFWHMMode_UNKNOWN)
-        self.addNode(self.prRedLamda)
-        self.prRedLamda.ident = "RedLamda"
-        self.prRedLamda.description = ""
-        self.sysRedTF.addParam(self.prRedLamda)
-        self.addNode(self.vlRedLamda_UNKNOWN)
-        self.vlRedLamda_UNKNOWN.ident = "RedLamda_UNKNOWN"
-        self.vlRedLamda_UNKNOWN.description = "Unknown value for RedLamda"
-        self.prRedLamda.addValue(self.vlRedLamda_UNKNOWN)
-        self.addNode(self.mdRedLamdaMode_UNKNOWN)
-        self.mdRedLamdaMode_UNKNOWN.ident = "RedLamdaMode_UNKNOWN"
-        self.mdRedLamdaMode_UNKNOWN.description = "Unknown mode for RedLamda"
-        self.prRedLamda.addMode(self.mdRedLamdaMode_UNKNOWN)
-        self.mdRedLamdaMode_UNKNOWN.addValue(self.vlRedLamda_UNKNOWN)
-        self.mdRedTFMode_UNKNOWN.addSubMode(self.mdRedLamdaMode_UNKNOWN)
-        self.addNode(self.sysBlueTF)
-        self.sysBlueTF.ident = "BlueTF"
-        self.sysBlueTF.description = ""
-        self.sysPreOptics.addSubsystem(self.sysBlueTF)
-        self.addNode(self.mdBlueTFMode_UNKNOWN)
-        self.mdBlueTFMode_UNKNOWN.ident = "BlueTFMode_UNKNOWN"
-        self.mdBlueTFMode_UNKNOWN.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_UNKNOWN)
-        self.addNode(self.prBlueFWHM)
-        self.prBlueFWHM.ident = "BlueFWHM"
-        self.prBlueFWHM.description = ""
-        self.sysBlueTF.addParam(self.prBlueFWHM)
-        self.addNode(self.vlBlueFWHM_UNKNOWN)
-        self.vlBlueFWHM_UNKNOWN.ident = "BlueFWHM_UNKNOWN"
-        self.vlBlueFWHM_UNKNOWN.description = "Unknown value for BlueFWHM"
-        self.prBlueFWHM.addValue(self.vlBlueFWHM_UNKNOWN)
-        self.addNode(self.mdBlueFWHMMode_UNKNOWN)
-        self.mdBlueFWHMMode_UNKNOWN.ident = "BlueFWHMMode_UNKNOWN"
-        self.mdBlueFWHMMode_UNKNOWN.description = "Unknown mode for BlueFWHM"
-        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_UNKNOWN)
-        self.mdBlueFWHMMode_UNKNOWN.addValue(self.vlBlueFWHM_UNKNOWN)
-        self.mdBlueTFMode_UNKNOWN.addSubMode(self.mdBlueFWHMMode_UNKNOWN)
-        self.addNode(self.prBlueLamda)
-        self.prBlueLamda.ident = "BlueLamda"
-        self.prBlueLamda.description = ""
-        self.sysBlueTF.addParam(self.prBlueLamda)
-        self.addNode(self.vlBlueLamda_UNKNOWN)
-        self.vlBlueLamda_UNKNOWN.ident = "BlueLamda_UNKNOWN"
-        self.vlBlueLamda_UNKNOWN.description = "Unknown value for BlueLamda"
-        self.prBlueLamda.addValue(self.vlBlueLamda_UNKNOWN)
-        self.addNode(self.mdBlueLamdaMode_UNKNOWN)
-        self.mdBlueLamdaMode_UNKNOWN.ident = "BlueLamdaMode_UNKNOWN"
-        self.mdBlueLamdaMode_UNKNOWN.description = "Unknown mode for BlueLamda"
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_UNKNOWN)
-        self.mdBlueLamdaMode_UNKNOWN.addValue(self.vlBlueLamda_UNKNOWN)
-        self.mdBlueTFMode_UNKNOWN.addSubMode(self.mdBlueLamdaMode_UNKNOWN)
-        self.addNode(self.przzero)
-        self.przzero.ident = "zzero"
-        self.przzero.description = ""
-        self.sysPreOptics.addParam(self.przzero)
-        self.addNode(self.vlzzero_UNKNOWN)
-        self.vlzzero_UNKNOWN.ident = "zzero_UNKNOWN"
-        self.vlzzero_UNKNOWN.description = "Unknown value for zzero"
-        self.przzero.addValue(self.vlzzero_UNKNOWN)
-        self.addNode(self.mdzzeroMode_UNKNOWN)
-        self.mdzzeroMode_UNKNOWN.ident = "zzeroMode_UNKNOWN"
-        self.mdzzeroMode_UNKNOWN.description = "Unknown mode for zzero"
-        self.przzero.addMode(self.mdzzeroMode_UNKNOWN)
-        self.mdzzeroMode_UNKNOWN.addValue(self.vlzzero_UNKNOWN)
-        self.mdPreOpticsMode_UNKNOWN.addSubMode(self.mdzzeroMode_UNKNOWN)
-        self.addNode(self.sysFPE)
-        self.sysFPE.ident = "FPE"
+        self.addItem(self.sysFPE)
+        self.sysFPE.ident = "FP-0006"
         self.sysFPE.description = ""
         self.sysAcquisitionModes.addSubsystem(self.sysFPE)
-        self.addNode(self.mdFPEMode_UNKNOWN)
-        self.mdFPEMode_UNKNOWN.ident = "FPEMode_UNKNOWN"
-        self.mdFPEMode_UNKNOWN.description = ""
-        self.sysFPE.addMode(self.mdFPEMode_UNKNOWN)
-        self.addNode(self.prFocalPlaneElement)
-        self.prFocalPlaneElement.ident = "FocalPlaneElement"
+        self.addItem(self.prFocalPlaneElement)
+        self.prFocalPlaneElement.ident = "OSI-0138"
         self.prFocalPlaneElement.description = ""
         self.sysFPE.addParam(self.prFocalPlaneElement)
-        self.addNode(self.vlFocalPlaneElement_UNKNOWN)
-        self.vlFocalPlaneElement_UNKNOWN.ident = "FocalPlaneElement_UNKNOWN"
-        self.vlFocalPlaneElement_UNKNOWN.description = "Unknown value for FocalPlaneElement"
-        self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_UNKNOWN)
-        self.addNode(self.mdFocalPlaneElementMode_UNKNOWN)
-        self.mdFocalPlaneElementMode_UNKNOWN.ident = "FocalPlaneElementMode_UNKNOWN"
-        self.mdFocalPlaneElementMode_UNKNOWN.description = "Unknown mode for FocalPlaneElement"
-        self.prFocalPlaneElement.addMode(self.mdFocalPlaneElementMode_UNKNOWN)
-        self.mdFocalPlaneElementMode_UNKNOWN.addValue(self.vlFocalPlaneElement_UNKNOWN)
-        self.mdFPEMode_UNKNOWN.addSubMode(self.mdFocalPlaneElementMode_UNKNOWN)
-        self.addNode(self.mdOsirisMode_Imaging)
-        self.mdOsirisMode_Imaging.ident = "OsirisMode_Imaging"
+        self.addItem(self.sysDAS)
+        self.sysDAS.ident = "OSI-0476"
+        self.sysDAS.description = ""
+        self.sysAcquisitionModes.addSubsystem(self.sysDAS)
+        self.addItem(self.sysAcquisition)
+        self.sysAcquisition.ident = "OSI-0477"
+        self.sysAcquisition.description = ""
+        self.sysDAS.addSubsystem(self.sysAcquisition)
+        self.addItem(self.prShuffleLines)
+        self.prShuffleLines.ident = "OSI-0479"
+        self.prShuffleLines.description = ""
+        self.sysAcquisition.addParam(self.prShuffleLines)
+        self.addItem(self.prShiftNumber)
+        self.prShiftNumber.ident = "OSI-0480"
+        self.prShiftNumber.description = ""
+        self.sysAcquisition.addParam(self.prShiftNumber)
+        self.addItem(self.prExpTime)
+        self.prExpTime.ident = "OSI-0487"
+        self.prExpTime.description = ""
+        self.sysAcquisition.addParam(self.prExpTime)
+        self.addItem(self.sysMultipleExposure)
+        self.sysMultipleExposure.ident = "OSI-0488"
+        self.sysMultipleExposure.description = ""
+        self.sysAcquisition.addSubsystem(self.sysMultipleExposure)
+        self.addItem(self.prnumOfFrames)
+        self.prnumOfFrames.ident = "OSI-0489"
+        self.prnumOfFrames.description = ""
+        self.sysMultipleExposure.addParam(self.prnumOfFrames)
+        self.addItem(self.prPixelSpeed)
+        self.prPixelSpeed.ident = "OSI-0491"
+        self.prPixelSpeed.description = ""
+        self.sysAcquisition.addParam(self.prPixelSpeed)
+        self.addItem(self.prCalibGain)
+        self.prCalibGain.ident = "DAS-0006"
+        self.prCalibGain.description = ""
+        self.sysAcquisition.addParam(self.prCalibGain)
+        self.addItem(self.sysOpenShutter)
+        self.sysOpenShutter.ident = "OSI-0499"
+        self.sysOpenShutter.description = ""
+        self.sysDAS.addSubsystem(self.sysOpenShutter)
+        self.addItem(self.sysProcessMonitor)
+        self.sysProcessMonitor.ident = "DAS-0036"
+        self.sysProcessMonitor.description = ""
+        self.sysDAS.addSubsystem(self.sysProcessMonitor)
+        self.addItem(self.prCurrentEllapsed)
+        self.prCurrentEllapsed.ident = "DAS-0037"
+        self.prCurrentEllapsed.description = ""
+        self.sysProcessMonitor.addParam(self.prCurrentEllapsed)
+        self.addItem(self.prCurrentImg)
+        self.prCurrentImg.ident = "DAS-0038"
+        self.prCurrentImg.description = ""
+        self.sysProcessMonitor.addParam(self.prCurrentImg)
+        self.addItem(self.prCurrentPct)
+        self.prCurrentPct.ident = "DAS-0039"
+        self.prCurrentPct.description = ""
+        self.sysProcessMonitor.addParam(self.prCurrentPct)
+        self.addItem(self.prOverallPct)
+        self.prOverallPct.ident = "DAS-0040"
+        self.prOverallPct.description = ""
+        self.sysProcessMonitor.addParam(self.prOverallPct)
+        self.addItem(self.sysPreOptics)
+        self.sysPreOptics.ident = "OSI-0136"
+        self.sysPreOptics.description = ""
+        self.sysAcquisitionModes.addSubsystem(self.sysPreOptics)
+        self.addItem(self.prGrisms)
+        self.prGrisms.ident = "OSI-0475"
+        self.prGrisms.description = ""
+        self.sysPreOptics.addParam(self.prGrisms)
+        self.addItem(self.sysRedTF)
+        self.sysRedTF.ident = "OSI-0575"
+        self.sysRedTF.description = ""
+        self.sysPreOptics.addSubsystem(self.sysRedTF)
+        self.addItem(self.prRedFWHM)
+        self.prRedFWHM.ident = "OSI-0576"
+        self.prRedFWHM.description = ""
+        self.sysRedTF.addParam(self.prRedFWHM)
+        self.addItem(self.prRedLamda)
+        self.prRedLamda.ident = "OSI-0577"
+        self.prRedLamda.description = ""
+        self.sysRedTF.addParam(self.prRedLamda)
+        self.addItem(self.sysBlueTF)
+        self.sysBlueTF.ident = "OSI-0578"
+        self.sysBlueTF.description = ""
+        self.sysPreOptics.addSubsystem(self.sysBlueTF)
+        self.addItem(self.prBlueFWHM)
+        self.prBlueFWHM.ident = "OSI-0579"
+        self.prBlueFWHM.description = ""
+        self.sysBlueTF.addParam(self.prBlueFWHM)
+        self.addItem(self.prBlueLamda)
+        self.prBlueLamda.ident = "OSI-0580"
+        self.prBlueLamda.description = ""
+        self.sysBlueTF.addParam(self.prBlueLamda)
+        self.addItem(self.przzero)
+        self.przzero.ident = "OP-0109"
+        self.przzero.description = ""
+        self.sysPreOptics.addParam(self.przzero)
+        self.addItem(self.mdOsirisMode_Imaging)
+        self.mdOsirisMode_Imaging.ident = "OSI-0471"
         self.mdOsirisMode_Imaging.description = ""
         self.sysOsiris.addMode(self.mdOsirisMode_Imaging)
-        self.addNode(self.mdOsirisMode_Spectroscopy)
-        self.mdOsirisMode_Spectroscopy.ident = "OsirisMode_Spectroscopy"
+        self.addItem(self.mdOsirisMode_Spectroscopy)
+        self.mdOsirisMode_Spectroscopy.ident = "OSI-0472"
         self.mdOsirisMode_Spectroscopy.description = ""
         self.sysOsiris.addMode(self.mdOsirisMode_Spectroscopy)
-        self.addNode(self.mdOsirisMode_Calibration)
-        self.mdOsirisMode_Calibration.ident = "OsirisMode_Calibration"
+        self.addItem(self.mdOsirisMode_Calibration)
+        self.mdOsirisMode_Calibration.ident = "OSI-0473"
         self.mdOsirisMode_Calibration.description = ""
         self.sysOsiris.addMode(self.mdOsirisMode_Calibration)
-        self.addNode(self.mdAcquisitionModesMode_aBBI)
-        self.mdAcquisitionModesMode_aBBI.ident = "AcquisitionModesMode_aBBI"
+        self.addItem(self.mdAcquisitionModesMode_aBBI)
+        self.mdAcquisitionModesMode_aBBI.ident = "OSI-0001"
         self.mdAcquisitionModesMode_aBBI.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aBBI)
-        self.addNode(self.mdAcquisitionModesMode_aTFI)
-        self.mdAcquisitionModesMode_aTFI.ident = "AcquisitionModesMode_aTFI"
+        self.addItem(self.mdAcquisitionModesMode_aTFI)
+        self.mdAcquisitionModesMode_aTFI.ident = "OSI-0002"
         self.mdAcquisitionModesMode_aTFI.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aTFI)
-        self.addNode(self.mdAcquisitionModesMode_aLSSpec)
-        self.mdAcquisitionModesMode_aLSSpec.ident = "AcquisitionModesMode_aLSSpec"
+        self.addItem(self.mdAcquisitionModesMode_aLSSpec)
+        self.mdAcquisitionModesMode_aLSSpec.ident = "OSI-0003"
         self.mdAcquisitionModesMode_aLSSpec.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aLSSpec)
-        self.addNode(self.mdAcquisitionModesMode_aMOS)
-        self.mdAcquisitionModesMode_aMOS.ident = "AcquisitionModesMode_aMOS"
+        self.addItem(self.mdAcquisitionModesMode_aMOS)
+        self.mdAcquisitionModesMode_aMOS.ident = "OSI-0004"
         self.mdAcquisitionModesMode_aMOS.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aMOS)
-        self.addNode(self.mdAcquisitionModesMode_aFastBBI)
-        self.mdAcquisitionModesMode_aFastBBI.ident = "AcquisitionModesMode_aFastBBI"
+        self.addItem(self.mdAcquisitionModesMode_aFastBBI)
+        self.mdAcquisitionModesMode_aFastBBI.ident = "OSI-0005"
         self.mdAcquisitionModesMode_aFastBBI.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aFastBBI)
-        self.addNode(self.mdAcquisitionModesMode_aFrTrBBI)
-        self.mdAcquisitionModesMode_aFrTrBBI.ident = "AcquisitionModesMode_aFrTrBBI"
+        self.addItem(self.mdAcquisitionModesMode_aFrTrBBI)
+        self.mdAcquisitionModesMode_aFrTrBBI.ident = "OSI-0006"
         self.mdAcquisitionModesMode_aFrTrBBI.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aFrTrBBI)
-        self.addNode(self.mdAcquisitionModesMode_aFastLSSpec)
-        self.mdAcquisitionModesMode_aFastLSSpec.ident = "AcquisitionModesMode_aFastLSSpec"
+        self.addItem(self.mdAcquisitionModesMode_aFastLSSpec)
+        self.mdAcquisitionModesMode_aFastLSSpec.ident = "OSI-0007"
         self.mdAcquisitionModesMode_aFastLSSpec.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aFastLSSpec)
-        self.addNode(self.mdAcquisitionModesMode_aFastTFImage)
-        self.mdAcquisitionModesMode_aFastTFImage.ident = "AcquisitionModesMode_aFastTFImage"
+        self.addItem(self.mdAcquisitionModesMode_aFastTFImage)
+        self.mdAcquisitionModesMode_aFastTFImage.ident = "OSI-0395"
         self.mdAcquisitionModesMode_aFastTFImage.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aFastTFImage)
-        self.addNode(self.mdAcquisitionModesMode_aFrTrTFI)
-        self.mdAcquisitionModesMode_aFrTrTFI.ident = "AcquisitionModesMode_aFrTrTFI"
+        self.addItem(self.mdAcquisitionModesMode_aFrTrTFI)
+        self.mdAcquisitionModesMode_aFrTrTFI.ident = "OSI-0396"
         self.mdAcquisitionModesMode_aFrTrTFI.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aFrTrTFI)
-        self.addNode(self.mdAcquisitionModesMode_aBias)
-        self.mdAcquisitionModesMode_aBias.ident = "AcquisitionModesMode_aBias"
+        self.addItem(self.mdAcquisitionModesMode_aBias)
+        self.mdAcquisitionModesMode_aBias.ident = "OSI-0397"
         self.mdAcquisitionModesMode_aBias.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aBias)
-        self.addNode(self.mdAcquisitionModesMode_aDark)
-        self.mdAcquisitionModesMode_aDark.ident = "AcquisitionModesMode_aDark"
+        self.addItem(self.mdAcquisitionModesMode_aDark)
+        self.mdAcquisitionModesMode_aDark.ident = "OSI-0398"
         self.mdAcquisitionModesMode_aDark.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aDark)
-        self.addNode(self.mdAcquisitionModesMode_aDomeFlat)
-        self.mdAcquisitionModesMode_aDomeFlat.ident = "AcquisitionModesMode_aDomeFlat"
+        self.addItem(self.mdAcquisitionModesMode_aDomeFlat)
+        self.mdAcquisitionModesMode_aDomeFlat.ident = "OSI-0399"
         self.mdAcquisitionModesMode_aDomeFlat.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aDomeFlat)
-        self.addNode(self.mdAcquisitionModesMode_aSkyFlat)
-        self.mdAcquisitionModesMode_aSkyFlat.ident = "AcquisitionModesMode_aSkyFlat"
+        self.addItem(self.mdAcquisitionModesMode_aSkyFlat)
+        self.mdAcquisitionModesMode_aSkyFlat.ident = "OSI-0400"
         self.mdAcquisitionModesMode_aSkyFlat.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aSkyFlat)
-        self.addNode(self.mdAcquisitionModesMode_aSpectralFlat)
-        self.mdAcquisitionModesMode_aSpectralFlat.ident = "AcquisitionModesMode_aSpectralFlat"
+        self.addItem(self.mdAcquisitionModesMode_aSpectralFlat)
+        self.mdAcquisitionModesMode_aSpectralFlat.ident = "OSI-0401"
         self.mdAcquisitionModesMode_aSpectralFlat.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aSpectralFlat)
-        self.addNode(self.mdAcquisitionModesMode_aCalibLamp)
-        self.mdAcquisitionModesMode_aCalibLamp.ident = "AcquisitionModesMode_aCalibLamp"
+        self.addItem(self.mdAcquisitionModesMode_aCalibLamp)
+        self.mdAcquisitionModesMode_aCalibLamp.ident = "OSI-0402"
         self.mdAcquisitionModesMode_aCalibLamp.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aCalibLamp)
-        self.addNode(self.mdAcquisitionModesMode_aTFCalib)
-        self.mdAcquisitionModesMode_aTFCalib.ident = "AcquisitionModesMode_aTFCalib"
+        self.addItem(self.mdAcquisitionModesMode_aTFCalib)
+        self.mdAcquisitionModesMode_aTFCalib.ident = "OSI-0403"
         self.mdAcquisitionModesMode_aTFCalib.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_aTFCalib)
-        self.addNode(self.mdAcquisitionModesMode_Throughslit)
-        self.mdAcquisitionModesMode_Throughslit.ident = "AcquisitionModesMode_Throughslit"
+        self.addItem(self.mdAcquisitionModesMode_Throughslit)
+        self.mdAcquisitionModesMode_Throughslit.ident = "OSI-0772"
         self.mdAcquisitionModesMode_Throughslit.description = ""
         self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_Throughslit)
-        self.addNode(self.mdObservingModesMode_BBI)
-        self.mdObservingModesMode_BBI.ident = "ObservingModesMode_BBI"
+        self.addItem(self.mdObservingModesMode_BBI)
+        self.mdObservingModesMode_BBI.ident = "OSI-0717"
         self.mdObservingModesMode_BBI.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_BBI)
-        self.addNode(self.mdObservingModesMode_TFI)
-        self.mdObservingModesMode_TFI.ident = "ObservingModesMode_TFI"
+        self.addItem(self.mdObservingModesMode_TFI)
+        self.mdObservingModesMode_TFI.ident = "OSI-0718"
         self.mdObservingModesMode_TFI.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_TFI)
-        self.addNode(self.mdObservingModesMode_LSSpec)
-        self.mdObservingModesMode_LSSpec.ident = "ObservingModesMode_LSSpec"
+        self.addItem(self.mdObservingModesMode_LSSpec)
+        self.mdObservingModesMode_LSSpec.ident = "OSI-0719"
         self.mdObservingModesMode_LSSpec.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_LSSpec)
-        self.addNode(self.mdObservingModesMode_MOS)
-        self.mdObservingModesMode_MOS.ident = "ObservingModesMode_MOS"
+        self.addItem(self.mdObservingModesMode_MOS)
+        self.mdObservingModesMode_MOS.ident = "OSI-0720"
         self.mdObservingModesMode_MOS.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_MOS)
-        self.addNode(self.mdObservingModesMode_FastBBI)
-        self.mdObservingModesMode_FastBBI.ident = "ObservingModesMode_FastBBI"
+        self.addItem(self.mdObservingModesMode_FastBBI)
+        self.mdObservingModesMode_FastBBI.ident = "OSI-0721"
         self.mdObservingModesMode_FastBBI.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_FastBBI)
-        self.addNode(self.mdObservingModesMode_FrTrBBI)
-        self.mdObservingModesMode_FrTrBBI.ident = "ObservingModesMode_FrTrBBI"
+        self.addItem(self.mdObservingModesMode_FrTrBBI)
+        self.mdObservingModesMode_FrTrBBI.ident = "OSI-0722"
         self.mdObservingModesMode_FrTrBBI.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_FrTrBBI)
-        self.addNode(self.mdObservingModesMode_FastLSSpec)
-        self.mdObservingModesMode_FastLSSpec.ident = "ObservingModesMode_FastLSSpec"
+        self.addItem(self.mdObservingModesMode_FastLSSpec)
+        self.mdObservingModesMode_FastLSSpec.ident = "OSI-0723"
         self.mdObservingModesMode_FastLSSpec.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_FastLSSpec)
-        self.addNode(self.mdObservingModesMode_FastTFImage)
-        self.mdObservingModesMode_FastTFImage.ident = "ObservingModesMode_FastTFImage"
+        self.addItem(self.mdObservingModesMode_FastTFImage)
+        self.mdObservingModesMode_FastTFImage.ident = "OSI-0724"
         self.mdObservingModesMode_FastTFImage.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_FastTFImage)
-        self.addNode(self.mdObservingModesMode_FrTrTFI)
-        self.mdObservingModesMode_FrTrTFI.ident = "ObservingModesMode_FrTrTFI"
+        self.addItem(self.mdObservingModesMode_FrTrTFI)
+        self.mdObservingModesMode_FrTrTFI.ident = "OSI-0725"
         self.mdObservingModesMode_FrTrTFI.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_FrTrTFI)
-        self.addNode(self.mdObservingModesMode_Bias)
-        self.mdObservingModesMode_Bias.ident = "ObservingModesMode_Bias"
+        self.addItem(self.mdObservingModesMode_Bias)
+        self.mdObservingModesMode_Bias.ident = "OSI-0726"
         self.mdObservingModesMode_Bias.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_Bias)
-        self.addNode(self.mdObservingModesMode_Dark)
-        self.mdObservingModesMode_Dark.ident = "ObservingModesMode_Dark"
+        self.addItem(self.mdObservingModesMode_Dark)
+        self.mdObservingModesMode_Dark.ident = "OSI-0727"
         self.mdObservingModesMode_Dark.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_Dark)
-        self.addNode(self.mdObservingModesMode_DomeFlat)
-        self.mdObservingModesMode_DomeFlat.ident = "ObservingModesMode_DomeFlat"
+        self.addItem(self.mdObservingModesMode_DomeFlat)
+        self.mdObservingModesMode_DomeFlat.ident = "OSI-0728"
         self.mdObservingModesMode_DomeFlat.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_DomeFlat)
-        self.addNode(self.mdObservingModesMode_SkyFlat)
-        self.mdObservingModesMode_SkyFlat.ident = "ObservingModesMode_SkyFlat"
+        self.addItem(self.mdObservingModesMode_SkyFlat)
+        self.mdObservingModesMode_SkyFlat.ident = "OSI-0729"
         self.mdObservingModesMode_SkyFlat.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_SkyFlat)
-        self.addNode(self.mdObservingModesMode_SpectralFlat)
-        self.mdObservingModesMode_SpectralFlat.ident = "ObservingModesMode_SpectralFlat"
+        self.addItem(self.mdObservingModesMode_SpectralFlat)
+        self.mdObservingModesMode_SpectralFlat.ident = "OSI-0730"
         self.mdObservingModesMode_SpectralFlat.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_SpectralFlat)
-        self.addNode(self.mdObservingModesMode_CalibLamp)
-        self.mdObservingModesMode_CalibLamp.ident = "ObservingModesMode_CalibLamp"
+        self.addItem(self.mdObservingModesMode_CalibLamp)
+        self.mdObservingModesMode_CalibLamp.ident = "OSI-0731"
         self.mdObservingModesMode_CalibLamp.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_CalibLamp)
-        self.addNode(self.mdObservingModesMode_TFCalib)
-        self.mdObservingModesMode_TFCalib.ident = "ObservingModesMode_TFCalib"
+        self.addItem(self.mdObservingModesMode_TFCalib)
+        self.mdObservingModesMode_TFCalib.ident = "OSI-0732"
         self.mdObservingModesMode_TFCalib.description = ""
         self.sysObservingModes.addMode(self.mdObservingModesMode_TFCalib)
-        self.addNode(self.sysFilters)
-        self.sysFilters.ident = "Filters"
+        self.addItem(self.sysFilters)
+        self.sysFilters.ident = "OSI-0137"
         self.sysFilters.description = ""
         self.sysPreOptics.addSubsystem(self.sysFilters)
-        self.addNode(self.mdFiltersMode_UNKNOWN)
-        self.mdFiltersMode_UNKNOWN.ident = "FiltersMode_UNKNOWN"
-        self.mdFiltersMode_UNKNOWN.description = ""
-        self.sysFilters.addMode(self.mdFiltersMode_UNKNOWN)
-        self.addNode(self.prUFilters)
-        self.prUFilters.ident = "UFilters"
+        self.addItem(self.prUFilters)
+        self.prUFilters.ident = "OSI-0159"
         self.prUFilters.description = ""
         self.sysFilters.addParam(self.prUFilters)
-        self.addNode(self.vlUFilters_UNKNOWN)
-        self.vlUFilters_UNKNOWN.ident = "UFilters_UNKNOWN"
-        self.vlUFilters_UNKNOWN.description = "Unknown value for UFilters"
-        self.prUFilters.addValue(self.vlUFilters_UNKNOWN)
-        self.addNode(self.mdUFiltersMode_UNKNOWN)
-        self.mdUFiltersMode_UNKNOWN.ident = "UFiltersMode_UNKNOWN"
-        self.mdUFiltersMode_UNKNOWN.description = "Unknown mode for UFilters"
-        self.prUFilters.addMode(self.mdUFiltersMode_UNKNOWN)
-        self.mdUFiltersMode_UNKNOWN.addValue(self.vlUFilters_UNKNOWN)
-        self.mdFiltersMode_UNKNOWN.addSubMode(self.mdUFiltersMode_UNKNOWN)
-        self.addNode(self.prOS)
-        self.prOS.ident = "OS"
+        self.addItem(self.prOS)
+        self.prOS.ident = "OSI-0160"
         self.prOS.description = ""
         self.sysFilters.addParam(self.prOS)
-        self.addNode(self.vlOS_UNKNOWN)
-        self.vlOS_UNKNOWN.ident = "OS_UNKNOWN"
-        self.vlOS_UNKNOWN.description = "Unknown value for OS"
-        self.prOS.addValue(self.vlOS_UNKNOWN)
-        self.addNode(self.mdOSMode_UNKNOWN)
-        self.mdOSMode_UNKNOWN.ident = "OSMode_UNKNOWN"
-        self.mdOSMode_UNKNOWN.description = "Unknown mode for OS"
-        self.prOS.addMode(self.mdOSMode_UNKNOWN)
-        self.mdOSMode_UNKNOWN.addValue(self.vlOS_UNKNOWN)
-        self.mdFiltersMode_UNKNOWN.addSubMode(self.mdOSMode_UNKNOWN)
-        self.addNode(self.prBroad)
-        self.prBroad.ident = "Broad"
+        self.addItem(self.prBroad)
+        self.prBroad.ident = "OSI-0619"
         self.prBroad.description = ""
         self.sysFilters.addParam(self.prBroad)
-        self.addNode(self.vlBroad_UNKNOWN)
-        self.vlBroad_UNKNOWN.ident = "Broad_UNKNOWN"
-        self.vlBroad_UNKNOWN.description = "Unknown value for Broad"
-        self.prBroad.addValue(self.vlBroad_UNKNOWN)
-        self.addNode(self.mdBroadMode_UNKNOWN)
-        self.mdBroadMode_UNKNOWN.ident = "BroadMode_UNKNOWN"
-        self.mdBroadMode_UNKNOWN.description = "Unknown mode for Broad"
-        self.prBroad.addMode(self.mdBroadMode_UNKNOWN)
-        self.mdBroadMode_UNKNOWN.addValue(self.vlBroad_UNKNOWN)
-        self.mdFiltersMode_UNKNOWN.addSubMode(self.mdBroadMode_UNKNOWN)
-        self.addNode(self.sysDetector)
-        self.sysDetector.ident = "Detector"
-        self.sysDetector.description = ""
-        self.sysAcquisition.addSubsystem(self.sysDetector)
-        self.addNode(self.mdDetectorMode_UNKNOWN)
-        self.mdDetectorMode_UNKNOWN.ident = "DetectorMode_UNKNOWN"
-        self.mdDetectorMode_UNKNOWN.description = ""
-        self.sysDetector.addMode(self.mdDetectorMode_UNKNOWN)
-        self.addNode(self.sysOutputSource)
-        self.sysOutputSource.ident = "OutputSource"
-        self.sysOutputSource.description = ""
-        self.sysDetector.addSubsystem(self.sysOutputSource)
-        self.addNode(self.mdOutputSourceMode_UNKNOWN)
-        self.mdOutputSourceMode_UNKNOWN.ident = "OutputSourceMode_UNKNOWN"
-        self.mdOutputSourceMode_UNKNOWN.description = ""
-        self.sysOutputSource.addMode(self.mdOutputSourceMode_UNKNOWN)
-        self.addNode(self.sysRecomposition)
-        self.sysRecomposition.ident = "Recomposition"
-        self.sysRecomposition.description = ""
-        self.sysOutputSource.addSubsystem(self.sysRecomposition)
-        self.addNode(self.mdRecompositionMode_UNKNOWN)
-        self.mdRecompositionMode_UNKNOWN.ident = "RecompositionMode_UNKNOWN"
-        self.mdRecompositionMode_UNKNOWN.description = ""
-        self.sysRecomposition.addMode(self.mdRecompositionMode_UNKNOWN)
-        self.addNode(self.prBinning)
-        self.prBinning.ident = "Binning"
-        self.prBinning.description = ""
-        self.sysDetector.addParam(self.prBinning)
-        self.addNode(self.vlBinning_UNKNOWN)
-        self.vlBinning_UNKNOWN.ident = "Binning_UNKNOWN"
-        self.vlBinning_UNKNOWN.description = "Unknown value for Binning"
-        self.prBinning.addValue(self.vlBinning_UNKNOWN)
-        self.addNode(self.mdBinningMode_UNKNOWN)
-        self.mdBinningMode_UNKNOWN.ident = "BinningMode_UNKNOWN"
-        self.mdBinningMode_UNKNOWN.description = "Unknown mode for Binning"
-        self.prBinning.addMode(self.mdBinningMode_UNKNOWN)
-        self.mdBinningMode_UNKNOWN.addValue(self.vlBinning_UNKNOWN)
-        self.mdDetectorMode_UNKNOWN.addSubMode(self.mdBinningMode_UNKNOWN)
-        self.addNode(self.sysWindow)
-        self.sysWindow.ident = "Window"
-        self.sysWindow.description = ""
-        self.sysDetector.addSubsystem(self.sysWindow)
-        self.addNode(self.mdWindowMode_UNKNOWN)
-        self.mdWindowMode_UNKNOWN.ident = "WindowMode_UNKNOWN"
-        self.mdWindowMode_UNKNOWN.description = ""
-        self.sysWindow.addMode(self.mdWindowMode_UNKNOWN)
-        self.addNode(self.prRows)
-        self.prRows.ident = "Rows"
-        self.prRows.description = ""
-        self.sysWindow.addParam(self.prRows)
-        self.addNode(self.vlRows_UNKNOWN)
-        self.vlRows_UNKNOWN.ident = "Rows_UNKNOWN"
-        self.vlRows_UNKNOWN.description = "Unknown value for Rows"
-        self.prRows.addValue(self.vlRows_UNKNOWN)
-        self.addNode(self.mdRowsMode_UNKNOWN)
-        self.mdRowsMode_UNKNOWN.ident = "RowsMode_UNKNOWN"
-        self.mdRowsMode_UNKNOWN.description = "Unknown mode for Rows"
-        self.prRows.addMode(self.mdRowsMode_UNKNOWN)
-        self.mdRowsMode_UNKNOWN.addValue(self.vlRows_UNKNOWN)
-        self.mdWindowMode_UNKNOWN.addSubMode(self.mdRowsMode_UNKNOWN)
-        self.addNode(self.prCols)
-        self.prCols.ident = "Cols"
-        self.prCols.description = ""
-        self.sysWindow.addParam(self.prCols)
-        self.addNode(self.vlCols_UNKNOWN)
-        self.vlCols_UNKNOWN.ident = "Cols_UNKNOWN"
-        self.vlCols_UNKNOWN.description = "Unknown value for Cols"
-        self.prCols.addValue(self.vlCols_UNKNOWN)
-        self.addNode(self.mdColsMode_UNKNOWN)
-        self.mdColsMode_UNKNOWN.ident = "ColsMode_UNKNOWN"
-        self.mdColsMode_UNKNOWN.description = "Unknown mode for Cols"
-        self.prCols.addMode(self.mdColsMode_UNKNOWN)
-        self.mdColsMode_UNKNOWN.addValue(self.vlCols_UNKNOWN)
-        self.mdWindowMode_UNKNOWN.addSubMode(self.mdColsMode_UNKNOWN)
-        self.addNode(self.proffsetRow)
-        self.proffsetRow.ident = "offsetRow"
-        self.proffsetRow.description = ""
-        self.sysWindow.addParam(self.proffsetRow)
-        self.addNode(self.vloffsetRow_UNKNOWN)
-        self.vloffsetRow_UNKNOWN.ident = "offsetRow_UNKNOWN"
-        self.vloffsetRow_UNKNOWN.description = "Unknown value for offsetRow"
-        self.proffsetRow.addValue(self.vloffsetRow_UNKNOWN)
-        self.addNode(self.mdoffsetRowMode_UNKNOWN)
-        self.mdoffsetRowMode_UNKNOWN.ident = "offsetRowMode_UNKNOWN"
-        self.mdoffsetRowMode_UNKNOWN.description = "Unknown mode for offsetRow"
-        self.proffsetRow.addMode(self.mdoffsetRowMode_UNKNOWN)
-        self.mdoffsetRowMode_UNKNOWN.addValue(self.vloffsetRow_UNKNOWN)
-        self.mdWindowMode_UNKNOWN.addSubMode(self.mdoffsetRowMode_UNKNOWN)
-        self.addNode(self.proffsetCol)
-        self.proffsetCol.ident = "offsetCol"
-        self.proffsetCol.description = ""
-        self.sysWindow.addParam(self.proffsetCol)
-        self.addNode(self.vloffsetCol_UNKNOWN)
-        self.vloffsetCol_UNKNOWN.ident = "offsetCol_UNKNOWN"
-        self.vloffsetCol_UNKNOWN.description = "Unknown value for offsetCol"
-        self.proffsetCol.addValue(self.vloffsetCol_UNKNOWN)
-        self.addNode(self.mdoffsetColMode_UNKNOWN)
-        self.mdoffsetColMode_UNKNOWN.ident = "offsetColMode_UNKNOWN"
-        self.mdoffsetColMode_UNKNOWN.description = "Unknown mode for offsetCol"
-        self.proffsetCol.addMode(self.mdoffsetColMode_UNKNOWN)
-        self.mdoffsetColMode_UNKNOWN.addValue(self.vloffsetCol_UNKNOWN)
-        self.mdWindowMode_UNKNOWN.addSubMode(self.mdoffsetColMode_UNKNOWN)
-        self.addNode(self.mdAcquisitionMode_Normal)
-        self.mdAcquisitionMode_Normal.ident = "AcquisitionMode_Normal"
-        self.mdAcquisitionMode_Normal.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_Normal)
-        self.addNode(self.mdAcquisitionMode_FrameTransfer)
-        self.mdAcquisitionMode_FrameTransfer.ident = "AcquisitionMode_FrameTransfer"
-        self.mdAcquisitionMode_FrameTransfer.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_FrameTransfer)
-        self.addNode(self.mdAcquisitionMode_Shuffling)
-        self.mdAcquisitionMode_Shuffling.ident = "AcquisitionMode_Shuffling"
-        self.mdAcquisitionMode_Shuffling.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_Shuffling)
-        self.addNode(self.vlShuffleLines_FullRange)
-        self.vlShuffleLines_FullRange.ident = "ShuffleLines_FullRange"
-        self.vlShuffleLines_FullRange.description = ""
-        self.prShuffleLines.addValue(self.vlShuffleLines_FullRange)
-        self.addNode(self.mdShuffleLinesMode_Normal)
-        self.mdShuffleLinesMode_Normal.ident = "ShuffleLinesMode_Normal"
-        self.mdShuffleLinesMode_Normal.description = ""
-        self.prShuffleLines.addMode(self.mdShuffleLinesMode_Normal)
-        self.addNode(self.vlShiftNumber_FullRange)
-        self.vlShiftNumber_FullRange.ident = "ShiftNumber_FullRange"
-        self.vlShiftNumber_FullRange.description = ""
-        self.prShiftNumber.addValue(self.vlShiftNumber_FullRange)
-        self.addNode(self.mdShiftNumberMode_Normal)
-        self.mdShiftNumberMode_Normal.ident = "ShiftNumberMode_Normal"
-        self.mdShiftNumberMode_Normal.description = ""
-        self.prShiftNumber.addMode(self.mdShiftNumberMode_Normal)
-        self.addNode(self.vlExpTime_FullRange)
-        self.vlExpTime_FullRange.ident = "ExpTime_FullRange"
-        self.vlExpTime_FullRange.description = ""
-        self.prExpTime.addValue(self.vlExpTime_FullRange)
-        self.addNode(self.mdExpTimeMode_Normal)
-        self.mdExpTimeMode_Normal.ident = "ExpTimeMode_Normal"
-        self.mdExpTimeMode_Normal.description = ""
-        self.prExpTime.addMode(self.mdExpTimeMode_Normal)
-        self.addNode(self.mdExpTimeMode_Bias)
-        self.mdExpTimeMode_Bias.ident = "ExpTimeMode_Bias"
-        self.mdExpTimeMode_Bias.description = ""
-        self.prExpTime.addMode(self.mdExpTimeMode_Bias)
-        self.addNode(self.vlExpTime_0_0)
-        self.vlExpTime_0_0.ident = "ExpTime_0_0"
-        self.vlExpTime_0_0.description = ""
-        self.prExpTime.addValue(self.vlExpTime_0_0)
-        self.addNode(self.mdExpTimeMode_FT)
-        self.mdExpTimeMode_FT.ident = "ExpTimeMode_FT"
-        self.mdExpTimeMode_FT.description = ""
-        self.prExpTime.addMode(self.mdExpTimeMode_FT)
-        self.addNode(self.vlExpTime_FTRange)
-        self.vlExpTime_FTRange.ident = "ExpTime_FTRange"
-        self.vlExpTime_FTRange.description = ""
-        self.prExpTime.addValue(self.vlExpTime_FTRange)
-        self.addNode(self.mdnumOfFramesMode_Normal)
-        self.mdnumOfFramesMode_Normal.ident = "numOfFramesMode_Normal"
-        self.mdnumOfFramesMode_Normal.description = ""
-        self.prnumOfFrames.addMode(self.mdnumOfFramesMode_Normal)
-        self.addNode(self.vlnumOfFrames_FullRange)
-        self.vlnumOfFrames_FullRange.ident = "numOfFrames_FullRange"
-        self.vlnumOfFrames_FullRange.description = ""
-        self.prnumOfFrames.addValue(self.vlnumOfFrames_FullRange)
-        self.addNode(self.mdMultipleExposureMode_On)
-        self.mdMultipleExposureMode_On.ident = "MultipleExposureMode_On"
-        self.mdMultipleExposureMode_On.description = ""
-        self.sysMultipleExposure.addMode(self.mdMultipleExposureMode_On)
-        self.addNode(self.mdMultipleExposureMode_Single)
-        self.mdMultipleExposureMode_Single.ident = "MultipleExposureMode_Single"
-        self.mdMultipleExposureMode_Single.description = ""
-        self.sysMultipleExposure.addMode(self.mdMultipleExposureMode_Single)
-        self.addNode(self.vlPixelSpeed_SLW)
-        self.vlPixelSpeed_SLW.ident = "PixelSpeed_SLW"
-        self.vlPixelSpeed_SLW.description = ""
-        self.prPixelSpeed.addValue(self.vlPixelSpeed_SLW)
-        self.addNode(self.vlPixelSpeed_MED)
-        self.vlPixelSpeed_MED.ident = "PixelSpeed_MED"
-        self.vlPixelSpeed_MED.description = ""
-        self.prPixelSpeed.addValue(self.vlPixelSpeed_MED)
-        self.addNode(self.vlPixelSpeed_FST)
-        self.vlPixelSpeed_FST.ident = "PixelSpeed_FST"
-        self.vlPixelSpeed_FST.description = ""
-        self.prPixelSpeed.addValue(self.vlPixelSpeed_FST)
-        self.addNode(self.mdPixelSpeedMode_All)
-        self.mdPixelSpeedMode_All.ident = "PixelSpeedMode_All"
-        self.mdPixelSpeedMode_All.description = ""
-        self.prPixelSpeed.addMode(self.mdPixelSpeedMode_All)
-        self.addNode(self.mdAcquisitionMode_FTBias)
-        self.mdAcquisitionMode_FTBias.ident = "AcquisitionMode_FTBias"
-        self.mdAcquisitionMode_FTBias.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_FTBias)
-        self.addNode(self.mdAcquisitionMode_NormalBias)
-        self.mdAcquisitionMode_NormalBias.ident = "AcquisitionMode_NormalBias"
-        self.mdAcquisitionMode_NormalBias.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_NormalBias)
-        self.addNode(self.mdAcquisitionMode_ShufflingBias)
-        self.mdAcquisitionMode_ShufflingBias.ident = "AcquisitionMode_ShufflingBias"
-        self.mdAcquisitionMode_ShufflingBias.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_ShufflingBias)
-        self.addNode(self.mdAcquisitionMode_NormalSquare)
-        self.mdAcquisitionMode_NormalSquare.ident = "AcquisitionMode_NormalSquare"
-        self.mdAcquisitionMode_NormalSquare.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_NormalSquare)
-        self.addNode(self.mdAcquisitionMode_ShufflingSquare)
-        self.mdAcquisitionMode_ShufflingSquare.ident = "AcquisitionMode_ShufflingSquare"
-        self.mdAcquisitionMode_ShufflingSquare.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_ShufflingSquare)
-        self.addNode(self.mdAcquisitionMode_GainCalib)
-        self.mdAcquisitionMode_GainCalib.ident = "AcquisitionMode_GainCalib"
-        self.mdAcquisitionMode_GainCalib.description = ""
-        self.sysAcquisition.addMode(self.mdAcquisitionMode_GainCalib)
-        self.addNode(self.vlCalibGain_FullRange)
-        self.vlCalibGain_FullRange.ident = "CalibGain_FullRange"
-        self.vlCalibGain_FullRange.description = ""
-        self.prCalibGain.addValue(self.vlCalibGain_FullRange)
-        self.addNode(self.mdCalibGainMode_Normal)
-        self.mdCalibGainMode_Normal.ident = "CalibGainMode_Normal"
-        self.mdCalibGainMode_Normal.description = ""
-        self.prCalibGain.addMode(self.mdCalibGainMode_Normal)
-        self.addNode(self.mdDASMode_SimpleImg)
-        self.mdDASMode_SimpleImg.ident = "DASMode_SimpleImg"
-        self.mdDASMode_SimpleImg.description = ""
-        self.sysDAS.addMode(self.mdDASMode_SimpleImg)
-        self.addNode(self.mdDASMode_SimpleSpec)
-        self.mdDASMode_SimpleSpec.ident = "DASMode_SimpleSpec"
-        self.mdDASMode_SimpleSpec.description = ""
-        self.sysDAS.addMode(self.mdDASMode_SimpleSpec)
-        self.addNode(self.mdDASMode_ShufffingSpec)
-        self.mdDASMode_ShufffingSpec.ident = "DASMode_ShufffingSpec"
-        self.mdDASMode_ShufffingSpec.description = ""
-        self.sysDAS.addMode(self.mdDASMode_ShufffingSpec)
-        self.addNode(self.mdOpenShutterMode_On)
-        self.mdOpenShutterMode_On.ident = "OpenShutterMode_On"
-        self.mdOpenShutterMode_On.description = ""
-        self.sysOpenShutter.addMode(self.mdOpenShutterMode_On)
-        self.addNode(self.mdOpenShutterMode_Off)
-        self.mdOpenShutterMode_Off.ident = "OpenShutterMode_Off"
-        self.mdOpenShutterMode_Off.description = ""
-        self.sysOpenShutter.addMode(self.mdOpenShutterMode_Off)
-        self.addNode(self.mdDASMode_FTImg)
-        self.mdDASMode_FTImg.ident = "DASMode_FTImg"
-        self.mdDASMode_FTImg.description = ""
-        self.sysDAS.addMode(self.mdDASMode_FTImg)
-        self.addNode(self.mdDASMode_FTDark)
-        self.mdDASMode_FTDark.ident = "DASMode_FTDark"
-        self.mdDASMode_FTDark.description = ""
-        self.sysDAS.addMode(self.mdDASMode_FTDark)
-        self.addNode(self.mdDASMode_FTBias)
-        self.mdDASMode_FTBias.ident = "DASMode_FTBias"
-        self.mdDASMode_FTBias.description = ""
-        self.sysDAS.addMode(self.mdDASMode_FTBias)
-        self.addNode(self.mdDASMode_SimpleBias)
-        self.mdDASMode_SimpleBias.ident = "DASMode_SimpleBias"
-        self.mdDASMode_SimpleBias.description = ""
-        self.sysDAS.addMode(self.mdDASMode_SimpleBias)
-        self.addNode(self.mdDASMode_SimpleDark)
-        self.mdDASMode_SimpleDark.ident = "DASMode_SimpleDark"
-        self.mdDASMode_SimpleDark.description = ""
-        self.sysDAS.addMode(self.mdDASMode_SimpleDark)
-        self.addNode(self.mdDASMode_ShufffingDark)
-        self.mdDASMode_ShufffingDark.ident = "DASMode_ShufffingDark"
-        self.mdDASMode_ShufffingDark.description = ""
-        self.sysDAS.addMode(self.mdDASMode_ShufffingDark)
-        self.addNode(self.mdDASMode_ShufffingBias)
-        self.mdDASMode_ShufffingBias.ident = "DASMode_ShufffingBias"
-        self.mdDASMode_ShufffingBias.description = ""
-        self.sysDAS.addMode(self.mdDASMode_ShufffingBias)
-        self.addNode(self.mdDASMode_ShufffingImage)
-        self.mdDASMode_ShufffingImage.ident = "DASMode_ShufffingImage"
-        self.mdDASMode_ShufffingImage.description = ""
-        self.sysDAS.addMode(self.mdDASMode_ShufffingImage)
-        self.addNode(self.mdDASMode_SimpleCalib)
-        self.mdDASMode_SimpleCalib.ident = "DASMode_SimpleCalib"
-        self.mdDASMode_SimpleCalib.description = ""
-        self.sysDAS.addMode(self.mdDASMode_SimpleCalib)
-        self.addNode(self.mdDASMode_GainCalib)
-        self.mdDASMode_GainCalib.ident = "DASMode_GainCalib"
-        self.mdDASMode_GainCalib.description = ""
-        self.sysDAS.addMode(self.mdDASMode_GainCalib)
-        self.addNode(self.vlCurrentEllapsed_Range)
-        self.vlCurrentEllapsed_Range.ident = "CurrentEllapsed_Range"
-        self.vlCurrentEllapsed_Range.description = ""
-        self.prCurrentEllapsed.addValue(self.vlCurrentEllapsed_Range)
-        self.addNode(self.mdCurrentEllapsedMode_Normal)
-        self.mdCurrentEllapsedMode_Normal.ident = "CurrentEllapsedMode_Normal"
-        self.mdCurrentEllapsedMode_Normal.description = ""
-        self.prCurrentEllapsed.addMode(self.mdCurrentEllapsedMode_Normal)
-        self.addNode(self.vlCurrentImg_Range)
-        self.vlCurrentImg_Range.ident = "CurrentImg_Range"
-        self.vlCurrentImg_Range.description = ""
-        self.prCurrentImg.addValue(self.vlCurrentImg_Range)
-        self.addNode(self.mdCurrentImgMode_Normal)
-        self.mdCurrentImgMode_Normal.ident = "CurrentImgMode_Normal"
-        self.mdCurrentImgMode_Normal.description = ""
-        self.prCurrentImg.addMode(self.mdCurrentImgMode_Normal)
-        self.addNode(self.vlCurrentPct_Range)
-        self.vlCurrentPct_Range.ident = "CurrentPct_Range"
-        self.vlCurrentPct_Range.description = ""
-        self.prCurrentPct.addValue(self.vlCurrentPct_Range)
-        self.addNode(self.mdCurrentPctMode_Normal)
-        self.mdCurrentPctMode_Normal.ident = "CurrentPctMode_Normal"
-        self.mdCurrentPctMode_Normal.description = ""
-        self.prCurrentPct.addMode(self.mdCurrentPctMode_Normal)
-        self.addNode(self.vlOverallPct_Range)
-        self.vlOverallPct_Range.ident = "OverallPct_Range"
-        self.vlOverallPct_Range.description = ""
-        self.prOverallPct.addValue(self.vlOverallPct_Range)
-        self.addNode(self.mdOverallPctMode_Normal)
-        self.mdOverallPctMode_Normal.ident = "OverallPctMode_Normal"
-        self.mdOverallPctMode_Normal.description = ""
-        self.prOverallPct.addMode(self.mdOverallPctMode_Normal)
-        self.addNode(self.mdProcessMonitorMode_Normal)
-        self.mdProcessMonitorMode_Normal.ident = "ProcessMonitorMode_Normal"
-        self.mdProcessMonitorMode_Normal.description = ""
-        self.sysProcessMonitor.addMode(self.mdProcessMonitorMode_Normal)
-        self.addNode(self.mdPreOpticsMode_NoDispersion)
-        self.mdPreOpticsMode_NoDispersion.ident = "PreOpticsMode_NoDispersion"
-        self.mdPreOpticsMode_NoDispersion.description = ""
-        self.sysPreOptics.addMode(self.mdPreOpticsMode_NoDispersion)
-        self.addNode(self.mdPreOpticsMode_RTF)
-        self.mdPreOpticsMode_RTF.ident = "PreOpticsMode_RTF"
-        self.mdPreOpticsMode_RTF.description = ""
-        self.sysPreOptics.addMode(self.mdPreOpticsMode_RTF)
-        self.addNode(self.mdPreOpticsMode_GrismR)
-        self.mdPreOpticsMode_GrismR.ident = "PreOpticsMode_GrismR"
-        self.mdPreOpticsMode_GrismR.description = ""
-        self.sysPreOptics.addMode(self.mdPreOpticsMode_GrismR)
-        self.addNode(self.mdPreOpticsMode_BTF)
-        self.mdPreOpticsMode_BTF.ident = "PreOpticsMode_BTF"
-        self.mdPreOpticsMode_BTF.description = ""
-        self.sysPreOptics.addMode(self.mdPreOpticsMode_BTF)
-        self.addNode(self.vlGrisms_R300B)
-        self.vlGrisms_R300B.ident = "Grisms_R300B"
-        self.vlGrisms_R300B.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R300B)
-        self.addNode(self.vlGrisms_R300R)
-        self.vlGrisms_R300R.ident = "Grisms_R300R"
-        self.vlGrisms_R300R.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R300R)
-        self.addNode(self.vlGrisms_R500B)
-        self.vlGrisms_R500B.ident = "Grisms_R500B"
-        self.vlGrisms_R500B.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R500B)
-        self.addNode(self.vlGrisms_R500R)
-        self.vlGrisms_R500R.ident = "Grisms_R500R"
-        self.vlGrisms_R500R.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R500R)
-        self.addNode(self.vlGrisms_R1000B)
-        self.vlGrisms_R1000B.ident = "Grisms_R1000B"
-        self.vlGrisms_R1000B.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R1000B)
-        self.addNode(self.vlGrisms_R1000R)
-        self.vlGrisms_R1000R.ident = "Grisms_R1000R"
-        self.vlGrisms_R1000R.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R1000R)
-        self.addNode(self.vlGrisms_R2000B)
-        self.vlGrisms_R2000B.ident = "Grisms_R2000B"
-        self.vlGrisms_R2000B.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R2000B)
-        self.addNode(self.vlGrisms_R2500U)
-        self.vlGrisms_R2500U.ident = "Grisms_R2500U"
-        self.vlGrisms_R2500U.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R2500U)
-        self.addNode(self.vlGrisms_R2500V)
-        self.vlGrisms_R2500V.ident = "Grisms_R2500V"
-        self.vlGrisms_R2500V.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R2500V)
-        self.addNode(self.vlGrisms_R2500R)
-        self.vlGrisms_R2500R.ident = "Grisms_R2500R"
-        self.vlGrisms_R2500R.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R2500R)
-        self.addNode(self.vlGrisms_R2500I)
-        self.vlGrisms_R2500I.ident = "Grisms_R2500I"
-        self.vlGrisms_R2500I.description = ""
-        self.prGrisms.addValue(self.vlGrisms_R2500I)
-        self.addNode(self.mdGrismsMode_GrismsB)
-        self.mdGrismsMode_GrismsB.ident = "GrismsMode_GrismsB"
-        self.mdGrismsMode_GrismsB.description = ""
-        self.prGrisms.addMode(self.mdGrismsMode_GrismsB)
-        self.addNode(self.mdGrismsMode_GrismsR)
-        self.mdGrismsMode_GrismsR.ident = "GrismsMode_GrismsR"
-        self.mdGrismsMode_GrismsR.description = ""
-        self.prGrisms.addMode(self.mdGrismsMode_GrismsR)
-        self.addNode(self.mdPreOpticsMode_GrismB)
-        self.mdPreOpticsMode_GrismB.ident = "PreOpticsMode_GrismB"
-        self.mdPreOpticsMode_GrismB.description = ""
-        self.sysPreOptics.addMode(self.mdPreOpticsMode_GrismB)
-        self.addNode(self.mdPreOpticsMode_GrismBMOS)
-        self.mdPreOpticsMode_GrismBMOS.ident = "PreOpticsMode_GrismBMOS"
-        self.mdPreOpticsMode_GrismBMOS.description = ""
-        self.sysPreOptics.addMode(self.mdPreOpticsMode_GrismBMOS)
-        self.addNode(self.vlRedFWHM_Range2_0)
-        self.vlRedFWHM_Range2_0.ident = "RedFWHM_Range2_0"
-        self.vlRedFWHM_Range2_0.description = ""
-        self.prRedFWHM.addValue(self.vlRedFWHM_Range2_0)
-        self.addNode(self.mdRedFWHMMode_l2_0)
-        self.mdRedFWHMMode_l2_0.ident = "RedFWHMMode_l2_0"
-        self.mdRedFWHMMode_l2_0.description = ""
-        self.prRedFWHM.addMode(self.mdRedFWHMMode_l2_0)
-        self.addNode(self.mdRedFWHMMode_l1_5)
-        self.mdRedFWHMMode_l1_5.ident = "RedFWHMMode_l1_5"
-        self.mdRedFWHMMode_l1_5.description = ""
-        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_5)
-        self.addNode(self.mdRedFWHMMode_l1_4)
-        self.mdRedFWHMMode_l1_4.ident = "RedFWHMMode_l1_4"
-        self.mdRedFWHMMode_l1_4.description = ""
-        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_4)
-        self.addNode(self.mdRedFWHMMode_l1_3)
-        self.mdRedFWHMMode_l1_3.ident = "RedFWHMMode_l1_3"
-        self.mdRedFWHMMode_l1_3.description = ""
-        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_3)
-        self.addNode(self.mdRedFWHMMode_l1_2)
-        self.mdRedFWHMMode_l1_2.ident = "RedFWHMMode_l1_2"
-        self.mdRedFWHMMode_l1_2.description = ""
-        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_2)
-        self.addNode(self.mdRedFWHMMode_l1_2b)
-        self.mdRedFWHMMode_l1_2b.ident = "RedFWHMMode_l1_2b"
-        self.mdRedFWHMMode_l1_2b.description = ""
-        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_2b)
-        self.addNode(self.vlRedFWHM_Range1_5)
-        self.vlRedFWHM_Range1_5.ident = "RedFWHM_Range1_5"
-        self.vlRedFWHM_Range1_5.description = ""
-        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_5)
-        self.addNode(self.vlRedFWHM_Range1_4)
-        self.vlRedFWHM_Range1_4.ident = "RedFWHM_Range1_4"
-        self.vlRedFWHM_Range1_4.description = ""
-        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_4)
-        self.addNode(self.vlRedFWHM_Range1_3)
-        self.vlRedFWHM_Range1_3.ident = "RedFWHM_Range1_3"
-        self.vlRedFWHM_Range1_3.description = ""
-        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_3)
-        self.addNode(self.vlRedFWHM_Range1_2)
-        self.vlRedFWHM_Range1_2.ident = "RedFWHM_Range1_2"
-        self.vlRedFWHM_Range1_2.description = ""
-        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_2)
-        self.addNode(self.vlRedFWHM_Range1_2b)
-        self.vlRedFWHM_Range1_2b.ident = "RedFWHM_Range1_2b"
-        self.vlRedFWHM_Range1_2b.description = ""
-        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_2b)
-        self.addNode(self.mdRedTFMode_l651_799)
-        self.mdRedTFMode_l651_799.ident = "RedTFMode_l651_799"
-        self.mdRedTFMode_l651_799.description = ""
-        self.sysRedTF.addMode(self.mdRedTFMode_l651_799)
-        self.addNode(self.mdRedTFMode_l800_819)
-        self.mdRedTFMode_l800_819.ident = "RedTFMode_l800_819"
-        self.mdRedTFMode_l800_819.description = ""
-        self.sysRedTF.addMode(self.mdRedTFMode_l800_819)
-        self.addNode(self.mdRedTFMode_l820_839)
-        self.mdRedTFMode_l820_839.ident = "RedTFMode_l820_839"
-        self.mdRedTFMode_l820_839.description = ""
-        self.sysRedTF.addMode(self.mdRedTFMode_l820_839)
-        self.addNode(self.mdRedTFMode_l840_879)
-        self.mdRedTFMode_l840_879.ident = "RedTFMode_l840_879"
-        self.mdRedTFMode_l840_879.description = ""
-        self.sysRedTF.addMode(self.mdRedTFMode_l840_879)
-        self.addNode(self.mdRedTFMode_l880_909)
-        self.mdRedTFMode_l880_909.ident = "RedTFMode_l880_909"
-        self.mdRedTFMode_l880_909.description = ""
-        self.sysRedTF.addMode(self.mdRedTFMode_l880_909)
-        self.addNode(self.mdRedTFMode_l910_934)
-        self.mdRedTFMode_l910_934.ident = "RedTFMode_l910_934"
-        self.mdRedTFMode_l910_934.description = ""
-        self.sysRedTF.addMode(self.mdRedTFMode_l910_934)
-        self.addNode(self.vlRedLamda_Range651)
-        self.vlRedLamda_Range651.ident = "RedLamda_Range651"
-        self.vlRedLamda_Range651.description = ""
-        self.prRedLamda.addValue(self.vlRedLamda_Range651)
-        self.addNode(self.mdRedLamdaMode_l651_799)
-        self.mdRedLamdaMode_l651_799.ident = "RedLamdaMode_l651_799"
-        self.mdRedLamdaMode_l651_799.description = ""
-        self.prRedLamda.addMode(self.mdRedLamdaMode_l651_799)
-        self.addNode(self.mdRedLamdaMode_l800_819)
-        self.mdRedLamdaMode_l800_819.ident = "RedLamdaMode_l800_819"
-        self.mdRedLamdaMode_l800_819.description = ""
-        self.prRedLamda.addMode(self.mdRedLamdaMode_l800_819)
-        self.addNode(self.mdRedLamdaMode_l820_839)
-        self.mdRedLamdaMode_l820_839.ident = "RedLamdaMode_l820_839"
-        self.mdRedLamdaMode_l820_839.description = ""
-        self.prRedLamda.addMode(self.mdRedLamdaMode_l820_839)
-        self.addNode(self.mdRedLamdaMode_l840_879)
-        self.mdRedLamdaMode_l840_879.ident = "RedLamdaMode_l840_879"
-        self.mdRedLamdaMode_l840_879.description = ""
-        self.prRedLamda.addMode(self.mdRedLamdaMode_l840_879)
-        self.addNode(self.mdRedLamdaMode_l880_909)
-        self.mdRedLamdaMode_l880_909.ident = "RedLamdaMode_l880_909"
-        self.mdRedLamdaMode_l880_909.description = ""
-        self.prRedLamda.addMode(self.mdRedLamdaMode_l880_909)
-        self.addNode(self.mdRedLamdaMode_l910_934)
-        self.mdRedLamdaMode_l910_934.ident = "RedLamdaMode_l910_934"
-        self.mdRedLamdaMode_l910_934.description = ""
-        self.prRedLamda.addMode(self.mdRedLamdaMode_l910_934)
-        self.addNode(self.vlRedLamda_Range800)
-        self.vlRedLamda_Range800.ident = "RedLamda_Range800"
-        self.vlRedLamda_Range800.description = ""
-        self.prRedLamda.addValue(self.vlRedLamda_Range800)
-        self.addNode(self.vlRedLamda_Range820)
-        self.vlRedLamda_Range820.ident = "RedLamda_Range820"
-        self.vlRedLamda_Range820.description = ""
-        self.prRedLamda.addValue(self.vlRedLamda_Range820)
-        self.addNode(self.vlRedLamda_Range840)
-        self.vlRedLamda_Range840.ident = "RedLamda_Range840"
-        self.vlRedLamda_Range840.description = ""
-        self.prRedLamda.addValue(self.vlRedLamda_Range840)
-        self.addNode(self.vlRedLamda_Range880)
-        self.vlRedLamda_Range880.ident = "RedLamda_Range880"
-        self.vlRedLamda_Range880.description = ""
-        self.prRedLamda.addValue(self.vlRedLamda_Range880)
-        self.addNode(self.vlRedLamda_Range910)
-        self.vlRedLamda_Range910.ident = "RedLamda_Range910"
-        self.vlRedLamda_Range910.description = ""
-        self.prRedLamda.addValue(self.vlRedLamda_Range910)
-        self.addNode(self.vlBlueFWHM_0_8)
-        self.vlBlueFWHM_0_8.ident = "BlueFWHM_0_8"
-        self.vlBlueFWHM_0_8.description = ""
-        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_8)
-        self.addNode(self.mdBlueFWHMMode_l0_8)
-        self.mdBlueFWHMMode_l0_8.ident = "BlueFWHMMode_l0_8"
-        self.mdBlueFWHMMode_l0_8.description = ""
-        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_8)
-        self.addNode(self.mdBlueFWHMMode_l0_85)
-        self.mdBlueFWHMMode_l0_85.ident = "BlueFWHMMode_l0_85"
-        self.mdBlueFWHMMode_l0_85.description = ""
-        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_85)
-        self.addNode(self.mdBlueFWHMMode_l0_50)
-        self.mdBlueFWHMMode_l0_50.ident = "BlueFWHMMode_l0_50"
-        self.mdBlueFWHMMode_l0_50.description = ""
-        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_50)
-        self.addNode(self.mdBlueFWHMMode_l0_45)
-        self.mdBlueFWHMMode_l0_45.ident = "BlueFWHMMode_l0_45"
-        self.mdBlueFWHMMode_l0_45.description = ""
-        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_45)
-        self.addNode(self.vlBlueFWHM_0_85)
-        self.vlBlueFWHM_0_85.ident = "BlueFWHM_0_85"
-        self.vlBlueFWHM_0_85.description = ""
-        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_85)
-        self.addNode(self.vlBlueFWHM_0_50)
-        self.vlBlueFWHM_0_50.ident = "BlueFWHM_0_50"
-        self.vlBlueFWHM_0_50.description = ""
-        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_50)
-        self.addNode(self.vlBlueFWHM_0_45)
-        self.vlBlueFWHM_0_45.ident = "BlueFWHM_0_45"
-        self.vlBlueFWHM_0_45.description = ""
-        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_45)
-        self.addNode(self.vlBlueFWHM_0_70)
-        self.vlBlueFWHM_0_70.ident = "BlueFWHM_0_70"
-        self.vlBlueFWHM_0_70.description = ""
-        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_70)
-        self.addNode(self.mdBlueFWHMMode_l0_70)
-        self.mdBlueFWHMMode_l0_70.ident = "BlueFWHMMode_l0_70"
-        self.mdBlueFWHMMode_l0_70.description = ""
-        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_70)
-        self.addNode(self.mdBlueFWHMMode_l0_90)
-        self.mdBlueFWHMMode_l0_90.ident = "BlueFWHMMode_l0_90"
-        self.mdBlueFWHMMode_l0_90.description = ""
-        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_90)
-        self.addNode(self.mdBlueFWHMMode_l1_10)
-        self.mdBlueFWHMMode_l1_10.ident = "BlueFWHMMode_l1_10"
-        self.mdBlueFWHMMode_l1_10.description = ""
-        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l1_10)
-        self.addNode(self.vlBlueFWHM_0_90)
-        self.vlBlueFWHM_0_90.ident = "BlueFWHM_0_90"
-        self.vlBlueFWHM_0_90.description = ""
-        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_90)
-        self.addNode(self.vlBlueFWHM_1_10)
-        self.vlBlueFWHM_1_10.ident = "BlueFWHM_1_10"
-        self.vlBlueFWHM_1_10.description = ""
-        self.prBlueFWHM.addValue(self.vlBlueFWHM_1_10)
-        self.addNode(self.mdBlueTFMode_l448_463)
-        self.mdBlueTFMode_l448_463.ident = "BlueTFMode_l448_463"
-        self.mdBlueTFMode_l448_463.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_l448_463)
-        self.addNode(self.mdBlueTFMode_l464_480)
-        self.mdBlueTFMode_l464_480.ident = "BlueTFMode_l464_480"
-        self.mdBlueTFMode_l464_480.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_l464_480)
-        self.addNode(self.mdBlueTFMode_l481_502)
-        self.mdBlueTFMode_l481_502.ident = "BlueTFMode_l481_502"
-        self.mdBlueTFMode_l481_502.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_l481_502)
-        self.addNode(self.mdBlueTFMode_l503_521)
-        self.mdBlueTFMode_l503_521.ident = "BlueTFMode_l503_521"
-        self.mdBlueTFMode_l503_521.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_l503_521)
-        self.addNode(self.mdBlueTFMode_l522_542)
-        self.mdBlueTFMode_l522_542.ident = "BlueTFMode_l522_542"
-        self.mdBlueTFMode_l522_542.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_l522_542)
-        self.addNode(self.mdBlueTFMode_l543_583)
-        self.mdBlueTFMode_l543_583.ident = "BlueTFMode_l543_583"
-        self.mdBlueTFMode_l543_583.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_l543_583)
-        self.addNode(self.vlBlueLamda_Range448)
-        self.vlBlueLamda_Range448.ident = "BlueLamda_Range448"
-        self.vlBlueLamda_Range448.description = ""
-        self.prBlueLamda.addValue(self.vlBlueLamda_Range448)
-        self.addNode(self.mdBlueLamdaMode_l448_463)
-        self.mdBlueLamdaMode_l448_463.ident = "BlueLamdaMode_l448_463"
-        self.mdBlueLamdaMode_l448_463.description = ""
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l448_463)
-        self.addNode(self.mdBlueLamdaMode_l464_480)
-        self.mdBlueLamdaMode_l464_480.ident = "BlueLamdaMode_l464_480"
-        self.mdBlueLamdaMode_l464_480.description = ""
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l464_480)
-        self.addNode(self.mdBlueLamdaMode_l481_502)
-        self.mdBlueLamdaMode_l481_502.ident = "BlueLamdaMode_l481_502"
-        self.mdBlueLamdaMode_l481_502.description = ""
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l481_502)
-        self.addNode(self.mdBlueLamdaMode_l503_521)
-        self.mdBlueLamdaMode_l503_521.ident = "BlueLamdaMode_l503_521"
-        self.mdBlueLamdaMode_l503_521.description = ""
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l503_521)
-        self.addNode(self.mdBlueLamdaMode_l522_542)
-        self.mdBlueLamdaMode_l522_542.ident = "BlueLamdaMode_l522_542"
-        self.mdBlueLamdaMode_l522_542.description = ""
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l522_542)
-        self.addNode(self.mdBlueLamdaMode_l543_583)
-        self.mdBlueLamdaMode_l543_583.ident = "BlueLamdaMode_l543_583"
-        self.mdBlueLamdaMode_l543_583.description = ""
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l543_583)
-        self.addNode(self.vlBlueLamda_Range464)
-        self.vlBlueLamda_Range464.ident = "BlueLamda_Range464"
-        self.vlBlueLamda_Range464.description = ""
-        self.prBlueLamda.addValue(self.vlBlueLamda_Range464)
-        self.addNode(self.vlBlueLamda_Range481)
-        self.vlBlueLamda_Range481.ident = "BlueLamda_Range481"
-        self.vlBlueLamda_Range481.description = ""
-        self.prBlueLamda.addValue(self.vlBlueLamda_Range481)
-        self.addNode(self.vlBlueLamda_Range503)
-        self.vlBlueLamda_Range503.ident = "BlueLamda_Range503"
-        self.vlBlueLamda_Range503.description = ""
-        self.prBlueLamda.addValue(self.vlBlueLamda_Range503)
-        self.addNode(self.vlBlueLamda_Range522)
-        self.vlBlueLamda_Range522.ident = "BlueLamda_Range522"
-        self.vlBlueLamda_Range522.description = ""
-        self.prBlueLamda.addValue(self.vlBlueLamda_Range522)
-        self.addNode(self.vlBlueLamda_Range543)
-        self.vlBlueLamda_Range543.ident = "BlueLamda_Range543"
-        self.vlBlueLamda_Range543.description = ""
-        self.prBlueLamda.addValue(self.vlBlueLamda_Range543)
-        self.addNode(self.mdBlueLamdaMode_l584_609)
-        self.mdBlueLamdaMode_l584_609.ident = "BlueLamdaMode_l584_609"
-        self.mdBlueLamdaMode_l584_609.description = ""
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l584_609)
-        self.addNode(self.mdBlueLamdaMode_l610_637)
-        self.mdBlueLamdaMode_l610_637.ident = "BlueLamdaMode_l610_637"
-        self.mdBlueLamdaMode_l610_637.description = ""
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l610_637)
-        self.addNode(self.mdBlueLamdaMode_l638_671)
-        self.mdBlueLamdaMode_l638_671.ident = "BlueLamdaMode_l638_671"
-        self.mdBlueLamdaMode_l638_671.description = ""
-        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l638_671)
-        self.addNode(self.vlBlueLamda_Range584)
-        self.vlBlueLamda_Range584.ident = "BlueLamda_Range584"
-        self.vlBlueLamda_Range584.description = ""
-        self.prBlueLamda.addValue(self.vlBlueLamda_Range584)
-        self.addNode(self.vlBlueLamda_Range610)
-        self.vlBlueLamda_Range610.ident = "BlueLamda_Range610"
-        self.vlBlueLamda_Range610.description = ""
-        self.prBlueLamda.addValue(self.vlBlueLamda_Range610)
-        self.addNode(self.vlBlueLamda_Range638)
-        self.vlBlueLamda_Range638.ident = "BlueLamda_Range638"
-        self.vlBlueLamda_Range638.description = ""
-        self.prBlueLamda.addValue(self.vlBlueLamda_Range638)
-        self.addNode(self.mdBlueTFMode_l584_609)
-        self.mdBlueTFMode_l584_609.ident = "BlueTFMode_l584_609"
-        self.mdBlueTFMode_l584_609.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_l584_609)
-        self.addNode(self.mdBlueTFMode_l610_637)
-        self.mdBlueTFMode_l610_637.ident = "BlueTFMode_l610_637"
-        self.mdBlueTFMode_l610_637.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_l610_637)
-        self.addNode(self.mdBlueTFMode_l638_671)
-        self.mdBlueTFMode_l638_671.ident = "BlueTFMode_l638_671"
-        self.mdBlueTFMode_l638_671.description = ""
-        self.sysBlueTF.addMode(self.mdBlueTFMode_l638_671)
-        self.addNode(self.mdPreOpticsMode_RTFCalib)
-        self.mdPreOpticsMode_RTFCalib.ident = "PreOpticsMode_RTFCalib"
-        self.mdPreOpticsMode_RTFCalib.description = ""
-        self.sysPreOptics.addMode(self.mdPreOpticsMode_RTFCalib)
-        self.addNode(self.mdPreOpticsMode_BTFCalib)
-        self.mdPreOpticsMode_BTFCalib.ident = "PreOpticsMode_BTFCalib"
-        self.mdPreOpticsMode_BTFCalib.description = ""
-        self.sysPreOptics.addMode(self.mdPreOpticsMode_BTFCalib)
-        self.addNode(self.vlzzero_NormalRange)
-        self.vlzzero_NormalRange.ident = "zzero_NormalRange"
-        self.vlzzero_NormalRange.description = ""
-        self.przzero.addValue(self.vlzzero_NormalRange)
-        self.addNode(self.mdzzeroMode_Normal)
-        self.mdzzeroMode_Normal.ident = "zzeroMode_Normal"
-        self.mdzzeroMode_Normal.description = ""
-        self.przzero.addMode(self.mdzzeroMode_Normal)
-        self.addNode(self.mdFocalPlaneElementMode_Disabled)
-        self.mdFocalPlaneElementMode_Disabled.ident = "FocalPlaneElementMode_Disabled"
+        self.addItem(self.mdFocalPlaneElementMode_Disabled)
+        self.mdFocalPlaneElementMode_Disabled.ident = "FP-0001"
         self.mdFocalPlaneElementMode_Disabled.description = ""
         self.prFocalPlaneElement.addMode(self.mdFocalPlaneElementMode_Disabled)
-        self.addNode(self.vlFocalPlaneElement_LS0_4)
-        self.vlFocalPlaneElement_LS0_4.ident = "FocalPlaneElement_LS0_4"
+        self.addItem(self.vlFocalPlaneElement_LS0_4)
+        self.vlFocalPlaneElement_LS0_4.ident = "OSI-0117"
         self.vlFocalPlaneElement_LS0_4.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS0_4)
-        self.addNode(self.vlFocalPlaneElement_LS0_6)
-        self.vlFocalPlaneElement_LS0_6.ident = "FocalPlaneElement_LS0_6"
+        self.addItem(self.vlFocalPlaneElement_LS0_6)
+        self.vlFocalPlaneElement_LS0_6.ident = "OSI-0118"
         self.vlFocalPlaneElement_LS0_6.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS0_6)
-        self.addNode(self.vlFocalPlaneElement_LS0_8)
-        self.vlFocalPlaneElement_LS0_8.ident = "FocalPlaneElement_LS0_8"
+        self.addItem(self.vlFocalPlaneElement_LS0_8)
+        self.vlFocalPlaneElement_LS0_8.ident = "OSI-0119"
         self.vlFocalPlaneElement_LS0_8.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS0_8)
-        self.addNode(self.vlFocalPlaneElement_LS1_0)
-        self.vlFocalPlaneElement_LS1_0.ident = "FocalPlaneElement_LS1_0"
+        self.addItem(self.vlFocalPlaneElement_LS1_0)
+        self.vlFocalPlaneElement_LS1_0.ident = "OSI-0120"
         self.vlFocalPlaneElement_LS1_0.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS1_0)
-        self.addNode(self.vlFocalPlaneElement_LS1_2)
-        self.vlFocalPlaneElement_LS1_2.ident = "FocalPlaneElement_LS1_2"
+        self.addItem(self.vlFocalPlaneElement_LS1_2)
+        self.vlFocalPlaneElement_LS1_2.ident = "OSI-0121"
         self.vlFocalPlaneElement_LS1_2.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS1_2)
-        self.addNode(self.vlFocalPlaneElement_LS1_5)
-        self.vlFocalPlaneElement_LS1_5.ident = "FocalPlaneElement_LS1_5"
+        self.addItem(self.vlFocalPlaneElement_LS1_5)
+        self.vlFocalPlaneElement_LS1_5.ident = "OSI-0122"
         self.vlFocalPlaneElement_LS1_5.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS1_5)
-        self.addNode(self.vlFocalPlaneElement_LS1_8)
-        self.vlFocalPlaneElement_LS1_8.ident = "FocalPlaneElement_LS1_8"
+        self.addItem(self.vlFocalPlaneElement_LS1_8)
+        self.vlFocalPlaneElement_LS1_8.ident = "OSI-0123"
         self.vlFocalPlaneElement_LS1_8.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS1_8)
-        self.addNode(self.vlFocalPlaneElement_LS2_5)
-        self.vlFocalPlaneElement_LS2_5.ident = "FocalPlaneElement_LS2_5"
+        self.addItem(self.vlFocalPlaneElement_LS2_5)
+        self.vlFocalPlaneElement_LS2_5.ident = "OSI-0124"
         self.vlFocalPlaneElement_LS2_5.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS2_5)
-        self.addNode(self.vlFocalPlaneElement_LS3_0)
-        self.vlFocalPlaneElement_LS3_0.ident = "FocalPlaneElement_LS3_0"
+        self.addItem(self.vlFocalPlaneElement_LS3_0)
+        self.vlFocalPlaneElement_LS3_0.ident = "OSI-0125"
         self.vlFocalPlaneElement_LS3_0.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS3_0)
-        self.addNode(self.vlFocalPlaneElement_LS5_0)
-        self.vlFocalPlaneElement_LS5_0.ident = "FocalPlaneElement_LS5_0"
+        self.addItem(self.vlFocalPlaneElement_LS5_0)
+        self.vlFocalPlaneElement_LS5_0.ident = "OSI-0126"
         self.vlFocalPlaneElement_LS5_0.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS5_0)
-        self.addNode(self.vlFocalPlaneElement_LS10_0)
-        self.vlFocalPlaneElement_LS10_0.ident = "FocalPlaneElement_LS10_0"
+        self.addItem(self.vlFocalPlaneElement_LS10_0)
+        self.vlFocalPlaneElement_LS10_0.ident = "OSI-0127"
         self.vlFocalPlaneElement_LS10_0.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS10_0)
-        self.addNode(self.vlFocalPlaneElement_LS12_0)
-        self.vlFocalPlaneElement_LS12_0.ident = "FocalPlaneElement_LS12_0"
+        self.addItem(self.vlFocalPlaneElement_LS12_0)
+        self.vlFocalPlaneElement_LS12_0.ident = "OSI-0128"
         self.vlFocalPlaneElement_LS12_0.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS12_0)
-        self.addNode(self.vlFocalPlaneElement_LS40_0)
-        self.vlFocalPlaneElement_LS40_0.ident = "FocalPlaneElement_LS40_0"
+        self.addItem(self.vlFocalPlaneElement_LS40_0)
+        self.vlFocalPlaneElement_LS40_0.ident = "OSI-0129"
         self.vlFocalPlaneElement_LS40_0.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_LS40_0)
-        self.addNode(self.mdFocalPlaneElementMode_MOS)
-        self.mdFocalPlaneElementMode_MOS.ident = "FocalPlaneElementMode_MOS"
+        self.addItem(self.mdFocalPlaneElementMode_MOS)
+        self.mdFocalPlaneElementMode_MOS.ident = "FP-0002"
         self.mdFocalPlaneElementMode_MOS.description = ""
         self.prFocalPlaneElement.addMode(self.mdFocalPlaneElementMode_MOS)
-        self.addNode(self.mdFocalPlaneElementMode_FastPhotometry)
-        self.mdFocalPlaneElementMode_FastPhotometry.ident = "FocalPlaneElementMode_FastPhotometry"
+        self.addItem(self.mdFocalPlaneElementMode_FastPhotometry)
+        self.mdFocalPlaneElementMode_FastPhotometry.ident = "FP-0003"
         self.mdFocalPlaneElementMode_FastPhotometry.description = ""
         self.prFocalPlaneElement.addMode(self.mdFocalPlaneElementMode_FastPhotometry)
-        self.addNode(self.mdFocalPlaneElementMode_FrameTransfer)
-        self.mdFocalPlaneElementMode_FrameTransfer.ident = "FocalPlaneElementMode_FrameTransfer"
+        self.addItem(self.mdFocalPlaneElementMode_FrameTransfer)
+        self.mdFocalPlaneElementMode_FrameTransfer.ident = "FP-0004"
         self.mdFocalPlaneElementMode_FrameTransfer.description = ""
         self.prFocalPlaneElement.addMode(self.mdFocalPlaneElementMode_FrameTransfer)
-        self.addNode(self.mdFocalPlaneElementMode_LS)
-        self.mdFocalPlaneElementMode_LS.ident = "FocalPlaneElementMode_LS"
+        self.addItem(self.mdFocalPlaneElementMode_LS)
+        self.mdFocalPlaneElementMode_LS.ident = "FP-0005"
         self.mdFocalPlaneElementMode_LS.description = ""
         self.prFocalPlaneElement.addMode(self.mdFocalPlaneElementMode_LS)
-        self.addNode(self.vlFocalPlaneElement_FrameTransferMask)
-        self.vlFocalPlaneElement_FrameTransferMask.ident = "FocalPlaneElement_FrameTransferMask"
+        self.addItem(self.vlFocalPlaneElement_FrameTransferMask)
+        self.vlFocalPlaneElement_FrameTransferMask.ident = "OSI-0586"
         self.vlFocalPlaneElement_FrameTransferMask.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_FrameTransferMask)
-        self.addNode(self.vlFocalPlaneElement_FastPhotometryMask)
-        self.vlFocalPlaneElement_FastPhotometryMask.ident = "FocalPlaneElement_FastPhotometryMask"
+        self.addItem(self.vlFocalPlaneElement_FastPhotometryMask)
+        self.vlFocalPlaneElement_FastPhotometryMask.ident = "OSI-0585"
         self.vlFocalPlaneElement_FastPhotometryMask.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_FastPhotometryMask)
-        self.addNode(self.vlFocalPlaneElement_MOSmask)
-        self.vlFocalPlaneElement_MOSmask.ident = "FocalPlaneElement_MOSmask"
+        self.addItem(self.vlFocalPlaneElement_MOSmask)
+        self.vlFocalPlaneElement_MOSmask.ident = "OSI-0584"
         self.vlFocalPlaneElement_MOSmask.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_MOSmask)
-        self.addNode(self.vlFocalPlaneElement_NoFPE)
-        self.vlFocalPlaneElement_NoFPE.ident = "FocalPlaneElement_NoFPE"
+        self.addItem(self.vlFocalPlaneElement_NoFPE)
+        self.vlFocalPlaneElement_NoFPE.ident = "OSI-0583"
         self.vlFocalPlaneElement_NoFPE.description = ""
         self.prFocalPlaneElement.addValue(self.vlFocalPlaneElement_NoFPE)
-        self.addNode(self.mdFPEMode_NoFPE)
-        self.mdFPEMode_NoFPE.ident = "FPEMode_NoFPE"
+        self.addItem(self.mdFPEMode_NoFPE)
+        self.mdFPEMode_NoFPE.ident = "OSI-0116"
         self.mdFPEMode_NoFPE.description = ""
         self.sysFPE.addMode(self.mdFPEMode_NoFPE)
-        self.addNode(self.mdFPEMode_MOSmask)
-        self.mdFPEMode_MOSmask.ident = "FPEMode_MOSmask"
+        self.addItem(self.mdFPEMode_MOSmask)
+        self.mdFPEMode_MOSmask.ident = "OSI-0130"
         self.mdFPEMode_MOSmask.description = ""
         self.sysFPE.addMode(self.mdFPEMode_MOSmask)
-        self.addNode(self.mdFPEMode_FastPhotometryMask)
-        self.mdFPEMode_FastPhotometryMask.ident = "FPEMode_FastPhotometryMask"
+        self.addItem(self.mdFPEMode_FastPhotometryMask)
+        self.mdFPEMode_FastPhotometryMask.ident = "OSI-0131"
         self.mdFPEMode_FastPhotometryMask.description = ""
         self.sysFPE.addMode(self.mdFPEMode_FastPhotometryMask)
-        self.addNode(self.mdFPEMode_FrameTransferMask)
-        self.mdFPEMode_FrameTransferMask.ident = "FPEMode_FrameTransferMask"
+        self.addItem(self.mdFPEMode_FrameTransferMask)
+        self.mdFPEMode_FrameTransferMask.ident = "OSI-0132"
         self.mdFPEMode_FrameTransferMask.description = ""
         self.sysFPE.addMode(self.mdFPEMode_FrameTransferMask)
-        self.addNode(self.mdFPEMode_LSMask)
-        self.mdFPEMode_LSMask.ident = "FPEMode_LSMask"
+        self.addItem(self.mdFPEMode_LSMask)
+        self.mdFPEMode_LSMask.ident = "OSI-0142"
         self.mdFPEMode_LSMask.description = ""
         self.sysFPE.addMode(self.mdFPEMode_LSMask)
-        self.addNode(self.mdFiltersMode_OS)
-        self.mdFiltersMode_OS.ident = "FiltersMode_OS"
+        self.addItem(self.sysDetector)
+        self.sysDetector.ident = "OSI-0481"
+        self.sysDetector.description = ""
+        self.sysAcquisition.addSubsystem(self.sysDetector)
+        self.addItem(self.sysOutputSource)
+        self.sysOutputSource.ident = "OSI-0493"
+        self.sysOutputSource.description = ""
+        self.sysDetector.addSubsystem(self.sysOutputSource)
+        self.addItem(self.sysRecomposition)
+        self.sysRecomposition.ident = "OSI-0494"
+        self.sysRecomposition.description = ""
+        self.sysOutputSource.addSubsystem(self.sysRecomposition)
+        self.addItem(self.prBinning)
+        self.prBinning.ident = "OSI-0641"
+        self.prBinning.description = ""
+        self.sysDetector.addParam(self.prBinning)
+        self.addItem(self.sysWindow)
+        self.sysWindow.ident = "OSI-0640"
+        self.sysWindow.description = ""
+        self.sysDetector.addSubsystem(self.sysWindow)
+        self.addItem(self.prRows)
+        self.prRows.ident = "OSI-0484"
+        self.prRows.description = ""
+        self.sysWindow.addParam(self.prRows)
+        self.addItem(self.prCols)
+        self.prCols.ident = "OSI-0482"
+        self.prCols.description = ""
+        self.sysWindow.addParam(self.prCols)
+        self.addItem(self.proffsetRow)
+        self.proffsetRow.ident = "OSI-0483"
+        self.proffsetRow.description = ""
+        self.sysWindow.addParam(self.proffsetRow)
+        self.addItem(self.proffsetCol)
+        self.proffsetCol.ident = "OSI-0485"
+        self.proffsetCol.description = ""
+        self.sysWindow.addParam(self.proffsetCol)
+        self.addItem(self.mdAcquisitionMode_Normal)
+        self.mdAcquisitionMode_Normal.ident = "OSI-0406"
+        self.mdAcquisitionMode_Normal.description = ""
+        self.sysAcquisition.addMode(self.mdAcquisitionMode_Normal)
+        self.addItem(self.mdAcquisitionMode_FrameTransfer)
+        self.mdAcquisitionMode_FrameTransfer.ident = "OSI-0407"
+        self.mdAcquisitionMode_FrameTransfer.description = ""
+        self.sysAcquisition.addMode(self.mdAcquisitionMode_FrameTransfer)
+        self.addItem(self.mdAcquisitionMode_Shuffling)
+        self.mdAcquisitionMode_Shuffling.ident = "OSI-0408"
+        self.mdAcquisitionMode_Shuffling.description = ""
+        self.sysAcquisition.addMode(self.mdAcquisitionMode_Shuffling)
+        self.addItem(self.vlShuffleLines_FullRange)
+        self.vlShuffleLines_FullRange.ident = "OSI-0409"
+        self.vlShuffleLines_FullRange.description = ""
+        self.prShuffleLines.addValue(self.vlShuffleLines_FullRange)
+        self.addItem(self.mdShuffleLinesMode_Normal)
+        self.mdShuffleLinesMode_Normal.ident = "OSI-0410"
+        self.mdShuffleLinesMode_Normal.description = ""
+        self.prShuffleLines.addMode(self.mdShuffleLinesMode_Normal)
+        self.addItem(self.vlShiftNumber_FullRange)
+        self.vlShiftNumber_FullRange.ident = "OSI-0411"
+        self.vlShiftNumber_FullRange.description = ""
+        self.prShiftNumber.addValue(self.vlShiftNumber_FullRange)
+        self.addItem(self.mdShiftNumberMode_Normal)
+        self.mdShiftNumberMode_Normal.ident = "OSI-0412"
+        self.mdShiftNumberMode_Normal.description = ""
+        self.prShiftNumber.addMode(self.mdShiftNumberMode_Normal)
+        self.addItem(self.vlExpTime_FullRange)
+        self.vlExpTime_FullRange.ident = "OSI-0423"
+        self.vlExpTime_FullRange.description = ""
+        self.prExpTime.addValue(self.vlExpTime_FullRange)
+        self.addItem(self.mdExpTimeMode_Normal)
+        self.mdExpTimeMode_Normal.ident = "OSI-0424"
+        self.mdExpTimeMode_Normal.description = ""
+        self.prExpTime.addMode(self.mdExpTimeMode_Normal)
+        self.addItem(self.mdExpTimeMode_Bias)
+        self.mdExpTimeMode_Bias.ident = "OSI-0603"
+        self.mdExpTimeMode_Bias.description = ""
+        self.prExpTime.addMode(self.mdExpTimeMode_Bias)
+        self.addItem(self.vlExpTime_0_0)
+        self.vlExpTime_0_0.ident = "OSI-0604"
+        self.vlExpTime_0_0.description = ""
+        self.prExpTime.addValue(self.vlExpTime_0_0)
+        self.addItem(self.mdExpTimeMode_FT)
+        self.mdExpTimeMode_FT.ident = "OSI-0436"
+        self.mdExpTimeMode_FT.description = ""
+        self.prExpTime.addMode(self.mdExpTimeMode_FT)
+        self.addItem(self.vlExpTime_FTRange)
+        self.vlExpTime_FTRange.ident = "OSI-0437"
+        self.vlExpTime_FTRange.description = ""
+        self.prExpTime.addValue(self.vlExpTime_FTRange)
+        self.addItem(self.mdnumOfFramesMode_Normal)
+        self.mdnumOfFramesMode_Normal.ident = "OSI-0425"
+        self.mdnumOfFramesMode_Normal.description = ""
+        self.prnumOfFrames.addMode(self.mdnumOfFramesMode_Normal)
+        self.addItem(self.vlnumOfFrames_FullRange)
+        self.vlnumOfFrames_FullRange.ident = "OSI-0426"
+        self.vlnumOfFrames_FullRange.description = ""
+        self.prnumOfFrames.addValue(self.vlnumOfFrames_FullRange)
+        self.addItem(self.mdMultipleExposureMode_On)
+        self.mdMultipleExposureMode_On.ident = "OSI-0428"
+        self.mdMultipleExposureMode_On.description = ""
+        self.sysMultipleExposure.addMode(self.mdMultipleExposureMode_On)
+        self.addItem(self.mdMultipleExposureMode_Single)
+        self.mdMultipleExposureMode_Single.ident = "OSI-0427"
+        self.mdMultipleExposureMode_Single.description = ""
+        self.sysMultipleExposure.addMode(self.mdMultipleExposureMode_Single)
+        self.addItem(self.vlPixelSpeed_SLW)
+        self.vlPixelSpeed_SLW.ident = "OSI-0431"
+        self.vlPixelSpeed_SLW.description = ""
+        self.prPixelSpeed.addValue(self.vlPixelSpeed_SLW)
+        self.addItem(self.vlPixelSpeed_MED)
+        self.vlPixelSpeed_MED.ident = "OSI-0432"
+        self.vlPixelSpeed_MED.description = ""
+        self.prPixelSpeed.addValue(self.vlPixelSpeed_MED)
+        self.addItem(self.vlPixelSpeed_FST)
+        self.vlPixelSpeed_FST.ident = "OSI-0433"
+        self.vlPixelSpeed_FST.description = ""
+        self.prPixelSpeed.addValue(self.vlPixelSpeed_FST)
+        self.addItem(self.mdPixelSpeedMode_All)
+        self.mdPixelSpeedMode_All.ident = "OSI-0646"
+        self.mdPixelSpeedMode_All.description = ""
+        self.prPixelSpeed.addMode(self.mdPixelSpeedMode_All)
+        self.addItem(self.mdAcquisitionMode_FTBias)
+        self.mdAcquisitionMode_FTBias.ident = "OSI-0607"
+        self.mdAcquisitionMode_FTBias.description = ""
+        self.sysAcquisition.addMode(self.mdAcquisitionMode_FTBias)
+        self.addItem(self.mdAcquisitionMode_NormalBias)
+        self.mdAcquisitionMode_NormalBias.ident = "OSI-0608"
+        self.mdAcquisitionMode_NormalBias.description = ""
+        self.sysAcquisition.addMode(self.mdAcquisitionMode_NormalBias)
+        self.addItem(self.mdAcquisitionMode_ShufflingBias)
+        self.mdAcquisitionMode_ShufflingBias.ident = "OSI-0609"
+        self.mdAcquisitionMode_ShufflingBias.description = ""
+        self.sysAcquisition.addMode(self.mdAcquisitionMode_ShufflingBias)
+        self.addItem(self.mdAcquisitionMode_NormalSquare)
+        self.mdAcquisitionMode_NormalSquare.ident = "OSI-0637"
+        self.mdAcquisitionMode_NormalSquare.description = ""
+        self.sysAcquisition.addMode(self.mdAcquisitionMode_NormalSquare)
+        self.addItem(self.mdAcquisitionMode_ShufflingSquare)
+        self.mdAcquisitionMode_ShufflingSquare.ident = "OSI-0638"
+        self.mdAcquisitionMode_ShufflingSquare.description = ""
+        self.sysAcquisition.addMode(self.mdAcquisitionMode_ShufflingSquare)
+        self.addItem(self.mdAcquisitionMode_GainCalib)
+        self.mdAcquisitionMode_GainCalib.ident = "DAS-0002"
+        self.mdAcquisitionMode_GainCalib.description = ""
+        self.sysAcquisition.addMode(self.mdAcquisitionMode_GainCalib)
+        self.addItem(self.vlCalibGain_FullRange)
+        self.vlCalibGain_FullRange.ident = "DAS-0003"
+        self.vlCalibGain_FullRange.description = ""
+        self.prCalibGain.addValue(self.vlCalibGain_FullRange)
+        self.addItem(self.mdCalibGainMode_Normal)
+        self.mdCalibGainMode_Normal.ident = "DAS-0004"
+        self.mdCalibGainMode_Normal.description = ""
+        self.prCalibGain.addMode(self.mdCalibGainMode_Normal)
+        self.addItem(self.mdDASMode_SimpleImg)
+        self.mdDASMode_SimpleImg.ident = "OSI-0439"
+        self.mdDASMode_SimpleImg.description = ""
+        self.sysDAS.addMode(self.mdDASMode_SimpleImg)
+        self.addItem(self.mdDASMode_SimpleSpec)
+        self.mdDASMode_SimpleSpec.ident = "OSI-0455"
+        self.mdDASMode_SimpleSpec.description = ""
+        self.sysDAS.addMode(self.mdDASMode_SimpleSpec)
+        self.addItem(self.mdDASMode_ShufffingSpec)
+        self.mdDASMode_ShufffingSpec.ident = "OSI-0639"
+        self.mdDASMode_ShufffingSpec.description = ""
+        self.sysDAS.addMode(self.mdDASMode_ShufffingSpec)
+        self.addItem(self.mdOpenShutterMode_On)
+        self.mdOpenShutterMode_On.ident = "OSI-0468"
+        self.mdOpenShutterMode_On.description = ""
+        self.sysOpenShutter.addMode(self.mdOpenShutterMode_On)
+        self.addItem(self.mdOpenShutterMode_Off)
+        self.mdOpenShutterMode_Off.ident = "OSI-0469"
+        self.mdOpenShutterMode_Off.description = ""
+        self.sysOpenShutter.addMode(self.mdOpenShutterMode_Off)
+        self.addItem(self.mdDASMode_FTImg)
+        self.mdDASMode_FTImg.ident = "OSI-0500"
+        self.mdDASMode_FTImg.description = ""
+        self.sysDAS.addMode(self.mdDASMode_FTImg)
+        self.addItem(self.mdDASMode_FTDark)
+        self.mdDASMode_FTDark.ident = "OSI-0610"
+        self.mdDASMode_FTDark.description = ""
+        self.sysDAS.addMode(self.mdDASMode_FTDark)
+        self.addItem(self.mdDASMode_FTBias)
+        self.mdDASMode_FTBias.ident = "OSI-0611"
+        self.mdDASMode_FTBias.description = ""
+        self.sysDAS.addMode(self.mdDASMode_FTBias)
+        self.addItem(self.mdDASMode_SimpleBias)
+        self.mdDASMode_SimpleBias.ident = "OSI-0613"
+        self.mdDASMode_SimpleBias.description = ""
+        self.sysDAS.addMode(self.mdDASMode_SimpleBias)
+        self.addItem(self.mdDASMode_SimpleDark)
+        self.mdDASMode_SimpleDark.ident = "OSI-0614"
+        self.mdDASMode_SimpleDark.description = ""
+        self.sysDAS.addMode(self.mdDASMode_SimpleDark)
+        self.addItem(self.mdDASMode_ShufffingDark)
+        self.mdDASMode_ShufffingDark.ident = "OSI-0616"
+        self.mdDASMode_ShufffingDark.description = ""
+        self.sysDAS.addMode(self.mdDASMode_ShufffingDark)
+        self.addItem(self.mdDASMode_ShufffingBias)
+        self.mdDASMode_ShufffingBias.ident = "OSI-0617"
+        self.mdDASMode_ShufffingBias.description = ""
+        self.sysDAS.addMode(self.mdDASMode_ShufffingBias)
+        self.addItem(self.mdDASMode_ShufffingImage)
+        self.mdDASMode_ShufffingImage.ident = "OSI-0467"
+        self.mdDASMode_ShufffingImage.description = ""
+        self.sysDAS.addMode(self.mdDASMode_ShufffingImage)
+        self.addItem(self.mdDASMode_SimpleCalib)
+        self.mdDASMode_SimpleCalib.ident = "DAS-0005"
+        self.mdDASMode_SimpleCalib.description = ""
+        self.sysDAS.addMode(self.mdDASMode_SimpleCalib)
+        self.addItem(self.mdDASMode_GainCalib)
+        self.mdDASMode_GainCalib.ident = "DAS-0018"
+        self.mdDASMode_GainCalib.description = ""
+        self.sysDAS.addMode(self.mdDASMode_GainCalib)
+        self.addItem(self.vlCurrentEllapsed_Range)
+        self.vlCurrentEllapsed_Range.ident = "DAS-0026"
+        self.vlCurrentEllapsed_Range.description = ""
+        self.prCurrentEllapsed.addValue(self.vlCurrentEllapsed_Range)
+        self.addItem(self.mdCurrentEllapsedMode_Normal)
+        self.mdCurrentEllapsedMode_Normal.ident = "DAS-0027"
+        self.mdCurrentEllapsedMode_Normal.description = ""
+        self.prCurrentEllapsed.addMode(self.mdCurrentEllapsedMode_Normal)
+        self.addItem(self.vlCurrentImg_Range)
+        self.vlCurrentImg_Range.ident = "DAS-0028"
+        self.vlCurrentImg_Range.description = ""
+        self.prCurrentImg.addValue(self.vlCurrentImg_Range)
+        self.addItem(self.mdCurrentImgMode_Normal)
+        self.mdCurrentImgMode_Normal.ident = "DAS-0029"
+        self.mdCurrentImgMode_Normal.description = ""
+        self.prCurrentImg.addMode(self.mdCurrentImgMode_Normal)
+        self.addItem(self.vlCurrentPct_Range)
+        self.vlCurrentPct_Range.ident = "DAS-0030"
+        self.vlCurrentPct_Range.description = ""
+        self.prCurrentPct.addValue(self.vlCurrentPct_Range)
+        self.addItem(self.mdCurrentPctMode_Normal)
+        self.mdCurrentPctMode_Normal.ident = "DAS-0031"
+        self.mdCurrentPctMode_Normal.description = ""
+        self.prCurrentPct.addMode(self.mdCurrentPctMode_Normal)
+        self.addItem(self.vlOverallPct_Range)
+        self.vlOverallPct_Range.ident = "DAS-0032"
+        self.vlOverallPct_Range.description = ""
+        self.prOverallPct.addValue(self.vlOverallPct_Range)
+        self.addItem(self.mdOverallPctMode_Normal)
+        self.mdOverallPctMode_Normal.ident = "DAS-0033"
+        self.mdOverallPctMode_Normal.description = ""
+        self.prOverallPct.addMode(self.mdOverallPctMode_Normal)
+        self.addItem(self.mdProcessMonitorMode_Normal)
+        self.mdProcessMonitorMode_Normal.ident = "DAS-0034"
+        self.mdProcessMonitorMode_Normal.description = ""
+        self.sysProcessMonitor.addMode(self.mdProcessMonitorMode_Normal)
+        self.addItem(self.mdPreOpticsMode_NoDispersion)
+        self.mdPreOpticsMode_NoDispersion.ident = "OSI-0014"
+        self.mdPreOpticsMode_NoDispersion.description = ""
+        self.sysPreOptics.addMode(self.mdPreOpticsMode_NoDispersion)
+        self.addItem(self.mdPreOpticsMode_RTF)
+        self.mdPreOpticsMode_RTF.ident = "OSI-0015"
+        self.mdPreOpticsMode_RTF.description = ""
+        self.sysPreOptics.addMode(self.mdPreOpticsMode_RTF)
+        self.addItem(self.mdPreOpticsMode_GrismR)
+        self.mdPreOpticsMode_GrismR.ident = "OSI-0146"
+        self.mdPreOpticsMode_GrismR.description = ""
+        self.sysPreOptics.addMode(self.mdPreOpticsMode_GrismR)
+        self.addItem(self.mdPreOpticsMode_BTF)
+        self.mdPreOpticsMode_BTF.ident = "OSI-0016"
+        self.mdPreOpticsMode_BTF.description = ""
+        self.sysPreOptics.addMode(self.mdPreOpticsMode_BTF)
+        self.addItem(self.vlGrisms_R300B)
+        self.vlGrisms_R300B.ident = "OSI-0017"
+        self.vlGrisms_R300B.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R300B)
+        self.addItem(self.vlGrisms_R300R)
+        self.vlGrisms_R300R.ident = "OSI-0018"
+        self.vlGrisms_R300R.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R300R)
+        self.addItem(self.vlGrisms_R500B)
+        self.vlGrisms_R500B.ident = "OSI-0019"
+        self.vlGrisms_R500B.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R500B)
+        self.addItem(self.vlGrisms_R500R)
+        self.vlGrisms_R500R.ident = "OSI-0020"
+        self.vlGrisms_R500R.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R500R)
+        self.addItem(self.vlGrisms_R1000B)
+        self.vlGrisms_R1000B.ident = "OSI-0021"
+        self.vlGrisms_R1000B.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R1000B)
+        self.addItem(self.vlGrisms_R1000R)
+        self.vlGrisms_R1000R.ident = "OSI-0022"
+        self.vlGrisms_R1000R.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R1000R)
+        self.addItem(self.vlGrisms_R2000B)
+        self.vlGrisms_R2000B.ident = "OSI-0023"
+        self.vlGrisms_R2000B.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R2000B)
+        self.addItem(self.vlGrisms_R2500U)
+        self.vlGrisms_R2500U.ident = "OSI-0024"
+        self.vlGrisms_R2500U.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R2500U)
+        self.addItem(self.vlGrisms_R2500V)
+        self.vlGrisms_R2500V.ident = "OSI-0025"
+        self.vlGrisms_R2500V.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R2500V)
+        self.addItem(self.vlGrisms_R2500R)
+        self.vlGrisms_R2500R.ident = "OSI-0026"
+        self.vlGrisms_R2500R.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R2500R)
+        self.addItem(self.vlGrisms_R2500I)
+        self.vlGrisms_R2500I.ident = "OSI-0027"
+        self.vlGrisms_R2500I.description = ""
+        self.prGrisms.addValue(self.vlGrisms_R2500I)
+        self.addItem(self.mdGrismsMode_GrismsB)
+        self.mdGrismsMode_GrismsB.ident = "OSI-0140"
+        self.mdGrismsMode_GrismsB.description = ""
+        self.prGrisms.addMode(self.mdGrismsMode_GrismsB)
+        self.addItem(self.mdGrismsMode_GrismsR)
+        self.mdGrismsMode_GrismsR.ident = "OSI-0393"
+        self.mdGrismsMode_GrismsR.description = ""
+        self.prGrisms.addMode(self.mdGrismsMode_GrismsR)
+        self.addItem(self.mdPreOpticsMode_GrismB)
+        self.mdPreOpticsMode_GrismB.ident = "OSI-0394"
+        self.mdPreOpticsMode_GrismB.description = ""
+        self.sysPreOptics.addMode(self.mdPreOpticsMode_GrismB)
+        self.addItem(self.mdPreOpticsMode_GrismBMOS)
+        self.mdPreOpticsMode_GrismBMOS.ident = "OSI-0501"
+        self.mdPreOpticsMode_GrismBMOS.description = ""
+        self.sysPreOptics.addMode(self.mdPreOpticsMode_GrismBMOS)
+        self.addItem(self.vlRedFWHM_Range2_0)
+        self.vlRedFWHM_Range2_0.ident = "OSI-0502"
+        self.vlRedFWHM_Range2_0.description = ""
+        self.prRedFWHM.addValue(self.vlRedFWHM_Range2_0)
+        self.addItem(self.mdRedFWHMMode_l2_0)
+        self.mdRedFWHMMode_l2_0.ident = "OSI-0503"
+        self.mdRedFWHMMode_l2_0.description = ""
+        self.prRedFWHM.addMode(self.mdRedFWHMMode_l2_0)
+        self.addItem(self.mdRedFWHMMode_l1_5)
+        self.mdRedFWHMMode_l1_5.ident = "OSI-0504"
+        self.mdRedFWHMMode_l1_5.description = ""
+        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_5)
+        self.addItem(self.mdRedFWHMMode_l1_4)
+        self.mdRedFWHMMode_l1_4.ident = "OSI-0505"
+        self.mdRedFWHMMode_l1_4.description = ""
+        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_4)
+        self.addItem(self.mdRedFWHMMode_l1_3)
+        self.mdRedFWHMMode_l1_3.ident = "OSI-0506"
+        self.mdRedFWHMMode_l1_3.description = ""
+        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_3)
+        self.addItem(self.mdRedFWHMMode_l1_2)
+        self.mdRedFWHMMode_l1_2.ident = "OSI-0507"
+        self.mdRedFWHMMode_l1_2.description = ""
+        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_2)
+        self.addItem(self.mdRedFWHMMode_l1_2b)
+        self.mdRedFWHMMode_l1_2b.ident = "OSI-0508"
+        self.mdRedFWHMMode_l1_2b.description = ""
+        self.prRedFWHM.addMode(self.mdRedFWHMMode_l1_2b)
+        self.addItem(self.vlRedFWHM_Range1_5)
+        self.vlRedFWHM_Range1_5.ident = "OSI-0509"
+        self.vlRedFWHM_Range1_5.description = ""
+        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_5)
+        self.addItem(self.vlRedFWHM_Range1_4)
+        self.vlRedFWHM_Range1_4.ident = "OSI-0510"
+        self.vlRedFWHM_Range1_4.description = ""
+        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_4)
+        self.addItem(self.vlRedFWHM_Range1_3)
+        self.vlRedFWHM_Range1_3.ident = "OSI-0511"
+        self.vlRedFWHM_Range1_3.description = ""
+        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_3)
+        self.addItem(self.vlRedFWHM_Range1_2)
+        self.vlRedFWHM_Range1_2.ident = "OSI-0512"
+        self.vlRedFWHM_Range1_2.description = ""
+        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_2)
+        self.addItem(self.vlRedFWHM_Range1_2b)
+        self.vlRedFWHM_Range1_2b.ident = "OSI-0513"
+        self.vlRedFWHM_Range1_2b.description = ""
+        self.prRedFWHM.addValue(self.vlRedFWHM_Range1_2b)
+        self.addItem(self.mdRedTFMode_l651_799)
+        self.mdRedTFMode_l651_799.ident = "OSI-0514"
+        self.mdRedTFMode_l651_799.description = ""
+        self.sysRedTF.addMode(self.mdRedTFMode_l651_799)
+        self.addItem(self.mdRedTFMode_l800_819)
+        self.mdRedTFMode_l800_819.ident = "OSI-0515"
+        self.mdRedTFMode_l800_819.description = ""
+        self.sysRedTF.addMode(self.mdRedTFMode_l800_819)
+        self.addItem(self.mdRedTFMode_l820_839)
+        self.mdRedTFMode_l820_839.ident = "OSI-0516"
+        self.mdRedTFMode_l820_839.description = ""
+        self.sysRedTF.addMode(self.mdRedTFMode_l820_839)
+        self.addItem(self.mdRedTFMode_l840_879)
+        self.mdRedTFMode_l840_879.ident = "OSI-0517"
+        self.mdRedTFMode_l840_879.description = ""
+        self.sysRedTF.addMode(self.mdRedTFMode_l840_879)
+        self.addItem(self.mdRedTFMode_l880_909)
+        self.mdRedTFMode_l880_909.ident = "OSI-0518"
+        self.mdRedTFMode_l880_909.description = ""
+        self.sysRedTF.addMode(self.mdRedTFMode_l880_909)
+        self.addItem(self.mdRedTFMode_l910_934)
+        self.mdRedTFMode_l910_934.ident = "OSI-0519"
+        self.mdRedTFMode_l910_934.description = ""
+        self.sysRedTF.addMode(self.mdRedTFMode_l910_934)
+        self.addItem(self.vlRedLamda_Range651)
+        self.vlRedLamda_Range651.ident = "OSI-0520"
+        self.vlRedLamda_Range651.description = ""
+        self.prRedLamda.addValue(self.vlRedLamda_Range651)
+        self.addItem(self.mdRedLamdaMode_l651_799)
+        self.mdRedLamdaMode_l651_799.ident = "OSI-0521"
+        self.mdRedLamdaMode_l651_799.description = ""
+        self.prRedLamda.addMode(self.mdRedLamdaMode_l651_799)
+        self.addItem(self.mdRedLamdaMode_l800_819)
+        self.mdRedLamdaMode_l800_819.ident = "OSI-0522"
+        self.mdRedLamdaMode_l800_819.description = ""
+        self.prRedLamda.addMode(self.mdRedLamdaMode_l800_819)
+        self.addItem(self.mdRedLamdaMode_l820_839)
+        self.mdRedLamdaMode_l820_839.ident = "OSI-0523"
+        self.mdRedLamdaMode_l820_839.description = ""
+        self.prRedLamda.addMode(self.mdRedLamdaMode_l820_839)
+        self.addItem(self.mdRedLamdaMode_l840_879)
+        self.mdRedLamdaMode_l840_879.ident = "OSI-0524"
+        self.mdRedLamdaMode_l840_879.description = ""
+        self.prRedLamda.addMode(self.mdRedLamdaMode_l840_879)
+        self.addItem(self.mdRedLamdaMode_l880_909)
+        self.mdRedLamdaMode_l880_909.ident = "OSI-0525"
+        self.mdRedLamdaMode_l880_909.description = ""
+        self.prRedLamda.addMode(self.mdRedLamdaMode_l880_909)
+        self.addItem(self.mdRedLamdaMode_l910_934)
+        self.mdRedLamdaMode_l910_934.ident = "OSI-0526"
+        self.mdRedLamdaMode_l910_934.description = ""
+        self.prRedLamda.addMode(self.mdRedLamdaMode_l910_934)
+        self.addItem(self.vlRedLamda_Range800)
+        self.vlRedLamda_Range800.ident = "OSI-0527"
+        self.vlRedLamda_Range800.description = ""
+        self.prRedLamda.addValue(self.vlRedLamda_Range800)
+        self.addItem(self.vlRedLamda_Range820)
+        self.vlRedLamda_Range820.ident = "OSI-0528"
+        self.vlRedLamda_Range820.description = ""
+        self.prRedLamda.addValue(self.vlRedLamda_Range820)
+        self.addItem(self.vlRedLamda_Range840)
+        self.vlRedLamda_Range840.ident = "OSI-0529"
+        self.vlRedLamda_Range840.description = ""
+        self.prRedLamda.addValue(self.vlRedLamda_Range840)
+        self.addItem(self.vlRedLamda_Range880)
+        self.vlRedLamda_Range880.ident = "OSI-0530"
+        self.vlRedLamda_Range880.description = ""
+        self.prRedLamda.addValue(self.vlRedLamda_Range880)
+        self.addItem(self.vlRedLamda_Range910)
+        self.vlRedLamda_Range910.ident = "OSI-0531"
+        self.vlRedLamda_Range910.description = ""
+        self.prRedLamda.addValue(self.vlRedLamda_Range910)
+        self.addItem(self.vlBlueFWHM_0_8)
+        self.vlBlueFWHM_0_8.ident = "OSI-0532"
+        self.vlBlueFWHM_0_8.description = ""
+        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_8)
+        self.addItem(self.mdBlueFWHMMode_l0_8)
+        self.mdBlueFWHMMode_l0_8.ident = "OSI-0533"
+        self.mdBlueFWHMMode_l0_8.description = ""
+        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_8)
+        self.addItem(self.mdBlueFWHMMode_l0_85)
+        self.mdBlueFWHMMode_l0_85.ident = "OSI-0534"
+        self.mdBlueFWHMMode_l0_85.description = ""
+        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_85)
+        self.addItem(self.mdBlueFWHMMode_l0_50)
+        self.mdBlueFWHMMode_l0_50.ident = "OSI-0536"
+        self.mdBlueFWHMMode_l0_50.description = ""
+        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_50)
+        self.addItem(self.mdBlueFWHMMode_l0_45)
+        self.mdBlueFWHMMode_l0_45.ident = "OSI-0537"
+        self.mdBlueFWHMMode_l0_45.description = ""
+        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_45)
+        self.addItem(self.vlBlueFWHM_0_85)
+        self.vlBlueFWHM_0_85.ident = "OSI-0539"
+        self.vlBlueFWHM_0_85.description = ""
+        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_85)
+        self.addItem(self.vlBlueFWHM_0_50)
+        self.vlBlueFWHM_0_50.ident = "OSI-0540"
+        self.vlBlueFWHM_0_50.description = ""
+        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_50)
+        self.addItem(self.vlBlueFWHM_0_45)
+        self.vlBlueFWHM_0_45.ident = "OSI-0541"
+        self.vlBlueFWHM_0_45.description = ""
+        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_45)
+        self.addItem(self.vlBlueFWHM_0_70)
+        self.vlBlueFWHM_0_70.ident = "OSI-0542"
+        self.vlBlueFWHM_0_70.description = ""
+        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_70)
+        self.addItem(self.mdBlueFWHMMode_l0_70)
+        self.mdBlueFWHMMode_l0_70.ident = "OSI-0543"
+        self.mdBlueFWHMMode_l0_70.description = ""
+        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_70)
+        self.addItem(self.mdBlueFWHMMode_l0_90)
+        self.mdBlueFWHMMode_l0_90.ident = "OSI-0544"
+        self.mdBlueFWHMMode_l0_90.description = ""
+        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l0_90)
+        self.addItem(self.mdBlueFWHMMode_l1_10)
+        self.mdBlueFWHMMode_l1_10.ident = "OSI-0545"
+        self.mdBlueFWHMMode_l1_10.description = ""
+        self.prBlueFWHM.addMode(self.mdBlueFWHMMode_l1_10)
+        self.addItem(self.vlBlueFWHM_0_90)
+        self.vlBlueFWHM_0_90.ident = "OSI-0546"
+        self.vlBlueFWHM_0_90.description = ""
+        self.prBlueFWHM.addValue(self.vlBlueFWHM_0_90)
+        self.addItem(self.vlBlueFWHM_1_10)
+        self.vlBlueFWHM_1_10.ident = "OSI-0547"
+        self.vlBlueFWHM_1_10.description = ""
+        self.prBlueFWHM.addValue(self.vlBlueFWHM_1_10)
+        self.addItem(self.mdBlueTFMode_l448_463)
+        self.mdBlueTFMode_l448_463.ident = "OSI-0548"
+        self.mdBlueTFMode_l448_463.description = ""
+        self.sysBlueTF.addMode(self.mdBlueTFMode_l448_463)
+        self.addItem(self.mdBlueTFMode_l464_480)
+        self.mdBlueTFMode_l464_480.ident = "OSI-0549"
+        self.mdBlueTFMode_l464_480.description = ""
+        self.sysBlueTF.addMode(self.mdBlueTFMode_l464_480)
+        self.addItem(self.mdBlueTFMode_l481_502)
+        self.mdBlueTFMode_l481_502.ident = "OSI-0550"
+        self.mdBlueTFMode_l481_502.description = ""
+        self.sysBlueTF.addMode(self.mdBlueTFMode_l481_502)
+        self.addItem(self.mdBlueTFMode_l503_521)
+        self.mdBlueTFMode_l503_521.ident = "OSI-0551"
+        self.mdBlueTFMode_l503_521.description = ""
+        self.sysBlueTF.addMode(self.mdBlueTFMode_l503_521)
+        self.addItem(self.mdBlueTFMode_l522_542)
+        self.mdBlueTFMode_l522_542.ident = "OSI-0552"
+        self.mdBlueTFMode_l522_542.description = ""
+        self.sysBlueTF.addMode(self.mdBlueTFMode_l522_542)
+        self.addItem(self.mdBlueTFMode_l543_583)
+        self.mdBlueTFMode_l543_583.ident = "OSI-0553"
+        self.mdBlueTFMode_l543_583.description = ""
+        self.sysBlueTF.addMode(self.mdBlueTFMode_l543_583)
+        self.addItem(self.vlBlueLamda_Range448)
+        self.vlBlueLamda_Range448.ident = "OSI-0554"
+        self.vlBlueLamda_Range448.description = ""
+        self.prBlueLamda.addValue(self.vlBlueLamda_Range448)
+        self.addItem(self.mdBlueLamdaMode_l448_463)
+        self.mdBlueLamdaMode_l448_463.ident = "OSI-0555"
+        self.mdBlueLamdaMode_l448_463.description = ""
+        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l448_463)
+        self.addItem(self.mdBlueLamdaMode_l464_480)
+        self.mdBlueLamdaMode_l464_480.ident = "OSI-0556"
+        self.mdBlueLamdaMode_l464_480.description = ""
+        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l464_480)
+        self.addItem(self.mdBlueLamdaMode_l481_502)
+        self.mdBlueLamdaMode_l481_502.ident = "OSI-0557"
+        self.mdBlueLamdaMode_l481_502.description = ""
+        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l481_502)
+        self.addItem(self.mdBlueLamdaMode_l503_521)
+        self.mdBlueLamdaMode_l503_521.ident = "OSI-0558"
+        self.mdBlueLamdaMode_l503_521.description = ""
+        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l503_521)
+        self.addItem(self.mdBlueLamdaMode_l522_542)
+        self.mdBlueLamdaMode_l522_542.ident = "OSI-0559"
+        self.mdBlueLamdaMode_l522_542.description = ""
+        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l522_542)
+        self.addItem(self.mdBlueLamdaMode_l543_583)
+        self.mdBlueLamdaMode_l543_583.ident = "OSI-0560"
+        self.mdBlueLamdaMode_l543_583.description = ""
+        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l543_583)
+        self.addItem(self.vlBlueLamda_Range464)
+        self.vlBlueLamda_Range464.ident = "OSI-0561"
+        self.vlBlueLamda_Range464.description = ""
+        self.prBlueLamda.addValue(self.vlBlueLamda_Range464)
+        self.addItem(self.vlBlueLamda_Range481)
+        self.vlBlueLamda_Range481.ident = "OSI-0562"
+        self.vlBlueLamda_Range481.description = ""
+        self.prBlueLamda.addValue(self.vlBlueLamda_Range481)
+        self.addItem(self.vlBlueLamda_Range503)
+        self.vlBlueLamda_Range503.ident = "OSI-0563"
+        self.vlBlueLamda_Range503.description = ""
+        self.prBlueLamda.addValue(self.vlBlueLamda_Range503)
+        self.addItem(self.vlBlueLamda_Range522)
+        self.vlBlueLamda_Range522.ident = "OSI-0564"
+        self.vlBlueLamda_Range522.description = ""
+        self.prBlueLamda.addValue(self.vlBlueLamda_Range522)
+        self.addItem(self.vlBlueLamda_Range543)
+        self.vlBlueLamda_Range543.ident = "OSI-0565"
+        self.vlBlueLamda_Range543.description = ""
+        self.prBlueLamda.addValue(self.vlBlueLamda_Range543)
+        self.addItem(self.mdBlueLamdaMode_l584_609)
+        self.mdBlueLamdaMode_l584_609.ident = "OSI-0566"
+        self.mdBlueLamdaMode_l584_609.description = ""
+        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l584_609)
+        self.addItem(self.mdBlueLamdaMode_l610_637)
+        self.mdBlueLamdaMode_l610_637.ident = "OSI-0567"
+        self.mdBlueLamdaMode_l610_637.description = ""
+        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l610_637)
+        self.addItem(self.mdBlueLamdaMode_l638_671)
+        self.mdBlueLamdaMode_l638_671.ident = "OSI-0568"
+        self.mdBlueLamdaMode_l638_671.description = ""
+        self.prBlueLamda.addMode(self.mdBlueLamdaMode_l638_671)
+        self.addItem(self.vlBlueLamda_Range584)
+        self.vlBlueLamda_Range584.ident = "OSI-0569"
+        self.vlBlueLamda_Range584.description = ""
+        self.prBlueLamda.addValue(self.vlBlueLamda_Range584)
+        self.addItem(self.vlBlueLamda_Range610)
+        self.vlBlueLamda_Range610.ident = "OSI-0570"
+        self.vlBlueLamda_Range610.description = ""
+        self.prBlueLamda.addValue(self.vlBlueLamda_Range610)
+        self.addItem(self.vlBlueLamda_Range638)
+        self.vlBlueLamda_Range638.ident = "OSI-0571"
+        self.vlBlueLamda_Range638.description = ""
+        self.prBlueLamda.addValue(self.vlBlueLamda_Range638)
+        self.addItem(self.mdBlueTFMode_l584_609)
+        self.mdBlueTFMode_l584_609.ident = "OSI-0572"
+        self.mdBlueTFMode_l584_609.description = ""
+        self.sysBlueTF.addMode(self.mdBlueTFMode_l584_609)
+        self.addItem(self.mdBlueTFMode_l610_637)
+        self.mdBlueTFMode_l610_637.ident = "OSI-0573"
+        self.mdBlueTFMode_l610_637.description = ""
+        self.sysBlueTF.addMode(self.mdBlueTFMode_l610_637)
+        self.addItem(self.mdBlueTFMode_l638_671)
+        self.mdBlueTFMode_l638_671.ident = "OSI-0574"
+        self.mdBlueTFMode_l638_671.description = ""
+        self.sysBlueTF.addMode(self.mdBlueTFMode_l638_671)
+        self.addItem(self.mdPreOpticsMode_RTFCalib)
+        self.mdPreOpticsMode_RTFCalib.ident = "OP-0105"
+        self.mdPreOpticsMode_RTFCalib.description = ""
+        self.sysPreOptics.addMode(self.mdPreOpticsMode_RTFCalib)
+        self.addItem(self.mdPreOpticsMode_BTFCalib)
+        self.mdPreOpticsMode_BTFCalib.ident = "OP-0106"
+        self.mdPreOpticsMode_BTFCalib.description = ""
+        self.sysPreOptics.addMode(self.mdPreOpticsMode_BTFCalib)
+        self.addItem(self.vlzzero_NormalRange)
+        self.vlzzero_NormalRange.ident = "OP-0107"
+        self.vlzzero_NormalRange.description = ""
+        self.przzero.addValue(self.vlzzero_NormalRange)
+        self.addItem(self.mdzzeroMode_Normal)
+        self.mdzzeroMode_Normal.ident = "OP-0108"
+        self.mdzzeroMode_Normal.description = ""
+        self.przzero.addMode(self.mdzzeroMode_Normal)
+        self.addItem(self.mdFiltersMode_OS)
+        self.mdFiltersMode_OS.ident = "OSI-0143"
         self.mdFiltersMode_OS.description = ""
         self.sysFilters.addMode(self.mdFiltersMode_OS)
-        self.addNode(self.mdFiltersMode_UFilter)
-        self.mdFiltersMode_UFilter.ident = "FiltersMode_UFilter"
+        self.addItem(self.mdFiltersMode_UFilter)
+        self.mdFiltersMode_UFilter.ident = "OSI-0145"
         self.mdFiltersMode_UFilter.description = ""
         self.sysFilters.addMode(self.mdFiltersMode_UFilter)
-        self.addNode(self.vlUFilters_U500_17)
-        self.vlUFilters_U500_17.ident = "UFilters_U500_17"
+        self.addItem(self.vlUFilters_U500_17)
+        self.vlUFilters_U500_17.ident = "OSI-0033"
         self.vlUFilters_U500_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U500_17)
-        self.addNode(self.vlUFilters_U517_17)
-        self.vlUFilters_U517_17.ident = "UFilters_U517_17"
+        self.addItem(self.vlUFilters_U517_17)
+        self.vlUFilters_U517_17.ident = "OSI-0034"
         self.vlUFilters_U517_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U517_17)
-        self.addNode(self.vlUFilters_U534_17)
-        self.vlUFilters_U534_17.ident = "UFilters_U534_17"
+        self.addItem(self.vlUFilters_U534_17)
+        self.vlUFilters_U534_17.ident = "OSI-0035"
         self.vlUFilters_U534_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U534_17)
-        self.addNode(self.vlUFilters_U551_17)
-        self.vlUFilters_U551_17.ident = "UFilters_U551_17"
+        self.addItem(self.vlUFilters_U551_17)
+        self.vlUFilters_U551_17.ident = "OSI-0036"
         self.vlUFilters_U551_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U551_17)
-        self.addNode(self.vlUFilters_U568_17)
-        self.vlUFilters_U568_17.ident = "UFilters_U568_17"
+        self.addItem(self.vlUFilters_U568_17)
+        self.vlUFilters_U568_17.ident = "OSI-0037"
         self.vlUFilters_U568_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U568_17)
-        self.addNode(self.vlUFilters_U585_17)
-        self.vlUFilters_U585_17.ident = "UFilters_U585_17"
+        self.addItem(self.vlUFilters_U585_17)
+        self.vlUFilters_U585_17.ident = "OSI-0038"
         self.vlUFilters_U585_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U585_17)
-        self.addNode(self.vlUFilters_U602_17)
-        self.vlUFilters_U602_17.ident = "UFilters_U602_17"
+        self.addItem(self.vlUFilters_U602_17)
+        self.vlUFilters_U602_17.ident = "OSI-0039"
         self.vlUFilters_U602_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U602_17)
-        self.addNode(self.vlUFilters_U619_17)
-        self.vlUFilters_U619_17.ident = "UFilters_U619_17"
+        self.addItem(self.vlUFilters_U619_17)
+        self.vlUFilters_U619_17.ident = "OSI-0040"
         self.vlUFilters_U619_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U619_17)
-        self.addNode(self.vlUFilters_U636_17)
-        self.vlUFilters_U636_17.ident = "UFilters_U636_17"
+        self.addItem(self.vlUFilters_U636_17)
+        self.vlUFilters_U636_17.ident = "OSI-0041"
         self.vlUFilters_U636_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U636_17)
-        self.addNode(self.vlUFilters_U653_17)
-        self.vlUFilters_U653_17.ident = "UFilters_U653_17"
+        self.addItem(self.vlUFilters_U653_17)
+        self.vlUFilters_U653_17.ident = "OSI-0042"
         self.vlUFilters_U653_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U653_17)
-        self.addNode(self.vlUFilters_U670_17)
-        self.vlUFilters_U670_17.ident = "UFilters_U670_17"
+        self.addItem(self.vlUFilters_U670_17)
+        self.vlUFilters_U670_17.ident = "OSI-0043"
         self.vlUFilters_U670_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U670_17)
-        self.addNode(self.vlUFilters_U687_17)
-        self.vlUFilters_U687_17.ident = "UFilters_U687_17"
+        self.addItem(self.vlUFilters_U687_17)
+        self.vlUFilters_U687_17.ident = "OSI-0044"
         self.vlUFilters_U687_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U687_17)
-        self.addNode(self.vlUFilters_U704_17)
-        self.vlUFilters_U704_17.ident = "UFilters_U704_17"
+        self.addItem(self.vlUFilters_U704_17)
+        self.vlUFilters_U704_17.ident = "OSI-0045"
         self.vlUFilters_U704_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U704_17)
-        self.addNode(self.vlUFilters_U721_17)
-        self.vlUFilters_U721_17.ident = "UFilters_U721_17"
+        self.addItem(self.vlUFilters_U721_17)
+        self.vlUFilters_U721_17.ident = "OSI-0046"
         self.vlUFilters_U721_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U721_17)
-        self.addNode(self.vlUFilters_U738_17)
-        self.vlUFilters_U738_17.ident = "UFilters_U738_17"
+        self.addItem(self.vlUFilters_U738_17)
+        self.vlUFilters_U738_17.ident = "OSI-0047"
         self.vlUFilters_U738_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U738_17)
-        self.addNode(self.vlUFilters_U755_17)
-        self.vlUFilters_U755_17.ident = "UFilters_U755_17"
+        self.addItem(self.vlUFilters_U755_17)
+        self.vlUFilters_U755_17.ident = "OSI-0048"
         self.vlUFilters_U755_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U755_17)
-        self.addNode(self.vlUFilters_U772_17)
-        self.vlUFilters_U772_17.ident = "UFilters_U772_17"
+        self.addItem(self.vlUFilters_U772_17)
+        self.vlUFilters_U772_17.ident = "OSI-0049"
         self.vlUFilters_U772_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U772_17)
-        self.addNode(self.vlUFilters_U789_17)
-        self.vlUFilters_U789_17.ident = "UFilters_U789_17"
+        self.addItem(self.vlUFilters_U789_17)
+        self.vlUFilters_U789_17.ident = "OSI-0050"
         self.vlUFilters_U789_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U789_17)
-        self.addNode(self.vlUFilters_U806_17)
-        self.vlUFilters_U806_17.ident = "UFilters_U806_17"
+        self.addItem(self.vlUFilters_U806_17)
+        self.vlUFilters_U806_17.ident = "OSI-0051"
         self.vlUFilters_U806_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U806_17)
-        self.addNode(self.vlUFilters_U823_17)
-        self.vlUFilters_U823_17.ident = "UFilters_U823_17"
+        self.addItem(self.vlUFilters_U823_17)
+        self.vlUFilters_U823_17.ident = "OSI-0052"
         self.vlUFilters_U823_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U823_17)
-        self.addNode(self.vlUFilters_U840_17)
-        self.vlUFilters_U840_17.ident = "UFilters_U840_17"
+        self.addItem(self.vlUFilters_U840_17)
+        self.vlUFilters_U840_17.ident = "OSI-0053"
         self.vlUFilters_U840_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U840_17)
-        self.addNode(self.vlUFilters_U857_17)
-        self.vlUFilters_U857_17.ident = "UFilters_U857_17"
+        self.addItem(self.vlUFilters_U857_17)
+        self.vlUFilters_U857_17.ident = "OSI-0054"
         self.vlUFilters_U857_17.description = ""
         self.prUFilters.addValue(self.vlUFilters_U857_17)
-        self.addNode(self.vlUFilters_U883_35)
-        self.vlUFilters_U883_35.ident = "UFilters_U883_35"
+        self.addItem(self.vlUFilters_U883_35)
+        self.vlUFilters_U883_35.ident = "OSI-0055"
         self.vlUFilters_U883_35.description = ""
         self.prUFilters.addValue(self.vlUFilters_U883_35)
-        self.addNode(self.vlUFilters_U913_25)
-        self.vlUFilters_U913_25.ident = "UFilters_U913_25"
+        self.addItem(self.vlUFilters_U913_25)
+        self.vlUFilters_U913_25.ident = "OSI-0056"
         self.vlUFilters_U913_25.description = ""
         self.prUFilters.addValue(self.vlUFilters_U913_25)
-        self.addNode(self.vlUFilters_U941_33)
-        self.vlUFilters_U941_33.ident = "UFilters_U941_33"
+        self.addItem(self.vlUFilters_U941_33)
+        self.vlUFilters_U941_33.ident = "OSI-0057"
         self.vlUFilters_U941_33.description = ""
         self.prUFilters.addValue(self.vlUFilters_U941_33)
-        self.addNode(self.mdUFiltersMode_U5xx)
-        self.mdUFiltersMode_U5xx.ident = "UFiltersMode_U5xx"
+        self.addItem(self.mdUFiltersMode_U5xx)
+        self.mdUFiltersMode_U5xx.ident = "OSI-0148"
         self.mdUFiltersMode_U5xx.description = ""
         self.prUFilters.addMode(self.mdUFiltersMode_U5xx)
-        self.addNode(self.mdUFiltersMode_U6xx)
-        self.mdUFiltersMode_U6xx.ident = "UFiltersMode_U6xx"
+        self.addItem(self.mdUFiltersMode_U6xx)
+        self.mdUFiltersMode_U6xx.ident = "OSI-0149"
         self.mdUFiltersMode_U6xx.description = ""
         self.prUFilters.addMode(self.mdUFiltersMode_U6xx)
-        self.addNode(self.mdUFiltersMode_U7xx)
-        self.mdUFiltersMode_U7xx.ident = "UFiltersMode_U7xx"
+        self.addItem(self.mdUFiltersMode_U7xx)
+        self.mdUFiltersMode_U7xx.ident = "OSI-0150"
         self.mdUFiltersMode_U7xx.description = ""
         self.prUFilters.addMode(self.mdUFiltersMode_U7xx)
-        self.addNode(self.mdUFiltersMode_U8xx)
-        self.mdUFiltersMode_U8xx.ident = "UFiltersMode_U8xx"
+        self.addItem(self.mdUFiltersMode_U8xx)
+        self.mdUFiltersMode_U8xx.ident = "OSI-0151"
         self.mdUFiltersMode_U8xx.description = ""
         self.prUFilters.addMode(self.mdUFiltersMode_U8xx)
-        self.addNode(self.mdUFiltersMode_U9xx)
-        self.mdUFiltersMode_U9xx.ident = "UFiltersMode_U9xx"
+        self.addItem(self.mdUFiltersMode_U9xx)
+        self.mdUFiltersMode_U9xx.ident = "OSI-0152"
         self.mdUFiltersMode_U9xx.description = ""
         self.prUFilters.addMode(self.mdUFiltersMode_U9xx)
-        self.addNode(self.vlOS_f504_16)
-        self.vlOS_f504_16.ident = "OS_f504_16"
+        self.addItem(self.vlOS_f504_16)
+        self.vlOS_f504_16.ident = "OSI-0071"
         self.vlOS_f504_16.description = ""
         self.prOS.addValue(self.vlOS_f504_16)
-        self.addNode(self.vlOS_f509_16)
-        self.vlOS_f509_16.ident = "OS_f509_16"
+        self.addItem(self.vlOS_f509_16)
+        self.vlOS_f509_16.ident = "OSI-0072"
         self.vlOS_f509_16.description = ""
         self.prOS.addValue(self.vlOS_f509_16)
-        self.addNode(self.vlOS_f514_16)
-        self.vlOS_f514_16.ident = "OS_f514_16"
+        self.addItem(self.vlOS_f514_16)
+        self.vlOS_f514_16.ident = "OSI-0073"
         self.vlOS_f514_16.description = ""
         self.prOS.addValue(self.vlOS_f514_16)
-        self.addNode(self.vlOS_f519_16)
-        self.vlOS_f519_16.ident = "OS_f519_16"
+        self.addItem(self.vlOS_f519_16)
+        self.vlOS_f519_16.ident = "OSI-0074"
         self.vlOS_f519_16.description = ""
         self.prOS.addValue(self.vlOS_f519_16)
-        self.addNode(self.vlOS_f525_17)
-        self.vlOS_f525_17.ident = "OS_f525_17"
+        self.addItem(self.vlOS_f525_17)
+        self.vlOS_f525_17.ident = "OSI-0075"
         self.vlOS_f525_17.description = ""
         self.prOS.addValue(self.vlOS_f525_17)
-        self.addNode(self.vlOS_f530_17)
-        self.vlOS_f530_17.ident = "OS_f530_17"
+        self.addItem(self.vlOS_f530_17)
+        self.vlOS_f530_17.ident = "OSI-0076"
         self.vlOS_f530_17.description = ""
         self.prOS.addValue(self.vlOS_f530_17)
-        self.addNode(self.vlOS_f536_17)
-        self.vlOS_f536_17.ident = "OS_f536_17"
+        self.addItem(self.vlOS_f536_17)
+        self.vlOS_f536_17.ident = "OSI-0077"
         self.vlOS_f536_17.description = ""
         self.prOS.addValue(self.vlOS_f536_17)
-        self.addNode(self.vlOS_f542_18)
-        self.vlOS_f542_18.ident = "OS_f542_18"
+        self.addItem(self.vlOS_f542_18)
+        self.vlOS_f542_18.ident = "OSI-0078"
         self.vlOS_f542_18.description = ""
         self.prOS.addValue(self.vlOS_f542_18)
-        self.addNode(self.vlOS_f548_18)
-        self.vlOS_f548_18.ident = "OS_f548_18"
+        self.addItem(self.vlOS_f548_18)
+        self.vlOS_f548_18.ident = "OSI-0079"
         self.vlOS_f548_18.description = ""
         self.prOS.addValue(self.vlOS_f548_18)
-        self.addNode(self.vlOS_f554_18)
-        self.vlOS_f554_18.ident = "OS_f554_18"
+        self.addItem(self.vlOS_f554_18)
+        self.vlOS_f554_18.ident = "OSI-0080"
         self.vlOS_f554_18.description = ""
         self.prOS.addValue(self.vlOS_f554_18)
-        self.addNode(self.vlOS_f561_19)
-        self.vlOS_f561_19.ident = "OS_f561_19"
+        self.addItem(self.vlOS_f561_19)
+        self.vlOS_f561_19.ident = "OSI-0081"
         self.vlOS_f561_19.description = ""
         self.prOS.addValue(self.vlOS_f561_19)
-        self.addNode(self.vlOS_f568_19)
-        self.vlOS_f568_19.ident = "OS_f568_19"
+        self.addItem(self.vlOS_f568_19)
+        self.vlOS_f568_19.ident = "OSI-0082"
         self.vlOS_f568_19.description = ""
         self.prOS.addValue(self.vlOS_f568_19)
-        self.addNode(self.vlOS_f575_19)
-        self.vlOS_f575_19.ident = "OS_f575_19"
+        self.addItem(self.vlOS_f575_19)
+        self.vlOS_f575_19.ident = "OSI-0083"
         self.vlOS_f575_19.description = ""
         self.prOS.addValue(self.vlOS_f575_19)
-        self.addNode(self.vlOS_f583_20)
-        self.vlOS_f583_20.ident = "OS_f583_20"
+        self.addItem(self.vlOS_f583_20)
+        self.vlOS_f583_20.ident = "OSI-0084"
         self.vlOS_f583_20.description = ""
         self.prOS.addValue(self.vlOS_f583_20)
-        self.addNode(self.vlOS_f591_21)
-        self.vlOS_f591_21.ident = "OS_f591_21"
+        self.addItem(self.vlOS_f591_21)
+        self.vlOS_f591_21.ident = "OSI-0085"
         self.vlOS_f591_21.description = ""
         self.prOS.addValue(self.vlOS_f591_21)
-        self.addNode(self.vlOS_f599_22)
-        self.vlOS_f599_22.ident = "OS_f599_22"
+        self.addItem(self.vlOS_f599_22)
+        self.vlOS_f599_22.ident = "OSI-0086"
         self.vlOS_f599_22.description = ""
         self.prOS.addValue(self.vlOS_f599_22)
-        self.addNode(self.mdOSMode_f5xx)
-        self.mdOSMode_f5xx.ident = "OSMode_f5xx"
+        self.addItem(self.mdOSMode_f5xx)
+        self.mdOSMode_f5xx.ident = "OSI-0153"
         self.mdOSMode_f5xx.description = ""
         self.prOS.addMode(self.mdOSMode_f5xx)
-        self.addNode(self.vlOS_f477_14)
-        self.vlOS_f477_14.ident = "OS_f477_14"
+        self.addItem(self.vlOS_f477_14)
+        self.vlOS_f477_14.ident = "OSI-0065"
         self.vlOS_f477_14.description = ""
         self.prOS.addValue(self.vlOS_f477_14)
-        self.addNode(self.vlOS_f481_14)
-        self.vlOS_f481_14.ident = "OS_f481_14"
+        self.addItem(self.vlOS_f481_14)
+        self.vlOS_f481_14.ident = "OSI-0066"
         self.vlOS_f481_14.description = ""
         self.prOS.addValue(self.vlOS_f481_14)
-        self.addNode(self.mdOSMode_f4xx)
-        self.mdOSMode_f4xx.ident = "OSMode_f4xx"
+        self.addItem(self.mdOSMode_f4xx)
+        self.mdOSMode_f4xx.ident = "OSI-0154"
         self.mdOSMode_f4xx.description = ""
         self.prOS.addMode(self.mdOSMode_f4xx)
-        self.addNode(self.vlOS_f486_14)
-        self.vlOS_f486_14.ident = "OS_f486_14"
+        self.addItem(self.vlOS_f486_14)
+        self.vlOS_f486_14.ident = "OSI-0067"
         self.vlOS_f486_14.description = ""
         self.prOS.addValue(self.vlOS_f486_14)
-        self.addNode(self.vlOS_f469_14)
-        self.vlOS_f469_14.ident = "OS_f469_14"
+        self.addItem(self.vlOS_f469_14)
+        self.vlOS_f469_14.ident = "OSI-0063"
         self.vlOS_f469_14.description = ""
         self.prOS.addValue(self.vlOS_f469_14)
-        self.addNode(self.vlOS_f461_13)
-        self.vlOS_f461_13.ident = "OS_f461_13"
+        self.addItem(self.vlOS_f461_13)
+        self.vlOS_f461_13.ident = "OSI-0061"
         self.vlOS_f461_13.description = ""
         self.prOS.addValue(self.vlOS_f461_13)
-        self.addNode(self.vlOS_f499_15)
-        self.vlOS_f499_15.ident = "OS_f499_15"
+        self.addItem(self.vlOS_f499_15)
+        self.vlOS_f499_15.ident = "OSI-0070"
         self.vlOS_f499_15.description = ""
         self.prOS.addValue(self.vlOS_f499_15)
-        self.addNode(self.vlOS_f454_13)
-        self.vlOS_f454_13.ident = "OS_f454_13"
+        self.addItem(self.vlOS_f454_13)
+        self.vlOS_f454_13.ident = "OSI-0059"
         self.vlOS_f454_13.description = ""
         self.prOS.addValue(self.vlOS_f454_13)
-        self.addNode(self.vlOS_f451_13)
-        self.vlOS_f451_13.ident = "OS_f451_13"
+        self.addItem(self.vlOS_f451_13)
+        self.vlOS_f451_13.ident = "OSI-0058"
         self.vlOS_f451_13.description = ""
         self.prOS.addValue(self.vlOS_f451_13)
-        self.addNode(self.vlOS_f495_15)
-        self.vlOS_f495_15.ident = "OS_f495_15"
+        self.addItem(self.vlOS_f495_15)
+        self.vlOS_f495_15.ident = "OSI-0069"
         self.vlOS_f495_15.description = ""
         self.prOS.addValue(self.vlOS_f495_15)
-        self.addNode(self.vlOS_f465_13)
-        self.vlOS_f465_13.ident = "OS_f465_13"
+        self.addItem(self.vlOS_f465_13)
+        self.vlOS_f465_13.ident = "OSI-0062"
         self.vlOS_f465_13.description = ""
         self.prOS.addValue(self.vlOS_f465_13)
-        self.addNode(self.vlOS_f490_15)
-        self.vlOS_f490_15.ident = "OS_f490_15"
+        self.addItem(self.vlOS_f490_15)
+        self.vlOS_f490_15.ident = "OSI-0068"
         self.vlOS_f490_15.description = ""
         self.prOS.addValue(self.vlOS_f490_15)
-        self.addNode(self.vlOS_f458_13)
-        self.vlOS_f458_13.ident = "OS_f458_13"
+        self.addItem(self.vlOS_f458_13)
+        self.vlOS_f458_13.ident = "OSI-0060"
         self.vlOS_f458_13.description = ""
         self.prOS.addValue(self.vlOS_f458_13)
-        self.addNode(self.vlOS_f473_14)
-        self.vlOS_f473_14.ident = "OS_f473_14"
+        self.addItem(self.vlOS_f473_14)
+        self.vlOS_f473_14.ident = "OSI-0064"
         self.vlOS_f473_14.description = ""
         self.prOS.addValue(self.vlOS_f473_14)
-        self.addNode(self.vlOS_f638_25)
-        self.vlOS_f638_25.ident = "OS_f638_25"
+        self.addItem(self.vlOS_f638_25)
+        self.vlOS_f638_25.ident = "OSI-0090"
         self.vlOS_f638_25.description = ""
         self.prOS.addValue(self.vlOS_f638_25)
-        self.addNode(self.vlOS_f680_43)
-        self.vlOS_f680_43.ident = "OS_f680_43"
+        self.addItem(self.vlOS_f680_43)
+        self.vlOS_f680_43.ident = "OSI-0095"
         self.vlOS_f680_43.description = ""
         self.prOS.addValue(self.vlOS_f680_43)
-        self.addNode(self.vlOS_f608_22)
-        self.vlOS_f608_22.ident = "OS_f608_22"
+        self.addItem(self.vlOS_f608_22)
+        self.vlOS_f608_22.ident = "OSI-0087"
         self.vlOS_f608_22.description = ""
         self.prOS.addValue(self.vlOS_f608_22)
-        self.addNode(self.vlOS_f627_24)
-        self.vlOS_f627_24.ident = "OS_f627_24"
+        self.addItem(self.vlOS_f627_24)
+        self.vlOS_f627_24.ident = "OSI-0089"
         self.vlOS_f627_24.description = ""
         self.prOS.addValue(self.vlOS_f627_24)
-        self.addNode(self.vlOS_f694_44)
-        self.vlOS_f694_44.ident = "OS_f694_44"
+        self.addItem(self.vlOS_f694_44)
+        self.vlOS_f694_44.ident = "OSI-0096"
         self.vlOS_f694_44.description = ""
         self.prOS.addValue(self.vlOS_f694_44)
-        self.addNode(self.vlOS_f617_23)
-        self.vlOS_f617_23.ident = "OS_f617_23"
+        self.addItem(self.vlOS_f617_23)
+        self.vlOS_f617_23.ident = "OSI-0088"
         self.vlOS_f617_23.description = ""
         self.prOS.addValue(self.vlOS_f617_23)
-        self.addNode(self.vlOS_f666_36)
-        self.vlOS_f666_36.ident = "OS_f666_36"
+        self.addItem(self.vlOS_f666_36)
+        self.vlOS_f666_36.ident = "OSI-0094"
         self.vlOS_f666_36.description = ""
         self.prOS.addValue(self.vlOS_f666_36)
-        self.addNode(self.vlOS_f649_25)
-        self.vlOS_f649_25.ident = "OS_f649_25"
+        self.addItem(self.vlOS_f649_25)
+        self.vlOS_f649_25.ident = "OSI-0091"
         self.vlOS_f649_25.description = ""
         self.prOS.addValue(self.vlOS_f649_25)
-        self.addNode(self.vlOS_f657_35)
-        self.vlOS_f657_35.ident = "OS_f657_35"
+        self.addItem(self.vlOS_f657_35)
+        self.vlOS_f657_35.ident = "OSI-0093"
         self.vlOS_f657_35.description = ""
         self.prOS.addValue(self.vlOS_f657_35)
-        self.addNode(self.mdOSMode_f6xx)
-        self.mdOSMode_f6xx.ident = "OSMode_f6xx"
+        self.addItem(self.mdOSMode_f6xx)
+        self.mdOSMode_f6xx.ident = "OSI-0155"
         self.mdOSMode_f6xx.description = ""
         self.prOS.addMode(self.mdOSMode_f6xx)
-        self.addNode(self.vlOS_f661_27)
-        self.vlOS_f661_27.ident = "OS_f661_27"
+        self.addItem(self.vlOS_f661_27)
+        self.vlOS_f661_27.ident = "OSI-0092"
         self.vlOS_f661_27.description = ""
         self.prOS.addValue(self.vlOS_f661_27)
-        self.addNode(self.vlOS_f723_45)
-        self.vlOS_f723_45.ident = "OS_f723_45"
+        self.addItem(self.vlOS_f723_45)
+        self.vlOS_f723_45.ident = "OSI-0098"
         self.vlOS_f723_45.description = ""
         self.prOS.addValue(self.vlOS_f723_45)
-        self.addNode(self.mdOSMode_f7xx)
-        self.mdOSMode_f7xx.ident = "OSMode_f7xx"
+        self.addItem(self.mdOSMode_f7xx)
+        self.mdOSMode_f7xx.ident = "OSI-0156"
         self.mdOSMode_f7xx.description = ""
         self.prOS.addMode(self.mdOSMode_f7xx)
-        self.addNode(self.vlOS_f770_50)
-        self.vlOS_f770_50.ident = "OS_f770_50"
+        self.addItem(self.vlOS_f770_50)
+        self.vlOS_f770_50.ident = "OSI-0101"
         self.vlOS_f770_50.description = ""
         self.prOS.addValue(self.vlOS_f770_50)
-        self.addNode(self.vlOS_f738_49)
-        self.vlOS_f738_49.ident = "OS_f738_49"
+        self.addItem(self.vlOS_f738_49)
+        self.vlOS_f738_49.ident = "OSI-0099"
         self.vlOS_f738_49.description = ""
         self.prOS.addValue(self.vlOS_f738_49)
-        self.addNode(self.vlOS_f709_45)
-        self.vlOS_f709_45.ident = "OS_f709_45"
+        self.addItem(self.vlOS_f709_45)
+        self.vlOS_f709_45.ident = "OSI-0097"
         self.vlOS_f709_45.description = ""
         self.prOS.addValue(self.vlOS_f709_45)
-        self.addNode(self.vlOS_f754_50)
-        self.vlOS_f754_50.ident = "OS_f754_50"
+        self.addItem(self.vlOS_f754_50)
+        self.vlOS_f754_50.ident = "OSI-0100"
         self.vlOS_f754_50.description = ""
         self.prOS.addValue(self.vlOS_f754_50)
-        self.addNode(self.vlOS_f785_48)
-        self.vlOS_f785_48.ident = "OS_f785_48"
+        self.addItem(self.vlOS_f785_48)
+        self.vlOS_f785_48.ident = "OSI-0102"
         self.vlOS_f785_48.description = ""
         self.prOS.addValue(self.vlOS_f785_48)
-        self.addNode(self.vlOS_f923_34)
-        self.vlOS_f923_34.ident = "OS_f923_34"
+        self.addItem(self.vlOS_f923_34)
+        self.vlOS_f923_34.ident = "OSI-0112"
         self.vlOS_f923_34.description = ""
         self.prOS.addValue(self.vlOS_f923_34)
-        self.addNode(self.mdOSMode_f9xx)
-        self.mdOSMode_f9xx.ident = "OSMode_f9xx"
+        self.addItem(self.mdOSMode_f9xx)
+        self.mdOSMode_f9xx.ident = "OSI-0157"
         self.mdOSMode_f9xx.description = ""
         self.prOS.addMode(self.mdOSMode_f9xx)
-        self.addNode(self.vlOS_f932_34)
-        self.vlOS_f932_34.ident = "OS_f932_34"
+        self.addItem(self.vlOS_f932_34)
+        self.vlOS_f932_34.ident = "OSI-0114"
         self.vlOS_f932_34.description = ""
         self.prOS.addValue(self.vlOS_f932_34)
-        self.addNode(self.vlOS_f927_34)
-        self.vlOS_f927_34.ident = "OS_f927_34"
+        self.addItem(self.vlOS_f927_34)
+        self.vlOS_f927_34.ident = "OSI-0113"
         self.vlOS_f927_34.description = ""
         self.prOS.addValue(self.vlOS_f927_34)
-        self.addNode(self.vlOS_f902_44)
-        self.vlOS_f902_44.ident = "OS_f902_44"
+        self.addItem(self.vlOS_f902_44)
+        self.vlOS_f902_44.ident = "OSI-0109"
         self.vlOS_f902_44.description = ""
         self.prOS.addValue(self.vlOS_f902_44)
-        self.addNode(self.vlOS_f919_41)
-        self.vlOS_f919_41.ident = "OS_f919_41"
+        self.addItem(self.vlOS_f919_41)
+        self.vlOS_f919_41.ident = "OSI-0111"
         self.vlOS_f919_41.description = ""
         self.prOS.addValue(self.vlOS_f919_41)
-        self.addNode(self.vlOS_f910_40)
-        self.vlOS_f910_40.ident = "OS_f910_40"
+        self.addItem(self.vlOS_f910_40)
+        self.vlOS_f910_40.ident = "OSI-0110"
         self.vlOS_f910_40.description = ""
         self.prOS.addValue(self.vlOS_f910_40)
-        self.addNode(self.vlOS_f802_51)
-        self.vlOS_f802_51.ident = "OS_f802_51"
+        self.addItem(self.vlOS_f802_51)
+        self.vlOS_f802_51.ident = "OSI-0103"
         self.vlOS_f802_51.description = ""
         self.prOS.addValue(self.vlOS_f802_51)
-        self.addNode(self.vlOS_f878_59)
-        self.vlOS_f878_59.ident = "OS_f878_59"
+        self.addItem(self.vlOS_f878_59)
+        self.vlOS_f878_59.ident = "OSI-0107"
         self.vlOS_f878_59.description = ""
         self.prOS.addValue(self.vlOS_f878_59)
-        self.addNode(self.vlOS_f858_58)
-        self.vlOS_f858_58.ident = "OS_f858_58"
+        self.addItem(self.vlOS_f858_58)
+        self.vlOS_f858_58.ident = "OSI-0106"
         self.vlOS_f858_58.description = ""
         self.prOS.addValue(self.vlOS_f858_58)
-        self.addNode(self.vlOS_f893_50)
-        self.vlOS_f893_50.ident = "OS_f893_50"
+        self.addItem(self.vlOS_f893_50)
+        self.vlOS_f893_50.ident = "OSI-0108"
         self.vlOS_f893_50.description = ""
         self.prOS.addValue(self.vlOS_f893_50)
-        self.addNode(self.vlOS_f838_58)
-        self.vlOS_f838_58.ident = "OS_f838_58"
+        self.addItem(self.vlOS_f838_58)
+        self.vlOS_f838_58.ident = "OSI-0105"
         self.vlOS_f838_58.description = ""
         self.prOS.addValue(self.vlOS_f838_58)
-        self.addNode(self.vlOS_f819_52)
-        self.vlOS_f819_52.ident = "OS_f819_52"
+        self.addItem(self.vlOS_f819_52)
+        self.vlOS_f819_52.ident = "OSI-0104"
         self.vlOS_f819_52.description = ""
         self.prOS.addValue(self.vlOS_f819_52)
-        self.addNode(self.mdOSMode_f8xx)
-        self.mdOSMode_f8xx.ident = "OSMode_f8xx"
+        self.addItem(self.mdOSMode_f8xx)
+        self.mdOSMode_f8xx.ident = "OSI-0158"
         self.mdOSMode_f8xx.description = ""
         self.prOS.addMode(self.mdOSMode_f8xx)
-        self.addNode(self.mdFiltersMode_NoFilter)
-        self.mdFiltersMode_NoFilter.ident = "FiltersMode_NoFilter"
+        self.addItem(self.mdFiltersMode_NoFilter)
+        self.mdFiltersMode_NoFilter.ident = "OSI-0389"
         self.mdFiltersMode_NoFilter.description = ""
         self.sysFilters.addMode(self.mdFiltersMode_NoFilter)
-        self.addNode(self.mdFiltersMode_GR)
-        self.mdFiltersMode_GR.ident = "FiltersMode_GR"
+        self.addItem(self.mdFiltersMode_GR)
+        self.mdFiltersMode_GR.ident = "OSI-0390"
         self.mdFiltersMode_GR.description = ""
         self.sysFilters.addMode(self.mdFiltersMode_GR)
-        self.addNode(self.vlBroad_Sloan_u)
-        self.vlBroad_Sloan_u.ident = "Broad_Sloan_u"
+        self.addItem(self.vlBroad_Sloan_u)
+        self.vlBroad_Sloan_u.ident = "OSI-0028"
         self.vlBroad_Sloan_u.description = ""
         self.prBroad.addValue(self.vlBroad_Sloan_u)
-        self.addNode(self.vlBroad_Sloan_g)
-        self.vlBroad_Sloan_g.ident = "Broad_Sloan_g"
+        self.addItem(self.vlBroad_Sloan_g)
+        self.vlBroad_Sloan_g.ident = "OSI-0029"
         self.vlBroad_Sloan_g.description = ""
         self.prBroad.addValue(self.vlBroad_Sloan_g)
-        self.addNode(self.vlBroad_Sloan_r)
-        self.vlBroad_Sloan_r.ident = "Broad_Sloan_r"
+        self.addItem(self.vlBroad_Sloan_r)
+        self.vlBroad_Sloan_r.ident = "OSI-0030"
         self.vlBroad_Sloan_r.description = ""
         self.prBroad.addValue(self.vlBroad_Sloan_r)
-        self.addNode(self.vlBroad_Sloan_i)
-        self.vlBroad_Sloan_i.ident = "Broad_Sloan_i"
+        self.addItem(self.vlBroad_Sloan_i)
+        self.vlBroad_Sloan_i.ident = "OSI-0031"
         self.vlBroad_Sloan_i.description = ""
         self.prBroad.addValue(self.vlBroad_Sloan_i)
-        self.addNode(self.vlBroad_Sloan_z)
-        self.vlBroad_Sloan_z.ident = "Broad_Sloan_z"
+        self.addItem(self.vlBroad_Sloan_z)
+        self.vlBroad_Sloan_z.ident = "OSI-0032"
         self.vlBroad_Sloan_z.description = ""
         self.prBroad.addValue(self.vlBroad_Sloan_z)
-        self.addNode(self.mdBroadMode_All)
-        self.mdBroadMode_All.ident = "BroadMode_All"
+        self.addItem(self.mdBroadMode_All)
+        self.mdBroadMode_All.ident = "OSI-0618"
         self.mdBroadMode_All.description = ""
         self.prBroad.addMode(self.mdBroadMode_All)
-        self.addNode(self.mdFiltersMode_Broad)
-        self.mdFiltersMode_Broad.ident = "FiltersMode_Broad"
+        self.addItem(self.mdFiltersMode_Broad)
+        self.mdFiltersMode_Broad.ident = "OSI-0144"
         self.mdFiltersMode_Broad.description = ""
         self.sysFilters.addMode(self.mdFiltersMode_Broad)
-        self.addNode(self.mdFiltersMode_OSCalc)
-        self.mdFiltersMode_OSCalc.ident = "FiltersMode_OSCalc"
+        self.addItem(self.mdFiltersMode_OSCalc)
+        self.mdFiltersMode_OSCalc.ident = "FILT-0018"
         self.mdFiltersMode_OSCalc.description = ""
         self.sysFilters.addMode(self.mdFiltersMode_OSCalc)
-        self.addNode(self.mdDetectorMode_FT)
-        self.mdDetectorMode_FT.ident = "DetectorMode_FT"
+        self.addItem(self.mdDetectorMode_FT)
+        self.mdDetectorMode_FT.ident = "OSI-0606"
         self.mdDetectorMode_FT.description = ""
         self.sysDetector.addMode(self.mdDetectorMode_FT)
-        self.addNode(self.mdDetectorMode_Window)
-        self.mdDetectorMode_Window.ident = "DetectorMode_Window"
+        self.addItem(self.mdDetectorMode_Window)
+        self.mdDetectorMode_Window.ident = "OSI-0414"
         self.mdDetectorMode_Window.description = ""
         self.sysDetector.addMode(self.mdDetectorMode_Window)
-        self.addNode(self.mdOutputSourceMode_0x0)
-        self.mdOutputSourceMode_0x0.ident = "OutputSourceMode_0x0"
+        self.addItem(self.mdOutputSourceMode_0x0)
+        self.mdOutputSourceMode_0x0.ident = "OSI-0440"
         self.mdOutputSourceMode_0x0.description = ""
         self.sysOutputSource.addMode(self.mdOutputSourceMode_0x0)
-        self.addNode(self.mdOutputSourceMode_0x1)
-        self.mdOutputSourceMode_0x1.ident = "OutputSourceMode_0x1"
+        self.addItem(self.mdOutputSourceMode_0x1)
+        self.mdOutputSourceMode_0x1.ident = "OSI-0441"
         self.mdOutputSourceMode_0x1.description = ""
         self.sysOutputSource.addMode(self.mdOutputSourceMode_0x1)
-        self.addNode(self.mdOutputSourceMode_0x2)
-        self.mdOutputSourceMode_0x2.ident = "OutputSourceMode_0x2"
+        self.addItem(self.mdOutputSourceMode_0x2)
+        self.mdOutputSourceMode_0x2.ident = "OSI-0442"
         self.mdOutputSourceMode_0x2.description = ""
         self.sysOutputSource.addMode(self.mdOutputSourceMode_0x2)
-        self.addNode(self.mdOutputSourceMode_0x3)
-        self.mdOutputSourceMode_0x3.ident = "OutputSourceMode_0x3"
+        self.addItem(self.mdOutputSourceMode_0x3)
+        self.mdOutputSourceMode_0x3.ident = "OSI-0443"
         self.mdOutputSourceMode_0x3.description = ""
         self.sysOutputSource.addMode(self.mdOutputSourceMode_0x3)
-        self.addNode(self.mdOutputSourceMode_ALL)
-        self.mdOutputSourceMode_ALL.ident = "OutputSourceMode_ALL"
+        self.addItem(self.mdOutputSourceMode_ALL)
+        self.mdOutputSourceMode_ALL.ident = "OSI-0444"
         self.mdOutputSourceMode_ALL.description = ""
         self.sysOutputSource.addMode(self.mdOutputSourceMode_ALL)
-        self.addNode(self.mdOutputSourceMode_TWO)
-        self.mdOutputSourceMode_TWO.ident = "OutputSourceMode_TWO"
+        self.addItem(self.mdOutputSourceMode_TWO)
+        self.mdOutputSourceMode_TWO.ident = "OSI-0445"
         self.mdOutputSourceMode_TWO.description = ""
         self.sysOutputSource.addMode(self.mdOutputSourceMode_TWO)
-        self.addNode(self.mdRecompositionMode_None)
-        self.mdRecompositionMode_None.ident = "RecompositionMode_None"
+        self.addItem(self.mdRecompositionMode_None)
+        self.mdRecompositionMode_None.ident = "OSI-0446"
         self.mdRecompositionMode_None.description = ""
         self.sysRecomposition.addMode(self.mdRecompositionMode_None)
-        self.addNode(self.mdRecompositionMode_Serial)
-        self.mdRecompositionMode_Serial.ident = "RecompositionMode_Serial"
+        self.addItem(self.mdRecompositionMode_Serial)
+        self.mdRecompositionMode_Serial.ident = "OSI-0448"
         self.mdRecompositionMode_Serial.description = ""
         self.sysRecomposition.addMode(self.mdRecompositionMode_Serial)
-        self.addNode(self.mdRecompositionMode_QuadCCD)
-        self.mdRecompositionMode_QuadCCD.ident = "RecompositionMode_QuadCCD"
+        self.addItem(self.mdRecompositionMode_QuadCCD)
+        self.mdRecompositionMode_QuadCCD.ident = "OSI-0449"
         self.mdRecompositionMode_QuadCCD.description = ""
         self.sysRecomposition.addMode(self.mdRecompositionMode_QuadCCD)
-        self.addNode(self.mdDetectorMode_FullDetector)
-        self.mdDetectorMode_FullDetector.ident = "DetectorMode_FullDetector"
+        self.addItem(self.mdDetectorMode_FullDetector)
+        self.mdDetectorMode_FullDetector.ident = "OSI-0413"
         self.mdDetectorMode_FullDetector.description = ""
         self.sysDetector.addMode(self.mdDetectorMode_FullDetector)
-        self.addNode(self.mdDetectorMode_WindowSq)
-        self.mdDetectorMode_WindowSq.ident = "DetectorMode_WindowSq"
+        self.addItem(self.mdDetectorMode_WindowSq)
+        self.mdDetectorMode_WindowSq.ident = "OSI-0628"
         self.mdDetectorMode_WindowSq.description = ""
         self.sysDetector.addMode(self.mdDetectorMode_WindowSq)
-        self.addNode(self.mdDetectorMode_FullDetectorSq)
-        self.mdDetectorMode_FullDetectorSq.ident = "DetectorMode_FullDetectorSq"
+        self.addItem(self.mdDetectorMode_FullDetectorSq)
+        self.mdDetectorMode_FullDetectorSq.ident = "OSI-0629"
         self.mdDetectorMode_FullDetectorSq.description = ""
         self.sysDetector.addMode(self.mdDetectorMode_FullDetectorSq)
-        self.addNode(self.vlBinning_1x1)
-        self.vlBinning_1x1.ident = "Binning_1x1"
+        self.addItem(self.vlBinning_1x1)
+        self.vlBinning_1x1.ident = "OSI-0630"
         self.vlBinning_1x1.description = ""
         self.prBinning.addValue(self.vlBinning_1x1)
-        self.addNode(self.vlBinning_1x2)
-        self.vlBinning_1x2.ident = "Binning_1x2"
+        self.addItem(self.vlBinning_1x2)
+        self.vlBinning_1x2.ident = "OSI-0631"
         self.vlBinning_1x2.description = ""
         self.prBinning.addValue(self.vlBinning_1x2)
-        self.addNode(self.vlBinning_2x1)
-        self.vlBinning_2x1.ident = "Binning_2x1"
+        self.addItem(self.vlBinning_2x1)
+        self.vlBinning_2x1.ident = "OSI-0632"
         self.vlBinning_2x1.description = ""
         self.prBinning.addValue(self.vlBinning_2x1)
-        self.addNode(self.vlBinning_2x2)
-        self.vlBinning_2x2.ident = "Binning_2x2"
+        self.addItem(self.vlBinning_2x2)
+        self.vlBinning_2x2.ident = "OSI-0633"
         self.vlBinning_2x2.description = ""
         self.prBinning.addValue(self.vlBinning_2x2)
-        self.addNode(self.mdBinningMode_All)
-        self.mdBinningMode_All.ident = "BinningMode_All"
+        self.addItem(self.mdBinningMode_All)
+        self.mdBinningMode_All.ident = "OSI-0634"
         self.mdBinningMode_All.description = ""
         self.prBinning.addMode(self.mdBinningMode_All)
-        self.addNode(self.mdBinningMode_Square)
-        self.mdBinningMode_Square.ident = "BinningMode_Square"
+        self.addItem(self.mdBinningMode_Square)
+        self.mdBinningMode_Square.ident = "OSI-0635"
         self.mdBinningMode_Square.description = ""
         self.prBinning.addMode(self.mdBinningMode_Square)
-        self.addNode(self.mdBinningMode_Off)
-        self.mdBinningMode_Off.ident = "BinningMode_Off"
+        self.addItem(self.mdBinningMode_Off)
+        self.mdBinningMode_Off.ident = "OSI-0636"
         self.mdBinningMode_Off.description = ""
         self.prBinning.addMode(self.mdBinningMode_Off)
-        self.addNode(self.mdWindowMode_Enabled)
-        self.mdWindowMode_Enabled.ident = "WindowMode_Enabled"
+        self.addItem(self.mdWindowMode_Enabled)
+        self.mdWindowMode_Enabled.ident = "OSI-0460"
         self.mdWindowMode_Enabled.description = ""
         self.sysWindow.addMode(self.mdWindowMode_Enabled)
-        self.addNode(self.mdRowsMode_Normal)
-        self.mdRowsMode_Normal.ident = "RowsMode_Normal"
+        self.addItem(self.mdRowsMode_Normal)
+        self.mdRowsMode_Normal.ident = "OSI-0419"
         self.mdRowsMode_Normal.description = ""
         self.prRows.addMode(self.mdRowsMode_Normal)
-        self.addNode(self.vlRows_FullRange)
-        self.vlRows_FullRange.ident = "Rows_FullRange"
+        self.addItem(self.vlRows_FullRange)
+        self.vlRows_FullRange.ident = "OSI-0420"
         self.vlRows_FullRange.description = ""
         self.prRows.addValue(self.vlRows_FullRange)
-        self.addNode(self.mdColsMode_Normal)
-        self.mdColsMode_Normal.ident = "ColsMode_Normal"
+        self.addItem(self.mdColsMode_Normal)
+        self.mdColsMode_Normal.ident = "OSI-0415"
         self.mdColsMode_Normal.description = ""
         self.prCols.addMode(self.mdColsMode_Normal)
-        self.addNode(self.vlCols_FullRange)
-        self.vlCols_FullRange.ident = "Cols_FullRange"
+        self.addItem(self.vlCols_FullRange)
+        self.vlCols_FullRange.ident = "OSI-0416"
         self.vlCols_FullRange.description = ""
         self.prCols.addValue(self.vlCols_FullRange)
-        self.addNode(self.mdoffsetRowMode_Normal)
-        self.mdoffsetRowMode_Normal.ident = "offsetRowMode_Normal"
+        self.addItem(self.mdoffsetRowMode_Normal)
+        self.mdoffsetRowMode_Normal.ident = "OSI-0417"
         self.mdoffsetRowMode_Normal.description = ""
         self.proffsetRow.addMode(self.mdoffsetRowMode_Normal)
-        self.addNode(self.vloffsetRow_FullRange)
-        self.vloffsetRow_FullRange.ident = "offsetRow_FullRange"
+        self.addItem(self.vloffsetRow_FullRange)
+        self.vloffsetRow_FullRange.ident = "OSI-0418"
         self.vloffsetRow_FullRange.description = ""
         self.proffsetRow.addValue(self.vloffsetRow_FullRange)
-        self.addNode(self.mdoffsetColMode_Normal)
-        self.mdoffsetColMode_Normal.ident = "offsetColMode_Normal"
+        self.addItem(self.mdoffsetColMode_Normal)
+        self.mdoffsetColMode_Normal.ident = "OSI-0421"
         self.mdoffsetColMode_Normal.description = ""
         self.proffsetCol.addMode(self.mdoffsetColMode_Normal)
-        self.addNode(self.vloffsetCol_FullRange)
-        self.vloffsetCol_FullRange.ident = "offsetCol_FullRange"
+        self.addItem(self.vloffsetCol_FullRange)
+        self.vloffsetCol_FullRange.ident = "OSI-0422"
         self.vloffsetCol_FullRange.description = ""
         self.proffsetCol.addValue(self.vloffsetCol_FullRange)
-        self.addNode(self.mdWindowMode_Disabled)
-        self.mdWindowMode_Disabled.ident = "WindowMode_Disabled"
+        self.addItem(self.mdWindowMode_Disabled)
+        self.mdWindowMode_Disabled.ident = "GEOM-0002"
         self.mdWindowMode_Disabled.description = ""
         self.sysWindow.addMode(self.mdWindowMode_Disabled)
-        self.addNode(self.mdOsirisMode_Engineering)
-        self.mdOsirisMode_Engineering.ident = "OsirisMode_Engineering"
-        self.mdOsirisMode_Engineering.description = "Osiris engineering mode"
-        self.sysOsiris.addMode(self.mdOsirisMode_Engineering)
-        self.addNode(self.mdObservingModesMode_Engineering)
-        self.mdObservingModesMode_Engineering.ident = "ObservingModesMode_Engineering"
-        self.mdObservingModesMode_Engineering.description = "ObservingModes engineering mode"
-        self.sysObservingModes.addMode(self.mdObservingModesMode_Engineering)
-        self.addNode(self.mdAcquisitionModesMode_Engineering)
-        self.mdAcquisitionModesMode_Engineering.ident = "AcquisitionModesMode_Engineering"
-        self.mdAcquisitionModesMode_Engineering.description = "AcquisitionModes engineering mode"
-        self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_Engineering)
-        self.addNode(self.mdFiltersMode_Engineering)
-        self.mdFiltersMode_Engineering.ident = "FiltersMode_Engineering"
-        self.mdFiltersMode_Engineering.description = "Filters engineering mode"
-        self.sysFilters.addMode(self.mdFiltersMode_Engineering)
-        self.addNode(self.mdDetectorMode_Engineering)
-        self.mdDetectorMode_Engineering.ident = "DetectorMode_Engineering"
+        self.addItem(self.mdDetectorMode_Engineering)
+        self.mdDetectorMode_Engineering.ident = "ENG-1"
         self.mdDetectorMode_Engineering.description = "Detector engineering mode"
         self.sysDetector.addMode(self.mdDetectorMode_Engineering)
-        self.addNode(self.mdOutputSourceMode_Engineering)
-        self.mdOutputSourceMode_Engineering.ident = "OutputSourceMode_Engineering"
+        self.addItem(self.mdOutputSourceMode_Engineering)
+        self.mdOutputSourceMode_Engineering.ident = "ENG-2"
         self.mdOutputSourceMode_Engineering.description = "OutputSource engineering mode"
         self.sysOutputSource.addMode(self.mdOutputSourceMode_Engineering)
-        self.addNode(self.mdWindowMode_Engineering)
-        self.mdWindowMode_Engineering.ident = "WindowMode_Engineering"
+        self.addItem(self.mdWindowMode_Engineering)
+        self.mdWindowMode_Engineering.ident = "ENG-3"
         self.mdWindowMode_Engineering.description = "Window engineering mode"
         self.sysWindow.addMode(self.mdWindowMode_Engineering)
-        self.addNode(self.mdDASMode_Engineering)
-        self.mdDASMode_Engineering.ident = "DASMode_Engineering"
+        self.addItem(self.mdDASMode_Engineering)
+        self.mdDASMode_Engineering.ident = "ENG-4"
         self.mdDASMode_Engineering.description = "DAS engineering mode"
         self.sysDAS.addMode(self.mdDASMode_Engineering)
-        self.addNode(self.mdAcquisitionMode_Engineering)
-        self.mdAcquisitionMode_Engineering.ident = "AcquisitionMode_Engineering"
+        self.addItem(self.mdAcquisitionMode_Engineering)
+        self.mdAcquisitionMode_Engineering.ident = "ENG-5"
         self.mdAcquisitionMode_Engineering.description = "Acquisition engineering mode"
         self.sysAcquisition.addMode(self.mdAcquisitionMode_Engineering)
-        self.addNode(self.mdMultipleExposureMode_Engineering)
-        self.mdMultipleExposureMode_Engineering.ident = "MultipleExposureMode_Engineering"
+        self.addItem(self.mdMultipleExposureMode_Engineering)
+        self.mdMultipleExposureMode_Engineering.ident = "ENG-6"
         self.mdMultipleExposureMode_Engineering.description = "MultipleExposure engineering mode"
         self.sysMultipleExposure.addMode(self.mdMultipleExposureMode_Engineering)
-        self.addNode(self.mdProcessMonitorMode_Engineering)
-        self.mdProcessMonitorMode_Engineering.ident = "ProcessMonitorMode_Engineering"
+        self.addItem(self.mdProcessMonitorMode_Engineering)
+        self.mdProcessMonitorMode_Engineering.ident = "ENG-7"
         self.mdProcessMonitorMode_Engineering.description = "ProcessMonitor engineering mode"
         self.sysProcessMonitor.addMode(self.mdProcessMonitorMode_Engineering)
-        self.addNode(self.mdPreOpticsMode_Engineering)
-        self.mdPreOpticsMode_Engineering.ident = "PreOpticsMode_Engineering"
+        self.addItem(self.mdPreOpticsMode_Engineering)
+        self.mdPreOpticsMode_Engineering.ident = "ENG-8"
         self.mdPreOpticsMode_Engineering.description = "PreOptics engineering mode"
         self.sysPreOptics.addMode(self.mdPreOpticsMode_Engineering)
-        self.addNode(self.mdRedTFMode_Engineering)
-        self.mdRedTFMode_Engineering.ident = "RedTFMode_Engineering"
+        self.addItem(self.mdRedTFMode_Engineering)
+        self.mdRedTFMode_Engineering.ident = "ENG-9"
         self.mdRedTFMode_Engineering.description = "RedTF engineering mode"
         self.sysRedTF.addMode(self.mdRedTFMode_Engineering)
-        self.addNode(self.mdBlueTFMode_Engineering)
-        self.mdBlueTFMode_Engineering.ident = "BlueTFMode_Engineering"
+        self.addItem(self.mdBlueTFMode_Engineering)
+        self.mdBlueTFMode_Engineering.ident = "ENG-10"
         self.mdBlueTFMode_Engineering.description = "BlueTF engineering mode"
         self.sysBlueTF.addMode(self.mdBlueTFMode_Engineering)
-        self.addNode(self.mdFPEMode_Engineering)
-        self.mdFPEMode_Engineering.ident = "FPEMode_Engineering"
+        self.addItem(self.mdOsirisMode_Engineering)
+        self.mdOsirisMode_Engineering.ident = "ENG-11"
+        self.mdOsirisMode_Engineering.description = "Osiris engineering mode"
+        self.sysOsiris.addMode(self.mdOsirisMode_Engineering)
+        self.addItem(self.mdObservingModesMode_Engineering)
+        self.mdObservingModesMode_Engineering.ident = "ENG-12"
+        self.mdObservingModesMode_Engineering.description = "ObservingModes engineering mode"
+        self.sysObservingModes.addMode(self.mdObservingModesMode_Engineering)
+        self.addItem(self.mdAcquisitionModesMode_Engineering)
+        self.mdAcquisitionModesMode_Engineering.ident = "ENG-13"
+        self.mdAcquisitionModesMode_Engineering.description = "AcquisitionModes engineering mode"
+        self.sysAcquisitionModes.addMode(self.mdAcquisitionModesMode_Engineering)
+        self.addItem(self.mdFiltersMode_Engineering)
+        self.mdFiltersMode_Engineering.ident = "ENG-14"
+        self.mdFiltersMode_Engineering.description = "Filters engineering mode"
+        self.sysFilters.addMode(self.mdFiltersMode_Engineering)
+        self.addItem(self.mdFPEMode_Engineering)
+        self.mdFPEMode_Engineering.ident = "ENG-15"
         self.mdFPEMode_Engineering.description = "FPE engineering mode"
         self.sysFPE.addMode(self.mdFPEMode_Engineering)
         # Marcamos ObservingModesMode_FastBBI como elegible para OsirisMode_Imaging
@@ -2549,6 +2164,94 @@ class osirisPORIS(PORISDoc):
         self.mdObservingModesMode_Engineering.addSubMode(self.mdAcquisitionModesMode_Throughslit)
         # Marcamos AcquisitionModesMode_Engineering como elegible para ObservingModesMode_Engineering
         self.mdObservingModesMode_Engineering.addSubMode(self.mdAcquisitionModesMode_Engineering)
+        # Marcamos FPEMode_NoFPE como elegible para AcquisitionModesMode_aBBI
+        self.mdAcquisitionModesMode_aBBI.addSubMode(self.mdFPEMode_NoFPE)
+        # Marcamos FPEMode_NoFPE como elegible para AcquisitionModesMode_aTFI
+        self.mdAcquisitionModesMode_aTFI.addSubMode(self.mdFPEMode_NoFPE)
+        # Marcamos FPEMode_LSMask como elegible para AcquisitionModesMode_aLSSpec
+        self.mdAcquisitionModesMode_aLSSpec.addSubMode(self.mdFPEMode_LSMask)
+        # Marcamos FPEMode_MOSmask como elegible para AcquisitionModesMode_aMOS
+        self.mdAcquisitionModesMode_aMOS.addSubMode(self.mdFPEMode_MOSmask)
+        # Marcamos FPEMode_FastPhotometryMask como elegible para AcquisitionModesMode_aFastBBI
+        self.mdAcquisitionModesMode_aFastBBI.addSubMode(self.mdFPEMode_FastPhotometryMask)
+        # Marcamos FPEMode_FrameTransferMask como elegible para AcquisitionModesMode_aFrTrBBI
+        self.mdAcquisitionModesMode_aFrTrBBI.addSubMode(self.mdFPEMode_FrameTransferMask)
+        # Marcamos FPEMode_LSMask como elegible para AcquisitionModesMode_aFastLSSpec
+        self.mdAcquisitionModesMode_aFastLSSpec.addSubMode(self.mdFPEMode_LSMask)
+        # Marcamos FPEMode_FastPhotometryMask como elegible para AcquisitionModesMode_aFastTFImage
+        self.mdAcquisitionModesMode_aFastTFImage.addSubMode(self.mdFPEMode_FastPhotometryMask)
+        # Marcamos FPEMode_FrameTransferMask como elegible para AcquisitionModesMode_aFrTrTFI
+        self.mdAcquisitionModesMode_aFrTrTFI.addSubMode(self.mdFPEMode_FrameTransferMask)
+        # Marcamos FPEMode_NoFPE como elegible para AcquisitionModesMode_aTFCalib
+        self.mdAcquisitionModesMode_aTFCalib.addSubMode(self.mdFPEMode_NoFPE)
+        # Marcamos FPEMode_MOSmask como elegible para AcquisitionModesMode_Throughslit
+        self.mdAcquisitionModesMode_Throughslit.addSubMode(self.mdFPEMode_MOSmask)
+        # Marcamos FPEMode_NoFPE como elegible para AcquisitionModesMode_Engineering
+        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_NoFPE)
+        # Marcamos FPEMode_MOSmask como elegible para AcquisitionModesMode_Engineering
+        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_MOSmask)
+        # Marcamos FPEMode_FastPhotometryMask como elegible para AcquisitionModesMode_Engineering
+        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_FastPhotometryMask)
+        # Marcamos FPEMode_FrameTransferMask como elegible para AcquisitionModesMode_Engineering
+        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_FrameTransferMask)
+        # Marcamos FPEMode_LSMask como elegible para AcquisitionModesMode_Engineering
+        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_LSMask)
+        # Marcamos FPEMode_Engineering como elegible para AcquisitionModesMode_Engineering
+        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_Engineering)
+        # Marcamos FocalPlaneElementMode_Disabled como elegible para FPEMode_NoFPE
+        self.mdFPEMode_NoFPE.addSubMode(self.mdFocalPlaneElementMode_Disabled)
+        # Marcamos FocalPlaneElementMode_MOS como elegible para FPEMode_MOSmask
+        self.mdFPEMode_MOSmask.addSubMode(self.mdFocalPlaneElementMode_MOS)
+        # Marcamos FocalPlaneElementMode_FastPhotometry como elegible para FPEMode_FastPhotometryMask
+        self.mdFPEMode_FastPhotometryMask.addSubMode(self.mdFocalPlaneElementMode_FastPhotometry)
+        # Marcamos FocalPlaneElementMode_FrameTransfer como elegible para FPEMode_FrameTransferMask
+        self.mdFPEMode_FrameTransferMask.addSubMode(self.mdFocalPlaneElementMode_FrameTransfer)
+        # Marcamos FocalPlaneElementMode_LS como elegible para FPEMode_LSMask
+        self.mdFPEMode_LSMask.addSubMode(self.mdFocalPlaneElementMode_LS)
+        # Marcamos FocalPlaneElementMode_Disabled como elegible para FPEMode_Engineering
+        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_Disabled)
+        # Marcamos FocalPlaneElementMode_MOS como elegible para FPEMode_Engineering
+        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_MOS)
+        # Marcamos FocalPlaneElementMode_FastPhotometry como elegible para FPEMode_Engineering
+        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_FastPhotometry)
+        # Marcamos FocalPlaneElementMode_FrameTransfer como elegible para FPEMode_Engineering
+        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_FrameTransfer)
+        # Marcamos FocalPlaneElementMode_LS como elegible para FPEMode_Engineering
+        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_LS)
+        # Marcamos FocalPlaneElement_NoFPE como elegible para FocalPlaneElementMode_Disabled
+        self.mdFocalPlaneElementMode_Disabled.addValue(self.vlFocalPlaneElement_NoFPE)
+        # Marcamos FocalPlaneElement_MOSmask como elegible para FocalPlaneElementMode_MOS
+        self.mdFocalPlaneElementMode_MOS.addValue(self.vlFocalPlaneElement_MOSmask)
+        # Marcamos FocalPlaneElement_FastPhotometryMask como elegible para FocalPlaneElementMode_FastPhotometry
+        self.mdFocalPlaneElementMode_FastPhotometry.addValue(self.vlFocalPlaneElement_FastPhotometryMask)
+        # Marcamos FocalPlaneElement_FrameTransferMask como elegible para FocalPlaneElementMode_FrameTransfer
+        self.mdFocalPlaneElementMode_FrameTransfer.addValue(self.vlFocalPlaneElement_FrameTransferMask)
+        # Marcamos FocalPlaneElement_LS1_5 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS1_5)
+        # Marcamos FocalPlaneElement_LS1_8 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS1_8)
+        # Marcamos FocalPlaneElement_LS1_0 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS1_0)
+        # Marcamos FocalPlaneElement_LS5_0 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS5_0)
+        # Marcamos FocalPlaneElement_LS40_0 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS40_0)
+        # Marcamos FocalPlaneElement_LS0_8 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS0_8)
+        # Marcamos FocalPlaneElement_LS1_2 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS1_2)
+        # Marcamos FocalPlaneElement_LS12_0 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS12_0)
+        # Marcamos FocalPlaneElement_LS0_4 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS0_4)
+        # Marcamos FocalPlaneElement_LS2_5 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS2_5)
+        # Marcamos FocalPlaneElement_LS3_0 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS3_0)
+        # Marcamos FocalPlaneElement_LS10_0 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS10_0)
+        # Marcamos FocalPlaneElement_LS0_6 como elegible para FocalPlaneElementMode_LS
+        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS0_6)
         # Marcamos DASMode_SimpleImg como elegible para AcquisitionModesMode_aBBI
         self.mdAcquisitionModesMode_aBBI.addSubMode(self.mdDASMode_SimpleImg)
         # Marcamos DASMode_SimpleImg como elegible para AcquisitionModesMode_aTFI
@@ -3189,94 +2892,6 @@ class osirisPORIS(PORISDoc):
         self.mdPreOpticsMode_Engineering.addSubMode(self.mdzzeroMode_Normal)
         # Marcamos zzero_NormalRange como elegible para zzeroMode_Normal
         self.mdzzeroMode_Normal.addValue(self.vlzzero_NormalRange)
-        # Marcamos FPEMode_NoFPE como elegible para AcquisitionModesMode_aBBI
-        self.mdAcquisitionModesMode_aBBI.addSubMode(self.mdFPEMode_NoFPE)
-        # Marcamos FPEMode_NoFPE como elegible para AcquisitionModesMode_aTFI
-        self.mdAcquisitionModesMode_aTFI.addSubMode(self.mdFPEMode_NoFPE)
-        # Marcamos FPEMode_LSMask como elegible para AcquisitionModesMode_aLSSpec
-        self.mdAcquisitionModesMode_aLSSpec.addSubMode(self.mdFPEMode_LSMask)
-        # Marcamos FPEMode_MOSmask como elegible para AcquisitionModesMode_aMOS
-        self.mdAcquisitionModesMode_aMOS.addSubMode(self.mdFPEMode_MOSmask)
-        # Marcamos FPEMode_FastPhotometryMask como elegible para AcquisitionModesMode_aFastBBI
-        self.mdAcquisitionModesMode_aFastBBI.addSubMode(self.mdFPEMode_FastPhotometryMask)
-        # Marcamos FPEMode_FrameTransferMask como elegible para AcquisitionModesMode_aFrTrBBI
-        self.mdAcquisitionModesMode_aFrTrBBI.addSubMode(self.mdFPEMode_FrameTransferMask)
-        # Marcamos FPEMode_LSMask como elegible para AcquisitionModesMode_aFastLSSpec
-        self.mdAcquisitionModesMode_aFastLSSpec.addSubMode(self.mdFPEMode_LSMask)
-        # Marcamos FPEMode_FastPhotometryMask como elegible para AcquisitionModesMode_aFastTFImage
-        self.mdAcquisitionModesMode_aFastTFImage.addSubMode(self.mdFPEMode_FastPhotometryMask)
-        # Marcamos FPEMode_FrameTransferMask como elegible para AcquisitionModesMode_aFrTrTFI
-        self.mdAcquisitionModesMode_aFrTrTFI.addSubMode(self.mdFPEMode_FrameTransferMask)
-        # Marcamos FPEMode_NoFPE como elegible para AcquisitionModesMode_aTFCalib
-        self.mdAcquisitionModesMode_aTFCalib.addSubMode(self.mdFPEMode_NoFPE)
-        # Marcamos FPEMode_MOSmask como elegible para AcquisitionModesMode_Throughslit
-        self.mdAcquisitionModesMode_Throughslit.addSubMode(self.mdFPEMode_MOSmask)
-        # Marcamos FPEMode_NoFPE como elegible para AcquisitionModesMode_Engineering
-        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_NoFPE)
-        # Marcamos FPEMode_MOSmask como elegible para AcquisitionModesMode_Engineering
-        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_MOSmask)
-        # Marcamos FPEMode_FastPhotometryMask como elegible para AcquisitionModesMode_Engineering
-        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_FastPhotometryMask)
-        # Marcamos FPEMode_FrameTransferMask como elegible para AcquisitionModesMode_Engineering
-        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_FrameTransferMask)
-        # Marcamos FPEMode_LSMask como elegible para AcquisitionModesMode_Engineering
-        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_LSMask)
-        # Marcamos FPEMode_Engineering como elegible para AcquisitionModesMode_Engineering
-        self.mdAcquisitionModesMode_Engineering.addSubMode(self.mdFPEMode_Engineering)
-        # Marcamos FocalPlaneElementMode_Disabled como elegible para FPEMode_NoFPE
-        self.mdFPEMode_NoFPE.addSubMode(self.mdFocalPlaneElementMode_Disabled)
-        # Marcamos FocalPlaneElementMode_MOS como elegible para FPEMode_MOSmask
-        self.mdFPEMode_MOSmask.addSubMode(self.mdFocalPlaneElementMode_MOS)
-        # Marcamos FocalPlaneElementMode_FastPhotometry como elegible para FPEMode_FastPhotometryMask
-        self.mdFPEMode_FastPhotometryMask.addSubMode(self.mdFocalPlaneElementMode_FastPhotometry)
-        # Marcamos FocalPlaneElementMode_FrameTransfer como elegible para FPEMode_FrameTransferMask
-        self.mdFPEMode_FrameTransferMask.addSubMode(self.mdFocalPlaneElementMode_FrameTransfer)
-        # Marcamos FocalPlaneElementMode_LS como elegible para FPEMode_LSMask
-        self.mdFPEMode_LSMask.addSubMode(self.mdFocalPlaneElementMode_LS)
-        # Marcamos FocalPlaneElementMode_Disabled como elegible para FPEMode_Engineering
-        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_Disabled)
-        # Marcamos FocalPlaneElementMode_MOS como elegible para FPEMode_Engineering
-        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_MOS)
-        # Marcamos FocalPlaneElementMode_FastPhotometry como elegible para FPEMode_Engineering
-        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_FastPhotometry)
-        # Marcamos FocalPlaneElementMode_FrameTransfer como elegible para FPEMode_Engineering
-        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_FrameTransfer)
-        # Marcamos FocalPlaneElementMode_LS como elegible para FPEMode_Engineering
-        self.mdFPEMode_Engineering.addSubMode(self.mdFocalPlaneElementMode_LS)
-        # Marcamos FocalPlaneElement_NoFPE como elegible para FocalPlaneElementMode_Disabled
-        self.mdFocalPlaneElementMode_Disabled.addValue(self.vlFocalPlaneElement_NoFPE)
-        # Marcamos FocalPlaneElement_MOSmask como elegible para FocalPlaneElementMode_MOS
-        self.mdFocalPlaneElementMode_MOS.addValue(self.vlFocalPlaneElement_MOSmask)
-        # Marcamos FocalPlaneElement_FastPhotometryMask como elegible para FocalPlaneElementMode_FastPhotometry
-        self.mdFocalPlaneElementMode_FastPhotometry.addValue(self.vlFocalPlaneElement_FastPhotometryMask)
-        # Marcamos FocalPlaneElement_FrameTransferMask como elegible para FocalPlaneElementMode_FrameTransfer
-        self.mdFocalPlaneElementMode_FrameTransfer.addValue(self.vlFocalPlaneElement_FrameTransferMask)
-        # Marcamos FocalPlaneElement_LS1_5 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS1_5)
-        # Marcamos FocalPlaneElement_LS1_8 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS1_8)
-        # Marcamos FocalPlaneElement_LS1_0 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS1_0)
-        # Marcamos FocalPlaneElement_LS5_0 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS5_0)
-        # Marcamos FocalPlaneElement_LS40_0 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS40_0)
-        # Marcamos FocalPlaneElement_LS0_8 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS0_8)
-        # Marcamos FocalPlaneElement_LS1_2 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS1_2)
-        # Marcamos FocalPlaneElement_LS12_0 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS12_0)
-        # Marcamos FocalPlaneElement_LS0_4 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS0_4)
-        # Marcamos FocalPlaneElement_LS2_5 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS2_5)
-        # Marcamos FocalPlaneElement_LS3_0 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS3_0)
-        # Marcamos FocalPlaneElement_LS10_0 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS10_0)
-        # Marcamos FocalPlaneElement_LS0_6 como elegible para FocalPlaneElementMode_LS
-        self.mdFocalPlaneElementMode_LS.addValue(self.vlFocalPlaneElement_LS0_6)
         # Marcamos FiltersMode_Broad como elegible para PreOpticsMode_NoDispersion
         self.mdPreOpticsMode_NoDispersion.addSubMode(self.mdFiltersMode_Broad)
         # Marcamos FiltersMode_UFilter como elegible para PreOpticsMode_NoDispersion
@@ -3739,6 +3354,32 @@ class osirisPORIS(PORISDoc):
 
     def set_AcquisitionModesMode(self, mode: PORISMode)-> PORISMode :
         return self.sysAcquisitionModes.selectMode(mode)
+
+
+    ## FPEMode 
+    def get_FPEMode(self)-> PORISMode:
+        return self.sysFPE.getSelectedMode()
+
+    def set_FPEMode(self, mode: PORISMode)-> PORISMode :
+        return self.sysFPE.selectMode(mode)
+
+
+    ## prParam FocalPlaneElement 
+
+    # FocalPlaneElement
+    def get_FocalPlaneElement(self)-> PORISValue :
+        return self.prFocalPlaneElement.getSelectedValue()
+
+    def set_FocalPlaneElement(self, value: PORISValue)-> PORISValue :
+        return self.prFocalPlaneElement.setValue(value)
+
+
+    ## FocalPlaneElementMode 
+    def get_FocalPlaneElementMode(self)-> PORISMode:
+        return self.prFocalPlaneElement.getSelectedMode()
+
+    def set_FocalPlaneElementMode(self, mode: PORISMode)-> PORISMode :
+        return self.prFocalPlaneElement.selectMode(mode)
 
 
     ## DASMode 
@@ -4475,32 +4116,6 @@ class osirisPORIS(PORISDoc):
 
     def set_zzeroDouble(self, data: float)-> float :
         return self.przzero.getSelectedValue().setData(data)
-
-
-    ## FPEMode 
-    def get_FPEMode(self)-> PORISMode:
-        return self.sysFPE.getSelectedMode()
-
-    def set_FPEMode(self, mode: PORISMode)-> PORISMode :
-        return self.sysFPE.selectMode(mode)
-
-
-    ## prParam FocalPlaneElement 
-
-    # FocalPlaneElement
-    def get_FocalPlaneElement(self)-> PORISValue :
-        return self.prFocalPlaneElement.getSelectedValue()
-
-    def set_FocalPlaneElement(self, value: PORISValue)-> PORISValue :
-        return self.prFocalPlaneElement.setValue(value)
-
-
-    ## FocalPlaneElementMode 
-    def get_FocalPlaneElementMode(self)-> PORISMode:
-        return self.prFocalPlaneElement.getSelectedMode()
-
-    def set_FocalPlaneElementMode(self, mode: PORISMode)-> PORISMode :
-        return self.prFocalPlaneElement.selectMode(mode)
 
 
     ## FiltersMode 
