@@ -9,7 +9,7 @@ class osiris_physical(osirisPORIS):
     pass
 
 
-thismodel = osiris_physical(12)
+thismodel = osiris_physical(1)
 
 print("Let's test our model ",thismodel.getRoot().getName())
 print("Current mode is ",thismodel.getRoot().getSelectedMode().getName())
