@@ -164,6 +164,64 @@ def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: st
     poriscinitstr = ""
     poriscinitrelstr = ""
 
+    # Validate nodes for common GraphML/model inconsistencies before generating code
+    errors = validate_nodes(nodes_dict)
+    if errors:
+        print("ERROR: validation failed before generating PORIS code. Detected issues:")
+        for err in errors:
+            print(" - ", err)
+        raise Exception("Node validation failed. Fix the GraphML/relations and retry.")
+
+
+def validate_nodes(nodes_dict):
+    """Validate nodes relationships to detect common GraphML/parameter inconsistencies.
+
+    Rules enforced:
+    - Every `prParam` must have at least one `prMode` child.
+    - A `prMode` may block `prMode` nodes from other parents, but if it blocks a value
+      (`prValue`, `prValFloat`, `prValText`) then that value must belong to the same
+      parameter (same `parent`).
+    - All referenced blocking ids must exist in the nodes dictionary.
+    Returns a list of human-readable error strings (empty if ok).
+    """
+    errors = []
+
+    for ident, node in nodes_dict.items():
+        tracker = node.get('tracker')
+
+        # Parameters must have at least one mode
+        if tracker == 'prParam':
+            has_mode = False
+            for ch in node.get('children', []):
+                if ch in nodes_dict and nodes_dict[ch].get('tracker') == 'prMode':
+                    has_mode = True
+                    break
+            if not has_mode:
+                errors.append(f"Parameter {ident} ('{node.get('subject','')}') has no modes")
+
+        # Modes must not link to values in a different parameter
+        if tracker == 'prMode':
+            mode_parent = node.get('parent')
+            for b in node.get('blocking', []):
+                if b not in nodes_dict:
+                    errors.append(f"Node {ident} blocks unknown node id '{b}'")
+                    continue
+                bnode = nodes_dict[b]
+                btracker = bnode.get('tracker')
+                if btracker in ('prValue', 'prValFloat', 'prValText'):
+                    val_parent = bnode.get('parent')
+                    if mode_parent != val_parent:
+                        errors.append(
+                            f"Invalid relation: mode {ident} ('{node.get('subject','')}') blocks value {b} ('{bnode.get('subject','')}') but parents differ (mode parent={mode_parent}, value parent={val_parent})."
+                        )
+                elif btracker == 'prMode':
+                    # mode-to-mode blocking is acceptable
+                    pass
+                else:
+                    errors.append(f"Mode {ident} blocks node {b} of unexpected type '{btracker}'")
+
+    return errors
+
     for thiskey in nodes_dict.keys():
         thisnode = nodes_dict[thiskey]
         nodename = nametoidl(thisnode['subject'])
