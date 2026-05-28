@@ -146,33 +146,6 @@ def build_nodes_tree(nodes_dict, savemem=None):
 methods_dict = {}
 
 
-def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: str):
-    """Generate PORIS Python constructor code."""
-    global methods_dict
-
-    savemem = config.savemem
-
-    methodsstr = "    #----------------------------------------------------------------------\n"
-    methodsstr += "    #  Specific methods\n"
-    methodsstr += "    #----------------------------------------------------------------------\n\n"
-    porishstr = "from PORIS import *\n\n"
-    porishstr += "class " + deviceName + "PORIS(PORISDoc):\n"
-    porishstr += "    def __init__(self, project_id):\n"
-    porishstr += "        super().__init__(project_id)\n"
-    poriscstr = ""
-
-    poriscinitstr = ""
-    poriscinitrelstr = ""
-
-    # Validate nodes for common GraphML/model inconsistencies before generating code
-    errors = validate_nodes(nodes_dict)
-    if errors:
-        print("ERROR: validation failed before generating PORIS code. Detected issues:")
-        for err in errors:
-            print(" - ", err)
-        raise Exception("Node validation failed. Fix the GraphML/relations and retry.")
-
-
 def validate_nodes(nodes_dict):
     """Validate nodes relationships to detect common GraphML/parameter inconsistencies.
 
@@ -221,6 +194,32 @@ def validate_nodes(nodes_dict):
                     errors.append(f"Mode {ident} blocks node {b} of unexpected type '{btracker}'")
 
     return errors
+
+def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: str):
+    """Generate PORIS Python constructor code."""
+    global methods_dict
+
+    savemem = config.savemem
+
+    methodsstr = "    #----------------------------------------------------------------------\n"
+    methodsstr += "    #  Specific methods\n"
+    methodsstr += "    #----------------------------------------------------------------------\n\n"
+    porishstr = "from PORIS import *\n\n"
+    porishstr += "class " + deviceName + "PORIS(PORISDoc):\n"
+    porishstr += "    def __init__(self, project_id):\n"
+    porishstr += "        super().__init__(project_id)\n"
+    poriscstr = ""
+
+    poriscinitstr = ""
+    poriscinitrelstr = ""
+
+    # Validate nodes for common GraphML/model inconsistencies before generating code
+    errors = validate_nodes(nodes_dict)
+    if errors:
+        print("ERROR: validation failed before generating PORIS code. Detected issues:")
+        for err in errors:
+            print(" - ", err)
+        raise Exception("Node validation failed. Fix the GraphML/relations and retry.")
 
     for thiskey in nodes_dict.keys():
         thisnode = nodes_dict[thiskey]
