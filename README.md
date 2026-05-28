@@ -9,6 +9,7 @@ A set of tools to manipulate PORIS instruments:
 - porispanel_dir_csys.sh Adds to porispanel_dir.sh the synchronization with a cosmoSys instance.
 - xmlporispanel.sh Launches a configuration panel from a PORIS model representation in XML file.
 - redoPorisPython.sh and doPorisPython.sh converts an ODS representation of a PORIS model into convenient Python classes.
+- runPorisModel.sh Generates the Python model with its physical companion if missing, and executes the physical model.
 
 The models are taken from the ./models folder and the Python classes are generated inside ./output folder.
 
