@@ -34,6 +34,10 @@ def desctomonit(n):
     return nametoidl(n.split('\n')[0].split('\r')[0])
 
 
+def pystr(n):
+    return repr("" if n is None else str(n))
+
+
 def build_nodes_tree(nodes_dict, savemem=None):
     """Augment nodes dict with relationships, virtual/engineering nodes and return tree."""
     if savemem is None:
@@ -266,6 +270,7 @@ def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: st
                 poriscinitstr += "        self.addItem(self.pr" + nodename + ")\n"
                 if not savemem:
                     poriscinitstr += "        self.pr" + nodename + ".ident = \"" + thisnode['ident'] + "\"\n"
+                    poriscinitstr += "        self.pr" + nodename + ".setXMLName(" + pystr(thisnode['subject']) + ")\n"
                     poriscinitstr += "        self.pr" + nodename + ".description = \"" + desctomonit(thisnode['description']) + "\"\n"
 
                 if parentNode is not None:
@@ -299,6 +304,7 @@ def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: st
                 poriscinitstr += "        self.addItem(self.sys" + nodename + ")\n"
                 if not savemem:
                     poriscinitstr += "        self.sys" + nodename + ".ident = \"" + thisnode['ident'] + "\"\n"
+                    poriscinitstr += "        self.sys" + nodename + ".setXMLName(" + pystr(thisnode['subject']) + ")\n"
                     poriscinitstr += "        self.sys" + nodename + ".description = \"" + desctomonit(thisnode['description']) + "\"\n"
 
                 if parentNode is not None:
@@ -474,6 +480,7 @@ def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: st
 
                 if not savemem:
                     poriscinitstr += "        self.md" + parentNodeName + "Mode_" + nodename + ".ident = \"" + thisnode['ident'] + "\"\n"
+                    poriscinitstr += "        self.md" + parentNodeName + "Mode_" + nodename + ".setXMLName(" + pystr(thisnode['subject']) + ")\n"
                     poriscinitstr += "        self.md" + parentNodeName + "Mode_" + nodename + ".description = \"" + desctomonit(thisnode['description']) + "\"\n"
 
                 if parentNode['tracker'] == "prParam":
@@ -502,6 +509,7 @@ def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: st
 
                         if not savemem:
                             poriscinitstr += "        self.vl" + parentNodeName + "_" + nodename + ".ident = \"" + thisnode['ident'] + "\"\n"
+                            poriscinitstr += "        self.vl" + parentNodeName + "_" + nodename + ".setXMLName(" + pystr(thisnode['subject']) + ")\n"
                             poriscinitstr += "        self.vl" + parentNodeName + "_" + nodename + ".description = \"" + desctomonit(thisnode['description']) + "\"\n"
 
                         poriscinitstr += "        self.pr" + parentNodeName + ".addValue(self.vl" + parentNodeName + "_" + nodename + ")\n"
@@ -518,6 +526,7 @@ def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: st
 
                         if not savemem:
                             poriscinitstr += "        self.vl" + parentNodeName + "_" + nodename + ".ident = \"" + thisnode['ident'] + "\"\n"
+                            poriscinitstr += "        self.vl" + parentNodeName + "_" + nodename + ".setXMLName(" + pystr(thisnode['subject']) + ")\n"
                             poriscinitstr += "        self.vl" + parentNodeName + "_" + nodename + ".description = \"" + desctomonit(thisnode['description']) + "\"\n"
 
                         poriscinitstr += "        self.pr" + parentNodeName + ".addValue(self.vl" + parentNodeName + "_" + nodename + ")\n"
@@ -533,6 +542,7 @@ def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: st
                             poriscinitstr += "        self.addItem(self.vl" + parentNodeName + "_" + nodename + ")\n"
                             if not savemem:
                                 poriscinitstr += "        self.vl" + parentNodeName + "_" + nodename + ".ident = \"" + thisnode['ident'] + "\"\n"
+                                poriscinitstr += "        self.vl" + parentNodeName + "_" + nodename + ".setXMLName(" + pystr(thisnode['subject']) + ")\n"
                                 poriscinitstr += "        self.vl" + parentNodeName + "_" + nodename + ".description = \"" + desctomonit(thisnode['description']) + "\"\n"
 
                             poriscinitstr += "        self.pr" + parentNodeName + ".addValue(self.vl" + parentNodeName + "_" + nodename + ")\n"

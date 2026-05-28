@@ -237,6 +237,7 @@ class PORIS:
         self.__labels = {}           # A dictionary of labels for this item, the scope_kind acts as a key
         self.__node_attributes = {}  # A dictionary of node attributes for this item, the content acts as a key
         self.__project_id = 0 # The project where the item is described
+        self.__xml_name = None
 
     # ID getter
     def getId(self) -> int:
@@ -254,6 +255,15 @@ class PORIS:
     # Name setter
     def setName(self, name: str) -> str:
         self.__name = name
+
+    def getXMLName(self) -> str:
+        if self.__xml_name is not None:
+            return self.__xml_name
+
+        return self.getName()
+
+    def setXMLName(self, name: str):
+        self.__xml_name = name
 
     # Parent getter
     def setParent(self, parent: PORISNode):
@@ -292,6 +302,9 @@ class PORIS:
     # visibility is a flag which determines if the attribute shall be shown to end users, or kept hidden for them
     def setNodeAttribute(self, name: str, content: str, visibility: bool):
         self.__node_attributes[name] = {"content": content, "visibility": visibility }
+
+    def isXMLExportableReference(self) -> bool:
+        return self.document is not None and self.getId() is not None
    
     # Getter for the destinations of this item
     # It will be overloaded by subclasses
@@ -347,7 +360,7 @@ class PORIS:
        
         # subnode with the name of the item
         nameChild = dom.createElement('name')
-        valueText = dom.createTextNode(self.getName())
+        valueText = dom.createTextNode(self.getXMLName())
         nameChild.appendChild(valueText)
         n_node.appendChild(nameChild)
        
@@ -425,6 +438,8 @@ class PORIS:
         destinations_node.setAttribute("type","array")
         dests = self.getDestinations()
         for d in dests:
+            if not d.isXMLExportableReference():
+                continue
             destnode = dom.createElement('destination')
             destnode.setAttribute("type", d.getXMLType())
             destnode.appendChild(d.toXMLRef(dom))
@@ -1393,24 +1408,14 @@ class PORISNode(PORIS):
         prevIdx = self.unknownMode.getId()
         ret += self.unknownMode.setId(i+ret)
         if prevIdx is not None:
-            print("Removes ",prevIdx)
-            print(self.modes.keys())
             self.modes.pop(prevIdx, None)
-            print(self.modes.keys())
             self.modes[self.unknownMode.getId()] = self.unknownMode
-            print(self.modes.keys())
-            print("------")
 
         prevIdx = self.engineeringMode.getId()
         ret += self.engineeringMode.setId(i+ret)
         if prevIdx is not None:
-            print("Removes ",prevIdx)
-            print(self.modes.keys())
             self.modes.pop(prevIdx, None)
-            print(self.modes.keys())
             self.modes[self.engineeringMode.getId()] = self.engineeringMode
-            print(self.modes.keys())
-            print("------")
         
         return ret
     
@@ -1669,7 +1674,7 @@ class PORISNode(PORIS):
         # WARNING: It looks like the java panel is not correctly using default mode
 
         m = self.getDefaultMode()
-        if m is None:
+        if m is None or not m.isXMLExportableReference():
             defaultmodenode.setAttribute("nil","true")
             
         else:
@@ -2321,15 +2326,13 @@ class PORISDoc:
             thiskey = k
             destinations = []
             for d in n.getDestinations():
+                if not d.isXMLExportableReference():
+                    continue
                 destinations.append(str(d.getId()))
                 
             node_and_destinations[thiskey] = destinations
 
 
-        print(node_and_destinations)
-        # print("----> Initial LEN ", len(node_and_destinations))
-        # print("################################")
-        
         finished = False
         ordered_list = []
         
@@ -2337,16 +2340,15 @@ class PORISDoc:
             # Let's look for nodes without destinations
             nodes_without_destinations = []
             for k in node_and_destinations:
-                print(k, len(node_and_destinations[k]), node_and_destinations[k])
                 if len(node_and_destinations[k]) == 0:
                     nodes_without_destinations.append(int(k))
 
             # Now, let's add them to the ordered list
             ordered_list += nodes_without_destinations
 
-            print("################################")
-            print("----> To remove ", len(nodes_without_destinations))
-            print(nodes_without_destinations)
+            if len(nodes_without_destinations) == 0:
+                ordered_list += sorted([int(k) for k in node_and_destinations.keys()])
+                break
 
                     
             # And let's remove them from the nodes_and_destinations dictionary

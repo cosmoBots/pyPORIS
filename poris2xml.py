@@ -103,6 +103,7 @@ parser = argparse.ArgumentParser(description='Launches a PORIS device generation
 
 ## The second argument is the api ODS file
 parser.add_argument('sys_file',type=argparse.FileType('r'), help="the path of a file containing the PORIS instrument description")
+parser.add_argument('--output-dir', help="directory where the generated XML file will be stored (defaults to the ODS folder)")
 
 # Obtaining the arguments from the command line
 args=parser.parse_args()
@@ -950,7 +951,9 @@ def createPorisXML(nodes_dict,deviceName):
     onlyname = basenamelist[0]
     extension = basenamelist[1]
     xmlextension = ".xml"
-    save_path_file = os.path.join(dirname,onlyname+xmlextension)
+    target_dir = args.output_dir if args.output_dir is not None else dirname
+    os.makedirs(target_dir, exist_ok=True)
+    save_path_file = os.path.join(target_dir,onlyname+xmlextension)
 
     with open(save_path_file, "wb") as f:
         f.write(xml_str) 

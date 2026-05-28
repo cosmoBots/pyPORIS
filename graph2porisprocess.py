@@ -62,7 +62,7 @@ def get_project_tree(thisproject,rootproject,projects):
   return result
 
 
-def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_python=True, python_output_dir=None):
+def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None):
   global file_data
   global localcsids
   global inverse_localcsids
@@ -693,7 +693,9 @@ def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_
         
 
       if emit_ods:
-        save_data(os.path.join(dirname,onlyname+odsextension), data)
+        target_ods_dir = ods_output_dir if ods_output_dir is not None else dirname
+        os.makedirs(target_ods_dir, exist_ok=True)
+        save_data(os.path.join(target_ods_dir,onlyname+odsextension), data)
 
       if emit_python:
         target_dir = python_output_dir if python_output_dir is not None else dirname

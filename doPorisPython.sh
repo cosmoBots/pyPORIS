@@ -91,6 +91,7 @@ echo ${DEVNAME}
 echo ${OUTPUT_BASE}
 OUTPUT_BASE_DIR=${DEVBASE_PATH}/output/py/${DEVNAME}
 OUTPUT_PORIS_DIR=${OUTPUT_BASE_DIR}/${DEVNAME}
+OUTPUT_ODS_DIR=${DEVBASE_PATH}/output/ods/${OUTPUT_BASE}
 
 # The path for the C++ base folder for the devices
 
@@ -101,6 +102,8 @@ OUTPUT_PORIS_DIR=${OUTPUT_BASE_DIR}/${DEVNAME}
 # between the two variables
 PORIS_TOOLS_PATH=${SCRIPT_DIR}
 PORIS_TOOLS_PYTHON_PATH=${SCRIPT_DIR}
+PORIS_RUNTIME_PYTHON_PATH=${SCRIPT_DIR}/PORIS
+export PYTHONPATH="${PORIS_RUNTIME_PYTHON_PATH}:${PYTHONPATH}"
 echo "path"
 echo ${PORIS_TOOLS_PATH}
 echo ${PORIS_TOOLS_PYTHON_PATH}
@@ -121,7 +124,7 @@ rm -rf ${OUTPUT_BASE_DIR}
 # Let's create the product directories
 echo "Creating ${OUTPUT_PORIS_DIR}"
 mkdir -p ${OUTPUT_PORIS_DIR}
-ln -s ../../../../pyPORIS/PORIS/PORIS.py ${OUTPUT_PORIS_DIR}/PORIS.py
+mkdir -p ${OUTPUT_ODS_DIR}
 
 ######### If no USER CUSTOM CODE FOLDER ADDED, COPY THE TEMPLATE ONE #############
 echo "Checking the existence of ${OUTPUT_PHYS_PATH}"
@@ -139,8 +142,6 @@ else
   sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
   sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
   sed -i "s/DEVICENAME/$DEVNAME/" ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
-  ln -s ../${DEVNAME}/${DEVNAME}PORIS.py ${OUTPUT_PHYS_PATH}/${DEVNAME}PORIS.py
-  ln -s ../../../../pyPORIS/PORIS/PORIS.py ${OUTPUT_PHYS_PATH}/PORIS.py
 fi
 
 ######### PARSING THE MODEL AND GENERATING THE PORIS PRODUCTS ###############
@@ -152,18 +153,13 @@ if [ $GENERATE_ODS -eq 1 ]; then
   ODS_FLAG=""
 fi
 if [ $DIRMODE -eq 1 ]; then
-  python3 ${PORIS_TOOLS_PYTHON_PATH}/graphdir2poris.py $ODS_FLAG --output-dir ${OUTPUT_PORIS_DIR} models/$1 || { echo 'graphdir2poris.py failed' ; exit 1; }
+  python3 ${PORIS_TOOLS_PYTHON_PATH}/graphdir2poris.py $ODS_FLAG --output-dir ${OUTPUT_PORIS_DIR} --ods-output-dir ${OUTPUT_ODS_DIR} models/$1 || { echo 'graphdir2poris.py failed' ; exit 1; }
 else
-  python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py $ODS_FLAG models/$1.graphml --output-dir ${OUTPUT_PORIS_DIR} || { echo 'graph2poris.py failed' ; exit 1; }
+  python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py $ODS_FLAG models/$1.graphml --output-dir ${OUTPUT_PORIS_DIR} --ods-output-dir ${OUTPUT_ODS_DIR} || { echo 'graph2poris.py failed' ; exit 1; }
 fi
 
 MODEL_DIR="${FILE}"
 if [ $DIRMODE -eq 0 ]; then
   MODEL_DIR="$(dirname "${FILE}")"
 fi
-if [ ! -e "${MODEL_DIR}/PORIS.py" ]; then
-  echo "Creating model directory symlink ${MODEL_DIR}/PORIS.py -> ${SCRIPT_DIR}/PORIS/PORIS.py"
-  ln -s "${SCRIPT_DIR}/PORIS/PORIS.py" "${MODEL_DIR}/PORIS.py"
-fi
-
 echo "Fin!"

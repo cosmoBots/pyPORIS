@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser(description='Launches a PORIS device generation
 parser.add_argument('sys_file',type=argparse.FileType('r'), help="the path of a file containing the PORIS instrument diagram")
 parser.add_argument('--no-ods', action='store_true', help="skip ODS generation")
 parser.add_argument('--output-dir', help="directory where the generated Python file will be stored (defaults to the GraphML folder)")
+parser.add_argument('--ods-output-dir', help="directory where the generated ODS file will be stored (defaults to the GraphML folder)")
 
 # Obtaining the arguments from the command line
 args=parser.parse_args()
@@ -22,4 +23,11 @@ print("Device name:",deviceName)
 # As an example of a constant defined in the configuration file, we'll print the welcome message
 print(config.welcome_message)
 
-create_ods_file_from_graphml_file(args.sys_file.name,deviceName, emit_ods=not args.no_ods, emit_python=True, python_output_dir=args.output_dir)
+create_ods_file_from_graphml_file(
+    args.sys_file.name,
+    deviceName,
+    emit_ods=not args.no_ods,
+    emit_python=True,
+    python_output_dir=args.output_dir,
+    ods_output_dir=args.ods_output_dir,
+)

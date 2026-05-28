@@ -60,7 +60,7 @@ def create_global_path(ndict,key,project):
   else:
     return None
 
-def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python=True, python_output_dir=None):
+def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None):
   #print(dirname+'/*.graphml')
   filenames = glob.glob(dirname+'/*.graphml')
   #filenames = glob.glob(dirname+'/*')
@@ -706,7 +706,7 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
     extension = basenamelist[1]
     odsextension = ".ods"
     if emit_ods:
-      ods_dir = python_output_dir if python_output_dir is not None else dirname
+      ods_dir = ods_output_dir if ods_output_dir is not None else dirname
       os.makedirs(ods_dir, exist_ok=True)
       save_data(os.path.join(ods_dir, deviceName + odsextension), data)
 
