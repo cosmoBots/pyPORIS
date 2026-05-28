@@ -49,25 +49,7 @@ else
   fi
 fi
 
-if [ -z ${PORIS_SAFETY_OVERRIDE+x} ]; then 
-    echo "PORIS_SAFETY_OVERRIDE is not set, checking repo is clean";
-    if [ -z "$(git status --porcelain)" ]; then 
-        echo "Welcome to doPorisPython.sh"
-    else 
-        # Uncommitted changes
-        echo "ERROR: YOUR REPOSITORY IS NOT CLEAN"
-        echo "As executing this process can overwrite manual code"
-        echo "you are encouraged to have commited/reverted any change"
-        echo "in the repo so in case of loosing something you will have"
-        echo "the opportunity to recover it (in case you commited it)"
-        echo "or you will be the only responsible of having lost it "
-        echo "(in case you reverted)."
-        exit 1;
-    fi
-else
-    echo "PORIS_SAFETY_OVERRIDE is set, skip checking repo is clean";
-    echo "Welcome to doPorisPython.sh"
-fi
+echo "Welcome to doPorisPython.sh"
 
 ######### SAFETY AREA ############
 
@@ -117,8 +99,8 @@ echo "Welcome to Python code generator por PORIS models"
 
 ######### CLEANING AREA ###############
 # We will clean the previous products
-echo "Cleaning previous generated products"
-rm -rf ${OUTPUT_BASE_DIR}
+echo "Cleaning previous generated automatic products"
+rm -rf ${OUTPUT_PORIS_DIR}
 
 ######### CREATING FOLDERS AREA ###############
 # Let's create the product directories
@@ -130,7 +112,11 @@ mkdir -p ${OUTPUT_ODS_DIR}
 echo "Checking the existence of ${OUTPUT_PHYS_PATH}"
 if [ -d "$OUTPUT_PHYS_PATH" ]; then
   ### Take action if $DEVBASE_PHYS_PATH exists ###
-  echo "${OUTPUT_PHYS_PATH} already present, nothing to do"
+  echo "${OUTPUT_PHYS_PATH} already present, preserving editable physical code"
+elif [ -e "$OUTPUT_PHYS_PATH" ]; then
+  echo "ERROR: ${OUTPUT_PHYS_PATH} exists but is not a directory"
+  echo "Refusing to overwrite editable physical product"
+  exit 1
 else
   ###  Control will jump here if $DEVBASE_PYTHON_PHYS_PATH does NOT exists ###
   echo "${OUTPUT_PHYS_PATH} not found. Copying template dir."

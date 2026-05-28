@@ -222,6 +222,8 @@ class PORISDoc:
 # subclases overload them when convenient
 class PORIS:
     pass
+class PORISCmd:
+    pass
 class PORIS:
     # Constructor, needs a name for the PORIS item
     def __init__(self,name):
@@ -617,6 +619,86 @@ class PORIS:
         else:
             ret = None
                                         
+        return ret
+
+class PORISCmd(PORIS):
+    def __init__(self,name):
+        super().__init__(name)
+        self.initCommandDefaults()
+
+    def initCommandDefaults(self):
+        self.__action_name = None
+        self.__callback = None
+        self.__handler_name = None
+        self.__trace_path = None
+
+    def getXMLNodeName(self) -> str:
+        return "command"
+
+    def getXMLNodeType(self) -> int:
+        return 0
+
+    def setActionName(self, name: str):
+        self.__action_name = name
+
+    def getActionName(self) -> str:
+        if self.__action_name is not None:
+            return self.__action_name
+
+        return self.getName()
+
+    def setCallback(self, callback):
+        self.__callback = callback
+
+    def registerCallback(self, callback):
+        self.setCallback(callback)
+
+    def clearCallback(self):
+        self.__callback = None
+
+    def setHandlerName(self, name: str):
+        self.__handler_name = name
+
+    def getHandlerName(self) -> str:
+        return self.__handler_name
+
+    def setTracePath(self, path: str):
+        self.__trace_path = path
+
+    def getTraceName(self) -> str:
+        if self.document is not None:
+            doc_name = self.document.__class__.__name__
+        else:
+            doc_name = "PORISDoc"
+
+        if self.__trace_path is not None:
+            return doc_name + "." + self.__trace_path
+
+        return doc_name + "." + self.getActionName()
+
+    def defaultExecute(self, *args, **kwargs) -> bool:
+        print("executing " + self.getTraceName() + "()")
+        return True
+
+    def execute(self, *args, **kwargs):
+        if self.__callback is not None:
+            return self.__callback(*args, **kwargs)
+
+        if self.__handler_name is not None and self.document is not None:
+            handler = getattr(self.document, self.__handler_name, None)
+            if handler is not None:
+                return handler(*args, **kwargs)
+
+        return self.defaultExecute(*args, **kwargs)
+
+    def __call__(self, *args, **kwargs):
+        return self.execute(*args, **kwargs)
+
+    def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISCmd:
+        ret = super(PORISCmd,PORISCmd).fromXML(n_node, pdoc)
+        if ret is not None:
+            ret.__class__ = PORISCmd
+            ret.initCommandDefaults()
         return ret
 
 ##################################################
@@ -2023,6 +2105,7 @@ class PORISSys(PORISNode):
         super().__init__(name)
         self.params = {}
         self.subsystems = {}
+        self.commands = {}
 
     # Adds a parameters to the parameters dictionary
     def addParam(self,p: PORISParam):
@@ -2035,6 +2118,29 @@ class PORISSys(PORISNode):
         self.subsystems[s.getId()] = s
         s.setParent(self)
         # self.engineeringMode.addSubMode(s.engineeringMode)
+
+    def addCommand(self,c):
+        self.commands[c.getId()] = c
+        c.setParent(self)
+
+        action_name = c.getActionName()
+        if action_name is not None and action_name.isidentifier():
+            setattr(self, action_name, c.execute)
+
+    def getCommandFromName(self, name: str):
+        for c in self.commands.values():
+            if c.getActionName() == name or c.getName() == name:
+                return c
+
+        return None
+
+    def setCommandCallback(self, name: str, callback):
+        cmd = self.getCommandFromName(name)
+        if cmd is None:
+            return False
+
+        cmd.setCallback(callback)
+        return True
         
     # This function allows the user to select a mode for the current system
     # It takes a mode candidate and tries to apply it.  If not possible, then 
@@ -2202,6 +2308,9 @@ class PORISSys(PORISNode):
 
         for k in self.subsystems:
             ret.append(self.subsystems[k])
+
+        for k in self.commands:
+            ret.append(self.commands[k])
                             
         return ret
 
@@ -2223,6 +2332,7 @@ class PORISSys(PORISNode):
             # TODO: Parse these values
             ret.params = {}
             ret.subsystems = {}
+            ret.commands = {}
 
             destnode: minidom.Node = n_node.getElementsByTagName("destinations")[0]
             # print("destnode:",destnode.localName)
@@ -2242,6 +2352,9 @@ class PORISSys(PORISNode):
                             # Let's see the destinations to know if it is a PORISSys or a PORISParam
                             ret.addSubsystem(dest)
                             # print(ret.subsystems)
+
+                        if (issubclass(dest.__class__,PORISCmd)):
+                            ret.addCommand(dest)
                     
         
         return ret
@@ -2470,7 +2583,11 @@ class PORISDoc:
                                                 
                                                 else:
                                                     if (ch.localName == "value-file-path"):
-                                                        md = PORISValueFilePath.fromXML(ch, self)                                                                          
+                                                        md = PORISValueFilePath.fromXML(ch, self)
+
+                                                    else:
+                                                        if (ch.localName == "command"):
+                                                            md = PORISCmd.fromXML(ch, self)
             else:
                 print("not parsing")
     

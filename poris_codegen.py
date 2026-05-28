@@ -549,15 +549,24 @@ def createPythonCode(nodes_dict, deviceName, output_path: str, relative_path: st
 
                         else:
                             if thisclass == "prCmd":
+                                porishstr += "        self.cmd" + parentNodeName + "_" + nodename + " = PORISCmd(\"" + parentNodeName + "_" + nodename + "\")\n"
+                                poriscinitstr += "        self.addItem(self.cmd" + parentNodeName + "_" + nodename + ")\n"
+                                poriscinitstr += "        self.cmd" + parentNodeName + "_" + nodename + ".setActionName(\"" + nodename + "\")\n"
+                                poriscinitstr += "        self.cmd" + parentNodeName + "_" + nodename + ".setHandlerName(\"exec" + parentNodeName + "_" + nodename + "\")\n"
+                                poriscinitstr += "        self.cmd" + parentNodeName + "_" + nodename + ".setTracePath(\"sys" + parentNodeName + "." + nodename + "\")\n"
+                                if not savemem:
+                                    poriscinitstr += "        self.cmd" + parentNodeName + "_" + nodename + ".ident = \"" + thisnode['ident'] + "\"\n"
+                                    poriscinitstr += "        self.cmd" + parentNodeName + "_" + nodename + ".setXMLName(" + pystr(thisnode['subject']) + ")\n"
+                                    poriscinitstr += "        self.cmd" + parentNodeName + "_" + nodename + ".description = \"" + desctomonit(thisnode['description']) + "\"\n"
+                                poriscinitstr += "        self.sys" + parentNodeName + ".addCommand(self.cmd" + parentNodeName + "_" + nodename + ")\n"
                                 thisnode_tmp = {}
                                 thiskey_tmp = parentNodeName + "_" + nodename
                                 thisnode_tmp['method'] = "exec" + thiskey_tmp
                                 thisnode_tmp['node'] = parentNodeName
                                 methods_dict[thiskey_tmp] = thisnode_tmp
                                 methodsstr += '\n    ## Action trigger ' + thiskey_tmp + ' ##\n'
-                                methodsstr += '    def ' + thisnode_tmp['method'] + '(self, value: bool) -> bool:\n'
-                                methodsstr += '        # Override this\n'
-                                methodsstr += '        return True\n\n'
+                                methodsstr += '    def ' + thisnode_tmp['method'] + '(self, *args, **kwargs) -> bool:\n'
+                                methodsstr += '        return self.cmd' + thiskey_tmp + '.defaultExecute(*args, **kwargs)\n\n'
 
                             else:
                                 porishstr += "        //TODO: Other xx" + parentNodeName + "_" + nodename + "\n"
