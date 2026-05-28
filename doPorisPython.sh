@@ -157,4 +157,13 @@ else
   python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py $ODS_FLAG models/$1.graphml --output-dir ${OUTPUT_PORIS_DIR} || { echo 'graph2poris.py failed' ; exit 1; }
 fi
 
+MODEL_DIR="${FILE}"
+if [ $DIRMODE -eq 0 ]; then
+  MODEL_DIR="$(dirname "${FILE}")"
+fi
+if [ ! -e "${MODEL_DIR}/PORIS.py" ]; then
+  echo "Creating model directory symlink ${MODEL_DIR}/PORIS.py -> ${SCRIPT_DIR}/PORIS/PORIS.py"
+  ln -s "${SCRIPT_DIR}/PORIS/PORIS.py" "${MODEL_DIR}/PORIS.py"
+fi
+
 echo "Fin!"
