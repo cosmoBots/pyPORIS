@@ -1,6 +1,7 @@
 #!/bin/bash
 
 GENERATE_PARSER_XML=0
+GENERATE_ODS=0
 DIRMODE=0
 CSYS_MODE=0
 LAUNCH_PANEL=1
@@ -19,13 +20,17 @@ while [[ "$1" == --* ]]; do
             LAUNCH_PANEL=0
             shift
             ;;
+        --ods)
+            GENERATE_ODS=1
+            shift
+            ;;
         --parser-xml|--compare-parser)
             GENERATE_PARSER_XML=1
             shift
             ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: $0 [--dir] [--csys] [--parser-xml] [--no-panel] <model-path-without-extension>"
+            echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--no-panel] <model-path-without-extension>"
             exit 1
             ;;
     esac
@@ -34,7 +39,7 @@ done
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied"
-    echo "Usage: $0 [--dir] [--csys] [--parser-xml] [--no-panel] <model-path-without-extension>"
+    echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--no-panel] <model-path-without-extension>"
     exit 1;
 fi
 
@@ -82,15 +87,23 @@ else
     echo "Input $FILE does not exist, aborting"
     exit 1;
 fi
+if [ $GENERATE_PARSER_XML -eq 1 ] && [ $GENERATE_ODS -eq 0 ]; then
+    echo "--parser-xml requires --ods because parser XML is generated from the ODS product"
+    exit 1
+fi
 
-rm -f "$FILE1"
+if [ $GENERATE_ODS -eq 1 ]; then
+    rm -f "$FILE1"
+fi
 rm -f "$OUTPUT_XML_FILE"
 rm -f "$PARSER_XML_FILE"
 rm -f "${OUTPUT_XML_DIR}/${DEVNAME}.from-python.xml"
 rm -f "$OUTPUT_XML_DIFF"
 rm -rf "${OUTPUT_PORIS_DIR}"
 mkdir -p "${OUTPUT_PORIS_DIR}"
-mkdir -p "${OUTPUT_ODS_DIR}"
+if [ $GENERATE_ODS -eq 1 ]; then
+    mkdir -p "${OUTPUT_ODS_DIR}"
+fi
 mkdir -p "${OUTPUT_XML_DIR}"
 
 if [ $CSYS_MODE -eq 1 ]; then
@@ -98,10 +111,14 @@ if [ $CSYS_MODE -eq 1 ]; then
 else
     cp $SCRIPT_DIR/config_csys_disabled.py $SCRIPT_DIR/config_csys.py
 fi
+ODS_ARGS=(--no-ods)
+if [ $GENERATE_ODS -eq 1 ]; then
+    ODS_ARGS=(--ods-output-dir "${OUTPUT_ODS_DIR}")
+fi
 if [ $DIRMODE -eq 1 ]; then
-    python3 $SCRIPT_DIR/graphdir2poris.py --output-dir "${OUTPUT_PORIS_DIR}" --ods-output-dir "${OUTPUT_ODS_DIR}" "$FILE" || { echo "graphdir2poris could not be processed"; exit 1; }
+    python3 $SCRIPT_DIR/graphdir2poris.py --output-dir "${OUTPUT_PORIS_DIR}" "${ODS_ARGS[@]}" "$FILE" || { echo "graphdir2poris could not be processed"; exit 1; }
 else
-    python3 $SCRIPT_DIR/graph2poris.py $FILE --output-dir "${OUTPUT_PORIS_DIR}" --ods-output-dir "${OUTPUT_ODS_DIR}" || { echo "graph2poris could not be processed"; exit 1; }
+    python3 $SCRIPT_DIR/graph2poris.py $FILE --output-dir "${OUTPUT_PORIS_DIR}" "${ODS_ARGS[@]}" || { echo "graph2poris could not be processed"; exit 1; }
     FILE2="${FILE}.out"
     if [ $CSYS_MODE -eq 1 ]; then
         if test -f "$FILE2"; then
@@ -122,11 +139,13 @@ else
     echo "Generated Python model $OUTPUT_MODEL_FILE does not exist, aborting"
     exit 1;
 fi
-if test -f "$FILE1"; then
-    echo "Input $FILE1 exists, continuing"
-else
-    echo "Input $FILE1 does not exist, aborting"
-    exit 1;
+if [ $GENERATE_ODS -eq 1 ]; then
+    if test -f "$FILE1"; then
+        echo "Generated ODS $FILE1 exists, continuing"
+    else
+        echo "Generated ODS $FILE1 does not exist, aborting"
+        exit 1;
+    fi
 fi
 
 if [ $GENERATE_PARSER_XML -eq 1 ]; then
