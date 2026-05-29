@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def load_model_class(model_file: Path, class_name: str | None):
-    sys.path.insert(0, str(Path(__file__).resolve().parent / "PORIS"))
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "PORIS"))
     sys.path.insert(0, str(model_file.resolve().parent))
 
     module_name = model_file.stem

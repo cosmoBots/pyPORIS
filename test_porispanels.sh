@@ -4,13 +4,15 @@ set -euo pipefail
 
 WITH_CSYS=0
 PROMPT_BEFORE=1
+NO_DIR=0
 EXTRA_ARGS=()
 
 usage() {
-    echo "Usage: $0 [--with-csys] [--no-prompt] [--ods] [--parser-xml] [--no-panel]"
+    echo "Usage: $0 [--with-csys] [--no-prompt] [--nodir] [--ods] [--parser-xml] [--no-panel]"
     echo
     echo "Sequentially launches PORIS panels for the models under models/."
     echo "Close each AstroPorisPlayer window to continue with the next case."
+    echo "--nodir treats every GraphML file as an individual model and skips directory-model generation."
 }
 
 while [[ $# -gt 0 ]]; do
@@ -21,6 +23,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --no-prompt)
             PROMPT_BEFORE=0
+            shift
+            ;;
+        --nodir)
+            NO_DIR=1
             shift
             ;;
         --ods|--parser-xml|--compare-parser|--no-panel)
@@ -50,7 +56,7 @@ mapfile -t GRAPH_MODELS < <(
         | sort
 )
 DIR_MODELS=()
-if [ -d "models/osiris" ]; then
+if [ $NO_DIR -eq 0 ] && [ -d "models/osiris" ]; then
     DIR_MODELS+=("osiris")
 fi
 
@@ -73,12 +79,21 @@ run_case() {
     if [ $PROMPT_BEFORE -eq 1 ]; then
         read -r -p "Press Enter to launch this panel..."
     fi
-    "${SCRIPT_DIR}/${script_name}" "${args[@]}" "$model_name"
+    if ! "${SCRIPT_DIR}/${script_name}" "${args[@]}" "$model_name"; then
+        if [ $NO_DIR -eq 1 ]; then
+            echo "Skipped failed individual model: ${model_name}"
+            return 0
+        fi
+        return 1
+    fi
 }
 
 echo "Visual PORIS panel validation"
 echo "GraphML models: ${#GRAPH_MODELS[@]}"
 echo "Directory models: ${#DIR_MODELS[@]}"
+if [ $NO_DIR -eq 1 ]; then
+    echo "Directory-model generation disabled by --nodir."
+fi
 if [ ${#EXTRA_ARGS[@]} -gt 0 ]; then
     echo "Extra porispanel arguments: ${EXTRA_ARGS[*]}"
 fi

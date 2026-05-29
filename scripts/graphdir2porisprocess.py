@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from pyexcel_ods import save_data
 from collections import OrderedDict
 from config_csys import *
+from pathlib import Path
 
 # Importing test configuration file
 import config
@@ -11,10 +12,14 @@ from graph2porislib import *
 from poris_codegen import build_nodes_tree, createPythonCode
 import glob
 
-debug2JSON = True
+import json
 
-if debug2JSON:
-  import json
+debug_json_dir = Path("tmp") / "poris-debug"
+
+def write_debug_json(filename, payload):
+  debug_json_dir.mkdir(parents=True, exist_ok=True)
+  with open(debug_json_dir / filename, "w") as out_file:
+    json.dump(payload, out_file, indent=4)
 
 def gettypeabbrev(t):
   if t == "prSys":
@@ -60,7 +65,7 @@ def create_global_path(ndict,key,project):
   else:
     return None
 
-def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None):
+def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None, debug_json=False):
   #print(dirname+'/*.graphml')
   filenames = glob.glob(dirname+'/*.graphml')
   #filenames = glob.glob(dirname+'/*')
@@ -533,22 +538,11 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
     # In the case a normalized node is the root of its drawing, the parent must be taken from the external references
     print("--------------------------- FILES ALREADY PARSED -----------------------------")
 
-    if debug2JSON:
-      out_file = open("node_aliases.json", "w")
-      json.dump(node_aliases, out_file, indent=4)
-      out_file.close()  
-
-      out_file = open("inverse_aliases.json", "w")
-      json.dump(inverse_aliases, out_file, indent=4)
-      out_file.close()  
-
-      out_file = open("normalized_dict.json", "w")
-      json.dump(normalized_dict, out_file, indent=4)
-      out_file.close()
-         
-      out_file = open("global_dict.json", "w")
-      json.dump(global_dict, out_file, indent=4)
-      out_file.close()         
+    if debug_json:
+      write_debug_json("node_aliases.json", node_aliases)
+      write_debug_json("inverse_aliases.json", inverse_aliases)
+      write_debug_json("normalized_dict.json", normalized_dict)
+      write_debug_json("global_dict.json", global_dict)
 
     # And now, we have to re-link the relationships to the normalized targets
     for key in global_dict:
@@ -565,10 +559,8 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
         normalized_node['normalized_next'] += [node_aliases[r]]
 
     print("End loop")
-    if debug2JSON:
-      out_file = open("global_dict2.json", "w")
-      json.dump(global_dict, out_file, indent=4)
-      out_file.close()
+    if debug_json:
+      write_debug_json("global_dict2.json", global_dict)
 
     # At this moment, we have finished all the relationships and we are about to create the output file
     # We will use the information in the csID attributes to translate the keys to be written on it

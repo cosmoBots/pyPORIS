@@ -2,3 +2,9 @@
 	path = AstroPorisPlayer
 	url = https://github.com/cosmoBots/AstroPorisPlayer.git
 	branch = v0.4
+[submodule "cxxPORIS"]
+	path = cxxPORIS
+	url = https://github.com/cosmoBots/cxxPORIS.git
+[submodule "rbPORIS"]
+	path = rbPORIS
+	url = https://github.com/cosmoBots/rbPORIS.git

@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(description='Launches a PORIS device generation
 ## The second argument is the api ODS file
 parser.add_argument('sys_dir',type=pathlib.Path, help="the path of a directory containing the PORIS instrument diagram")
 parser.add_argument('--no-ods', action='store_true', help="skip ODS generation")
+parser.add_argument('--debug', action='store_true', help="write intermediate debug JSON files under tmp/poris-debug")
 parser.add_argument('--output-dir', help="directory where the generated Python file will be stored (defaults to the GraphML folder)")
 parser.add_argument('--ods-output-dir', help="directory where the generated ODS file will be stored (defaults to the GraphML folder)")
 
@@ -32,4 +33,5 @@ create_tree_from_graphml_dir(
     emit_python=True,
     python_output_dir=args.output_dir,
     ods_output_dir=args.ods_output_dir,
+    debug_json=args.debug,
 )

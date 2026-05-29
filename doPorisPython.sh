@@ -7,6 +7,7 @@ fi
 
 DIRMODE=0
 GENERATE_ODS=0
+DEBUG_JSON=0
 
 # Parse optional flags
 while [[ "$1" == --* ]]; do
@@ -17,6 +18,10 @@ while [[ "$1" == --* ]]; do
       ;;
     --ods)
       GENERATE_ODS=1
+      shift
+      ;;
+    --debug)
+      DEBUG_JSON=1
       shift
       ;;
     *)
@@ -71,7 +76,7 @@ OUTPUT_BASE=${DEVPATH%"$DEVNAME"}
 echo ${DEVPATH}
 echo ${DEVNAME}
 echo ${OUTPUT_BASE}
-OUTPUT_BASE_DIR=${DEVBASE_PATH}/output/py/${DEVNAME}
+OUTPUT_BASE_DIR=${DEVBASE_PATH}/output/py/${OUTPUT_BASE}${DEVNAME}
 OUTPUT_PORIS_DIR=${OUTPUT_BASE_DIR}/${DEVNAME}
 OUTPUT_ODS_DIR=${DEVBASE_PATH}/output/ods/${OUTPUT_BASE}
 
@@ -83,7 +88,7 @@ OUTPUT_ODS_DIR=${DEVBASE_PATH}/output/ods/${OUTPUT_BASE}
 # change DEVBASE_RELATIVE_PATH you might want to separate the link
 # between the two variables
 PORIS_TOOLS_PATH=${SCRIPT_DIR}
-PORIS_TOOLS_PYTHON_PATH=${SCRIPT_DIR}
+PORIS_TOOLS_PYTHON_PATH=${SCRIPT_DIR}/scripts
 PORIS_RUNTIME_PYTHON_PATH=${SCRIPT_DIR}/PORIS
 export PYTHONPATH="${PORIS_RUNTIME_PYTHON_PATH}:${PYTHONPATH}"
 echo "path"
@@ -120,7 +125,7 @@ elif [ -e "$OUTPUT_PHYS_PATH" ]; then
 else
   ###  Control will jump here if $DEVBASE_PYTHON_PHYS_PATH does NOT exists ###
   echo "${OUTPUT_PHYS_PATH} not found. Copying template dir."
-  cp -r ${PORIS_TOOLS_PYTHON_PATH}'/PORIS/$S1_physical' ${OUTPUT_PHYS_PATH}
+  cp -r ${PORIS_RUNTIME_PYTHON_PATH}'/$S1_physical' ${OUTPUT_PHYS_PATH}
   echo ${DEVNAME}
   echo "Renaming"${OUTPUT_PHYS_PATH}'/$S1_physical.py to '${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
   mv ${OUTPUT_PHYS_PATH}'/$S1_physical.py' ${OUTPUT_PHYS_PATH}/${DEVNAME}_physical.py
@@ -138,8 +143,12 @@ ODS_FLAG="--no-ods"
 if [ $GENERATE_ODS -eq 1 ]; then
   ODS_FLAG=""
 fi
+DEBUG_FLAG=""
+if [ $DEBUG_JSON -eq 1 ]; then
+  DEBUG_FLAG="--debug"
+fi
 if [ $DIRMODE -eq 1 ]; then
-  python3 ${PORIS_TOOLS_PYTHON_PATH}/graphdir2poris.py $ODS_FLAG --output-dir ${OUTPUT_PORIS_DIR} --ods-output-dir ${OUTPUT_ODS_DIR} models/$1 || { echo 'graphdir2poris.py failed' ; exit 1; }
+  python3 ${PORIS_TOOLS_PYTHON_PATH}/graphdir2poris.py $ODS_FLAG $DEBUG_FLAG --output-dir ${OUTPUT_PORIS_DIR} --ods-output-dir ${OUTPUT_ODS_DIR} models/$1 || { echo 'graphdir2poris.py failed' ; exit 1; }
 else
   python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py $ODS_FLAG models/$1.graphml --output-dir ${OUTPUT_PORIS_DIR} --ods-output-dir ${OUTPUT_ODS_DIR} || { echo 'graph2poris.py failed' ; exit 1; }
 fi

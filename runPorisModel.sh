@@ -9,7 +9,11 @@ fi
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 MODEL_PATH="$1"
 MODEL_NAME="${MODEL_PATH##*/}"
-OUTPUT_BASE_DIR="$(pwd)/output/py/${MODEL_NAME}"
+MODEL_DIR="$(dirname "${MODEL_PATH}")"
+if [ "${MODEL_DIR}" = "." ]; then
+  MODEL_DIR=""
+fi
+OUTPUT_BASE_DIR="$(pwd)/output/py/${MODEL_DIR}/${MODEL_NAME}"
 OUTPUT_MODEL_DIR="${OUTPUT_BASE_DIR}/${MODEL_NAME}"
 OUTPUT_PHYS_DIR="${OUTPUT_BASE_DIR}/${MODEL_NAME}_physical"
 export PYTHONPATH="${SCRIPT_DIR}/PORIS:${OUTPUT_MODEL_DIR}:${PYTHONPATH}"

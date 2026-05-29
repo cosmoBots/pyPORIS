@@ -28,6 +28,7 @@ if [ $# -eq 0 ]; then
 fi
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+SCRIPTS_DIR="${SCRIPT_DIR}/scripts"
 DEVPATH="$1"
 DEVNAME="${DEVPATH##*/}"
 DEVDIR="$(dirname "${DEVPATH}")"
@@ -41,7 +42,7 @@ if [ -n "${DEVDIR}" ]; then
   MODEL_ROOT="models/${DEVDIR}"
 fi
 
-OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVNAME}"
+OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVDIR}/${DEVNAME}"
 OUTPUT_PORIS_DIR="${OUTPUT_BASE_DIR}/${DEVNAME}"
 OUTPUT_MODEL_FILE="${OUTPUT_PORIS_DIR}/${DEVNAME}PORIS.py"
 OUTPUT_XML_DIR="$(pwd)/output/xml/${DEVDIR}"
@@ -62,7 +63,7 @@ rm -rf "$OUTPUT_PORIS_DIR"
 rm -f "$OUTPUT_XML_FILE" "$PARSER_XML_FILE" "$OUTPUT_XML_DIFF"
 mkdir -p "$OUTPUT_PORIS_DIR" "$OUTPUT_XML_DIR"
 
-python3 "$SCRIPT_DIR/poris2python.py" "$MODEL_ROOT" "$INPUT_ODS" "$OUTPUT_BASE_DIR" || { echo "poris2python could not be processed"; exit 1; }
+python3 "$SCRIPTS_DIR/poris2python.py" "$MODEL_ROOT" "$INPUT_ODS" "$OUTPUT_BASE_DIR" || { echo "poris2python could not be processed"; exit 1; }
 if test -f "$OUTPUT_MODEL_FILE"; then
   echo "Generated Python model $OUTPUT_MODEL_FILE exists, continuing"
 else
@@ -71,7 +72,7 @@ else
 fi
 
 if [ $GENERATE_PARSER_XML -eq 1 ]; then
-  python3 "$SCRIPT_DIR/poris2xml.py" "$INPUT_ODS" --output-dir "$OUTPUT_XML_DIR" || { echo "poris2xml could not be processed"; exit 1; }
+  python3 "$SCRIPTS_DIR/poris2xml.py" "$INPUT_ODS" --output-dir "$OUTPUT_XML_DIR" || { echo "poris2xml could not be processed"; exit 1; }
   if test -f "$OUTPUT_XML_FILE"; then
     mv "$OUTPUT_XML_FILE" "$PARSER_XML_FILE"
   else
@@ -80,7 +81,7 @@ if [ $GENERATE_PARSER_XML -eq 1 ]; then
   fi
 fi
 
-python3 "$SCRIPT_DIR/poris_python2xml.py" "$OUTPUT_MODEL_FILE" --output "$OUTPUT_XML_FILE" || { echo "poris_python2xml could not be processed"; exit 1; }
+python3 "$SCRIPTS_DIR/poris_python2xml.py" "$OUTPUT_MODEL_FILE" --output "$OUTPUT_XML_FILE" || { echo "poris_python2xml could not be processed"; exit 1; }
 if test -f "$OUTPUT_XML_FILE"; then
   echo "Python XML: $OUTPUT_XML_FILE"
 else

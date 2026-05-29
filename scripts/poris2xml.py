@@ -12,6 +12,7 @@ import config
 def nametoidl(n):
     ret = n.replace('(','_')
     ret = ret.replace(')','_')
+    ret = ret.replace(' ','_')
     ret = ret.replace('.','_')
     ret = ret.replace('+','p')
     ret = ret.replace('/','_')
