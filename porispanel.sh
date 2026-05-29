@@ -1,16 +1,31 @@
 #!/bin/bash
 
 GENERATE_PARSER_XML=0
+DIRMODE=0
+CSYS_MODE=0
+LAUNCH_PANEL=1
 
 while [[ "$1" == --* ]]; do
     case "$1" in
+        --dir)
+            DIRMODE=1
+            shift
+            ;;
+        --csys)
+            CSYS_MODE=1
+            shift
+            ;;
+        --no-panel)
+            LAUNCH_PANEL=0
+            shift
+            ;;
         --parser-xml|--compare-parser)
             GENERATE_PARSER_XML=1
             shift
             ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: $0 [--parser-xml] <model-path-without-extension>"
+            echo "Usage: $0 [--dir] [--csys] [--parser-xml] [--no-panel] <model-path-without-extension>"
             exit 1
             ;;
     esac
@@ -19,19 +34,34 @@ done
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied"
-    echo "Usage: $0 [--parser-xml] <model-path-without-extension>"
+    echo "Usage: $0 [--dir] [--csys] [--parser-xml] [--no-panel] <model-path-without-extension>"
     exit 1;
 fi
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 echo "Script directory: $SCRIPT_DIR"
 
-FILE=models/$1.graphml
 DEVPATH=$1
 DEVNAME=${DEVPATH##*/}
 DEVDIR=$(dirname "${DEVPATH}")
 if [ "${DEVDIR}" = "." ]; then
     DEVDIR=""
+fi
+if [ $DIRMODE -eq 1 ]; then
+    FILE=models/$1
+    DEVDIR=$(dirname "${DEVPATH}")
+    if [ "${DEVDIR}" = "." ]; then
+        DEVDIR=""
+    fi
+elif [ -d "models/$1" ]; then
+    DIRMODE=1
+    FILE=models/$1
+    DEVDIR=$(dirname "${DEVPATH}")
+    if [ "${DEVDIR}" = "." ]; then
+        DEVDIR=""
+    fi
+else
+    FILE=models/$1.graphml
 fi
 OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVNAME}"
 OUTPUT_PORIS_DIR="${OUTPUT_BASE_DIR}/${DEVNAME}"
@@ -44,7 +74,9 @@ PARSER_XML_FILE="${OUTPUT_XML_DIR}/${DEVNAME}.from-parser.xml"
 OUTPUT_XML_DIFF="${OUTPUT_XML_DIR}/${DEVNAME}.xml.diff"
 export PYTHONPATH="${SCRIPT_DIR}/PORIS:${OUTPUT_PORIS_DIR}:${PYTHONPATH}"
 
-if test -f "$FILE"; then
+if [ $DIRMODE -eq 1 ] && test -d "$FILE"; then
+    echo "Input $FILE exists, continuing"
+elif [ $DIRMODE -eq 0 ] && test -f "$FILE"; then
     echo "Input $FILE exists, continuing"
 else
     echo "Input $FILE does not exist, aborting"
@@ -61,8 +93,29 @@ mkdir -p "${OUTPUT_PORIS_DIR}"
 mkdir -p "${OUTPUT_ODS_DIR}"
 mkdir -p "${OUTPUT_XML_DIR}"
 
-cp $SCRIPT_DIR/config_csys_disabled.py $SCRIPT_DIR/config_csys.py
-python3 $SCRIPT_DIR/graph2poris.py $FILE --output-dir "${OUTPUT_PORIS_DIR}" --ods-output-dir "${OUTPUT_ODS_DIR}" || { echo "graph2poris could not be processed"; exit 1; }
+if [ $CSYS_MODE -eq 1 ]; then
+    cp $SCRIPT_DIR/config_csys_enabled.py $SCRIPT_DIR/config_csys.py || { echo "$SCRIPT_DIR/config_csys_enabled.py missing"; exit 1; }
+else
+    cp $SCRIPT_DIR/config_csys_disabled.py $SCRIPT_DIR/config_csys.py
+fi
+if [ $DIRMODE -eq 1 ]; then
+    python3 $SCRIPT_DIR/graphdir2poris.py --output-dir "${OUTPUT_PORIS_DIR}" --ods-output-dir "${OUTPUT_ODS_DIR}" "$FILE" || { echo "graphdir2poris could not be processed"; exit 1; }
+else
+    python3 $SCRIPT_DIR/graph2poris.py $FILE --output-dir "${OUTPUT_PORIS_DIR}" --ods-output-dir "${OUTPUT_ODS_DIR}" || { echo "graph2poris could not be processed"; exit 1; }
+    FILE2="${FILE}.out"
+    if [ $CSYS_MODE -eq 1 ]; then
+        if test -f "$FILE2"; then
+            echo "Input $FILE2 exists, continuing"
+        else
+            echo "Input $FILE2 does not exist, aborting"
+            exit 1;
+        fi
+        timestamp=$(date +%s)
+        cp "$FILE" "${FILE}.${timestamp}.backup"
+        mv "$FILE" "${FILE}.old"
+        mv "$FILE2" "$FILE"
+    fi
+fi
 if test -f "$OUTPUT_MODEL_FILE"; then
     echo "Generated Python model $OUTPUT_MODEL_FILE exists, continuing"
 else
@@ -103,4 +156,8 @@ if [ $GENERATE_PARSER_XML -eq 1 ]; then
         echo "XML files differ; diff written to $OUTPUT_XML_DIFF"
     fi
 fi
-java -jar $SCRIPT_DIR/AstroPorisPlayer/bin/AstroPorisPlayer.jar $OUTPUT_XML_FILE
+if [ $LAUNCH_PANEL -eq 1 ]; then
+    java -jar $SCRIPT_DIR/AstroPorisPlayer/bin/AstroPorisPlayer.jar $OUTPUT_XML_FILE
+else
+    echo "Skipping AstroPorisPlayer launch for $OUTPUT_XML_FILE"
+fi
