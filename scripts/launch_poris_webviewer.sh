@@ -52,7 +52,8 @@ if [ ! -d "${VIEWER_DIR}/node_modules" ]; then
 fi
 
 mkdir -p "$RUNTIME_DIR"
-SAFE_MODEL_NAME=$(printf '%s' "$MODEL_NAME" | tr '/ ' '__')
+MODEL_STEM="${MODEL_NAME%.xml}"
+SAFE_MODEL_NAME=$(printf '%s' "$MODEL_STEM" | tr '/ ' '__')
 RUNTIME_FILE="${RUNTIME_DIR}/${SAFE_MODEL_NAME}.xml"
 cp "$XML_FILE" "$RUNTIME_FILE"
 MODEL_PATH="/runtime/${SAFE_MODEL_NAME}.xml"

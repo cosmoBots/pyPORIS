@@ -5,7 +5,7 @@ A set of tools to manipulate PORIS instruments:
 - porispanel.sh Creates a PORIS representation in ODS and XML format from a PORIS diagram in GraphML, and launches a configuration panel to validate the model.
 - porispanel_csys.sh Adds to porispanel.sh the synchronization with a cosmoSys instance.
 - porispanel_dir.sh Creates a PORIS representation in an ODS and XML format from a PORIS model which is fragmented in several GraphML files in the same folder.
-- odsporispanel.sh Creates a PORIS representation in XML format an launches a configuration panel from an ODS file representing a PORIS model.
+- odsporispanel.sh Creates a PORIS representation in XML format and launches a configuration panel from an ODS file representing a PORIS model.
 - porispanel_dir_csys.sh Adds to porispanel_dir.sh the synchronization with a cosmoSys instance.
 - xmlporispanel.sh Launches a configuration panel from a PORIS model representation in XML file.
 - redoPorisPython.sh and doPorisPython.sh converts an ODS representation of a PORIS model into convenient Python classes.
@@ -16,6 +16,7 @@ The models are taken from the ./models folder and the Python classes are generat
 ## Requirements
 
 - Java (which can support Java Swing panels)
+- Node.js and npm, for the optional Vue web viewer
 - Python 3
 
 Install python libraries:
@@ -49,6 +50,13 @@ This is an example of how to install a valid Java platform in a modern Linux mac
 sudo apt install openjdk-17-jdk
 ```
 
+If you want to use the Vue web viewer, install its dependencies once:
+
+```
+cd pyPORIS/porisViewer
+npm ci
+```
+
 ## Preparation after cloning
 Execute:
 
@@ -74,6 +82,11 @@ Simply:
 
     ./porispanel.sh example/example
 
+To open the generated XML with the Vue web viewer instead of the Java Swing
+panel:
+
+    ./porispanel.sh --web example/example
+
 or, if wanting to sync it with a cosmoSys instance:
 
     ./porispanel_csys.sh example/example
@@ -85,6 +98,12 @@ For instance:
 
     ./porispanel_dir.sh osiris
 
+The directory and cosmoSys variants propagate the same viewer options:
+
+    ./porispanel_dir.sh --web osiris
+    ./porispanel_csys.sh --web example/example
+    ./porispanel_dir_csys.sh --web osiris
+
 The osiris example (inspired by the OSIRIS@GTC instrument at http://www.gtc.iac.es/instruments/osiris/) has been developed as a fragmented model.  One can explore the individual models as individual models.
 For instance:
 
@@ -93,6 +112,14 @@ For instance:
     ./porispanel.sh osiris/osifp
     ./porispanel.sh osiris/osifilt
     ./porispanel.sh osiris/osigeom
+
+To open an existing XML with the web viewer:
+
+    ./xmlporispanel.sh --web output/xml/osiris/osiris.xml
+
+To generate XML from an ODS model and open it with the web viewer:
+
+    ./odsporispanel.sh --web example/example
 
 ### Windows
 

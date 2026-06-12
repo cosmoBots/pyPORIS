@@ -11,7 +11,7 @@ usage() {
     echo "Usage: $0 [--with-csys] [--no-prompt] [--nodir] [--ods] [--parser-xml] [--web] [--no-panel]"
     echo
     echo "Sequentially launches PORIS panels for the models under models/."
-    echo "Close each AstroPorisPlayer window to continue with the next case."
+    echo "Close each panel window to continue with the next case."
     echo "--nodir treats every GraphML file as an individual model and skips directory-model generation."
 }
 

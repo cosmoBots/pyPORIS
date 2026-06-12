@@ -2,6 +2,7 @@
 
 GENERATE_PARSER_XML=0
 LAUNCH_PANEL=1
+LAUNCH_WEB=0
 
 while [[ "$1" == --* ]]; do
   case "$1" in
@@ -13,9 +14,13 @@ while [[ "$1" == --* ]]; do
       LAUNCH_PANEL=0
       shift
       ;;
+    --web)
+      LAUNCH_WEB=1
+      shift
+      ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: $0 [--parser-xml] [--no-panel] <model-path-without-extension>"
+      echo "Usage: $0 [--parser-xml] [--web] [--no-panel] <model-path-without-extension>"
       exit 1
       ;;
   esac
@@ -23,7 +28,7 @@ done
 
 if [ $# -eq 0 ]; then
   echo "No arguments supplied"
-  echo "Usage: $0 [--parser-xml] [--no-panel] <model-path-without-extension>"
+  echo "Usage: $0 [--parser-xml] [--web] [--no-panel] <model-path-without-extension>"
   exit 1
 fi
 
@@ -100,7 +105,11 @@ if [ $GENERATE_PARSER_XML -eq 1 ]; then
 fi
 
 if [ $LAUNCH_PANEL -eq 1 ]; then
-  java -jar "$SCRIPT_DIR/AstroPorisPlayer/bin/AstroPorisPlayer.jar" "$OUTPUT_XML_FILE"
+  if [ $LAUNCH_WEB -eq 1 ]; then
+    "$SCRIPTS_DIR/launch_poris_webviewer.sh" "$OUTPUT_XML_FILE" "$DEVPATH"
+  else
+    java -jar "$SCRIPT_DIR/AstroPorisPlayer/bin/AstroPorisPlayer.jar" "$OUTPUT_XML_FILE"
+  fi
 else
-  echo "Skipping AstroPorisPlayer launch for $OUTPUT_XML_FILE"
+  echo "Skipping PORIS panel launch for $OUTPUT_XML_FILE"
 fi
