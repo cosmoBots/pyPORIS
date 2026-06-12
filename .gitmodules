@@ -8,3 +8,9 @@
 [submodule "rbPORIS"]
 	path = rbPORIS
 	url = https://github.com/cosmoBots/rbPORIS.git
+[submodule "porisjava"]
+	path = porisjava
+	url = https://github.com/cosmoBots/porisjava
+[submodule "porisViewer"]
+	path = porisViewer
+	url = https://github.com/cosmoBots/porisViewer.git
