@@ -8,7 +8,7 @@ NO_DIR=0
 EXTRA_ARGS=()
 
 usage() {
-    echo "Usage: $0 [--with-csys] [--no-prompt] [--nodir] [--ods] [--parser-xml] [--no-panel]"
+    echo "Usage: $0 [--with-csys] [--no-prompt] [--nodir] [--ods] [--parser-xml] [--web] [--no-panel]"
     echo
     echo "Sequentially launches PORIS panels for the models under models/."
     echo "Close each AstroPorisPlayer window to continue with the next case."
@@ -29,7 +29,7 @@ while [[ $# -gt 0 ]]; do
             NO_DIR=1
             shift
             ;;
-        --ods|--parser-xml|--compare-parser|--no-panel)
+        --ods|--parser-xml|--compare-parser|--web|--no-panel)
             EXTRA_ARGS+=("$1")
             shift
             ;;

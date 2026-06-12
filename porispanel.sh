@@ -5,6 +5,7 @@ GENERATE_ODS=0
 DIRMODE=0
 CSYS_MODE=0
 LAUNCH_PANEL=1
+LAUNCH_WEB=0
 DEBUG_JSON=0
 
 while [[ "$1" == --* ]]; do
@@ -21,6 +22,10 @@ while [[ "$1" == --* ]]; do
             LAUNCH_PANEL=0
             shift
             ;;
+        --web)
+            LAUNCH_WEB=1
+            shift
+            ;;
         --ods)
             GENERATE_ODS=1
             shift
@@ -35,7 +40,7 @@ while [[ "$1" == --* ]]; do
             ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--debug] [--no-panel] <model-path-without-extension>"
+            echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--debug] [--web] [--no-panel] <model-path-without-extension>"
             exit 1
             ;;
     esac
@@ -44,7 +49,7 @@ done
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied"
-    echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--debug] [--no-panel] <model-path-without-extension>"
+    echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--debug] [--web] [--no-panel] <model-path-without-extension>"
     exit 1;
 fi
 
@@ -186,7 +191,11 @@ if [ $GENERATE_PARSER_XML -eq 1 ]; then
     fi
 fi
 if [ $LAUNCH_PANEL -eq 1 ]; then
-    java -jar $SCRIPT_DIR/AstroPorisPlayer/bin/AstroPorisPlayer.jar $OUTPUT_XML_FILE
+    if [ $LAUNCH_WEB -eq 1 ]; then
+        "$SCRIPTS_DIR/launch_poris_webviewer.sh" "$OUTPUT_XML_FILE" "$DEVPATH"
+    else
+        java -jar $SCRIPT_DIR/AstroPorisPlayer/bin/AstroPorisPlayer.jar $OUTPUT_XML_FILE
+    fi
 else
-    echo "Skipping AstroPorisPlayer launch for $OUTPUT_XML_FILE"
+    echo "Skipping PORIS panel launch for $OUTPUT_XML_FILE"
 fi
