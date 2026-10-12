@@ -104,6 +104,23 @@ The directory and cosmoSys variants propagate the same viewer options:
     ./porispanel_csys.sh --web example/example
     ./porispanel_dir_csys.sh --web osiris
 
+Directory models can define their generated cluster name in
+models/<model-dir>/cluster.yaml:
+
+    cluster: osi
+    root: osiris
+
+If cluster.yaml is missing, porispanel_dir.sh stops and tells you how to create
+the descriptor automatically:
+
+    ./porispanel_dir.sh --cluster osi osiris
+
+After that, ./porispanel_dir.sh osiris writes the composed Python product to
+output/py/osiris/osi/osiPORIS.py.
+
+If cluster.yaml already exists, --cluster aborts; edit the descriptor or run
+without --cluster.
+
 The osiris example (inspired by the OSIRIS@GTC instrument at http://www.gtc.iac.es/instruments/osiris/) has been developed as a fragmented model.  One can explore the individual models as individual models.
 For instance:
 

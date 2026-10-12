@@ -7,6 +7,11 @@ CSYS_MODE=0
 LAUNCH_PANEL=1
 LAUNCH_WEB=0
 DEBUG_JSON=0
+CLUSTER_NAME_ARG=""
+
+usage() {
+    echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--debug] [--web] [--no-panel] [--cluster <name>] <model-path-without-extension>"
+}
 
 while [[ "$1" == --* ]]; do
     case "$1" in
@@ -38,9 +43,18 @@ while [[ "$1" == --* ]]; do
             DEBUG_JSON=1
             shift
             ;;
+        --cluster)
+            if [ $# -lt 2 ]; then
+                echo "--cluster requires a cluster name"
+                usage
+                exit 1
+            fi
+            CLUSTER_NAME_ARG="$2"
+            shift 2
+            ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--debug] [--web] [--no-panel] <model-path-without-extension>"
+            usage
             exit 1
             ;;
     esac
@@ -49,7 +63,7 @@ done
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied"
-    echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--debug] [--web] [--no-panel] <model-path-without-extension>"
+    usage
     exit 1;
 fi
 
@@ -58,7 +72,8 @@ SCRIPTS_DIR="${SCRIPT_DIR}/scripts"
 echo "Script directory: $SCRIPT_DIR"
 
 DEVPATH=$1
-DEVNAME=${DEVPATH##*/}
+INPUT_DEVNAME=${DEVPATH##*/}
+DEVNAME=${INPUT_DEVNAME}
 DEVDIR=$(dirname "${DEVPATH}")
 if [ "${DEVDIR}" = "." ]; then
     DEVDIR=""
@@ -79,11 +94,94 @@ elif [ -d "models/$1" ]; then
 else
     FILE=models/$1.graphml
 fi
-OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVDIR}/${DEVNAME}"
-OUTPUT_PORIS_DIR="${OUTPUT_BASE_DIR}/${DEVNAME}"
+
+read_cluster_yaml_key() {
+    local file="$1"
+    local key="$2"
+    sed -nE "s/^[[:space:]]*${key}[[:space:]]*:[[:space:]]*['\"]?([^'\"#]+)['\"]?.*$/\1/p" "$file" | head -n 1 | sed -E 's/[[:space:]]+$//'
+}
+
+validate_python_name() {
+    local value="$1"
+    local label="$2"
+    if [[ ! "$value" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+        echo "$label '$value' is not a valid Python identifier"
+        exit 1
+    fi
+}
+
+CLUSTER_ROOT_NAME="$INPUT_DEVNAME"
+GRAPH_DIR_ARGS=()
+CLUSTER_DIR_OUTPUT=0
+if [ $DIRMODE -eq 1 ]; then
+    CLUSTER_FILE="${FILE}/cluster.yaml"
+    if [ ! -d "$FILE" ]; then
+        echo "Input $FILE does not exist, aborting"
+        exit 1
+    fi
+    if [ -n "$CLUSTER_NAME_ARG" ]; then
+        validate_python_name "$CLUSTER_NAME_ARG" "Cluster name"
+        if [ -f "$CLUSTER_FILE" ]; then
+            echo "$CLUSTER_FILE already exists."
+            echo "Edit that file or run without --cluster."
+            exit 1
+        fi
+        {
+            echo "cluster: ${CLUSTER_NAME_ARG}"
+            echo "root: ${INPUT_DEVNAME}"
+        } > "$CLUSTER_FILE"
+        echo "Created $CLUSTER_FILE"
+    fi
+
+    if [ -f "$CLUSTER_FILE" ]; then
+        CLUSTER_NAME=$(read_cluster_yaml_key "$CLUSTER_FILE" "cluster")
+        CLUSTER_ROOT_NAME=$(read_cluster_yaml_key "$CLUSTER_FILE" "root")
+        if [ -z "$CLUSTER_NAME" ]; then
+            echo "$CLUSTER_FILE must define a non-empty 'cluster' value"
+            exit 1
+        fi
+        validate_python_name "$CLUSTER_NAME" "Cluster name"
+        if [ -z "$CLUSTER_ROOT_NAME" ]; then
+            echo "$CLUSTER_FILE must define a non-empty 'root' value"
+            exit 1
+        fi
+        DEVNAME="$CLUSTER_NAME"
+        CLUSTER_DIR_OUTPUT=1
+        GRAPH_DIR_ARGS=(--device-name "$CLUSTER_NAME" --root "$CLUSTER_ROOT_NAME")
+        echo "Cluster descriptor: $CLUSTER_FILE"
+        echo "Cluster product name: $DEVNAME"
+        echo "Cluster root graph: $CLUSTER_ROOT_NAME"
+        if [ ! -f "${FILE}/${CLUSTER_ROOT_NAME}.graphml" ]; then
+            echo "Cluster root graph ${FILE}/${CLUSTER_ROOT_NAME}.graphml does not exist, aborting"
+            exit 1
+        fi
+    else
+        echo "$CLUSTER_FILE does not exist."
+        echo "Directory models require a cluster descriptor."
+        echo "To create a cluster descriptor, run:"
+        echo "  pyPORIS/porispanel_dir.sh --cluster <cluster-name> $DEVPATH"
+        exit 1
+    fi
+elif [ -n "$CLUSTER_NAME_ARG" ]; then
+    echo "--cluster can only be used with directory models"
+    exit 1
+fi
+
+if [ $DIRMODE -eq 1 ] && [ $CLUSTER_DIR_OUTPUT -eq 1 ]; then
+    OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVPATH}/${DEVNAME}"
+    OUTPUT_PORIS_DIR="${OUTPUT_BASE_DIR}"
+else
+    OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVDIR}/${DEVNAME}"
+    OUTPUT_PORIS_DIR="${OUTPUT_BASE_DIR}/${DEVNAME}"
+fi
 OUTPUT_MODEL_FILE="${OUTPUT_PORIS_DIR}/${DEVNAME}PORIS.py"
-OUTPUT_ODS_DIR="$(pwd)/output/ods/${DEVDIR}"
-OUTPUT_XML_DIR="$(pwd)/output/xml/${DEVDIR}"
+if [ $DIRMODE -eq 1 ] && [ $CLUSTER_DIR_OUTPUT -eq 1 ]; then
+    OUTPUT_ODS_DIR="$(pwd)/output/ods/${DEVPATH}"
+    OUTPUT_XML_DIR="$(pwd)/output/xml/${DEVPATH}"
+else
+    OUTPUT_ODS_DIR="$(pwd)/output/ods/${DEVDIR}"
+    OUTPUT_XML_DIR="$(pwd)/output/xml/${DEVDIR}"
+fi
 FILE1="${OUTPUT_ODS_DIR}/${DEVNAME}.ods"
 OUTPUT_XML_FILE="${OUTPUT_XML_DIR}/${DEVNAME}.xml"
 PARSER_XML_FILE="${OUTPUT_XML_DIR}/${DEVNAME}.from-parser.xml"
@@ -110,7 +208,11 @@ rm -f "$OUTPUT_XML_FILE"
 rm -f "$PARSER_XML_FILE"
 rm -f "${OUTPUT_XML_DIR}/${DEVNAME}.from-python.xml"
 rm -f "$OUTPUT_XML_DIFF"
-rm -rf "${OUTPUT_PORIS_DIR}"
+if [ $DIRMODE -eq 1 ] && [ $CLUSTER_DIR_OUTPUT -eq 1 ]; then
+    rm -f "$OUTPUT_MODEL_FILE"
+else
+    rm -rf "${OUTPUT_PORIS_DIR}"
+fi
 mkdir -p "${OUTPUT_PORIS_DIR}"
 if [ $GENERATE_ODS -eq 1 ]; then
     mkdir -p "${OUTPUT_ODS_DIR}"
@@ -131,7 +233,7 @@ if [ $DEBUG_JSON -eq 1 ]; then
     DEBUG_ARGS=(--debug)
 fi
 if [ $DIRMODE -eq 1 ]; then
-    python3 "$SCRIPTS_DIR/graphdir2poris.py" --output-dir "${OUTPUT_PORIS_DIR}" "${ODS_ARGS[@]}" "${DEBUG_ARGS[@]}" "$FILE" || { echo "graphdir2poris could not be processed"; exit 1; }
+    python3 "$SCRIPTS_DIR/graphdir2poris.py" --output-dir "${OUTPUT_PORIS_DIR}" "${ODS_ARGS[@]}" "${DEBUG_ARGS[@]}" "${GRAPH_DIR_ARGS[@]}" "$FILE" || { echo "graphdir2poris could not be processed"; exit 1; }
 else
     python3 "$SCRIPTS_DIR/graph2poris.py" "$FILE" --output-dir "${OUTPUT_PORIS_DIR}" "${ODS_ARGS[@]}" || { echo "graph2poris could not be processed"; exit 1; }
     FILE2="${FILE}.out"

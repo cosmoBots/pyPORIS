@@ -65,7 +65,7 @@ def create_global_path(ndict,key,project):
   else:
     return None
 
-def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None, debug_json=False):
+def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None, root_name=None, debug_json=False):
   #print(dirname+'/*.graphml')
   filenames = glob.glob(dirname+'/*.graphml')
   #filenames = glob.glob(dirname+'/*')
@@ -90,6 +90,8 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
   # If we need to sync with cosmoSys, we will try to open the cosmoSys server at the beginning, to avoid later problems
   continueProcess = True
   filesoups = {}
+  if root_name is None:
+    root_name = deviceName
   
   if csys_use:
     continueProcess = False
@@ -121,18 +123,18 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
     for p in projects:
         print("    ",p.identifier,"     | ",p.name)
         csys_prj_dict[p.identifier] = p
-        if p.identifier == deviceName:
+        if p.identifier == root_name:
           continueProcess = True
 
     if continueProcess:
       continueProcess = False
-      rootproject = cosmosys.project.get(deviceName)
+      rootproject = cosmosys.project.get(root_name)
       if rootproject is None:
         print("We can not obtain the root project for this GraphML folder")
       else:
         print ("Root project found at cosmoSys server: ",rootproject.identifier," | ",rootproject.name)
         continueProcess = True
-        csys_projects[deviceName] = rootproject
+        csys_projects[root_name] = rootproject
 
         # Now we obtain the csCode
         for cf in rootproject.custom_fields:
@@ -195,7 +197,7 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
           else:
             file_cscode = 'instrument'
 
-      if deviceName == basefilename:
+      if root_name == basefilename:
         global_file_identifier = file_identifier
         global_file_cscode = file_cscode
       
