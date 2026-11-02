@@ -91,7 +91,9 @@ or, if wanting to sync it with a cosmoSys instance:
 
     ./porispanel_csys.sh example/example
 
-The cosmoSys instance has to be configured by copying pyPORIS/config_rm_enabled.py.example to pyPORIS/config_rm_enabled.py and adding your secrets there.
+Configure the cosmoSys connection by copying `scripts/config_csys_enabled.py.example` to `scripts/config_csys_enabled.py` and setting the instance URL and API key there. This file is ignored by Git and must not contain a committed key.
+
+The synchronizer resolves items by their native cosmoSys CSID inside the configured root project tree. It creates missing items, then synchronizes their parent hierarchy, PORIS value metadata, and activation relations (`precedes`, delay `0`). The API user needs permission to read the project tree and create/edit the affected items and relations. This requires a cosmoSys version that provides the native item API used by the importer; it does not depend on legacy `csID`/`csCode` custom fields.
 
 If you have developed a model fragmented in several GraphML files (http://cosmobots.eu/projects/poris-toolkit/wiki/Fragmenting_diagrams), you can execute this conversion by calling the porispanel_dir.sh tool with the folder path.
 For instance:
@@ -152,7 +154,7 @@ or, if wanting to sync it with a cosmoSys instance:
 
     winporispanel_csys.bat example\example
 
-The cosmoSys instance has to be configured by copying pyPORIS\config_rm_enabled.py.example to pyPORIS\config_rm_enabled.py and adding your secrets there.
+Configure the cosmoSys connection by copying `scripts\config_csys_enabled.py.example` to `scripts\config_csys_enabled.py` and setting the instance URL and API key there. This file is ignored by Git and must not contain a committed key.
 
 The ability to convert a fragmented model is not yet available for Windows platforms (why not using a Linux or WSL or a docker container for this???).
 
