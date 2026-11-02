@@ -13,6 +13,7 @@ from poris_codegen import build_nodes_tree, createPythonCode
 import glob
 
 import json
+from cosmosys_api import CosmosysApi
 
 debug_json_dir = Path("tmp") / "poris-debug"
 
@@ -96,15 +97,14 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
   if csys_use:
     continueProcess = False
 
-    import requests as req
-    prcfdict = {}
-    cfdict = {}
     from redminelib import Redmine
 
     if csys_ignorecert:
         cosmosys = Redmine(csys_server_url,key=csys_key_txt, requests={'verify': False})
+        csys_api = CosmosysApi(csys_server_url, csys_key_txt, verify=False)
     else:
         cosmosys = Redmine(csys_server_url,key=csys_key_txt)
+        csys_api = CosmosysApi(csys_server_url, csys_key_txt)
 
     trackerdict = {}
     trackers = cosmosys.tracker.all()
@@ -136,20 +136,6 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
         continueProcess = True
         csys_projects[root_name] = rootproject
 
-        # Now we obtain the csCode
-        for cf in rootproject.custom_fields:
-          prcfdict[cf.name] = cf
-          if cf.name == "csCode":
-            file_cscode = cf.value
-
-        cfields = cosmosys.custom_field.all()
-        for cf in cfields:
-          cfdict[cf.name] = cf
-
-        rm_issues_dict = {}
-        for i in rootproject.issues:
-          i_ident = i.custom_fields.get(cfdict['csID'].id).value
-          rm_issues_dict[i_ident] = i    
 
   if continueProcess:
     for filename in filenames:
@@ -392,43 +378,24 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
 
 
         if csys_use:
-          # Let's take the information for this and other modules in the same project
-          if normal_node['csID'] is not None:
-            if normal_node['csID'] not in csys_issues.keys():
-              # The csys node has not been downloaded to the csys_issues dictionary,
-              # probably the project has not been downloaded
-              thisnodeprojectkey = normal_node['project']
-              if thisnodeprojectkey not in csys_projects.keys():
-                # The project nodes have not been added to the csys_issues dictionary
-                if thisnodeprojectkey not in csys_prj_dict.keys():
-                  print("Error, the node has a project identifier which is not present in the cosmoSys server")
-                  return None
-                
-                else:
-                  # We add the project to the csys_projects dictionary
-                  thisproject = csys_prj_dict[normal_node['project']]
-                  csys_projects[thisnodeprojectkey] = thisproject
-                  # We add all its csys nodes to the csys_issues dictionary
-                  for i in thisproject.issues:
-                    i_ident = i.custom_fields.get(cfdict['csID'].id).value
-                    if i_ident not in csys_issues.keys():
-                      csys_issues[i_ident] = {}
-                      csys_issues[i_ident]['csys'] = i
-                      csys_issues[i_ident]['nodes'] = [normal_node]
+          if normal_node['project'] not in csys_prj_dict:
+            print("Error, the node has a project identifier which is not present in the cosmoSys server")
+            return None
 
-                    else:
-                      csys_issues[i_ident]['nodes'] += [normal_node]
-
+          if normal_node['csID'] is not None and normal_node['csID'] not in csys_issues:
+            item_data = csys_api.by_csid(root_name, normal_node['csID'])
+            if item_data is not None:
+              if item_data['project']['identifier'] != normal_node['project']:
+                print("Error, CSID", normal_node['csID'], "belongs to project", item_data['project']['identifier'], "not", normal_node['project'])
+                return None
+              issue = cosmosys.issue.get(item_data['id'])
+              csys_projects[normal_node['project']] = csys_prj_dict[normal_node['project']]
+              csys_issues[normal_node['csID']] = {'csys': issue, 'nodes': [normal_node]}
             else:
-              # After all this downloading process, both the node project and the csys node have to exist in corresonding dictionaries
-              if normal_node['csID'] not in csys_issues.keys():
-                print("Error, the node has a csID which is not present in the cosmoSys server")
-                return None
-              if normal_node['project'] not in csys_projects.keys():
-                print("Error, the node has a project which is not present in the cosmoSys server")
-                return None
+              # A legacy/source CSID is not a native identity in this cosmoSys tree.
+              normal_node['csID'] = None
 
-          else:
+          if normal_node['csID'] is None:
             print("We have to create a new DB identifier for",normal_node['name'],"at project",normal_node['project'],"we are processing the diagram",basefilename)
             if normal_node['project'] != basefilename:
               print("BUT this is not the place to do it (",basefilename,"), we will need to do it when processing the diagram for the project "+normal_node['project'])
@@ -459,14 +426,16 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
                   subject = normal_node['name'],
               )
               url = csys_server_url+'/issues/'+str(thisCsysIss.id)
-              urlwithkey= url +'?key='+csys_key_txt
-              resp = req.get(urlwithkey)
+              item_data = csys_api.by_id(root_name, thisCsysIss.id)
+              if item_data is None:
+                raise RuntimeError(f"cosmoSys created issue {thisCsysIss.id} but returned no native CSID")
               thisCsysIss = cosmosys.issue.get(thisCsysIss.id)
-              thisCsId = thisCsysIss.custom_fields.get(cfdict['csID'].id).value
+              thisCsId = item_data['csid']
               normal_node['csID'] = thisCsId
               normal_node['rmid'] = thisCsysIss.id
               normal_node['url'] = url
               csys_issues_created[thisCsId] = normal_node
+              csys_issues[thisCsId] = {'csys': thisCsysIss, 'nodes': [normal_node]}
               # We will update the node where it was supposed to be the csID
               n = graphml_csid_nodes_fileid[normal_node['globalid']]
               n.contents[0].replace_with(normal_node['csID'])
@@ -604,6 +573,68 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
             # updating project
             n = graphml_project_nodes_fileid[alias_path]
             n.contents[0].replace_with(thisnewnode['project'])
+
+      # Synchronize canonical hierarchy and activation edges after all files
+      # and external aliases have been normalized.  External replicas remain
+      # aliases; only the canonical item receives parent/relationship updates.
+      for key, node in normalized_dict.items():
+        if node['parentkey'] is None and node['node_type'] == 'prSys' and inverse_aliases.get(key):
+          node['parentkey'] = global_dict[inverse_aliases[key][0]]['parentkey']
+
+        child_entry = csys_issues.get(node['csID'])
+        if child_entry is None:
+          continue
+        child_issue = child_entry['csys']
+
+        poris_attributes = {}
+        if node['node_type'] == 'prValFloat':
+          poris_attributes['pr_value_kind'] = 'float'
+          for source_name, api_name in [('min', 'pr_min'), ('default', 'pr_default'), ('max', 'pr_max')]:
+            if node.get(source_name) is not None:
+              poris_attributes[api_name] = node[source_name]
+        elif node['node_type'] == 'prValText':
+          poris_attributes['pr_value_kind'] = 'text'
+          if node.get('defaulttext') is not None:
+            poris_attributes['pr_default_text'] = node['defaulttext']
+        elif node['node_type'] == 'prValue':
+          poris_attributes['pr_value_kind'] = 'enum'
+        if poris_attributes:
+          csys_api.update_by_id(root_name, child_issue.id, poris_attributes)
+
+        parent_key = node.get('parentkey')
+        if parent_key:
+          parent_path = node_aliases.get(parent_key, parent_key)
+          parent_node = normalized_dict.get(parent_path)
+          parent_entry = csys_issues.get(parent_node['csID']) if parent_node else None
+          if parent_entry is None:
+            raise RuntimeError(f"Cannot resolve canonical parent for {node['name']} ({node['csID']})")
+          parent_issue = parent_entry['csys']
+          current_parent = getattr(child_issue, 'parent', None)
+          current_parent_id = getattr(current_parent, 'id', None)
+          if current_parent_id != parent_issue.id:
+            cosmosys.issue.update(child_issue.id, parent_issue_id=parent_issue.id)
+            child_issue = cosmosys.issue.get(child_issue.id)
+            child_entry['csys'] = child_issue
+
+        for target_path in node.get('normalized_relations', []):
+          target_node = normalized_dict.get(target_path)
+          target_entry = csys_issues.get(target_node['csID']) if target_node else None
+          if target_entry is None:
+            raise RuntimeError(f"Cannot resolve canonical PORIS relation target {target_path}")
+          target_issue = target_entry['csys']
+          existing = cosmosys.issue_relation.filter(issue_id=target_issue.id)
+          already_linked = any(
+            relation.relation_type == 'precedes' and
+            relation.issue_id == target_issue.id and relation.issue_to_id == child_issue.id
+            for relation in existing
+          )
+          if not already_linked:
+            cosmosys.issue_relation.create(
+              issue_id=target_issue.id,
+              issue_to_id=child_issue.id,
+              relation_type='precedes',
+              delay=0
+            )
 
 
       # Let's update the files

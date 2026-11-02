@@ -5,6 +5,7 @@ from pyexcel_ods import save_data
 from collections import OrderedDict
 from pathlib import Path
 from config_csys import *
+from cosmosys_api import CosmosysApi
 
 # Importing test configuration file
 import config
@@ -14,53 +15,6 @@ from poris_codegen import build_nodes_tree, createPythonCode
 file_data = ['','']
 localcsids = {}
 inverse_localcsids = {}
-
-def get_project_ancestors(thisproject,rootproject,projects):
-  if (thisproject.id != rootproject.id):
-    parentproj = None
-    if hasattr(thisproject,'parent'):
-      print("The parent id to find for",thisproject.identifier,"is",thisproject.parent.id)
-      for p in projects:
-        if p.id == thisproject.parent.id:
-          parentproj = p
-          break
-
-    else:
-      print("The project",thisproject.identifier,"has no parent",dict(thisproject))
-    
-    if parentproj is not None:
-      result = get_project_ancestors(parentproj,rootproject,projects)
-      result += [thisproject] 
-
-    else:      
-      print("Error, we could not find the parent of ",thisproject.identifier)
-      #result = [thisproject]
-      assert(False)
-  
-  else:
-    # If thisproject is the root project, we have finished    
-    result = [thisproject]
-
-  return result
-
-def get_project_successors(thisproject,projects):
-  result = []
-  for p in projects:
-    if hasattr(p,'parent'):
-      if p.parent.id == thisproject.id:
-        result += [p] + get_project_successors(p,projects)
-
-  return result
-
-def get_project_tree(thisproject,rootproject,projects):
-  # First we will add the ancestors
-  result = get_project_ancestors(thisproject,rootproject,projects)
-
-  # Then we will add the successors
-  result += get_project_successors(thisproject,projects)
-  
-  return result
-
 
 def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None):
   global file_data
@@ -140,16 +94,14 @@ def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_
   if not csys_use:
     continueProcess = True
   else:
-    import requests as req
-    prcfdict = {}
-    cfdict = {}
-    rmissues = {}
     from redminelib import Redmine
 
     if csys_ignorecert:
         redmine = Redmine(csys_server_url,key=csys_key_txt, requests={'verify': False})
+        csys_api = CosmosysApi(csys_server_url, csys_key_txt, verify=False)
     else:
         redmine = Redmine(csys_server_url,key=csys_key_txt)
+        csys_api = CosmosysApi(csys_server_url, csys_key_txt)
 
     projects = redmine.project.all()
 
@@ -174,30 +126,7 @@ def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_
       else:
         print ("Obtenemos proyecto raíz: ",my_root_project.identifier," | ",my_root_project.name)
 
-        # Now we obtain the csCode
-        for cf in my_project.custom_fields:
-          print(cf)
-          prcfdict[cf.name] = cf
-          if cf.name == "csCode":
-            file_cscode = cf.value
-            print("csCode:",file_cscode)
-
-        cfields = redmine.custom_field.all()
-        for cf in cfields:
-          print(cf)
-          cfdict[cf.name] = cf
-
-        project_tree = get_project_tree(my_project,my_root_project,projects)
-
-        for p in project_tree:
-          print(p.identifier)
-
         rm_issues_dict = {}
-        for p in project_tree:
-          for i in p.issues:
-            i_ident = i.custom_fields.get(cfdict['csID'].id).value
-            rm_issues_dict[i_ident] = i
-            print(i_ident,i.subject)
 
         continueProcess = True
 
@@ -500,13 +429,15 @@ def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_
       for n in csv_dict_data:
         rmissueneeded = False
         if csys_use:
-          # See if the id exists in redmine
-          if n['csID'] not in rm_issues_dict.keys():
-            print("NO",n['csID'],rm_issues_dict.keys())
+          item_data = csys_api.by_csid(file_root_identifier, n['csID']) if n['csID'] else None
+          if item_data is None:
+            print("Native CSID not found; creating item for",n['node_id'])
             rmissueneeded = True
 
           else:
-            rmtranslator[n['node_id']] = n['csID']
+            native_csid = item_data['csid']
+            rm_issues_dict[native_csid] = redmine.issue.get(item_data['id'])
+            rmtranslator[n['node_id']] = native_csid
 
 
         if rmissueneeded:
@@ -517,10 +448,11 @@ def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_
               subject = n['node_name'],
           )
           url = csys_server_url+'/issues/'+str(thisRmTsk.id)
-          urlwithkey= url +'?key='+csys_key_txt
-          resp = req.get(urlwithkey)
+          item_data = csys_api.by_id(file_root_identifier, thisRmTsk.id)
+          if item_data is None:
+            raise RuntimeError(f"cosmoSys created issue {thisRmTsk.id} but returned no native CSID")
           thisRmTsk = redmine.issue.get(thisRmTsk.id)
-          thisCsId = thisRmTsk.custom_fields.get(cfdict['csID'].id).value
+          thisCsId = item_data['csid']
           rm_issues_dict[thisCsId] = thisRmTsk
           rmtranslator[n['node_id']] = thisCsId
           print("------------------------->",n['node_id'],thisCsId)
@@ -762,124 +694,23 @@ def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_
                   # rm.save
 
 
-            thismin = None
-            if 'min' in item.keys():
-              thismin = item['min']
-              if thismin is not None:
-                print("thismin is ",thismin)
-
-            thismax = None
-            if 'max' in item.keys():
-              thismax = item['max']
-              if thismax is not None:
-                print("thismax is ",thismax)
-            
-            thisdefault = None
-            if 'default' in item.keys():
-              thisdefault = item['default']
-              if thisdefault is not None:
-                print("thisdefault is ",thisdefault)
-            
-            thisdefaulttext = None
-            if 'defaulttext' in item.keys():
-              thisdefaulttext = item['defaulttext']
-              if thisdefaulttext is not None:
-                print("thisdefaulttext is ",thisdefaulttext)
-
-            shall_update_default = False
-            shall_update_min = False
-            shall_update_max = False
-            shall_update_defaulttext = False
-
-            if thismin is not None:
-              # This is a prValueFloat or similar
-              print("*** Check min value")
-              rm_min = None
-              rm_min_cf = rm.custom_fields.get(cfdict['prMin'].id)
-              if rm_min_cf is not None:
-                print("*** preexisting is not none",dict(rm_min_cf))
-                rm_min = rm_min_cf.value
-                
-              if rm_min != str(thismin):
-                print("Fixing min data")
-                rm_min_cf.value = thismin
-                print("*** Fixed cf is",dict(rm_min_cf))
-                shall_update_min = True
-            
-            if thismax is not None:
-              # This is a prValueFloat or similar
-              print("*** Check max value")
-              rm_max = None
-              rm_max_cf = rm.custom_fields.get(cfdict['prMax'].id)
-              if rm_max_cf is not None:
-                print("*** preexisting is not none",dict(rm_max_cf))
-                rm_max = rm_max_cf.value
-                
-              if rm_max != str(thismax):
-                print("Fixing max data")
-                rm_max_cf.value = thismax
-                print("*** Fixed cf is",dict(rm_max_cf))
-                shall_update_max = True
-            
-            if thisdefault is not None:
-              # This is a prValueFloat or similar
-              print("*** Check default value")
-              rm_default = None
-              rm_default_cf = rm.custom_fields.get(cfdict['prDefault'].id)
-              if rm_default_cf is not None:
-                print("*** preexisting is not none",dict(rm_default_cf))
-                rm_default = rm_default_cf.value
-                
-              if rm_default != str(thisdefault):
-                print("Fixing default data")
-                rm_default_cf.value = thisdefault
-                print("*** Fixed cf is",dict(rm_default_cf))
-                shall_update_default = True
-
-            if thisdefaulttext is not None:
-              # This is a prValueText or similar
-              print("*** Check defaulttext value")
-              rm_defaulttext = None
-              rm_defaulttext_cf = rm.custom_fields.get(cfdict['prDefaultText'].id)
-              if rm_defaulttext_cf is not None:
-                print("*** preexisting is not none",dict(rm_defaulttext_cf))
-                rm_defaulttext = rm_defaulttext_cf.value
-                
-              if rm_defaulttext != thisdefaulttext:
-                print("Fixing defaulttext data")
-                rm_defaulttext_cf.value = thisdefaulttext
-                print("*** Fixed cf is",dict(rm_defaulttext_cf))
-                shall_update_defaulttext = True
-
-            
-            if shall_update_default or shall_update_min or shall_update_max or shall_update_defaulttext:
-              cfs = rm.custom_fields
-              new_cfs = []
-              for c in cfs:
-                thiscv = {}
-                thiscv['id'] = c['id']
-                thiscv['value'] = c['value']
-
-                if c['id'] == cfdict['prMin'].id and shall_update_min:
-                  thiscv['value'] = thismin
-
-                if c['id'] == cfdict['prMax'].id and shall_update_max:
-                  thiscv['value'] = thismax
-
-                if c['id'] == cfdict['prDefault'].id and shall_update_default:
-                  thiscv['value'] = thisdefault
-
-                if c['id'] == cfdict['prDefaultText'].id and shall_update_defaulttext:
-                  thiscv['value'] = thisdefaulttext
-
-                new_cfs.append(thiscv)
-
-              print(new_cfs)
-              result = redmine.issue.update(
-                rm.id,
-                custom_fields = new_cfs
-              )
-              print("result is", result)
+            poris_attributes = {}
+            if item.get('min') is not None:
+              poris_attributes.update({
+                'pr_value_kind': 'float',
+                'pr_min': item['min'],
+                'pr_default': item.get('default'),
+                'pr_max': item.get('max')
+              })
+            elif item.get('defaulttext') is not None:
+              poris_attributes.update({
+                'pr_value_kind': 'text',
+                'pr_default_text': item['defaulttext']
+              })
+            elif item.get('node_type') == 'prValue':
+              poris_attributes['pr_value_kind'] = 'enum'
+            if poris_attributes:
+              csys_api.update_by_id(file_root_identifier, rm.id, poris_attributes)
               
             if 'relations' in item.keys():
               relations = item['relations']
@@ -898,7 +729,7 @@ def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_
             rel_existentes = {}
             for ir in rm.relations:
               print("ir es ", dict(ir))
-              if ir.relation_type == 'blocks':
+              if ir.relation_type == 'precedes':
                 if (rm.id == ir.issue_to_id):
                   rel_existentes[str(ir.issue_id)] = ir
                   
@@ -918,7 +749,8 @@ def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_
                   relat = redmine.issue_relation.create(
                      issue_id=other_rm.id,
                      issue_to_id=rm.id,
-                     relation_type='blocks')
+                     relation_type='precedes',
+                     delay=0)
 
 
             for k in rel_existentes.keys():
