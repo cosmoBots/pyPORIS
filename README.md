@@ -78,6 +78,14 @@ The model must be specified by indicating the relative path from the "models" fo
 __Example__: if you would like to convert the ./models/example/example.graphml file, just provide example/example as an argument.
 
 ### Linux / *nix
+For Bash model-path completion, source `scripts/poris-completion.bash` from
+this toolkit (or `pyPORIS/scripts/poris-completion.bash` from the user repository).
+Then `pyPORIS/porispanel.sh osi<Tab>` completes `osiris/`; further Tab presses
+explore the models inside it, without the `.graphml` suffix. Completion uses
+`models/` in the current working directory and also supports the `*_csys.sh`
+and `porispanel_dir*.sh` variants. To load it persistently, add a `source`
+command with the absolute script path to `~/.bashrc`.
+
 Simply:
 
     ./porispanel.sh example/example
