@@ -1,12 +1,28 @@
 # Load with: source pyPORIS/scripts/poris-completion.bash
 # Model paths are relative to models/ in the current working directory,
 # matching porispanel.sh. No bash-completion package is required.
+_PORIS_COMPLETION_SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _poris_model_complete() {
     local current="${COMP_WORDS[COMP_CWORD]}"
     local previous="${COMP_WORDS[COMP_CWORD-1]}"
     local path candidate option
     local directories_only=0
     COMPREPLY=()
+    local command="${COMP_WORDS[0]##*/}"
+    if [[ $previous == --csys ]] || { [[ $COMP_CWORD == 1 ]] && [[ $command == porispanel_csys.sh || $command == porispanel_dir_csys.sh || $command == poriscsyspanel.sh ]]; }; then
+        while IFS= read -r candidate; do
+            [[ $candidate == "$current"* ]] && COMPREPLY+=("$candidate")
+        done < <(python3 "$_PORIS_COMPLETION_SCRIPTS/csys_config.py" 2>/dev/null)
+        return 0
+    fi
+    if [[ $command == poriscsyspanel.sh ]]; then
+        if [[ $previous == --scope ]]; then
+            mapfile -t COMPREPLY < <(compgen -W 'node project node_down' -- "$current")
+        elif [[ $current == --* ]]; then
+            mapfile -t COMPREPLY < <(compgen -W '--scope --config --web --no-panel --output' -- "$current")
+        fi
+        return 0
+    fi
     [[ $previous == --cluster ]] && return 0
     case "${COMP_WORDS[0]##*/}" in
         porispanel_dir.sh|porispanel_dir_csys.sh) directories_only=1 ;;
@@ -37,4 +53,4 @@ _poris_model_complete() {
 }
 
 complete -F _poris_model_complete porispanel.sh porispanel_csys.sh \
-    porispanel_dir.sh porispanel_dir_csys.sh
+    porispanel_dir.sh porispanel_dir_csys.sh poriscsyspanel.sh
