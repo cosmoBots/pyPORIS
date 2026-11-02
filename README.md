@@ -97,9 +97,9 @@ panel:
 
 or, if wanting to sync it with a cosmoSys instance:
 
-    ./porispanel_csys.sh example/example
+    ./porispanel_csys.sh <instance> example/example
 
-Configure the cosmoSys connection by copying `scripts/config_csys_enabled.py.example` to `scripts/config_csys_enabled.py` and setting the instance URL and API key there. This file is ignored by Git and must not contain a committed key.
+Configure named connections in `csys.yaml` using `csys.yaml.example`. This file is ignored by Git. See the named-instance and remote-panel instructions below.
 
 The synchronizer resolves items by their native cosmoSys CSID inside the configured root project tree. It creates missing items, then synchronizes their parent hierarchy, PORIS value metadata, and activation relations (`precedes`, delay `0`). The API user needs permission to read the project tree and create/edit the affected items and relations. This requires a cosmoSys version that provides the native item API used by the importer; it does not depend on legacy `csID`/`csCode` custom fields.
 
@@ -111,8 +111,8 @@ For instance:
 The directory and cosmoSys variants propagate the same viewer options:
 
     ./porispanel_dir.sh --web osiris
-    ./porispanel_csys.sh --web example/example
-    ./porispanel_dir_csys.sh --web osiris
+    ./porispanel_csys.sh <instance> --web example/example
+    ./porispanel_dir_csys.sh <instance> --web osiris
 
 Directory models can define their generated cluster name in
 models/<model-dir>/cluster.yaml:
@@ -158,11 +158,9 @@ Simply:
 
     winporispanel.bat example\example
 
-or, if wanting to sync it with a cosmoSys instance:
-
-    winporispanel_csys.bat example\example
-
-Configure the cosmoSys connection by copying `scripts\config_csys_enabled.py.example` to `scripts\config_csys_enabled.py` and setting the instance URL and API key there. This file is ignored by Git and must not contain a committed key.
+For cosmoSys synchronization, use the named-instance shell commands above from
+WSL. Connections are configured in `csys.yaml`; the old Python credential
+configuration files have been removed.
 
 The ability to convert a fragmented model is not yet available for Windows platforms (why not using a Linux or WSL or a docker container for this???).
 
@@ -193,3 +191,76 @@ In order to have a repo which is easy to maintain, windows symbolic links soluti
 Happy modeling!
 
 cosmoBots.eu
+
+## Named cosmoSys Instances and Remote Panels
+
+Install the requirements (including PyYAML), then copy `pyPORIS/csys.yaml.example`
+to `pyPORIS/csys.yaml` and edit it. Paths here are relative to the user repository.
+The real configuration is ignored by Git; do not put credentials in the example.
+
+```yaml
+cosmobots.eu:
+  url: https://cosmobots.eu
+  ignorecert: false
+  key: "YOUR_API_KEY"
+localhost:3001:
+  url: http://localhost:3001
+  ignorecert: false
+  key: "YOUR_LOCAL_API_KEY"
+```
+
+URLs must include `http://` or `https://`. An empty key allows anonymous access.
+Use `PORIS_CSYS_CONFIG=/absolute/path/csys.yaml` to select another configuration;
+the remote viewer also accepts `--config PATH`.
+
+Download and open a remote project or item:
+
+```bash
+pyPORIS/poriscsyspanel.sh localhost:3001 osiris
+pyPORIS/poriscsyspanel.sh localhost:3001 osiris OSIRIS-0006
+pyPORIS/poriscsyspanel.sh localhost:3001 osiris 22202
+pyPORIS/poriscsyspanel.sh http://localhost:3001/projects/osiris/poris
+pyPORIS/poriscsyspanel.sh http://localhost:3001/issues/22202
+pyPORIS/poriscsyspanel.sh --web --scope node localhost:3001 osiris 22202
+```
+
+The command name is `poriscsyspanel.sh` in both argument forms. URL input selects
+credentials by matching the configured server URL (including an installation
+subpath); unknown or ambiguous instances are rejected. Query-string `scope` and
+`issue_id` are supported on project/PORIS URLs. `--scope` overrides the URL scope.
+Credentials in pasted URLs are not used. Redirects are not followed.
+
+Scopes match the server viewer:
+
+- `project`: project and its visible subprojects; default for project input.
+- `node_down`: item and descendants; default for item input, including item URLs.
+- `node`: the server's focused node view.
+
+CSIDs and numeric issue IDs are resolved through the native item API. For an
+item URL, the standard Redmine issue API supplies its project. Both require the
+corresponding read permissions. The XML endpoint must support API authentication.
+An item in a child project is opened using that item's own project.
+
+The default viewer is Java Swing; `--web` opens the local web viewer. For Java, downloaded
+XML is ordered with destinations before their referring elements and the system
+root last, as required by the Java loader. IDs and model relationships are preserved. With `--web`, the original XML is
+validated and passed unchanged to porisViewer, without reordering. The command
+only reads cosmoSys and does not synchronize edits or preserve server UI sessions.
+XML is temporary unless `--output FILE` is supplied. Download without launching:
+
+```bash
+pyPORIS/poriscsyspanel.sh --no-panel --output /tmp/osiris.xml localhost:3001 osiris
+```
+
+Local GraphML synchronization uses the same named configuration:
+
+```bash
+pyPORIS/porispanel_csys.sh localhost:3001 --no-panel nrt/mainaxis
+pyPORIS/porispanel_dir_csys.sh localhost:3001 --no-panel osiris
+# Equivalent direct form:
+pyPORIS/porispanel.sh --csys localhost:3001 --no-panel nrt/mainaxis
+```
+
+The old Python credential files are not read by these commands. Synchronization
+writes to cosmoSys, unlike the remote-panel command. When calling Python importers
+directly, set `PORIS_CSYS_INSTANCE` to the configured instance name.
