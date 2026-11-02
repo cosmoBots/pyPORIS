@@ -17,7 +17,7 @@ if [%1]==[] (
     mkdir %OUTPUT_PORIS_DIR%
     mkdir %OUTPUT_ODS_DIR%
     mkdir %OUTPUT_XML_DIR%
-    copy .\%SCRIPTS_DIR%\config_csys_disabled.py .\%SCRIPTS_DIR%\config_csys.py
+    set "PORIS_CSYS_INSTANCE="
 
     python %SCRIPTS_DIR%\graph2poris.py models\%1.graphml --output-dir %OUTPUT_PORIS_DIR% --ods-output-dir %OUTPUT_ODS_DIR%
     if exist %OUTPUT_MODEL_FILE% (

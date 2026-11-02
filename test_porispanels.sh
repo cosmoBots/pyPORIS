@@ -3,12 +3,13 @@
 set -euo pipefail
 
 WITH_CSYS=0
+CSYS_INSTANCE=""
 PROMPT_BEFORE=1
 NO_DIR=0
 EXTRA_ARGS=()
 
 usage() {
-    echo "Usage: $0 [--with-csys] [--no-prompt] [--nodir] [--ods] [--parser-xml] [--web] [--no-panel]"
+    echo "Usage: $0 [--with-csys <instance>] [--no-prompt] [--nodir] [--ods] [--parser-xml] [--web] [--no-panel]"
     echo
     echo "Sequentially launches PORIS panels for the models under models/."
     echo "Close each panel window to continue with the next case."
@@ -18,8 +19,13 @@ usage() {
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --with-csys)
+            if [ $# -lt 2 ] || [[ "$2" == --* ]]; then
+                echo "--with-csys requires an instance name"
+                exit 1
+            fi
             WITH_CSYS=1
-            shift
+            CSYS_INSTANCE="$2"
+            shift 2
             ;;
         --no-prompt)
             PROMPT_BEFORE=0
@@ -98,7 +104,7 @@ if [ ${#EXTRA_ARGS[@]} -gt 0 ]; then
     echo "Extra porispanel arguments: ${EXTRA_ARGS[*]}"
 fi
 if [ $WITH_CSYS -eq 0 ]; then
-    echo "CSYS variants are skipped. Use --with-csys to include porispanel_csys.sh and porispanel_dir_csys.sh."
+    echo "CSYS variants are skipped. Use --with-csys <instance> to include porispanel_csys.sh and porispanel_dir_csys.sh."
 fi
 
 for model in "${GRAPH_MODELS[@]}"; do
@@ -111,11 +117,11 @@ done
 
 if [ $WITH_CSYS -eq 1 ]; then
     for model in "${GRAPH_MODELS[@]}"; do
-        run_case "porispanel_csys.sh" "$model" "${EXTRA_ARGS[@]}"
+        run_case "porispanel_csys.sh" "$model" "$CSYS_INSTANCE" "${EXTRA_ARGS[@]}"
     done
 
     for model in "${DIR_MODELS[@]}"; do
-        run_case "porispanel_dir_csys.sh" "$model" "${EXTRA_ARGS[@]}"
+        run_case "porispanel_dir_csys.sh" "$model" "$CSYS_INSTANCE" "${EXTRA_ARGS[@]}"
     done
 fi
 

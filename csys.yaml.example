@@ -1,0 +1,8 @@
+cosmobots.eu:
+  url: https://cosmobots.eu
+  ignorecert: false
+  key: ""
+localhost:3001:
+  url: http://localhost:3001
+  ignorecert: false
+  key: ""

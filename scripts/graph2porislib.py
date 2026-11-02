@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from pyexcel_ods import save_data
 from collections import OrderedDict
 from pathlib import Path
-from config_csys import *
+from csys_config import *
 
 # Importing test configuration file
 import config

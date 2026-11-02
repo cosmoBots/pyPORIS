@@ -3,7 +3,7 @@ import csv, os, re
 from bs4 import BeautifulSoup
 from pyexcel_ods import save_data
 from collections import OrderedDict
-from config_csys import *
+from csys_config import *
 from pathlib import Path
 
 # Importing test configuration file

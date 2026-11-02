@@ -1,4 +1,4 @@
-from config_csys import *
+from csys_config import *
 from redminelib import Redmine
 import argparse                     # This library allows us to easily parse the command line arguments
 # Importing test configuration file

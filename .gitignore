@@ -143,3 +143,5 @@ config_csys_enabled.py
 .~lock.*
 
 tmp/
+
+/csys.yaml

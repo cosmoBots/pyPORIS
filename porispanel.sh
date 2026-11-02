@@ -10,7 +10,7 @@ DEBUG_JSON=0
 CLUSTER_NAME_ARG=""
 
 usage() {
-    echo "Usage: $0 [--dir] [--csys] [--ods] [--parser-xml] [--debug] [--web] [--no-panel] [--cluster <name>] <model-path-without-extension>"
+    echo "Usage: $0 [--dir] [--csys <instance>] [--ods] [--parser-xml] [--debug] [--web] [--no-panel] [--cluster <name>] <model-path-without-extension>"
 }
 
 while [[ "$1" == --* ]]; do
@@ -20,8 +20,13 @@ while [[ "$1" == --* ]]; do
             shift
             ;;
         --csys)
+            if [ $# -lt 2 ] || [[ "$2" == --* ]]; then
+                echo "--csys requires an instance name"
+                exit 1
+            fi
             CSYS_MODE=1
-            shift
+            export PORIS_CSYS_INSTANCE="$2"
+            shift 2
             ;;
         --no-panel)
             LAUNCH_PANEL=0
@@ -69,6 +74,12 @@ fi
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 SCRIPTS_DIR="${SCRIPT_DIR}/scripts"
+if [ $CSYS_MODE -eq 0 ]; then
+    unset PORIS_CSYS_INSTANCE
+fi
+if [ $CSYS_MODE -eq 1 ]; then
+    python3 "$SCRIPTS_DIR/csys_config.py" >/dev/null || exit 1
+fi
 echo "Script directory: $SCRIPT_DIR"
 
 DEVPATH=${1%/}
@@ -219,11 +230,6 @@ if [ $GENERATE_ODS -eq 1 ]; then
 fi
 mkdir -p "${OUTPUT_XML_DIR}"
 
-if [ $CSYS_MODE -eq 1 ]; then
-    cp "$SCRIPTS_DIR/config_csys_enabled.py" "$SCRIPTS_DIR/config_csys.py" || { echo "$SCRIPTS_DIR/config_csys_enabled.py missing"; exit 1; }
-else
-    cp "$SCRIPTS_DIR/config_csys_disabled.py" "$SCRIPTS_DIR/config_csys.py"
-fi
 ODS_ARGS=(--no-ods)
 if [ $GENERATE_ODS -eq 1 ]; then
     ODS_ARGS=(--ods-output-dir "${OUTPUT_ODS_DIR}")
