@@ -71,7 +71,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 SCRIPTS_DIR="${SCRIPT_DIR}/scripts"
 echo "Script directory: $SCRIPT_DIR"
 
-DEVPATH=$1
+DEVPATH=${1%/}
 INPUT_DEVNAME=${DEVPATH##*/}
 DEVNAME=${INPUT_DEVNAME}
 DEVDIR=$(dirname "${DEVPATH}")
@@ -79,20 +79,20 @@ if [ "${DEVDIR}" = "." ]; then
     DEVDIR=""
 fi
 if [ $DIRMODE -eq 1 ]; then
-    FILE=models/$1
+    FILE=models/$DEVPATH
     DEVDIR=$(dirname "${DEVPATH}")
     if [ "${DEVDIR}" = "." ]; then
         DEVDIR=""
     fi
-elif [ -d "models/$1" ]; then
+elif [ -d "models/$DEVPATH" ]; then
     DIRMODE=1
-    FILE=models/$1
+    FILE=models/$DEVPATH
     DEVDIR=$(dirname "${DEVPATH}")
     if [ "${DEVDIR}" = "." ]; then
         DEVDIR=""
     fi
 else
-    FILE=models/$1.graphml
+    FILE=models/$DEVPATH.graphml
 fi
 
 read_cluster_yaml_key() {
