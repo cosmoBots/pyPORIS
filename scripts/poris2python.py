@@ -28,8 +28,7 @@ print("/* The PORIS instrument description ODS filename is:", args.model_path.na
 deviceName = Path(args.model_path.name).stem
 print("Device name:", deviceName)
 
-relativepath = args.model_path.name.replace(args.model_root_path, '', 1)
-relativepath = ''.join(relativepath.rsplit(".ods", 1))
+relativepath = ''
 
 print(config.welcome_message)
 

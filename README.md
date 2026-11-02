@@ -126,7 +126,7 @@ the descriptor automatically:
     ./porispanel_dir.sh --cluster osi osiris
 
 After that, ./porispanel_dir.sh osiris writes the composed Python product to
-output/py/osiris/osi/osiPORIS.py.
+output/py/osiris/osiPORIS.py.
 
 If cluster.yaml already exists, --cluster aborts; edit the descriptor or run
 without --cluster.
@@ -264,3 +264,19 @@ pyPORIS/porispanel.sh --csys localhost:3001 --no-panel nrt/mainaxis
 The old Python credential files are not read by these commands. Synchronization
 writes to cosmoSys, unlike the remote-panel command. When calling Python importers
 directly, set `PORIS_CSYS_INSTANCE` to the configured instance name.
+
+## Shared Python Output Directory
+
+Python products mirror the source directory, without per-model wrapper folders.
+For `models/osiris/osiris.graphml` and the `cluster: osi` descriptor in
+`models/osiris/cluster.yaml`, the products coexist:
+
+```text
+output/py/osiris/osirisPORIS.py
+output/py/osiris/osiPORIS.py
+```
+
+Regenerating a model replaces only its own generated Python file. Other models
+and editable physical companions are preserved. Physical companions live in
+`output/py/<source-directory>/<model>_physical/`. GraphML panel commands, the
+ODS panel command and the Python generation/run shell commands use this layout.

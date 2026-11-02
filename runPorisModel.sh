@@ -13,8 +13,12 @@ MODEL_DIR="$(dirname "${MODEL_PATH}")"
 if [ "${MODEL_DIR}" = "." ]; then
   MODEL_DIR=""
 fi
-OUTPUT_BASE_DIR="$(pwd)/output/py/${MODEL_DIR}/${MODEL_NAME}"
-OUTPUT_MODEL_DIR="${OUTPUT_BASE_DIR}/${MODEL_NAME}"
+OUTPUT_BASE_DIR="$(pwd)/output/py/${MODEL_DIR}"
+if [ -d "models/${MODEL_PATH}" ]; then
+  MODEL_NAME=$(python3 -c 'import sys,yaml; print(yaml.safe_load(open(sys.argv[1]))["cluster"])' "models/${MODEL_PATH%/}/cluster.yaml") || exit 1
+  OUTPUT_BASE_DIR="$(pwd)/output/py/${MODEL_PATH%/}"
+fi
+OUTPUT_MODEL_DIR="${OUTPUT_BASE_DIR}"
 OUTPUT_PHYS_DIR="${OUTPUT_BASE_DIR}/${MODEL_NAME}_physical"
 export PYTHONPATH="${SCRIPT_DIR}/PORIS:${OUTPUT_MODEL_DIR}:${PYTHONPATH}"
 

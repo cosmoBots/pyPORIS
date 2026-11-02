@@ -179,11 +179,11 @@ elif [ -n "$CLUSTER_NAME_ARG" ]; then
 fi
 
 if [ $DIRMODE -eq 1 ] && [ $CLUSTER_DIR_OUTPUT -eq 1 ]; then
-    OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVPATH}/${DEVNAME}"
+    OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVPATH}"
     OUTPUT_PORIS_DIR="${OUTPUT_BASE_DIR}"
 else
-    OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVDIR}/${DEVNAME}"
-    OUTPUT_PORIS_DIR="${OUTPUT_BASE_DIR}/${DEVNAME}"
+    OUTPUT_BASE_DIR="$(pwd)/output/py/${DEVDIR}"
+    OUTPUT_PORIS_DIR="${OUTPUT_BASE_DIR}"
 fi
 OUTPUT_MODEL_FILE="${OUTPUT_PORIS_DIR}/${DEVNAME}PORIS.py"
 if [ $DIRMODE -eq 1 ] && [ $CLUSTER_DIR_OUTPUT -eq 1 ]; then
@@ -219,11 +219,7 @@ rm -f "$OUTPUT_XML_FILE"
 rm -f "$PARSER_XML_FILE"
 rm -f "${OUTPUT_XML_DIR}/${DEVNAME}.from-python.xml"
 rm -f "$OUTPUT_XML_DIFF"
-if [ $DIRMODE -eq 1 ] && [ $CLUSTER_DIR_OUTPUT -eq 1 ]; then
-    rm -f "$OUTPUT_MODEL_FILE"
-else
-    rm -rf "${OUTPUT_PORIS_DIR}"
-fi
+rm -f "$OUTPUT_MODEL_FILE"
 mkdir -p "${OUTPUT_PORIS_DIR}"
 if [ $GENERATE_ODS -eq 1 ]; then
     mkdir -p "${OUTPUT_ODS_DIR}"

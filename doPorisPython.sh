@@ -76,8 +76,17 @@ OUTPUT_BASE=${DEVPATH%"$DEVNAME"}
 echo ${DEVPATH}
 echo ${DEVNAME}
 echo ${OUTPUT_BASE}
-OUTPUT_BASE_DIR=${DEVBASE_PATH}/output/py/${OUTPUT_BASE}${DEVNAME}
-OUTPUT_PORIS_DIR=${OUTPUT_BASE_DIR}/${DEVNAME}
+OUTPUT_BASE_DIR=${DEVBASE_PATH}/output/py/${OUTPUT_BASE}
+if [ $DIRMODE -eq 1 ]; then
+  # Use the same cluster descriptor and generation path as the panel command.
+  CLUSTER_ARGS=(--no-panel)
+  [ $GENERATE_ODS -eq 1 ] && CLUSTER_ARGS+=(--ods)
+  [ $DEBUG_JSON -eq 1 ] && CLUSTER_ARGS+=(--debug)
+  "$SCRIPT_DIR/porispanel_dir.sh" "${CLUSTER_ARGS[@]}" "${DEVPATH%/}" || exit 1
+  DEVNAME=$(python3 -c 'import sys,yaml; print(yaml.safe_load(open(sys.argv[1]))["cluster"])' "models/${DEVPATH%/}/cluster.yaml") || exit 1
+  OUTPUT_BASE_DIR="${DEVBASE_PATH}/output/py/${DEVPATH%/}"
+fi
+OUTPUT_PORIS_DIR=${OUTPUT_BASE_DIR}
 OUTPUT_ODS_DIR=${DEVBASE_PATH}/output/ods/${OUTPUT_BASE}
 
 # The path for the C++ base folder for the devices
@@ -105,7 +114,9 @@ echo "Welcome to Python code generator por PORIS models"
 ######### CLEANING AREA ###############
 # We will clean the previous products
 echo "Cleaning previous generated automatic products"
-rm -rf ${OUTPUT_PORIS_DIR}
+if [ $DIRMODE -eq 0 ]; then
+  rm -f "${OUTPUT_PORIS_DIR}/${DEVNAME}PORIS.py"
+fi
 
 ######### CREATING FOLDERS AREA ###############
 # Let's create the product directories
@@ -147,10 +158,8 @@ DEBUG_FLAG=""
 if [ $DEBUG_JSON -eq 1 ]; then
   DEBUG_FLAG="--debug"
 fi
-if [ $DIRMODE -eq 1 ]; then
-  python3 ${PORIS_TOOLS_PYTHON_PATH}/graphdir2poris.py $ODS_FLAG $DEBUG_FLAG --output-dir ${OUTPUT_PORIS_DIR} --ods-output-dir ${OUTPUT_ODS_DIR} models/$1 || { echo 'graphdir2poris.py failed' ; exit 1; }
-else
-  python3 ${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py $ODS_FLAG models/$1.graphml --output-dir ${OUTPUT_PORIS_DIR} --ods-output-dir ${OUTPUT_ODS_DIR} || { echo 'graph2poris.py failed' ; exit 1; }
+if [ $DIRMODE -eq 0 ]; then
+  python3 "${PORIS_TOOLS_PYTHON_PATH}/graph2poris.py" $ODS_FLAG "models/$1.graphml" --output-dir "${OUTPUT_PORIS_DIR}" --ods-output-dir "${OUTPUT_ODS_DIR}" || { echo 'graph2poris.py failed' ; exit 1; }
 fi
 
 MODEL_DIR="${FILE}"
