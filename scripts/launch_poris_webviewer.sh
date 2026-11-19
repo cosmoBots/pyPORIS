@@ -23,6 +23,15 @@ if [ ! -f "$XML_FILE" ]; then
     exit 1
 fi
 
+if [ ! -f "${VIEWER_DIR}/package.json" ]; then
+    echo "The porisViewer submodule is not initialized (package.json is missing)."
+    echo "Run from your pyPORIS_user repository:"
+    echo "  git -C pyPORIS submodule update --init -- porisViewer"
+    echo "  cd pyPORIS/porisViewer"
+    echo "  npm ci"
+    exit 1
+fi
+
 if ! command -v node >/dev/null 2>&1; then
     echo "Node.js is required to run the PORIS web viewer."
     echo "Install Node.js and npm, then run:"
