@@ -3,9 +3,14 @@
 GENERATE_PARSER_XML=0
 LAUNCH_PANEL=1
 LAUNCH_WEB=0
+ENG_ARGS=()
 
 while [[ "$1" == --* ]]; do
   case "$1" in
+    --eng)
+      ENG_ARGS=(--eng)
+      shift
+      ;;
     --parser-xml|--compare-parser)
       GENERATE_PARSER_XML=1
       shift
@@ -20,7 +25,7 @@ while [[ "$1" == --* ]]; do
       ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: $0 [--parser-xml] [--web] [--no-panel] <model-path-without-extension>"
+      echo "Usage: $0 [--eng] [--parser-xml] [--web] [--no-panel] <model-path-without-extension>"
       exit 1
       ;;
   esac
@@ -28,7 +33,7 @@ done
 
 if [ $# -eq 0 ]; then
   echo "No arguments supplied"
-  echo "Usage: $0 [--parser-xml] [--web] [--no-panel] <model-path-without-extension>"
+  echo "Usage: $0 [--eng] [--parser-xml] [--web] [--no-panel] <model-path-without-extension>"
   exit 1
 fi
 
@@ -52,6 +57,7 @@ OUTPUT_PORIS_DIR="${OUTPUT_BASE_DIR}"
 OUTPUT_MODEL_FILE="${OUTPUT_PORIS_DIR}/${DEVNAME}PORIS.py"
 OUTPUT_XML_DIR="$(pwd)/output/xml/${DEVDIR}"
 OUTPUT_XML_FILE="${OUTPUT_XML_DIR}/${DEVNAME}.xml"
+OUTPUT_YAML_FILE="$(pwd)/output/poris/${DEVDIR}/${DEVNAME}.poris"
 PARSER_XML_FILE="${OUTPUT_XML_DIR}/${DEVNAME}.from-parser.xml"
 OUTPUT_XML_DIFF="${OUTPUT_XML_DIR}/${DEVNAME}.xml.diff"
 
@@ -66,9 +72,10 @@ fi
 
 rm -f "$OUTPUT_MODEL_FILE"
 rm -f "$OUTPUT_XML_FILE" "$PARSER_XML_FILE" "$OUTPUT_XML_DIFF"
+rm -f "$OUTPUT_YAML_FILE"
 mkdir -p "$OUTPUT_PORIS_DIR" "$OUTPUT_XML_DIR"
 
-python3 "$SCRIPTS_DIR/poris2python.py" "$MODEL_ROOT" "$INPUT_ODS" "$OUTPUT_BASE_DIR" || { echo "poris2python could not be processed"; exit 1; }
+python3 "$SCRIPTS_DIR/poris2python.py" "$MODEL_ROOT" "$INPUT_ODS" "$OUTPUT_BASE_DIR" "${ENG_ARGS[@]}" || { echo "poris2python could not be processed"; exit 1; }
 if test -f "$OUTPUT_MODEL_FILE"; then
   echo "Generated Python model $OUTPUT_MODEL_FILE exists, continuing"
 else
@@ -77,7 +84,7 @@ else
 fi
 
 if [ $GENERATE_PARSER_XML -eq 1 ]; then
-  python3 "$SCRIPTS_DIR/poris2xml.py" "$INPUT_ODS" --output-dir "$OUTPUT_XML_DIR" || { echo "poris2xml could not be processed"; exit 1; }
+  python3 "$SCRIPTS_DIR/poris2xml.py" "$INPUT_ODS" --output-dir "$OUTPUT_XML_DIR" "${ENG_ARGS[@]}" || { echo "poris2xml could not be processed"; exit 1; }
   if test -f "$OUTPUT_XML_FILE"; then
     mv "$OUTPUT_XML_FILE" "$PARSER_XML_FILE"
   else
@@ -86,9 +93,10 @@ if [ $GENERATE_PARSER_XML -eq 1 ]; then
   fi
 fi
 
-python3 "$SCRIPTS_DIR/poris_python2xml.py" "$OUTPUT_MODEL_FILE" --output "$OUTPUT_XML_FILE" || { echo "poris_python2xml could not be processed"; exit 1; }
+python3 "$SCRIPTS_DIR/poris_python2xml.py" "$OUTPUT_MODEL_FILE" --output "$OUTPUT_XML_FILE" --poris-output "$OUTPUT_YAML_FILE" || { echo "poris_python2xml could not be processed"; exit 1; }
 if test -f "$OUTPUT_XML_FILE"; then
   echo "Python XML: $OUTPUT_XML_FILE"
+  echo "PORIS YAML: $OUTPUT_YAML_FILE"
 else
   echo "Python-generated XML $OUTPUT_XML_FILE does not exist, aborting"
   exit 1

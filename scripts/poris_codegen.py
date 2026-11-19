@@ -39,7 +39,7 @@ def pystr(n):
     return repr("" if n is None else str(n))
 
 
-def build_nodes_tree(nodes_dict, savemem=None):
+def build_nodes_tree(nodes_dict, savemem=None, include_engineering=False):
     """Augment nodes dict with relationships, virtual/engineering nodes and return tree."""
     if savemem is None:
         savemem = config.savemem
@@ -60,12 +60,18 @@ def build_nodes_tree(nodes_dict, savemem=None):
                     thisparent['children'].append(thiskey)
 
     # Create engineering modes
-    if not savemem:
+    if include_engineering and not savemem:
         for thiskey in nodes_dict.keys():
             thisnode = nodes_dict[thiskey]
 
             if thisnode['virtual'] == False:
                 if thisnode['tracker'] == "prSys":
+                    # An explicitly authored Engineering mode owns its name and
+                    # eligibility; never replace it with a generated sibling.
+                    if any(nodes_dict[ch]['tracker'] == 'prMode' and
+                           nodes_dict[ch]['subject'] == 'Engineering'
+                           for ch in thisnode['children']):
+                        continue
                     has_payload_child = False
                     for ch0 in thisnode['children']:
                         if ch0 in nodes_dict:

@@ -16,7 +16,7 @@ file_data = ['','']
 localcsids = {}
 inverse_localcsids = {}
 
-def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None):
+def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None, include_engineering=False):
   global file_data
   global localcsids
   global inverse_localcsids
@@ -505,7 +505,7 @@ def create_ods_file_from_graphml_file(filename, deviceName, emit_ods=True, emit_
           'virtual': False
         }
 
-      python_tree = build_nodes_tree(python_nodes)
+      python_tree = build_nodes_tree(python_nodes, include_engineering=include_engineering)
       for n in csv_dict_data:
         row = []
         thisgroup = n['node_group_id']

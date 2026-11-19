@@ -66,7 +66,7 @@ def create_global_path(ndict,key,project):
   else:
     return None
 
-def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None, root_name=None, debug_json=False):
+def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python=True, python_output_dir=None, ods_output_dir=None, root_name=None, debug_json=False, include_engineering=False):
   #print(dirname+'/*.graphml')
   filenames = glob.glob(dirname+'/*.graphml')
   #filenames = glob.glob(dirname+'/*')
@@ -778,5 +778,5 @@ def create_tree_from_graphml_dir(dirname, deviceName, emit_ods=True, emit_python
           'virtual': False
         }
 
-      python_tree = build_nodes_tree(python_nodes)
+      python_tree = build_nodes_tree(python_nodes, include_engineering=include_engineering)
       createPythonCode(python_tree, deviceName, python_output_dir if python_output_dir is not None else dirname, "")

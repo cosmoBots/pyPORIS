@@ -16,7 +16,7 @@ The models are taken from the ./models folder and the Python classes are generat
 ## Requirements
 
 - Java (which can support Java Swing panels)
-- Node.js and npm, for the optional Vue web viewer
+- Node.js 22.12 or newer and npm, for the optional Vue web viewer
 - Python 3
 
 Install python libraries:
@@ -50,11 +50,12 @@ This is an example of how to install a valid Java platform in a modern Linux mac
 sudo apt install openjdk-17-jdk
 ```
 
-If you want to use the Vue web viewer, install its dependencies once:
+If you want to use the Vue web viewer, initialize its submodule and install
+its dependencies once (from the `pyPORIS_user` repository root):
 
 ```
-cd pyPORIS/porisViewer
-npm ci
+git -C pyPORIS submodule update --init -- porisViewer
+npm --prefix pyPORIS/porisViewer ci
 ```
 
 ## Preparation after cloning
@@ -66,7 +67,39 @@ It will populate pyPORIS folder and the AstroPorisPlayer binaries.
 
 ## Converting model to *.ODS, *.XML and open a Java Swing Configuration panel
 
-The PORIS toolkit allows you to convert your model in a GraphML file to models in ODS and XML files.
+The PORIS toolkit converts GraphML models to Python objects and always exports
+both XML and a YAML model definition with the `.poris` extension. The `.poris`
+file is written in `output/poris/`, while XML stays in `output/xml/`, including
+for ODS input and directory models. Both preserve the model subdirectories
+(for example `output/poris/nrt/mainaxis.poris`). It uses the `cosmosys-model` version 1 PORIS dialect for
+cosmoSys validation and diagram preview; importing persistent items requires a
+separate application step in cosmoSys.
+
+Both exports come from the same instantiated `PORISDoc`. The YAML contains
+registered systems, parameters, modes, commands, enumerated/text/numeric values,
+parents and eligibility relations. Built-in unregistered runtime alternatives
+are omitted; explicitly registered engineering modes remain model items, just
+as in XML. Current selections and edited runtime data are not exported. Numeric
+values use their declared default data. File/date values are rejected because
+the cosmoSys YAML dialect cannot represent them. Scoped labels, arbitrary node
+attributes and command callbacks are not represented by this draft format.
+Local keys in the file are not assigned Redmine CSIDs.
+
+ODS and parser-comparison XML remain optional.
+
+Automatically generated engineering modes are omitted by default from the
+generated Python model, XML and `.poris`. Add `--eng` to include them:
+
+```bash
+pyPORIS/porispanel.sh --no-panel nrt/mainaxis
+pyPORIS/porispanel.sh --eng --no-panel nrt/mainaxis
+```
+
+The option also works with directory models and `odsporispanel.sh`, including
+parser-comparison XML. Modes explicitly declared in the source are retained,
+even if their name is Engineering. Internal runtime alternatives remain internal.
+Both commands overwrite the same products; regenerate without `--eng` to return
+to the conceptual view.
 
 The ODS file is a representation of the model in an spreadsheet format, useful for later processes like creating Python or C++ classes from it, or importing into cosmoSys.
 

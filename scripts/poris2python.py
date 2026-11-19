@@ -21,6 +21,7 @@ parser = argparse.ArgumentParser(description='Launches a PORIS device generation
 parser.add_argument('model_root_path', type=dir_path, help="the root path where the models shall be picket from")
 parser.add_argument('model_path', type=argparse.FileType('r'), help="the path for the model to be processed")
 parser.add_argument('output_path', type=dir_path, help="the path to create the Python classes")
+parser.add_argument('--eng', action='store_true', help="include automatically generated engineering modes")
 
 args = parser.parse_args()
 
@@ -102,7 +103,7 @@ def loadODS():
                 thisnode['children'] = []
                 nodes_dict[thiskey] = thisnode
 
-    return build_nodes_tree(nodes_dict, config.savemem)
+    return build_nodes_tree(nodes_dict, config.savemem, include_engineering=args.eng)
 
 
 nodes_dict = loadODS()

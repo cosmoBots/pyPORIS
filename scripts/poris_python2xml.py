@@ -32,9 +32,10 @@ def module_file_to_class_name(model_file: Path) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate PORIS XML from a generated Python PORIS model")
+    parser = argparse.ArgumentParser(description="Generate PORIS XML and YAML (.poris) from a Python PORIS model")
     parser.add_argument("model_file", type=Path, help="generated *PORIS.py file")
     parser.add_argument("-o", "--output", type=Path, help="output XML file")
+    parser.add_argument("--poris-output", type=Path, help="YAML destination (always generated; default: output/poris/<XML name>.poris)")
     parser.add_argument("--class-name", help="PORISDoc subclass name; defaults to the file stem")
     parser.add_argument("--project-id", type=int, default=0)
     args = parser.parse_args()
@@ -47,13 +48,22 @@ def main():
     model_class = load_model_class(model_file, args.class_name)
     model = model_class(args.project_id)
 
+    # Validate/serialize both products before replacing either output.
+    poris_text = model.toYAML()
+    with redirect_stdout(sys.stderr):
+        xml_doc = model.toXML()
+    xml_bytes = xml_doc.toprettyxml(indent="    ", encoding="UTF-8")
+
     output_file.parent.mkdir(parents=True, exist_ok=True)
     with output_file.open("wb") as xml_fp:
-        with redirect_stdout(sys.stderr):
-            xml_doc = model.toXML()
-        xml_fp.write(xml_doc.toprettyxml(indent="    ", encoding="UTF-8"))
+        xml_fp.write(xml_bytes)
+
+    poris_file = args.poris_output or Path.cwd() / 'output' / 'poris' / output_file.with_suffix('.poris').name
+    poris_file.parent.mkdir(parents=True, exist_ok=True)
+    poris_file.write_text(poris_text, encoding='utf-8')
 
     print(output_file)
+    print(poris_file)
 
 
 if __name__ == "__main__":

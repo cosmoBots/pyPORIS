@@ -7,14 +7,19 @@ CSYS_MODE=0
 LAUNCH_PANEL=1
 LAUNCH_WEB=0
 DEBUG_JSON=0
+ENG_ARGS=()
 CLUSTER_NAME_ARG=""
 
 usage() {
-    echo "Usage: $0 [--dir] [--csys <instance>] [--ods] [--parser-xml] [--debug] [--web] [--no-panel] [--cluster <name>] <model-path-without-extension>"
+    echo "Usage: $0 [--eng] [--dir] [--csys <instance>] [--ods] [--parser-xml] [--debug] [--web] [--no-panel] [--cluster <name>] <model-path-without-extension>"
 }
 
 while [[ "$1" == --* ]]; do
     case "$1" in
+        --eng)
+            ENG_ARGS=(--eng)
+            shift
+            ;;
         --dir)
             DIRMODE=1
             shift
@@ -189,12 +194,15 @@ OUTPUT_MODEL_FILE="${OUTPUT_PORIS_DIR}/${DEVNAME}PORIS.py"
 if [ $DIRMODE -eq 1 ] && [ $CLUSTER_DIR_OUTPUT -eq 1 ]; then
     OUTPUT_ODS_DIR="$(pwd)/output/ods/${DEVPATH}"
     OUTPUT_XML_DIR="$(pwd)/output/xml/${DEVPATH}"
+    OUTPUT_YAML_DIR="$(pwd)/output/poris/${DEVPATH}"
 else
     OUTPUT_ODS_DIR="$(pwd)/output/ods/${DEVDIR}"
     OUTPUT_XML_DIR="$(pwd)/output/xml/${DEVDIR}"
+    OUTPUT_YAML_DIR="$(pwd)/output/poris/${DEVDIR}"
 fi
 FILE1="${OUTPUT_ODS_DIR}/${DEVNAME}.ods"
 OUTPUT_XML_FILE="${OUTPUT_XML_DIR}/${DEVNAME}.xml"
+OUTPUT_YAML_FILE="${OUTPUT_YAML_DIR}/${DEVNAME}.poris"
 PARSER_XML_FILE="${OUTPUT_XML_DIR}/${DEVNAME}.from-parser.xml"
 OUTPUT_XML_DIFF="${OUTPUT_XML_DIR}/${DEVNAME}.xml.diff"
 export PYTHONPATH="${SCRIPT_DIR}/PORIS:${OUTPUT_PORIS_DIR}:${PYTHONPATH}"
@@ -216,6 +224,7 @@ if [ $GENERATE_ODS -eq 1 ]; then
     rm -f "$FILE1"
 fi
 rm -f "$OUTPUT_XML_FILE"
+rm -f "$OUTPUT_YAML_FILE"
 rm -f "$PARSER_XML_FILE"
 rm -f "${OUTPUT_XML_DIR}/${DEVNAME}.from-python.xml"
 rm -f "$OUTPUT_XML_DIFF"
@@ -235,9 +244,9 @@ if [ $DEBUG_JSON -eq 1 ]; then
     DEBUG_ARGS=(--debug)
 fi
 if [ $DIRMODE -eq 1 ]; then
-    python3 "$SCRIPTS_DIR/graphdir2poris.py" --output-dir "${OUTPUT_PORIS_DIR}" "${ODS_ARGS[@]}" "${DEBUG_ARGS[@]}" "${GRAPH_DIR_ARGS[@]}" "$FILE" || { echo "graphdir2poris could not be processed"; exit 1; }
+    python3 "$SCRIPTS_DIR/graphdir2poris.py" --output-dir "${OUTPUT_PORIS_DIR}" "${ODS_ARGS[@]}" "${DEBUG_ARGS[@]}" "${GRAPH_DIR_ARGS[@]}" "${ENG_ARGS[@]}" "$FILE" || { echo "graphdir2poris could not be processed"; exit 1; }
 else
-    python3 "$SCRIPTS_DIR/graph2poris.py" "$FILE" --output-dir "${OUTPUT_PORIS_DIR}" "${ODS_ARGS[@]}" || { echo "graph2poris could not be processed"; exit 1; }
+    python3 "$SCRIPTS_DIR/graph2poris.py" "$FILE" --output-dir "${OUTPUT_PORIS_DIR}" "${ODS_ARGS[@]}" "${ENG_ARGS[@]}" || { echo "graph2poris could not be processed"; exit 1; }
     FILE2="${FILE}.out"
     if [ $CSYS_MODE -eq 1 ]; then
         if test -f "$FILE2"; then
@@ -268,7 +277,7 @@ if [ $GENERATE_ODS -eq 1 ]; then
 fi
 
 if [ $GENERATE_PARSER_XML -eq 1 ]; then
-    python3 "$SCRIPTS_DIR/poris2xml.py" "$FILE1" --output-dir "${OUTPUT_XML_DIR}" || { echo "poris2xml could not be processed"; exit 1; } 
+    python3 "$SCRIPTS_DIR/poris2xml.py" "$FILE1" --output-dir "${OUTPUT_XML_DIR}" "${ENG_ARGS[@]}" || { echo "poris2xml could not be processed"; exit 1; }
     if test -f "$OUTPUT_XML_FILE"; then
         mv "$OUTPUT_XML_FILE" "$PARSER_XML_FILE"
         echo "Parser-generated XML $PARSER_XML_FILE exists, continuing"
@@ -277,7 +286,7 @@ if [ $GENERATE_PARSER_XML -eq 1 ]; then
         exit 1;
     fi
 fi
-python3 "$SCRIPTS_DIR/poris_python2xml.py" "$OUTPUT_MODEL_FILE" --output "$OUTPUT_XML_FILE" || { echo "poris_python2xml could not be processed"; exit 1; }
+python3 "$SCRIPTS_DIR/poris_python2xml.py" "$OUTPUT_MODEL_FILE" --output "$OUTPUT_XML_FILE" --poris-output "$OUTPUT_YAML_FILE" || { echo "poris_python2xml could not be processed"; exit 1; }
 if test -f "$OUTPUT_XML_FILE"; then
     echo "Python-generated XML $OUTPUT_XML_FILE exists, continuing"
 else
@@ -285,6 +294,7 @@ else
     exit 1;
 fi
 echo "Python XML: $OUTPUT_XML_FILE"
+echo "PORIS YAML: $OUTPUT_YAML_FILE"
 if [ $GENERATE_PARSER_XML -eq 1 ]; then
     echo "Parser XML: $PARSER_XML_FILE"
     if diff -u "$PARSER_XML_FILE" "$OUTPUT_XML_FILE" > "$OUTPUT_XML_DIFF"; then

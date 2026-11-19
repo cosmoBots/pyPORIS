@@ -2499,6 +2499,68 @@ class PORISDoc:
         
     ########### XML related functions ########        
     
+    def toModelDict(self) -> dict:
+        """Export a cosmoSys model definition, independently of runtime selections.
+
+        As in XML, only document-registered items are serialized. Local keys
+        are references within this file, never Redmine IDs or assigned CSIDs.
+        """
+        import math
+
+        items = {}
+        relations = []
+        registered = {id(item): f"node_{item.getId()}" for item in self.__item_dict.values()}
+        for item in self.__item_dict.values():
+            key = registered[id(item)]
+            if isinstance(item, PORISSys):
+                kind = 'system'
+            elif isinstance(item, PORISParam):
+                kind = 'parameter'
+            elif isinstance(item, PORISMode):
+                kind = 'mode'
+            elif isinstance(item, PORISCmd):
+                kind = 'command'
+            elif isinstance(item, PORISValue):
+                kind = 'value'
+            else:
+                raise ValueError(f"Unsupported PORIS item: {type(item).__name__}")
+            row = {'type': kind, 'project': 'model', 'subject': item.getXMLName()}
+            parent = item.getParent()
+            if parent is not None:
+                if id(parent) not in registered:
+                    raise ValueError(f"Unregistered parent for {item.getName()}")
+                row['parent'] = registered[id(parent)]
+            if item.description:
+                row['description'] = item.description
+            if isinstance(item, PORISValueFloat):
+                minimum, default, maximum = item.getMin(), item.getDefaultData(), item.getMax()
+                if not all(math.isfinite(value) for value in (minimum, default, maximum)) or not minimum < maximum or not minimum <= default <= maximum:
+                    raise ValueError(f"Invalid numeric range for {item.getName()}")
+                row['fields'] = {'value_kind': 'float', 'min': minimum, 'default': default, 'max': maximum}
+            elif isinstance(item, (PORISValueFilePath, PORISValueDate)):
+                raise ValueError(f"cosmoSys YAML does not support {type(item).__name__}")
+            elif isinstance(item, PORISValueString):
+                row['fields'] = {'value_kind': 'text', 'default_text': item.getDefaultData()}
+            elif isinstance(item, PORISValue):
+                if type(item) is not PORISValue:
+                    raise ValueError(f"Unsupported PORIS value: {type(item).__name__}")
+                row['fields'] = {'value_kind': 'enum'}
+            items[key] = row
+            if isinstance(item, PORISMode):
+                for destination in item.getDestinations():
+                    # Built-in runtime alternatives are not registered items.
+                    if id(destination) not in registered:
+                        continue
+                    relations.append({'from': key, 'to': registered[id(destination)], 'type': 'precedes', 'delay': 0})
+        return {'format': 'cosmosys-model', 'version': 1, 'project_profile': 'poris',
+                'projects': {'model': {'name': self.getName()}},
+                'items': items, 'relations': relations}
+
+    def toYAML(self) -> str:
+        """Return safe-loadable YAML for a .poris model definition."""
+        import yaml
+        return yaml.safe_dump(self.toModelDict(), allow_unicode=True, sort_keys=False)
+
     # Dumps the contents of the PORISDoc into a XML document
     def toXML(self) -> minidom.Document:
         # Creates the XML document

@@ -105,6 +105,7 @@ parser = argparse.ArgumentParser(description='Launches a PORIS device generation
 ## The second argument is the api ODS file
 parser.add_argument('sys_file',type=argparse.FileType('r'), help="the path of a file containing the PORIS instrument description")
 parser.add_argument('--output-dir', help="directory where the generated XML file will be stored (defaults to the ODS folder)")
+parser.add_argument('--eng', action='store_true', help="include automatically generated engineering modes")
 
 # Obtaining the arguments from the command line
 args=parser.parse_args()
@@ -219,8 +220,12 @@ def loadODS():
     for thiskey in nodes_dict.keys():
         thisnode = nodes_dict[thiskey]
         
-        if thisnode['virtual'] == False:
+        if args.eng and thisnode['virtual'] == False:
             if thisnode['tracker'] == "prSys":
+                if any(nodes_dict[ch]['tracker'] == 'prMode' and
+                       nodes_dict[ch]['subject'] == 'Engineering'
+                       for ch in thisnode['children']):
+                    continue
                 # Now, for each node of type prSys we must
                 # create a new mode, engineering
                 virtnode = {}
